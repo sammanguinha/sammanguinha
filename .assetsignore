@@ -1,0 +1,7 @@
+# Keep internal project/configuration files out of the public static asset directory
+PROJECT.md
+wrangler.jsonc
+*.md
+*.sql
+.git/**
+.github/**
