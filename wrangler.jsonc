@@ -3,6 +3,6 @@
   "name": "sammanguinha",
   "compatibility_date": "2026-10-16",
   "assets": {
-    "directory": "."
+    "directory": "./public"
   }
 }
