@@ -1788,7 +1788,7 @@ dialog .row { display: flex; align-items: center; justify-content: space-between
     <label for="pIn">Chave de Administrador</label>
     <input id="pIn" type="password" autocomplete="current-password">
     <label style="display:flex;gap:8px;align-items:center;font-weight:600;margin-top:10px">
-      <input type="checkbox" id="pRem" style="width:auto"> Lembrar neste navegador
+      <span class="sm">O acesso administrativo vale apenas enquanto esta página estiver aberta.</span>
     </label>
     <p class="err" id="pErr" role="alert" style="color:#ff4d4f;font-size:0.82rem"></p>
     <div class="row">
@@ -2553,7 +2553,7 @@ loadPosts();reg();loadRank();
 setInterval(loadPosts,60000);
 
 const checkPw=async pw=>{try{return(await rpc("admin_check",{p_pw:pw}))===true}catch(e){return null}};
-{const sp=LS.get("sg_adm");if(sp)checkPw(sp).then(ok=>{if(ok){ADMPW=sp;unlocked=true}else if(ok===false)LS.set("sg_adm","")})}
+{LS.set("sg_adm","")}
 $("admBtn").onclick=()=>{
   if(unlocked){openAdmin();return}
   $("pErr").textContent="";$("pIn").value="";$("pDlg").showModal();$("pIn").focus();
@@ -2562,7 +2562,7 @@ $("pClose").onclick=()=>$("pDlg").close();
 let fails=0;
 $("pForm").onsubmit=async e=>{
   e.preventDefault();$("pOk").disabled=true;const pw=$("pIn").value,ok=await checkPw(pw);
-  if(ok===true){ADMPW=pw;unlocked=true;if($("pRem").checked)LS.set("sg_adm",pw);$("pDlg").close();toast("Admin liberado 🔓");openAdmin()}
+  if(ok===true){ADMPW=pw;unlocked=true;$("pDlg").close();toast("Admin liberado 🔓");openAdmin()}
   else if(ok===null){$("pErr").textContent="Não consegui falar com o servidor."}
   else{fails++;$("pErr").textContent="Senha incorreta.";await new Promise(r=>setTimeout(r,Math.min(6000,fails*1500)))}
   $("pOk").disabled=false;
