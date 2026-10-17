@@ -1,0 +1,51 @@
+name: Integrar e verificar V17.1 (sem deploy)
+on:
+  push:
+    branches:
+      - dev/v17-1-polimento-acessibilidade
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  revisar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Integrar melhorias ao index.html
+        run: python tools/integrar_v17_1.py
+      - name: Testar sintaxe JavaScript
+        run: |
+          node --check polimento_v17_1.js
+          node --check revisao_v17.js
+          node --check rpg_epico_expansao.js
+          node --check mundo_pomar.js
+      - name: Verificar integridade de arquivos
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text()
+          for f in ('revisao_v17.js','polimento_v17_1.js','polimento_v17_1.css','mundo_pomar.js','sprites/sam_idle.png','halloween_art/altar.png'):
+              assert Path(f).is_file(),f
+              if f.endswith(('.js','.css')):assert f in s,f
+          assert "const previousHandle=me" in s
+          assert "LS.set(\"sg_handle\",me);$(\"gOk\").disabled=false" in s
+          print("V17.1: smoke check OK")
+          PY
+      - name: Guardar integração na branch de desenvolvimento
+        run: |
+          if ! git diff --quiet -- index.html; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add index.html
+            git commit -m "feat(v17.1): ativar interface e login corrigido"
+            git push origin HEAD:dev/v17-1-polimento-acessibilidade
+          else
+            echo "Nada para atualizar."
+          fi
