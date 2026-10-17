@@ -35,6 +35,7 @@ const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches||docume
 const handle=()=>{try{return (localStorage.getItem('sg_handle')||'').trim().toLowerCase().replace(/[^a-z0-9._]/g,'').slice(0,30)}catch(_){return ''}};
 const token=()=>{try{return localStorage.getItem('sg_tok')||''}catch(_){return ''}};
 const storageKey=h=>'sm21_house_'+(h||'visitante');
+const pendingKey=h=>'sm21_house_pending_'+(h||'visitante');
 const today=()=>new Date().toLocaleDateString('en-CA',{timeZone:'America/Sao_Paulo'});
 const status=t=>{$('sm21HouseStatus').textContent=t};
 const message=t=>{$('sm21HouseNote').textContent=t};
@@ -68,10 +69,11 @@ async function cloudRead(){
  const h=account;status('Consultando a casa na nuvem…');
  try{
   const result=await rest('sm21_house_load',{p_handle:h,p_token:token()});
-  if(h!==account||dirty)return;
+  if(h!==account)return;
+  if(dirty){status('Recuperando alterações feitas offline…');cloudSave();return}
   const current=localLoad(h);
   // O estado recém-criado no servidor vem vazio. Não destruir a decoração offline.
-  const existing=Array.isArray(result?.placed)&&result.placed.length>0;
+  const existing=!!(result&&Array.isArray(result.placed));
   if(existing){state=sanitize(result);localSave();status('✓ Casa sincronizada com seu @');}
   else {state=current;status('Sua casa foi iniciada · salvamento online ativo');markDirty(false)}
   remoteLoaded=true;syncExpeditionUnlock();renderInventory();updateLabels();render(performance.now());
@@ -82,13 +84,13 @@ async function cloudSave(){
  saving=true;const h=account;const snapshot=JSON.stringify(state);
  try{
   await rest('sm21_house_save',{p_handle:h,p_token:token(),p_state:JSON.parse(snapshot)});
-  if(account===h&&JSON.stringify(state)===snapshot){dirty=false;status('✓ Casa salva na nuvem e neste dispositivo')}
-  else if(account===h)queueSave();
+  if(account===h&&JSON.stringify(state)===snapshot){dirty=false;try{localStorage.removeItem(pendingKey(h))}catch(_){}status('✓ Casa salva na nuvem e neste dispositivo')}
+  else if(account===h)markDirty(false);
  }catch(e){status('Salva no navegador · falha ao sincronizar');message('Você pode continuar decorando. '+e.message)}
  finally{saving=false}
 }
 function markDirty(userAction=true){
- dirty=true;localSave();if(userAction)window.dispatchEvent(new CustomEvent("sm21:house-updated",{detail:{handle:account}}));status('Alterações salvas no navegador · sincronizando…');
+ dirty=true;localSave();try{localStorage.setItem(pendingKey(account),'1')}catch(_){}if(userAction)window.dispatchEvent(new CustomEvent("sm21:house-updated",{detail:{handle:account}}));status('Alterações salvas no navegador · sincronizando…');
  clearTimeout(saveTimer);saveTimer=setTimeout(cloudSave,1100);
 }
 function syncExpeditionUnlock(){
@@ -99,7 +101,7 @@ function syncExpeditionUnlock(){
 function identify(){
  const next=handle();if(account===next){syncExpeditionUnlock();return}
  clearTimeout(saveTimer);account=next;state=localLoad(next);
- selected='cama';hover=null;drag=null;dirty=false;remoteLoaded=false;
+ selected='cama';hover=null;drag=null;try{dirty=localStorage.getItem(pendingKey(next))==='1'}catch(_){dirty=false}remoteLoaded=false;
  renderInventory();updateLabels();message('Seu refúgio espera novas aventuras.');
  cloudRead();
 }
