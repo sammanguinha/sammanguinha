@@ -1546,7 +1546,7 @@ dialog[open]{max-height:92vh;overflow:auto}
  <button type="button" id="sm17GoSocial" class="btn-gothic">💬 Praça dos Jogadores</button>
  <button type="button" id="sm17GoGrimoire" class="btn-gothic alt">🔐 Códigos</button>
 </div>
-<div class="rpg-portal-grid"><button type="button" class="portal-card sm21-house-portal" data-go="houseDlg"><div class="card-head"><span aria-hidden="true" style="font-size:2rem">🏡</span><h3>Minha Casa dos Guardiões</h3></div><p>Um refúgio seu: decore, descanse, receba o familiar e exponha as relíquias. Sua casa se lembra de você.</p><span class="portal-badge">NOVO · V21</span></button>
+<section id="sm21Journey" class="sm21-journey" aria-label="Jornada diária pessoal"><div class="sm21-journey-top"><div><span>✦ CONTRATOS DA JORNADA</span><h3>Crônicas do Guardião</h3><p>Uma batalha e um lar: avance em dois modos e ganhe sementes para decorar.</p></div><small id="sm21JourneyDate">Hoje</small></div><div class="sm21-journey-progress"><div><strong id="sm21JourneyProgress">0/2 atos concluídos</strong><div class="sm21-journey-bar"><span id="sm21JourneyBar"></span></div></div><button id="sm21JourneyClaim" type="button" disabled>🔒 Conclua os dois objetivos</button></div><div class="sm21-journey-actions"><button type="button" data-go="gameDlg"><span>⚔️</span><b id="sm21JourneyDefense">○ Faça uma partida</b><small>Defenda o Pomar</small></button><button type="button" data-go="houseDlg"><span>🏡</span><b id="sm21JourneyHouse">○ Personalize a casa</b><small>Escolha e coloque um móvel ou tema</small></button></div><p id="sm21JourneyNotice" role="status" aria-live="polite"></p></section><div class="rpg-portal-grid"><button type="button" class="portal-card sm21-house-portal" data-go="houseDlg"><div class="card-head"><span aria-hidden="true" style="font-size:2rem">🏡</span><h3>Minha Casa dos Guardiões</h3></div><p>Um refúgio seu: decore, descanse, receba o familiar e exponha as relíquias. Sua casa se lembra de você.</p><span class="portal-badge">NOVO · V21</span></button>
       <button type="button" class="portal-card" data-go="rpgDlg">
         <div class="card-head"><svg class="portal-ic"><use href="#i-home"/></svg><h3>O Mundo do Pomar</h3></div>
         <p>Nova aventura RPG híbrida: explore a vila, procure sementes, conheça personagens e descubra portais para a Defesa e Halloween.</p>
@@ -4717,5 +4717,6 @@ load();update();requestAnimationFrame(render);requestAnimationFrame(movement);
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.50.0/dist/umd/supabase.js" defer></script>
 <script src="pomar_ao_vivo_v20.js?v=20" defer></script>
 <script src="casa_pomar_v21.js?v=21" defer></script>
+<script src="jornada_v21.js?v=21" defer></script>
 </body>
 </html>
