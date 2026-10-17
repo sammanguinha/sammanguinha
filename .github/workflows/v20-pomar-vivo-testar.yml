@@ -1,0 +1,17 @@
+name: V20 - Pomar Vivo - Testes (sem deploy)
+on:
+  push:
+    branches: [dev/v20-pomar-vivo]
+  pull_request:
+    branches: [dev/v19-expedicao-cinematica]
+  workflow_dispatch:
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar JavaScript e integracao V20
+        run: node --test tests/v20_pomar_vivo.test.cjs
