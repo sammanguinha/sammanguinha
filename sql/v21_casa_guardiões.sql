@@ -12,7 +12,7 @@ declare h text:=lower(btrim(coalesce(p_handle,''))); result jsonb;
 begin
   perform public.auth_profile(h,p_token);
   select state into result from public.sm21_player_homes where handle=h;
-  return coalesce(result,'{"theme":"bosque","floor":"carvalho","placed":[],"owned":[]}'::jsonb);
+  return result; -- NULL if no house yet, preserve intentionally empty houses.
 end $$;
 revoke all on function public.sm21_house_load(text,text) from public;
 grant execute on function public.sm21_house_load(text,text) to anon,authenticated;
