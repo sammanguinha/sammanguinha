@@ -59,6 +59,10 @@ const server=http.createServer((req,res)=>{
      const result=await page.evaluate(()=>window.SamHouseV21.getState());
      assert.ok(result.owned.includes('cristal'), 'crystal bought using seeds');
      assert.ok(result.placed.some(x=>x.id==='cristal'&&x.x===3&&x.y===2),'crystal placed at tile (3,2)');
+     await page.mouse.move(x,y);await page.mouse.down();
+     await page.mouse.move(x+loc.width*61/800,y,{steps:6});await page.mouse.up();
+     const shifted=await page.evaluate(()=>window.SamHouseV21.getState());
+     assert.ok(shifted.placed.some(x=>x.id==='cristal'&&x.x===4&&x.y===2),'pointer drag moves crystal to a new tile');
      await page.locator('#sm21HouseTheme').selectOption('astral');
      await page.locator('#sm21HouseFloor').selectOption('marmore');
      await page.waitForFunction(()=>localStorage.getItem('sm21_house_guardiaoteste21')?.includes('"astral"'),null,{timeout:5000});
@@ -68,7 +72,7 @@ const server=http.createServer((req,res)=>{
      await page.waitForFunction(()=>window.SamHouseV21.getState().theme==='astral',null,{timeout:7000});
      const loaded=await page.evaluate(()=>window.SamHouseV21.getState());
      assert.ok(loaded.owned.includes('cristal'),'server synced house from first browser');
-     assert.ok(loaded.placed.some(x=>x.id==='cristal'&&x.x===3&&x.y===2),'furniture placement synced');
+     assert.ok(loaded.placed.some(x=>x.id==='cristal'&&x.x===4&&x.y===2),'furniture placement synced');
      assert.equal(loaded.floor,'marmore');
    }
    // Botões reais do jogo de defesa, seleção de arma e loop de colisão.
@@ -145,7 +149,8 @@ const server=http.createServer((req,res)=>{
    assert.equal(await page.locator('#sm21JourneyClaim').isDisabled(),true,device.name+' daily reward cannot be claimed twice');
    assert.deepEqual(errors,[],device.name+' uncaught JS exceptions');
    fs.mkdirSync(path.join(ROOT,'test-artifacts'),{recursive:true});
-   await page.evaluate(()=>document.getElementById('houseBtn').click());
+   await page.evaluate(()=>{localStorage.setItem('sm19_expedicao_guardiaoteste21',JSON.stringify({finished:true}));document.getElementById('houseBtn').click()});
+   await page.waitForFunction(()=>window.SamHouseV21.getState().owned.includes('reliquias'),null,{timeout:5000});
    await page.waitForTimeout(160);
    await page.screenshot({path:path.join(ROOT,'test-artifacts','v21-'+device.name+'-house.png'),animations:'disabled'});
    console.log(device.name+': House synced, advanced battle weapon, repair, archer, upgrade and boss gate PASSED. Browser JS errors: '+errors.length);
