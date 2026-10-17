@@ -187,7 +187,7 @@ function draw(time=performance.now()){if(!ctx||!state?.tiles)return;
  for(let y=0;y<H;y++)for(let x=0;x<W;x++)tileGround(x,y,lv,time);
  for(let j=0;j<8;j++){const ax=rnd(j+73+state.level)*700,ay=rnd(j+87)*460;glow(ax,ay,28+Math.sin(time/800+j)*7,state.level===4?'#dc9beb17':'#a9ecd318')}
  if(time<ringUntil){const p=1-(ringUntil-time)/780;ctx.strokeStyle='rgba(244,203,130,'+(1-p)+')';ctx.lineWidth=4;ctx.beginPath();ctx.arc(state.pos.x*C+20,state.pos.y*C+20,Math.max(3,p*165),0,Math.PI*2);ctx.stroke()}
- for(const e of state.enemies){const ep=actorPos(e,e.id,time);const key=e.boss?'boss':e.spider?'spider':e.kind==='wisp'?'wisp':'bug';drawEntity(key,ep.x,ep.y,time,e.boss,e.spider);const width=32,den=e.maxHp||e.hp||1;box(ep.x*C+4,ep.y*C+1,width,4,'#210c1f');box(ep.x*C+4,ep.y*C+1,Math.max(0,width*e.hp/den),4,e.boss?'#f6d36b':'#ef7a79');if(distance(e,state.pos)===1){ctx.strokeStyle=e.boss?'#f7c17f9a':'#dd666562';ctx.lineWidth=1.5;ctx.strokeRect(ep.x*C+1,ep.y*C+1,38,38)}}
+ for(const e of state.enemies){const ep=actorPos(e,e.id,time);const key=e.boss?'boss':e.spider?'spider':e.kind==='wisp'?'wisp':'bug';drawEntity(key,ep.x,ep.y,time,e.boss,e.spider);const width=32,den=e.maxHp||e.hp||1;box(ep.x*C+4,ep.y*C+1,width,4,'#210c1f');box(ep.x*C+4,ep.y*C+1,Math.max(0,width*e.hp/den),4,e.boss?'#f6d36b':'#ef7a79');if(distance(e,state.pos)===1||(e.kind==='wisp'&&distance(e,state.pos)===2)){ctx.strokeStyle=e.kind==='wisp'?'#b3d8ff9a':e.boss?'#f7c17f9a':'#dd666562';ctx.lineWidth=1.5;ctx.strokeRect(ep.x*C+1,ep.y*C+1,38,38)}}
  const hp=actorPos(state.pos,'hero',time),attacking=time<attackUntil;drawEntity(attacking?'strike':tween&&time-tween.at<tween.duration?'walk':'hero',hp.x,hp.y,time,false,false,attacking);
  if(state.shield){ctx.strokeStyle='#8fddff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(hp.x*C+20,hp.y*C+20,21+Math.sin(time/200)*1.5,0,Math.PI*2);ctx.stroke()}
  if(attacking){ctx.strokeStyle='#f6e39b';ctx.lineWidth=4;ctx.beginPath();ctx.arc(hp.x*C+20,hp.y*C+18,24,-1.2,1.4);ctx.stroke()}
@@ -208,7 +208,31 @@ function pause(){if(root.hidden||dialogOpen)return;state.paused=!state.paused;pe
 function finish(){feedback('portal',state.pos.x,state.pos.y);if(state.relics>=2)award('pact');state.finished=true;state.paused=true;state.clears=levels.length;state.score+=200+state.hp*25;award('victory');message('🌟 O eclipse terminou. O pacto do pomar foi renovado!');persist();showOverlay();draw();audio(880)}
 function proceed(){if(state.mangos<3){message('Colete as 3 mangas para abrir o portal!');audio(180);return}if(state.enemies.some(e=>e.boss)){message('👑 Um guardião ainda protege este portal. Vença-o antes de avançar.');audio(170);return}if(state.level===levels.length-1){if(state.stageDamage===0)award('untouched');finish();return}if(state.stageDamage===0)award('untouched');if(state.level===0)award('level1');if(state.level===1)award('level2');if(state.level>=3&&state.relics>=2)award('pact');const next=state.level+1;state.score+=75+state.hp*8;state.clears=next;state.hp=Math.min(state.maxHp,state.hp+2);state.potions=Math.min(5,state.potions+1);feedback('portal',state.pos.x,state.pos.y);state.level=next;state.shield=0;state.energy=Math.min(3,state.energy+1);Object.assign(state,createStage(next));state.paused=true;message('✨ Portal atravessado! Uma nova região desperta.');persist();showOverlay();draw();audio(650)}
 function hit(enemy,damage=1){feedback('hit',enemy.x,enemy.y);floatText(enemy.x,enemy.y,'-'+damage,'#ffb0a2');enemy.hp-=damage;state.score+=5*damage;audio(250);message('⚔️ Golpe certeiro contra a praga!');if(enemy.hp<=0){state.enemies=state.enemies.filter(e=>e!==enemy);state.kills++;state.score+=25;message(enemy.boss?'👑 Rei das Pragas derrotado!':'🪲 Praga derrotada!');if(state.kills>=8)award('hunter')}}
-function enemiesTurn(){const taken=new Set(state.enemies.map(e=>`${e.x},${e.y}`));for(const e of state.enemies){if(state.hp<=0)break;const dist=distance(e,state.pos);if(dist===1){if(state.shield){feedback('shield',state.pos.x,state.pos.y);message('🛡️ Sua guarda absorveu o ataque!');state.shield=0;audio(470)}else{const dmg=e.boss?2:1;state.hp=Math.max(0,state.hp-dmg);state.stageDamage+=dmg;feedback('hit',state.pos.x,state.pos.y);floatText(state.pos.x,state.pos.y,'-'+dmg,'#ff8a98');message('💔 Uma praga atacou! Recuar também é estratégia.');audio(160)}continue}if(dist>7)continue;const dirs=[{x:Math.sign(state.pos.x-e.x),y:0},{x:0,y:Math.sign(state.pos.y-e.y)}];if(Math.abs(state.pos.y-e.y)>Math.abs(state.pos.x-e.x))dirs.reverse();for(const d of dirs){if(!d.x&&!d.y)continue;const nx=e.x+d.x,ny=e.y+d.y,key=`${nx},${ny}`;if(wall(nx,ny)||taken.has(key)||(nx===state.pos.x&&ny===state.pos.y)||tile(nx,ny)==='P')continue;taken.delete(`${e.x},${e.y}`);e.x=nx;e.y=ny;taken.add(key);break}}if(state.hp<=0){state.paused=true;message('As pragas venceram esta tentativa. Seu recorde local permanece.');persist();showOverlay()} }
+function enemiesTurn(){
+ const taken=new Set(state.enemies.map(e=>`${e.x},${e.y}`));
+ for(const e of state.enemies){
+  if(state.hp<=0)break;
+  if(e.cool>0)e.cool--;
+  const dist=distance(e,state.pos),ranged=e.kind==='wisp'&&dist===2&&e.cool===0;
+  if(dist===1||ranged){
+   if(ranged){e.cool=2;feedback('pulse',e.x,e.y);floatText(e.x,e.y,'✦','#c3d9ff');}
+   if(state.shield){feedback('shield',state.pos.x,state.pos.y);message('🛡️ Sua guarda absorveu o ataque!');state.shield=0;audio(470)}
+   else {const dmg=e.boss?2:1;state.hp=Math.max(0,state.hp-dmg);state.stageDamage+=dmg;feedback('hit',state.pos.x,state.pos.y);floatText(state.pos.x,state.pos.y,'-'+dmg,'#ff8a98');message(ranged?'🌙 Um espírito lunar lançou energia à distância!':'💔 Uma praga atacou! Recuar também é estratégia.');audio(160);}
+   continue;
+  }
+  if(dist>7)continue;
+  /* Aranhas perseguem o jogador pelo eixo livre; espíritos só se aproximam até dispararem. */
+  const dirs=[{x:Math.sign(state.pos.x-e.x),y:0},{x:0,y:Math.sign(state.pos.y-e.y)}];
+  if(Math.abs(state.pos.y-e.y)>Math.abs(state.pos.x-e.x))dirs.reverse();
+  for(const d of dirs){
+   if(!d.x&&!d.y)continue;
+   const nx=e.x+d.x,ny=e.y+d.y,key=`${nx},${ny}`;
+   if(wall(nx,ny)||taken.has(key)||(nx===state.pos.x&&ny===state.pos.y)||tile(nx,ny)==='P')continue;
+   taken.delete(`${e.x},${e.y}`);e.x=nx;e.y=ny;taken.add(key);break;
+  }
+ }
+ if(state.hp<=0){state.paused=true;message('As pragas venceram esta tentativa. Seu recorde local permanece.');persist();showOverlay()}
+}
 function action(type){if(root.hidden||dialogOpen||state.paused||state.finished||state.hp<=0)return;let turn=false;const before={hero:{...state.pos},enemies:state.enemies.map(e=>({id:e.id,x:e.x,y:e.y}))};
 if(type==='heal'){if(state.potions<=0){message('Você não tem poções restantes.');return}if(state.hp===state.maxHp){message('Sua vida já está completa.');return}state.potions--;state.hp=Math.min(state.maxHp,state.hp+4);feedback('heal',state.pos.x,state.pos.y);floatText(state.pos.x,state.pos.y,'+4','#81ffc8');message('🧪 Poção usada. +4 de vida!');audio(720);turn=true}
 else if(type==='guard'){state.shield=1;feedback('shield',state.pos.x,state.pos.y);message('🛡️ Postura defensiva! Absorva o próximo golpe neste turno.');audio(410);turn=true}
@@ -222,6 +246,14 @@ $('sm18Pause').addEventListener('click',pause);
 $('sm18Restart').addEventListener('click',()=>{if(!confirm('Iniciar nova aventura? A partida atual será reiniciada; medalhas já conquistadas permanecem.'))return;fresh();showOverlay();draw()});
 $('sm18Sound').addEventListener('click',()=>{sound=!sound;$('sm18Sound').setAttribute('aria-pressed',String(sound));$('sm18Sound').textContent='♪ Som: '+(sound?'sim':'não');if(sound)audio(540)});
 root.querySelectorAll('[data-sm18-action]').forEach(b=>b.addEventListener('click',()=>action(b.dataset.sm18Action)));
+/* Deslizar para mover; um toque na casa adjacente interage com ela (mobile). */
+let touchStart=null;
+canvas.addEventListener('touchstart',e=>{if(e.touches.length!==1)return;const t=e.touches[0];touchStart={x:t.clientX,y:t.clientY}},{passive:true});
+canvas.addEventListener('touchend',e=>{if(!touchStart||!e.changedTouches.length)return;const t=e.changedTouches[0],dx=t.clientX-touchStart.x,dy=t.clientY-touchStart.y;touchStart=null;if(root.hidden||state.paused||dialogOpen)return;
+if(Math.max(Math.abs(dx),Math.abs(dy))>=20){if(e.cancelable)e.preventDefault();action(Math.abs(dx)>Math.abs(dy)?dx>0?'right':'left':dy>0?'down':'up')}
+else{const rect=canvas.getBoundingClientRect(),rx=(t.clientX-rect.left)/rect.width*W,ry=(t.clientY-rect.top)/rect.height*H,tx=Math.floor(rx),ty=Math.floor(ry),deltaX=tx-state.pos.x,deltaY=ty-state.pos.y;if(Math.abs(deltaX)+Math.abs(deltaY)===1)action(deltaX?deltaX>0?'right':'left':deltaY>0?'down':'up')}
+},{passive:false});
+
 document.addEventListener('keydown',e=>{if(root.hidden||!active||e.altKey||e.ctrlKey||e.metaKey)return;if(e.target.closest('input,textarea,select,[contenteditable]'))return;const key=e.key.toLowerCase(),k={arrowup:'up',w:'up',arrowdown:'down',s:'down',arrowleft:'left',a:'left',arrowright:'right',d:'right',' ':'attack',q:'heal',f:'pulse',g:'guard',enter:'story',escape:'pause'}[key];if(!k)return;e.preventDefault();if(e.repeat&&Date.now()-lastMove<100)return;lastMove=Date.now();if(k==='pause')pause();else if(dialogOpen&&k==='story')advanceDialog();else action(k)});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&active&&!state.paused&&!root.hidden){state.paused=true;persist();showOverlay()}});
 const obs=new MutationObserver(()=>{if(root.hidden&&active){active=false;if(!state.paused){state.paused=true;persist()}}});obs.observe(root,{attributes:true,attributeFilter:['hidden']});
