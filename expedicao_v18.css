@@ -1,0 +1,51 @@
+/* Sam Manguinha — design system da Expedição Astral V18 */
+.sm18-eyebrow{font-family:'Pixelify Sans',system-ui,sans-serif!important;letter-spacing:.13em;font-size:.78rem;font-weight:900;color:#f9d493;text-transform:uppercase}
+.sm18-hub{position:relative;isolation:isolate;overflow:hidden;margin:10px auto 24px;padding:clamp(20px,4vw,38px);border:2px solid #c89f60;border-radius:20px;background:radial-gradient(ellipse at 82% 25%,#6a4974aa 0,transparent 48%),radial-gradient(ellipse at 5% 70%,#2f796168 0,transparent 38%),linear-gradient(135deg,#151e2b,#272138 55%,#34272b);color:#fff6dc;box-shadow:0 12px 0 #100d1a,0 20px 35px #0007}
+.sm18-hub::before{content:'✦  ✧     ✦     ✧   ✦  ✧';position:absolute;right:8%;top:15%;font-size:1.7rem;letter-spacing:16px;opacity:.25;pointer-events:none}
+.sm18-hub-title{display:flex;align-items:center;justify-content:space-between;gap:22px;position:relative;flex-wrap:wrap}
+.sm18-hub h2{font-family:'Pirata One',Georgia,serif;color:#ffe1a1;font-size:clamp(2rem,4.2vw,3.1rem);margin:4px 0 9px!important;line-height:1.05;letter-spacing:.015em;text-shadow:0 4px 0 #613b46}
+.sm18-hub p{font:500 clamp(.88rem,2vw,1.02rem)/1.5 Inter,system-ui,sans-serif;margin:0;color:#e2ddd7}
+.sm18-hub button{cursor:pointer;position:relative;border:2px solid #ffe1a1;border-radius:13px;padding:14px 24px;min-height:52px;background:linear-gradient(160deg,#ffdc7b,#e5a54a);font:800 1rem 'Pixelify Sans',system-ui;color:#2e2229;box-shadow:0 5px 0 #a36531;transition:transform .15s,box-shadow .15s}
+.sm18-hub button:hover{transform:translateY(-2px);box-shadow:0 7px 0 #a36531}.sm18-hub button:active{transform:translateY(4px);box-shadow:0 1px 0 #a36531}
+.sm18-hub-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:23px;max-width:700px}
+.sm18-hub-stats>span{display:grid;gap:5px;min-width:0;background:#0b15239c;border:1px solid #e9c58a52;padding:12px 14px;border-radius:12px}
+.sm18-hub-stats b{font:800 clamp(1.3rem,3.2vw,2rem)/1 'Pixelify Sans',system-ui;color:#ffe099}
+.sm18-hub-stats small{font:600 .75rem/1.35 Inter,system-ui;color:#d6cebb}
+.sm18-portal{border:2px solid #c49c6f!important;background:linear-gradient(145deg,#3a3046,#233e46)!important}
+.sm18-new{display:inline-flex;vertical-align:middle;padding:3px 7px;font:800 .58rem Inter,system-ui;background:#fae0a2;color:#322b39;border-radius:99px;letter-spacing:.08em}
+.sm18-portal-cta{display:inline-block;margin-top:7px;color:#ffdd9a;font:800 .83rem Inter,system-ui}
+.sm18-expedition{max-width:1400px;margin:10px auto 50px;padding:clamp(12px,2.8vw,28px)}
+.sm18-expedition[hidden]{display:none!important}
+.sm18-head{margin-bottom:19px;padding:25px 30px;border:1px solid #9c7a55;border-radius:17px;background:linear-gradient(130deg,#292638,#172d30);color:#efe2cd}
+.sm18-head h2{font:normal clamp(2rem,4.5vw,3.2rem) 'Pirata One',Georgia,serif;color:#ffe09e;margin:4px 0 9px;text-shadow:0 3px #57373b}
+.sm18-head p{max-width:920px;font:500 .93rem/1.65 Inter,system-ui;margin:0;color:#e5dacc}
+.sm18-game-layout{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(255px,.85fr);gap:20px;align-items:start}
+.sm18-game-card,.sm18-side-box{color:#f3e6cb;border:2px solid #9b785e;border-radius:16px;background:linear-gradient(150deg,#192734,#231f30);box-shadow:0 9px 0 #0e131e,0 15px 22px #0005}
+.sm18-game-card{min-width:0;overflow:hidden;padding:clamp(10px,2vw,18px)}
+.sm18-hud{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-bottom:12px}
+.sm18-hud span{padding:9px 7px;border:1px solid #f8dd9755;border-radius:7px;background:#0b1521;text-align:center;font:800 clamp(.68rem,1.25vw,.95rem) 'Pixelify Sans',system-ui;color:#ffdd91;white-space:nowrap}
+.sm18-canvas-wrap{position:relative;overflow:hidden;aspect-ratio:3/2;background:#162623;border:2px solid #d6a979;border-radius:9px;box-shadow:inset 0 0 30px #0009}
+#sm18Canvas{display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.sm18-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:22px;text-align:center;background:#0b101cc7;backdrop-filter:blur(3px);z-index:3}
+.sm18-overlay[hidden]{display:none!important}
+.sm18-overlay h3{font:normal clamp(1.5rem,4vw,2.7rem) 'Pirata One',Georgia,serif;color:#ffe29a;margin:0 0 10px;text-shadow:0 2px #000}
+.sm18-overlay p{font:500 clamp(.79rem,1.6vw,1rem)/1.6 Inter,system-ui;color:#f4dfc2;max-width:460px;margin:0 0 18px}
+.sm18-overlay button,.sm18-controls button,.sm18-game-actions button{border:1px solid #c6aa7c;border-radius:9px;min-height:45px;padding:9px 14px;background:linear-gradient(#3d5262,#233846);color:#ffe4a6;cursor:pointer;font:800 .88rem 'Pixelify Sans',system-ui;touch-action:manipulation;user-select:none;box-shadow:0 3px 0 #101c29}
+.sm18-overlay button{font-size:1.1rem;min-height:50px;padding:10px 30px;background:linear-gradient(#ffdf90,#e2ae5e);color:#29252d;border:2px solid #fef2ca}
+.sm18-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) repeat(2,minmax(0,1.2fr));gap:7px;margin:12px 0 10px}
+.sm18-controls .sm18-hit{background:linear-gradient(#874950,#522e45);color:#ffe4c9}.sm18-controls .sm18-heal{background:linear-gradient(#2f705c,#234a45);color:#d5ffdb}
+.sm18-controls button:active{transform:translateY(2px);box-shadow:0 1px 0 #101c29}
+.sm18-game-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}.sm18-game-actions button{background:#292c37;color:#e7d8b8;min-height:40px}
+#sm18Status{margin:11px 0 2px;min-height:44px;padding:10px 12px;border-radius:8px;background:#101e2a;font:600 .85rem/1.4 Inter,system-ui;color:#e7f6d5}
+.sm18-side{display:grid;gap:18px}.sm18-side-box{padding:17px}
+.sm18-side-box>small{font:900 .67rem Inter,system-ui;color:#dab889;letter-spacing:.16em}
+.sm18-side-box h3{font:normal 1.8rem 'Pirata One',Georgia,serif;color:#ffe4a7;margin:7px 0}
+.sm18-side-box p{font:500 .83rem/1.7 Inter,system-ui;color:#e0d9c9;margin:9px 0}
+.sm18-side-box kbd{border:1px solid #947353;padding:2px 5px;border-radius:4px;background:#121d28;color:#f7dea7;font-size:.84em}
+.sm18-stat{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid #d4b78a22;font:600 .83rem Inter,system-ui;color:#dfdac9}.sm18-stat b{color:#ffdb8b;font-weight:850}
+.sm18-achievements{display:grid;gap:7px;margin-top:12px}.sm18-medal{display:flex;gap:10px;align-items:center;min-width:0;padding:9px 10px;background:#0f1825;border:1px solid #ad91754a;border-radius:8px;opacity:.76}
+.sm18-medal.unlocked{opacity:1;background:#344036;border-color:#bba775}.sm18-medal>span:first-child{font-size:1.4rem}.sm18-medal>span:last-child{display:grid;gap:3px;min-width:0}
+.sm18-medal b{font:800 .81rem Inter,system-ui;color:#f7e2bd}.sm18-medal small{font:500 .69rem/1.35 Inter,system-ui;color:#c6baaa}.sm18-fine{font-size:.7rem!important;opacity:.78}
+@media(max-width:1020px){.sm18-game-layout{grid-template-columns:1fr}.sm18-side{grid-template-columns:repeat(2,minmax(0,1fr))}.sm18-side-box:last-child{grid-column:1/-1}.sm18-achievements{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.sm18-hub{margin:8px 8px 20px;padding:20px 15px}.sm18-hub-title button{width:100%}.sm18-hub-stats{gap:5px;margin-top:15px}.sm18-hub-stats>span{padding:10px 6px}.sm18-hub-stats small{font-size:.63rem}.sm18-expedition{padding:9px}.sm18-head{padding:18px 14px}.sm18-hud{grid-template-columns:repeat(2,minmax(0,1fr))}.sm18-hud span{font-size:.82rem}.sm18-game-card{padding:8px}.sm18-controls{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}.sm18-controls button{font-size:.78rem;padding:8px 3px;min-height:48px}.sm18-controls .sm18-hit,.sm18-controls .sm18-heal{grid-column:span 2;min-height:46px}.sm18-side{grid-template-columns:1fr}.sm18-side-box:last-child{grid-column:auto}.sm18-achievements{grid-template-columns:1fr}.sm18-overlay h3{font-size:clamp(1.2rem,5vw,2rem)}.sm18-overlay p{font-size:.74rem}.sm18-overlay button{font-size:.8rem;padding:9px 14px;min-height:42px}.sm18-overlay{padding:12px}}
+@media(prefers-reduced-motion:reduce){.sm18-hub button{transition:none}}
