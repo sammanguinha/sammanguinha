@@ -1,0 +1,16 @@
+name: V21 - Reinos do Pomar - Testes (sem deploy)
+on:
+  push:
+    branches: [dev/v21-reinos-do-pomar]
+  pull_request:
+    branches: [dev/v20-pomar-vivo]
+  workflow_dispatch:
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/v21_reinos_pomar.test.cjs
