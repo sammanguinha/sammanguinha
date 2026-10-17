@@ -1,0 +1,22 @@
+/* Sam Manguinha V17.1 — ergonomia, foco e responsividade */
+:root{scroll-padding-top:80px}
+[hidden]{display:none!important}
+body{overflow-wrap:anywhere}
+:where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:3px solid #ffda81!important;outline-offset:3px!important}
+:where(button,input,select,textarea){touch-action:manipulation}
+:where(input,textarea,select){font-size:max(16px,1rem)}
+#sm171Skip{position:fixed;top:-150px;left:12px;z-index:2147483600;padding:12px 16px;border:2px solid #ffdf96;border-radius:12px;background:#142c29;color:#fff5d3;font:700 15px system-ui;text-decoration:none}
+#sm171Skip:focus{top:calc(10px + env(safe-area-inset-top,0px))}
+#sm171Net{position:fixed;top:calc(9px + env(safe-area-inset-top,0px));right:calc(9px + env(safe-area-inset-right,0px));max-width:min(92vw,320px);z-index:9000;padding:10px 13px;border:1px solid #e2b66e;border-radius:10px;background:#2e2730;color:#fff4cf;box-shadow:0 9px 25px #0007;font:650 .82rem system-ui;pointer-events:none}
+#sm171Hud{display:flex;gap:7px;justify-content:flex-end;flex-wrap:wrap;margin:9px 0}
+#sm171Hud button{min-height:44px;padding:9px 13px;border-radius:11px;border:1px solid #a58b63;background:#20382f;color:#fff0ca;font:700 .83rem system-ui;cursor:pointer}
+#sm171Hud button:hover{border-color:#e5cc97;background:#345443}
+#sm171Hud button[aria-pressed=true]{background:#584123;border-color:#ffdd96}
+#sm171Guide{margin:8px 0 18px;padding:13px 15px;border-radius:12px;background:linear-gradient(125deg,#1d302d,#302638);border:1px solid #8a765b;color:#f9eccf;font:400 .9rem/1.6 system-ui}
+#sm171Guide strong{color:#ffdb99}
+#sm171Guide p{margin:0 0 7px}
+#sm171Guide p:last-child{margin-bottom:0}
+#sm171Guide kbd{display:inline-block;background:#172121;border:1px solid #73664e;border-radius:5px;padding:0 5px;color:#ffdf9d;font:700 .85em monospace}
+button:disabled{cursor:not-allowed;opacity:.58}
+@media(max-width:680px){.areas{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin}.areas button{min-height:44px;flex-shrink:0}#sm171Hud{justify-content:stretch}#sm171Hud button{flex:1 1 130px}.pane .panel{max-width:100%}#gameDlg canvas,#h8Root canvas{max-width:100%;height:auto}.row{min-width:0;flex-wrap:wrap}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
