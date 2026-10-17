@@ -19,7 +19,7 @@ const F=[
 {id:'aquario',name:'Aquário Celestial',icon:'🐠',cost:120,group:'Místico',text:'Peixinhos que brilham no céu da noite.'},
 {id:'gato',name:'Familiar Minguinho',icon:'🐈',cost:140,group:'Companheiros',text:'Seu pequeno guardião sonolento.'},
 {id:'trono',name:'Trono do Defensor',icon:'👑',cost:0,group:'Recompensa',unlock:'defense',text:'Recompensa cosmética por salvar o pomar no modo Defesa.'},
-{id:'reliquias',name:'Altar das Cinco Luas',icon:'🌙',cost:150,group:'Místico',text:'Memórias da viagem pelos cinco capítulos.'},
+{id:'reliquias',name:'Altar das Cinco Luas',icon:'🌙',cost:0,unlock:'expedition',group:'Recompensa',text:'Memórias da viagem pelos cinco capítulos.'},
 {id:'livros',name:'Escrivaninha Arcana',icon:'🪶',cost:65,group:'Aventura',text:'Para registrar os melhores momentos.'},
 {id:'bandeira',name:'Estandarte do Pomar',icon:'🚩',cost:75,group:'Aventura',text:'Um símbolo de perseverança.'},
 {id:'espelho',name:'Espelho Encantado',icon:'🪞',cost:110,group:'Místico',text:'Reflete um céu que muda ao anoitecer.'}
@@ -74,7 +74,7 @@ async function cloudRead(){
   const existing=Array.isArray(result?.placed)&&result.placed.length>0;
   if(existing){state=sanitize(result);localSave();status('✓ Casa sincronizada com seu @');}
   else {state=current;status('Sua casa foi iniciada · salvamento online ativo');markDirty(false)}
-  remoteLoaded=true;renderInventory();updateLabels();render(performance.now());
+  remoteLoaded=true;syncExpeditionUnlock();renderInventory();updateLabels();render(performance.now());
  }catch(err){status('Modo offline · edição salva no navegador');message('A casa funciona sem conexão. Sincronização: '+err.message)}
 }
 async function cloudSave(){
@@ -91,14 +91,19 @@ function markDirty(userAction=true){
  dirty=true;localSave();if(userAction)window.dispatchEvent(new CustomEvent("sm21:house-updated",{detail:{handle:account}}));status('Alterações salvas no navegador · sincronizando…');
  clearTimeout(saveTimer);saveTimer=setTimeout(cloudSave,1100);
 }
+function syncExpeditionUnlock(){
+ try{const exp=JSON.parse(localStorage.getItem('sm19_expedicao_'+(account||'visitante'))||'null');
+   if(exp?.finished===true&&!state.owned.includes('reliquias')){state.owned.push('reliquias');markDirty(false);renderInventory();message('🌙 A Expedição foi concluída! O Altar das Cinco Luas agora faz parte da sua casa.');return true}
+ }catch(_){}return false
+}
 function identify(){
- const next=handle();if(account===next)return;
+ const next=handle();if(account===next){syncExpeditionUnlock();return}
  clearTimeout(saveTimer);account=next;state=localLoad(next);
  selected='cama';hover=null;drag=null;dirty=false;remoteLoaded=false;
  renderInventory();updateLabels();message('Seu refúgio espera novas aventuras.');
- cloudRead();
+ syncExpeditionUnlock();cloudRead();
 }
-function unlocked(item){return item.unlock==='defense'?state.owned.includes(item.id):true}
+function unlocked(item){return item.unlock?state.owned.includes(item.id):true}
 function renderInventory(){
  const box=$('sm21HouseInventory');box.replaceChildren();for(const item of F){
    const owned=state.owned.includes(item.id);
@@ -108,7 +113,7 @@ function renderInventory(){
    const ic=document.createElement('span');ic.className='sm21-icon';ic.textContent=item.icon;
    const label=document.createElement('span');label.className='sm21-furnish-label';
    const n=document.createElement('strong');n.textContent=item.name;
-   const detail=document.createElement('small');detail.textContent=owned?'✓ Disponível':item.unlock?'🏆 Vença uma Defesa':'🌱 '+item.cost+' sementes';
+   const detail=document.createElement('small');detail.textContent=owned?'✓ Disponível':item.unlock==='defense'?'🏆 Vença uma Defesa':item.unlock==='expedition'?'🌙 Termine a Expedição':'🌱 '+item.cost+' sementes';
    label.append(n,detail);button.append(ic,label);
    button.addEventListener('click',()=>choose(item.id));box.append(button);
  }
@@ -117,7 +122,7 @@ function renderInventory(){
 function choose(id){
  const item=F.find(x=>x.id===id);if(!item)return;
  if(!state.owned.includes(id)){
-   if(item.unlock){message('Conquiste este item vencendo a Defesa do Pomar.');return}
+   if(item.unlock){message(item.unlock==='defense'?'Conquiste este item vencendo a Defesa do Pomar.':'Conclua os cinco capítulos da Expedição Astral para desbloquear o Altar Lunar.');return}
    if(!purchase(item.cost)){message('Você precisa de '+item.cost+' sementes locais. Ganhe sementes no modo Defesa.');return}
    state.owned.push(id);markDirty();message(item.name+' comprado! Agora escolha uma posição no quarto.');
  }
@@ -251,7 +256,7 @@ function stopLoop(){cancelAnimationFrame(raf);raf=0}
 const observed=new MutationObserver(()=>{if(root.closest('[hidden]'))stopLoop();else{identify();startLoop()}});observed.observe($('houseDlg'),{attributes:true,attributeFilter:['hidden']});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!root.closest('[hidden]'))startLoop();else stopLoop()});
 window.addEventListener('sm21:seeds-updated',renderInventory);
-window.addEventListener('storage',e=>{if(e.key==='sg_handle'){identify()}else if(e.key?.startsWith('sg_extras_v1_'))renderInventory()});
+window.addEventListener('storage',e=>{if(e.key==='sg_handle'||e.key?.startsWith('sm19_expedicao_')){identify()}else if(e.key?.startsWith('sg_extras_v1_'))renderInventory()});
 $('sm21HouseCanvas').setAttribute('tabindex','0');
 identify();if(!root.closest('[hidden]'))startLoop();
 window.SamHouseV21={getState:()=>JSON.parse(JSON.stringify(state)),getCatalog:()=>F.map(({id,cost,unlock})=>({id,cost,unlock})),debugLocal:()=>({account,dirty})};
