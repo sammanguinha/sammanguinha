@@ -4,6 +4,8 @@ on:
     branches: [dev/v20-pomar-vivo]
     paths:
       - 'tests/v20_browser_smoke.cjs'
+      - 'index.html'
+      - 'pomar_ao_vivo_v20.js'
       - '.github/workflows/v20-browser-smoke.yml'
   workflow_dispatch:
 jobs:
