@@ -2257,7 +2257,7 @@ dialog[open]{max-height:92vh;overflow:auto}
     <div class="row" style="margin-top:14px"><button type="button" class="btn-gothic" id="aClose4">Fechar</button></div>
   </div>
   <div id="murPane" hidden>
-    <ol class="list" id="murList" style="list-style:none;padding:0;margin:0;max-height:280px;overflow-y:auto"></ol>
+    <h3 style="color:var(--amber);margin:8px 0">📜 Publicações pendentes</h3><ol class="list" id="murList" style="list-style:none;padding:0;margin:0;max-height:280px;overflow-y:auto"></ol><section class="sm20-admin-live" aria-label="Moderação da Praça Ao Vivo"><div class="row" style="margin:16px 0 8px"><h3 style="color:var(--amber);margin:0">📡 Praça Ao Vivo</h3><button type="button" id="sm20AdminChatRefresh" class="btn-gothic alt">↻ Atualizar</button></div><p class="sm">Mensagens recentes e denúncias. O administrador pode ocultar ou restaurar mensagens sem excluir o histórico.</p><ol class="list" id="sm20AdminChatList" style="list-style:none;padding:0;margin:0;max-height:320px;overflow-y:auto"></ol></section>
     <div class="row" style="margin-top:14px"><button type="button" class="btn-gothic" id="aClose3">Fechar</button></div>
   </div>
 </dialog>
@@ -2998,7 +2998,22 @@ $("pForm").onsubmit=async e=>{
   else{fails++;$("pErr").textContent="Senha incorreta.";await new Promise(r=>setTimeout(r,Math.min(6000,fails*1500)))}
   $("pOk").disabled=false;
 };
-const tab=n=>{["aForm","visPane","murPane","galAdm"].forEach((id,i)=>{$(id).hidden=i!==n});["tabPost","tabVis","tabMur","tabGal"].forEach((id,i)=>{$(id).classList.toggle("on",i===n);$(id).classList.toggle("alt",i!==n)});if(n===2)loadAdminMural();if(n===3)loadAdminGal()};
+const tab=n=>{["aForm","visPane","murPane","galAdm"].forEach((id,i)=>{$(id).hidden=i!==n});["tabPost","tabVis","tabMur","tabGal"].forEach((id,i)=>{$(id).classList.toggle("on",i===n);$(id).classList.toggle("alt",i!==n)});if(n===2){loadAdminMural();loadAdminLive()}if(n===3)loadAdminGal()};
+async function loadAdminLive(){
+ const target=$("sm20AdminChatList");if(!target)return;
+ target.innerHTML='<li class="state">Buscando conversas…</li>';
+ try{
+ const messages=await rpc("sm_live_admin_list",{p_pw:ADMPW});
+ target.innerHTML=messages.map(m=>`<li data-chat-id="${Number(m.id)}" style="display:block;padding:10px;border-bottom:1px solid #ffffff23"><b>@${esc(m.handle)}</b> · ${esc(m.room)} · <span class="sm">${m.status==='ok'?'Visível':'Oculta'} · ${Number(m.reports)||0} denúncia(s)</span><p style="white-space:pre-wrap;overflow-wrap:anywhere;margin:5px 0">${esc(m.body)}</p><button type="button" data-chat-set="${m.status==='ok'?'hidden':'ok'}" class="btn-gothic alt">${m.status==='ok'?'Ocultar':'Restaurar'}</button></li>`).join('')||'<li class="state">Nenhuma mensagem ainda.</li>';
+ }catch(e){target.textContent="Não consegui carregar o chat: "+e.message}
+}
+$("sm20AdminChatRefresh")?.addEventListener("click",loadAdminLive);
+$("sm20AdminChatList")?.addEventListener("click",async e=>{
+ const btn=e.target.closest("[data-chat-set]"),item=btn?.closest("[data-chat-id]");if(!btn||!item)return;
+ btn.disabled=true;
+ try{await rpc("sm_live_admin_set",{p_pw:ADMPW,p_id:Number(item.dataset.chatId),p_status:btn.dataset.chatSet});await loadAdminLive();toast("Moderação do chat atualizada.")}
+ catch(err){toast("Erro ao moderar: "+err.message);btn.disabled=false}
+});
 async function loadAdminMural(){
   try{
     const v=await rpc("admin_mural",{p_pw:ADMPW});
