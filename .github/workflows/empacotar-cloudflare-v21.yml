@@ -1,0 +1,45 @@
+name: Pacote V21 - Cloudflare Pages (sem Wrangler)
+on:
+  push:
+    branches: [dev/v21-cronicas-do-pomar]
+    paths:
+      - 'index.html'
+      - '*.js'
+      - '*.css'
+      - 'sprites/**'
+      - 'audio/**'
+      - 'halloween_art/**'
+      - '.github/workflows/empacotar-cloudflare-v21.yml'
+  workflow_dispatch:
+jobs:
+  pacote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar integracao e sprites V21
+        run: node --test tests/v21_chronicles.test.cjs
+      - name: Montar somente arquivos do site
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          find . -maxdepth 1 -type f \( -iname '*.html' -o -iname '*.js' -o -iname '*.css' -o -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' -o -iname '*.gif' -o -iname '*.svg' -o -iname '*.ico' -o -iname '*.mp3' -o -iname '*.ogg' -o -iname '*.wav' -o -iname '*.woff*' -o -name '_redirects' -o -name '_headers' \) -exec cp -t dist/ {} +
+          for d in sprites audio halloween_art; do if [ -d "$d" ]; then cp -a "$d" dist/; fi; done
+          for file in index.html casa_pomar_v21.js casa_pomar_v21.css estetica_v21.css jornada_v21.js pomar_ao_vivo_v20.js expedicao_v18.js; do
+            test -f "dist/$file" || { echo "Faltando: $file"; exit 1; }
+          done
+          test -f dist/sprites/rei_eclipse_v21_attack.svg
+          test -f dist/sprites/casa_gato_v21_brilho.svg
+          if find dist -type f \( -iname 'wrangler.jsonc' -o -iname 'wrangler.toml' \) | grep -q .; then echo 'ERRO: arquivo Wrangler no upload estatico'; exit 1; fi
+          cd dist
+          zip -qr ../Sam-Manguinha-V21-Cloudflare-Pages.zip .
+          unzip -t ../Sam-Manguinha-V21-Cloudflare-Pages.zip | tail -2
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V21-Cloudflare-Pages
+          path: Sam-Manguinha-V21-Cloudflare-Pages.zip
+          retention-days: 30
