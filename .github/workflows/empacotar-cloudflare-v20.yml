@@ -33,7 +33,7 @@ jobs:
           if find dist -iname 'wrangler*' | grep -q .; then echo 'Erro: wrangler no pacote publico'; exit 1; fi
           cd dist
           zip -qr ../Sam-Manguinha-V20-Cloudflare-Pages.zip .
-          unzip -l ../Sam-Manguinha-V20-Cloudflare-Pages.zip | head -25
+          unzip -l ../Sam-Manguinha-V20-Cloudflare-Pages.zip | sed -n '1,25p'
       - uses: actions/upload-artifact@v4
         with:
           name: Sam-Manguinha-V20-Cloudflare-Pages
