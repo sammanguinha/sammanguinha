@@ -1,0 +1,30 @@
+name: V21 - Testes de Mecânicas e Navegador (sem deploy)
+on:
+  push:
+    branches: [dev/v21-cronicas-do-pomar]
+  pull_request:
+    branches: [dev/v20-pomar-vivo]
+  workflow_dispatch:
+jobs:
+  regressao:
+    runs-on: ubuntu-latest
+    timeout-minutes: 17
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Testes de sintaxe, integrações e segurança
+        run: node --test tests/v21_chronicles.test.cjs
+      - name: Dependência de navegador de teste
+        run: npm install --no-save playwright@1.56.1
+      - name: Instalar Chromium
+        run: npx playwright install chromium --with-deps
+      - name: Simular combate real e casa no desktop e celular
+        run: node tests/v21_browser_gameplay.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v21-capturas-casa-navegador
+          path: test-artifacts/
+          if-no-files-found: ignore
