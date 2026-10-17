@@ -68,3 +68,16 @@ test('portal exige vencer chefão antes da conclusão',()=>{
  state.enemies=[];saves.set('sm19_expedicao_visitante',JSON.stringify(state));
  const s2=boot(saves);play(s2);s2.controls.right.click();assert.equal(s2.api.getSnapshot().finished,true);
 });
+
+test('uma partida V18 já concluída abre o capítulo 4 em vez de prender o jogador na tela final',()=>{
+ const first=boot(),older=JSON.parse(first.data.get('sm19_expedicao_visitante'));
+ older.v=18;older.level=2;older.finished=true;older.clears=3;older.hp=8;
+ const storage=new Map([['sm18_expedicao_visitante',JSON.stringify(older)]]);
+ const next=boot(storage);
+ const snapshot=next.api.getSnapshot();
+ assert.equal(snapshot.level,3);
+ assert.equal(snapshot.finished,false);
+ assert.equal(snapshot.hp,8);
+ assert.equal(snapshot.mangos,0);
+ assert.equal(JSON.parse(storage.get('sm18_expedicao_visitante')).finished,true);
+});
