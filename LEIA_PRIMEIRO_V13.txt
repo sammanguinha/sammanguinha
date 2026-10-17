@@ -1,0 +1,64 @@
+SAM MANGUINHA V13 — A CRÔNICA DA PRIMEIRA MANGUEIRA
+===============================================
+
+O que mudou em relação à V12:
+- O personagem do mundo usa a aparência personalizada do guarda-roupa:
+  cor da manga, chapéu/itens da cabeça, expressão, capa, armadura,
+  máscara, acessório de mão, aura e familiar (adaptação em pixel art).
+  Mudanças no guarda-roupa aparecem quando você volta ao mapa.
+- Campanha completa: Prólogo, seis capítulos principais e epílogo.
+- Mundo com nove regiões: Vila da Mangueira, Trilha Encantada,
+  Santuário das Raízes, Estufa das Brasas, Bosque das Teias,
+  Minas do Prisma Partido, Pântano das Memórias, Observatório da Lua,
+  Coração do Pomar.
+- Classes: Guardião das Raízes, Arcanista da Lua e Rastreador das Brasas.
+- Atributos: Vigor, Força, Intelecto e Agilidade; experiência e níveis.
+- Combates por turno, habilidades de classe, mana, poções, defesa,
+  esquiva/críticos, fraquezas e resistências elementais.
+- Seis chefões, incluindo o Rei das Pragas em três fases.
+- Artefatos equipáveis (dois slots), efeitos passivos e ressonância.
+- Duas missões secundárias na Vila; três opções de final, uma secreta.
+- Livro das Crônicas, com falas registradas para releitura.
+- Recompensa RPG única para vitória no Defesa do Pomar e para conclusão
+  da campanha interativa de Halloween, sem substituir os modos originais.
+
+COMO JOGAR
+- Acesse a aba "Mundo RPG" no menu principal.
+- Ao entrar pela primeira vez, escolha uma das três classes.
+- Ande com WASD/setas ou os controles na tela; toque no mapa no celular.
+- Aproxime-se de NPCs, portais, relíquias ou chefões e pressione E
+  ou o botão INVESTIGAR.
+- O prólogo é a missão das três sementes já presente na V12.
+- Depois de recuperar a Relíquia do Guardião, procure a Estufa das Brasas
+  no Santuário das Raízes e continue para as regiões seguintes.
+- Ao subir de nível, distribua pontos nos atributos na aba lateral.
+- Equipe artefatos no Relicário. No combate, use ATACAR, HABILIDADE,
+  DEFENDER, ARTEFATO, POÇÃO ou RECUAR quando permitido.
+- Para comprar poções e descansar, visite Tito na Vila.
+
+SALVAMENTO
+- Os dados desta campanha são salvos localmente no navegador por @.
+- O progresso da V12 (sementes, mapa e relíquia) é preservado por migração.
+- Os outros modos, sua conta e a personalização existente não são zerados.
+- Dados locais podem não acompanhar outro dispositivo automaticamente;
+  não limpe o armazenamento do navegador se quiser manter o progresso.
+- Moedas RPG são separadas das sementes da loja e mangas da conta.
+
+PUBLICAÇÃO
+- Extraia o conteúdo do ZIP.
+- Envie index.html, mundo_pomar.js, mundo_pomar.css,
+  rpg_epico_expansao.js, sprites/, halloween_art/ e os outros arquivos
+  juntos, preservando nomes e pastas.
+- Publicar no Cloudflare/hosting exige que os arquivos estejam
+  acessíveis por URLs relativas ao index.html.
+
+VALIDAÇÃO
+- JavaScript verificado pelo Node.js.
+- Teste automatizado simulou toda a progressão do prólogo ao capítulo VI,
+  com conclusão de um final, e verificou o final secreto.
+- Interfaces testadas no Chromium headless com dimensões de desktop
+  e celular; sem erros de JavaScript nos fluxos exercitados.
+- Testes de integração usaram simulação dos dados do navegador.
+- Não foi testado em celular físico nem em servidor Cloudflare.
+- Os testes de progressão aceleraram as batalhas para validar todos
+  os capítulos. O balanceamento em partidas longas ainda pode exigir ajustes.

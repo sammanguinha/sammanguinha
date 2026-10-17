@@ -1,6 +1,25 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR" data-orchard-start="2026-10-01" data-orchard-end="2026-11-01">
 <head>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="256x256" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
+
+<!-- Prévia de compartilhamento: Sam Manguinha -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sam Manguinha">
+<meta property="og:title" content="Sam Manguinha — A Maldição do Pomar">
+<meta property="og:url" content="https://sammanguinha.samzksks.workers.dev/">
+<meta property="og:image" content="https://sammanguinha.samzksks.workers.dev/banner-halloween.jpg">
+<meta property="og:image:secure_url" content="https://sammanguinha.samzksks.workers.dev/banner-halloween.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sam Manguinha em um pomar assombrado de Halloween em pixel art">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sam Manguinha — A Maldição do Pomar">
+<meta name="twitter:image" content="https://sammanguinha.samzksks.workers.dev/banner-halloween.jpg">
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sam Manguinha — A Maldição do Pomar</title>
@@ -1024,10 +1043,350 @@ dialog .row { display: flex; align-items: center; justify-content: space-between
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ===================== CORREÇÕES (layout / estilos ausentes) ===================== */
+.ic{width:1.15em;height:1.15em;flex:none;vertical-align:-.2em}
+.ic.sm{width:14px;height:14px}
+.ic.lg{width:34px;height:34px}
+.ic.xl{width:38px;height:38px}
+.gear .ic{width:20px;height:20px}
+.stats .cell>.ic.xl{width:42px;height:42px;color:var(--amber)}
+.ptitle .ic.xl{width:26px;height:26px}
+.sm{font-size:.82rem;color:var(--muted)}
+.btn-gothic{box-sizing:border-box;display:inline-block;text-align:center;line-height:1.3}
+.btn-gothic:focus-visible{outline:2px solid var(--witch-glow);outline-offset:2px}
+.bar button,.more{box-sizing:border-box}
+
+/* navegação */
+html{scroll-padding-top:110px}
+.areas{flex-wrap:wrap}
+.areas .logo,.nav-actions{flex:none}
+.areas .logo-title{white-space:nowrap}
+@media (min-width:1500px){.areas .logo-title{display:inline-block}}
+@media (min-width:621px){
+  .tabs2{flex:1 1 0;min-width:0;flex-wrap:wrap;justify-content:center;overflow:visible}
+}
+@media (max-width:620px){
+  .areas{flex-wrap:nowrap}
+  .tabs2{flex:1 1 0;min-width:0;overflow-x:auto}
+  .areas .logo-title{display:none}
+}
+.stats .cell{min-width:0}
+.stats .cell.mid{flex-wrap:wrap}
+.stats .cell.mid .av{width:32px;height:40px;flex:none}
+.hero .stats small{white-space:normal}
+
+/* painéis */
+.pane{padding:4px 0 30px}
+.pane[hidden]{display:none}
+.list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.status{color:var(--muted);font-size:.85rem;min-height:1.2em}
+.empty2{color:var(--muted);font-style:italic;padding:10px 0}
+.err{color:#ff7875}
+.red{color:#ff4d4f}
+.mono{font-family:var(--font-rune),monospace}
+.hand{font-family:var(--font-hand),cursive;font-size:1.25rem;line-height:1.35;margin:.3em 0}
+.pixt{font-family:var(--font-pixel),monospace;color:var(--amber);margin:6px 0}
+.pixt.big{font-size:1.8rem;text-align:center;line-height:1.3}
+.hl{outline:2px solid var(--amber);box-shadow:var(--shadow-glow)}
+.fmts{list-style:none;display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0 0 10px;font-size:.78rem;color:var(--muted)}
+.fmts li{background:var(--surface-card);border:1px solid var(--border);border-radius:999px;padding:3px 10px}
+.fmts b{color:var(--amber)}
+.months button{all:unset;cursor:pointer;box-sizing:border-box;padding:4px 10px;border-radius:999px;font-size:.78rem;border:1px solid var(--border);background:var(--surface-card);color:var(--muted)}
+.months button:hover,.months button.on{color:var(--amber);border-color:var(--amber)}
+.more{margin:24px auto}
+.card{all:unset;box-sizing:border-box;cursor:pointer;display:block}
+.card .pic{position:relative}
+.card .bdg,.card .chap{position:absolute;top:8px;font-size:.72rem;padding:2px 8px;border-radius:999px;background:rgba(0,0,0,.7);color:#fff;font-family:var(--font-pixel)}
+.card .bdg{right:8px}.card .chap{left:8px}
+.lpl button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;border:1px solid var(--border);background:var(--surface-card)}
+.lpl button:hover{border-color:var(--border-light)}
+.lpl .th{width:42px;height:42px;border-radius:8px;flex:none;background-size:cover}
+.lpl .lt{flex:1;min-width:0;display:flex;flex-direction:column}
+.lpl .lt b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink-bright);font-size:.88rem}
+.lpl .lt small{color:var(--muted)}
+.side{display:grid;gap:16px;align-content:start}
+.daily{color:var(--muted);font-size:.9rem;max-width:560px;margin:10px auto}
+.evbar{display:inline-flex;align-items:center;gap:10px;margin-top:14px;padding:8px 14px;border-radius:999px;border:1px solid var(--amber);background:rgba(245,166,35,.12);font-size:.85rem}
+.evbar button{all:unset;cursor:pointer;padding:3px 12px;border-radius:999px;background:var(--amber);color:#1e1102;font-weight:700}
+.hang.pulse .hm{animation:pulseM 1s ease-in-out 2}
+@keyframes pulseM{50%{transform:scale(1.25);filter:drop-shadow(0 0 14px var(--amber))}}
+
+/* ranking */
+.rk li{grid-template-columns:44px 36px minmax(0,1fr) auto auto}
+.rk li.me{border-color:var(--amber);background:rgba(245,166,35,.1)}
+.rk .nm em{color:var(--muted);font-style:normal;font-weight:400;font-size:.78rem}
+.rk .ct{font-family:var(--font-pixel);color:var(--amber);font-size:1.05rem}
+.rk .lv{font-size:.74rem;color:var(--muted);white-space:nowrap}
+.rk .pos{display:flex;align-items:center;gap:4px}
+.rav{width:32px;height:40px;image-rendering:pixelated}
+.crown{width:16px;height:16px}.crown.c1{color:#f5a623}.crown.c2{color:#d8d8d8}.crown.c3{color:#cd7f32}
+.podium .pod{flex:1;max-width:170px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 8px;text-align:center;
+  background:var(--surface-card);border:1px solid var(--border);border-radius:12px 12px 0 0}
+.podium .pod.p1{min-height:150px;border-color:var(--amber)}
+.podium .pod.p2{min-height:125px}.podium .pod.p3{min-height:105px}
+.podium .pod b{color:var(--ink-bright);font-size:.85rem;word-break:break-all}
+.podium .pod .ct{font-family:var(--font-pixel);color:var(--amber);font-size:1.2rem}
+.podium .pod small{color:var(--muted)}
+.rkbar{display:block}
+
+/* conquistas / missões */
+.wardrobe-tab{all:unset;box-sizing:border-box;cursor:pointer;padding:8px 14px;border-radius:8px;border:1px solid var(--border);color:var(--muted);font-weight:600;font-size:.86rem;background:var(--surface-card)}
+.wardrobe-tab:hover{color:var(--ink-bright);border-color:var(--border-light)}
+.wardrobe-tab.on{color:var(--amber);border-color:var(--amber);background:rgba(245,166,35,.14)}
+.wardrobe-tab.alt:not(.on){opacity:.85}
+.goal{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;background:var(--surface-card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.goal.done{border-color:rgba(56,239,125,.5);background:linear-gradient(180deg,rgba(56,239,125,.08),var(--surface-card))}
+.goal .gic,.gic{font-size:1.6rem;width:46px;height:46px;display:grid;place-items:center;border-radius:10px;background:var(--surface-alt)}
+.goal b{color:var(--ink-bright)}
+.goal p{margin:2px 0 8px}
+.goal button{all:unset;box-sizing:border-box;cursor:pointer;padding:8px 14px;border-radius:8px;background:var(--amber);color:#1e1102;font-weight:700;font-size:.85rem}
+.goal button:disabled{opacity:.5}
+.gst{font-size:.78rem;color:var(--muted);white-space:nowrap}
+.gst.fin{color:var(--spectral);font-weight:700}
+.pbar{height:8px;background:rgba(0,0,0,.55);border:1px solid var(--border);border-radius:999px;overflow:hidden;margin:4px 0}
+.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ember),var(--amber));border-radius:inherit;transition:width .3s}
+@media (max-width:520px){.goal{grid-template-columns:auto 1fr}.goal>button,.goal>.gst{grid-column:1/-1}}
+
+/* segredos, curiosidades, mural */
+.sec{display:flex;flex-direction:column;gap:4px;padding:12px;border-radius:12px;background:var(--surface-card);border:1px solid var(--border-light)}
+.sec .e{font-size:1.5rem}.sec b{color:var(--ink-bright)}
+.sec.lock{opacity:.7;border-style:dashed;border-color:var(--border);font-size:.82rem;color:var(--muted)}
+.facts li{background:var(--surface-card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;line-height:1.5}
+#murFeed li,.gmine li{background:var(--surface-card);border:1px solid var(--border);border-radius:12px;padding:12px 14px}
+#murFeed .nm{color:var(--ink-bright)}
+.rx{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.rx button{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;border:1px solid var(--border);font-size:.8rem}
+.rx button.on{border-color:var(--amber);background:rgba(245,166,35,.15)}
+.rxi{width:18px;height:18px;image-rendering:pixelated}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.murForm input,#murForm input,#murForm select,.pane input[type=text],.pane input[type=search],.pane input[type=file],.pane select{
+  width:100%;box-sizing:border-box;background:var(--surface-card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--ink-bright)}
+.pane label{display:block;font-size:.82rem;font-weight:700;color:var(--muted);margin:12px 0 4px}
+.pane .row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;flex-wrap:wrap}
+.gal .gi,.gi{all:unset;box-sizing:border-box;cursor:pointer;display:block;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--surface-card)}
+.gi img{width:100%;height:160px;object-fit:cover;display:block}
+.gi span{display:block;padding:6px 10px;font-size:.8rem}
+.gmine li{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.gbadge{font-size:.72rem;padding:2px 8px;border-radius:999px;border:1px solid var(--border)}
+.gbadge.ok{color:var(--spectral);border-color:var(--spectral)}
+.gbadge.pending{color:var(--amber);border-color:var(--amber)}
+.gbadge.rejected,.gbadge.no{color:#ff7875;border-color:#ff7875}
+.gadm{display:flex;gap:10px;align-items:center;padding:8px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px}
+.gadm img{width:56px;height:56px;object-fit:cover;border-radius:6px}
+.gprev{max-width:100%}
+.gov[hidden]{display:none}
+.gctl{flex-wrap:wrap}
+.st2{color:var(--amber)}
+.list li{list-style:none}
+#visList li,#murList li,#galAdmList li,#galAdmOk li{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px;border-bottom:1px solid var(--border);font-size:.85rem}
+
+/* mascote, música, rodapé */
+.mascot .bub{position:absolute;bottom:84px;left:0;width:max-content;max-width:min(260px,70vw);padding:10px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--amber);color:var(--ink-bright);font-size:.85rem;line-height:1.4;box-shadow:var(--shadow-md)}
+.mascot .bub[hidden]{display:none}
+.mascot .mbody{overflow:hidden}
+.mascot .ml{position:absolute;top:-6px;left:28px;width:16px;height:22px;background:#3e8e3e;border-radius:0 100% 0 100%;transform:rotate(-20deg)}
+.mascot .eyes{position:absolute;top:26px;left:0;right:0;display:flex;justify-content:center;gap:12px}
+.mascot .eyes b{width:12px;height:14px;background:#fff;border-radius:50%;display:grid;place-items:center}
+.mascot .eyes u{width:6px;height:6px;border-radius:50%;background:#1e1e26}
+.mascot .ch{position:absolute;top:42px;width:10px;height:6px;border-radius:50%;background:rgba(255,90,90,.55)}
+.mascot .ch.c1{left:8px}.mascot .ch.c2{right:8px}
+.mascot .mouth{position:absolute;top:48px;left:50%;width:14px;height:7px;margin-left:-7px;border-bottom:3px solid #5a1f14;border-radius:0 0 14px 14px}
+.mascot.jump .mbody{animation:mjump .6s}
+@keyframes mjump{40%{transform:translateY(-34px) rotate(-8deg)}}
+.mascot.dance .mbody{animation:mdance .5s ease-in-out infinite}
+@keyframes mdance{25%{transform:rotate(-14deg)}75%{transform:rotate(14deg)}}
+.mascot.splat .mbody{animation:msplat .5s forwards}
+@keyframes msplat{to{transform:scale(1.7,.25);opacity:.6}}
+.music{max-width:calc(100vw - 100px)}
+.foot{position:relative}
+
+/* efeitos dos cheat codes (#fx) */
+#fx i.star{position:absolute;color:var(--gold);animation:tw 2s ease-in-out infinite;transition:opacity 1s}
+#fx i.star.out{opacity:0}
+@keyframes tw{50%{transform:scale(1.5) rotate(20deg);opacity:.4}}
+#fx i.rain{position:absolute;top:-50px;animation:rainfall 3s linear forwards}
+@keyframes rainfall{to{transform:translateY(115vh) rotate(360deg)}}
+#fx i.fly{position:absolute;left:var(--x);top:var(--y);animation:flyx 6s ease-in-out infinite alternate}
+@keyframes flyx{to{transform:translate(120px,-60px) rotate(40deg)}}
+#fx .cw{position:absolute;left:50%;top:50%;margin:-48px 0 0 -36px;animation:coinup 2s ease-out forwards}
+#fx .coin{width:72px;height:96px;image-rendering:pixelated}
+@keyframes coinup{to{transform:translateY(-140px);opacity:0}}
+#fx .juice{position:absolute;left:0;right:0;bottom:0;height:0;display:grid;place-items:start center;padding-top:8px;background:linear-gradient(#ffb326,#ff7518);color:#fff;font-weight:700;animation:juiceup 4.8s ease forwards}
+@keyframes juiceup{20%,80%{height:55vh}100%{height:0}}
+#fx i.bl{position:absolute;width:8px;height:12px;border-radius:0 100% 0 100%;background:var(--c);animation:blx .9s ease-out forwards}
+@keyframes blx{to{transform:translate(var(--tx),var(--ty)) rotate(200deg);opacity:0}}
+.ff{position:absolute;left:var(--x);top:var(--y);width:6px;height:6px;border-radius:50%;background:#e8ff7a;box-shadow:0 0 10px 3px rgba(232,255,122,.7);pointer-events:auto;cursor:pointer;animation:ffl var(--t) ease-in-out var(--d) infinite alternate}
+@keyframes ffl{to{transform:translate(40px,-30px);opacity:.3}}
+.lantern{background:radial-gradient(circle,#ffd066,#ff7518 60%,transparent 70%)}
+.tree{background:radial-gradient(ellipse at 50% 30%,#2f4f35 0 55%,transparent 56%),linear-gradient(#4a2e12,#4a2e12) 50% 100%/14px 45% no-repeat}
+html.rot .card .pic,html.rot .hm .mg{filter:sepia(.8) hue-rotate(60deg) saturate(.7)}
+html.alarm body{animation:alarmf .5s steps(2) 10}
+@keyframes alarmf{50%{box-shadow:inset 0 0 120px rgba(255,0,0,.55)}}
+html.ench body{box-shadow:inset 0 0 140px rgba(157,78,221,.35)}
+html.calm *,html.calm ::before,html.calm ::after{animation-duration:.01ms!important;animation-iteration-count:1!important}
+.term{background:#000;color:#38ef7d;font-family:var(--font-rune),monospace;padding:14px;border-radius:8px;min-height:160px;white-space:pre-wrap;font-size:1.1rem}
+.letter{background:#f4e6c8;color:#3a2a14;padding:18px;border-radius:6px}
+#fxBody img{max-width:100%;border-radius:8px}
+dialog#cDlg #cImg{max-width:100%;border-radius:8px}
+dialog[open]{max-height:92vh;overflow:auto}
+#aDlg,#fxDlg{width:min(680px,92vw)}
+@media (max-width:620px){.wrap{padding:16px 12px 50px}.podium{gap:6px}.rk li{grid-template-columns:36px 30px minmax(0,1fr) auto;}.rk .lv{display:none}}
+
+#colors{display:flex;flex-wrap:wrap;gap:8px}
+.swatch-btn{all:unset;box-sizing:border-box;cursor:pointer;width:30px;height:30px;border-radius:50%;border:2px solid var(--border-light)}
+.swatch-btn.on{border-color:#fff;box-shadow:0 0 0 2px var(--amber)}
+.swatch-btn:hover{transform:scale(1.12)}
+.rarity-pill[data-rarity="Exclusivo"] { color:#ffe78b; border:1px solid #f5c542; background:#45300a; }
+.item-card:has(.rarity-pill[data-rarity="Exclusivo"]) { border-color:#f5c542; box-shadow:0 0 18px rgba(255,205,55,.25); }
+.doll-title-banner.owner-title { color:#ffe37b; border-color:#f5c542; text-shadow:0 0 10px #c98a00; box-shadow:0 0 20px rgba(255,205,55,.3); }
+
+
+/* Pixel Art Premium — Loja, Missões, Mascotes e Defesa */
+#orchardExtras{position:relative;overflow:hidden;border:3px solid #8e5837!important;border-radius:14px!important;background:linear-gradient(145deg,#251326 0%,#120d1d 65%,#1a261b 100%)!important;box-shadow:inset 0 0 0 3px #382039,0 12px 30px #0007!important}
+#orchardExtras h3{text-shadow:2px 3px #180b17}
+#orchardExtras [data-extras-tab]{border:2px solid #9d6237;border-radius:7px;box-shadow:inset 0 -4px #28101b,0 3px #0008;transition:transform .12s}
+#orchardExtras [data-extras-tab][aria-pressed=true]{background:#78402e;color:#fff0bf;transform:translateY(2px);box-shadow:inset 0 2px #27121a}
+.orchard-hero{height:130px;border:2px solid #815038;border-radius:9px;background:#120d1b center 47% / cover no-repeat;position:relative;overflow:hidden;margin:10px 0 15px;image-rendering:pixelated}
+.orchard-hero:after{content:'';position:absolute;inset:40% 0 0;background:linear-gradient(transparent,#110d18f5)}
+.orchard-hero strong{position:absolute;bottom:12px;left:14px;z-index:1;color:#ffd48c;font-size:1.05rem;text-shadow:2px 3px #180b16}
+.orchard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.orchard-card{border:2px solid #70462e;border-radius:10px;background:linear-gradient(160deg,#2b1a32,#160e21);padding:12px;text-align:center;box-shadow:inset 0 0 0 2px #3d2741,0 4px 10px #0006;min-width:0}
+.orchard-card img{width:88px;height:88px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 5px 7px #000a)}
+.orchard-card b{display:block;color:#ffd695;margin:6px 0}
+.orchard-card .sm{display:block;min-height:25px}
+.orchard-card button{margin-top:9px;width:100%;min-height:38px}
+.orchard-card.selected{border-color:#e5b34b;box-shadow:0 0 14px #a2693266}
+.orchard-mission{display:flex;gap:12px;align-items:center;padding:12px;margin-bottom:10px;background:linear-gradient(100deg,#5b3828,#382438);border:2px solid #9c6b42;border-radius:9px}
+.orchard-mission img{width:55px;height:55px;object-fit:contain;image-rendering:pixelated}
+.orchard-mission .mission-info{flex:1;min-width:0}
+.orchard-progress{height:10px;background:#170e1a;border:1px solid #bc8054;border-radius:6px;overflow:hidden;margin-top:6px}
+.orchard-progress>span{display:block;height:100%;background:linear-gradient(90deg,#5dba65,#c8ec68)}
+.orchard-mission button{min-width:100px}
+#gCv{image-rendering:pixelated;border:3px solid #8a573c;border-radius:8px;box-shadow:0 0 0 3px #1b1120,0 9px 25px #0009}
+@media(max-width:520px){.orchard-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.orchard-card{padding:8px}.orchard-card img{width:70px;height:70px}.orchard-mission{flex-wrap:wrap}.orchard-mission button{width:100%}}
+
+/* Pomar premium v2 — vitrines amplas, arte sem cortes e mobile */
+#orchardExtras{background:linear-gradient(145deg,#25152b,#100d1b 65%,#21151c);border:3px ridge #9d623b;box-shadow:inset 0 0 0 3px #422a35,0 12px 28px #0008;padding:clamp(12px,3vw,24px)!important}
+#orchardExtras h3{letter-spacing:.04em;text-shadow:2px 3px #090610}
+.orchard-hero{height:clamp(190px,32vw,300px)!important;background-size:contain!important;background-position:center center!important;background-repeat:no-repeat!important;background-color:#120c19!important;border:3px solid #a76a3e!important;border-radius:14px!important;box-shadow:inset 0 0 20px #000b,0 6px 18px #0008}
+.orchard-hero:after{background:linear-gradient(transparent 58%,#120b1ee8)!important;pointer-events:none}
+.orchard-hero strong{font-size:clamp(1rem,2.8vw,1.45rem)!important;text-shadow:2px 3px #090610,0 0 15px #f5a34866!important}
+.orchard-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,195px),1fr))!important;gap:16px!important}
+.orchard-card{position:relative;padding:15px!important;border:3px solid #966039!important;border-radius:14px!important;background:linear-gradient(160deg,#3a243c,#1c142a 68%,#141020)!important;box-shadow:inset 0 0 0 2px #4e3450,0 7px 0 #100c13,0 11px 22px #0009!important;transition:transform .18s ease,border-color .18s ease}
+.orchard-card:hover{transform:translateY(-3px);border-color:#dba35d!important}
+.orchard-card img{display:block;width:min(100%,152px)!important;height:142px!important;object-fit:contain!important;margin:4px auto 10px!important;image-rendering:pixelated;filter:drop-shadow(0 7px 8px #000b);animation:orchardFloat 2.6s ease-in-out infinite}
+.orchard-card:nth-child(2) img{animation-delay:-.7s}.orchard-card:nth-child(3) img{animation-delay:-1.3s}.orchard-card:nth-child(4) img{animation-delay:-1.9s}
+.orchard-card b{font-size:1rem!important}.orchard-card .sm{line-height:1.45}
+.orchard-mission{background:linear-gradient(100deg,#4a2e29,#2b1c29)!important;border:2px solid #b47a49!important;border-radius:11px!important;box-shadow:inset 0 0 0 2px #65442c,0 4px 9px #0006}
+.orchard-mission img{width:58px!important;height:58px!important;object-fit:contain!important;image-rendering:pixelated}
+@keyframes orchardFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@media(max-width:520px){.orchard-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}.orchard-card{padding:9px!important}.orchard-card img{height:100px!important;width:100%!important}.orchard-card button{font-size:.75rem;padding:8px 4px!important}.orchard-hero{height:190px!important}}
+@media(prefers-reduced-motion:reduce){.orchard-card img{animation:none}.orchard-card{transition:none}}
+
+/* V4: vitrine com arte integral e margens generosas */
+#orchardExtras .orchard-card{overflow:visible!important;min-width:0;display:flex;flex-direction:column;align-items:center;gap:9px;padding:18px 14px!important;background:linear-gradient(145deg,#3b2344,#1a192c)!important;border:3px solid #986b49!important;box-shadow:inset 0 0 0 3px #24172a,0 8px 18px #0b0811!important}
+#orchardExtras .orchard-card img{display:block!important;width:112px!important;height:112px!important;max-width:100%!important;object-fit:contain!important;object-position:center!important;image-rendering:pixelated;padding:8px!important;box-sizing:border-box!important;overflow:visible!important;filter:drop-shadow(0 6px 6px #100c1d)}
+#orchardExtras .orchard-grid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr))!important;gap:18px!important;padding:14px 4px!important;overflow:visible!important}
+#orchardExtras .orchard-card b{text-align:center;color:#ffe0a1}
+#orchardExtras .orchard-power{color:#e3c2ff!important;font-weight:700;text-align:center;min-height:36px}
+#orchardExtras .orchard-hero{min-height:125px;background-size:cover!important;background-position:center!important;border:3px solid #aa7951;border-radius:12px}
+#orchardExtras .orchard-mission{overflow:visible!important}
+
+/* Expansão Halloween: aventura em pixel art construída em CSS, sem sprites recortados */
+.ha-shell{margin:26px auto 34px;padding:20px;border:3px solid #7b4b38;border-radius:16px;background:linear-gradient(150deg,#21172e,#121725 55%,#231a24);color:#f8ead4;box-shadow:0 10px 35px #0008,inset 0 0 0 2px #c98a5360;font-family:inherit}
+.ha-heading{display:flex;align-items:center;gap:16px;margin-bottom:20px}.ha-heading h2{color:#ffcc7b;font-size:clamp(1.35rem,3vw,2.2rem);margin:4px 0}.ha-heading small,.ha-story-top small{color:#e6a65e;letter-spacing:2px;font-weight:800}.ha-heading p{color:#d4c7dc;margin:4px 0}.ha-moon{font-size:3.4rem;color:#ffd685;text-shadow:0 0 18px #e7a04a}
+.ha-progress{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:.82rem;margin-bottom:16px;color:#f4d3a2}.ha-track{height:11px;background:#110d18;border:1px solid #8a634e;border-radius:8px;flex:1;min-width:100px;overflow:hidden}.ha-track>div{height:100%;width:0;background:linear-gradient(90deg,#b766e9,#ffb55e);transition:width .3s}
+.ha-layout{display:grid;grid-template-columns:minmax(140px,190px) minmax(0,1fr) minmax(170px,220px);gap:14px;align-items:start}.ha-chapters,.ha-side,.ha-story{background:#1b1827;border:2px solid #594052;border-radius:12px;padding:12px}.ha-chapters{display:grid;gap:8px}.ha-chapter{width:100%;background:#2c2438;color:#f1dfcf;border:1px solid #66506d;border-radius:8px;padding:10px;text-align:left;cursor:pointer;font:inherit;font-size:.85rem}.ha-chapter small{display:block;color:#c8b4c7}.ha-chapter.active{border-color:#ffbf69;background:#45304b}.ha-chapter:disabled{opacity:.45;cursor:not-allowed}.ha-chapter.done{border-color:#7fc49a}
+.ha-stage{position:relative;height:235px;border:3px solid #73523f;overflow:hidden;background:linear-gradient(#171b39 0%,#463053 58%,#312938 59%,#17282b 100%);border-radius:10px}.ha-stage:before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 23px,#ffffff08 24px 25px);pointer-events:none}.ha-art{position:absolute;inset:0;display:flex;justify-content:center;align-items:center;gap:8px;filter:drop-shadow(0 10px 0 #0005)}.ha-object{position:relative;display:flex;align-items:center;justify-content:center;font-size:clamp(2rem,4vw,3.7rem);width:25%;height:50%;max-width:110px;background:linear-gradient(#7b4e4e,#352638);border:3px solid #c18d60;box-shadow:inset -7px -7px #160e1c80,5px 6px #0007;image-rendering:pixelated;cursor:pointer;color:#fff}.ha-object:hover,.ha-object:focus-visible{transform:translateY(-5px);border-color:#ffdd8c;outline:2px solid #ffdd8c}.ha-object:disabled{opacity:.55;cursor:default}.ha-stage-caption{position:absolute;bottom:0;left:0;right:0;text-align:center;padding:7px;background:#0b0b16c9;color:#ffe2a4;font-size:.8rem}
+.ha-story{margin-top:12px}.ha-story-top{display:flex;justify-content:space-between;gap:8px;font-size:.75rem}.ha-story h3{color:#ffcc7b;margin:10px 0}.ha-story p{line-height:1.65;color:#eadbe2}.ha-story blockquote{border-left:3px solid #b57ba5;margin:10px 0;padding:10px;background:#2b2238;color:#e4d4ed;font-style:italic}.ha-interaction{display:grid;gap:10px;margin:14px 0}.ha-interaction label{font-weight:700}.ha-interaction input{width:100%;padding:12px;background:#100f1d;color:#fff;border:1px solid #9c729a;border-radius:7px;font-size:1rem}.ha-choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:8px}.ha-btn,.ha-choice{background:#49324d;border:2px solid #b47d6b;color:#fff3de;border-radius:8px;padding:10px 12px;font:inherit;font-weight:700;cursor:pointer;min-height:42px}.ha-btn:hover,.ha-choice:hover{background:#654369;border-color:#f9c77c}.ha-quiet{background:#2d273d}.ha-actions{display:flex;gap:8px;flex-wrap:wrap}.ha-feedback{min-height:25px;color:#ffd88b;font-size:.9rem}.ha-side h3{color:#ffd69b;margin:8px 0 12px;font-size:1rem}.ha-inventory{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}.ha-item{border:1px solid #8e725a;border-radius:7px;background:#31273c;padding:7px;font-size:.8rem}.ha-notes{display:grid;gap:8px;max-height:250px;overflow:auto}.ha-note{font-size:.8rem;border-left:2px solid #b9845c;padding:6px;color:#ddd0dd}.ha-reward{margin:18px 0;padding:10px;border:1px solid #c79c5a;background:#3a2935;border-radius:9px;font-size:.85rem}.ha-reward p{margin:8px 0 0;color:#e7d9df}.ha-side #haRestart{width:100%;font-size:.78rem}
+@media(max-width:1050px){.ha-layout{grid-template-columns:160px minmax(0,1fr)}.ha-side{grid-column:1/-1}.ha-inventory{margin-bottom:12px}}@media(max-width:650px){.ha-shell{padding:12px}.ha-layout{display:flex;flex-direction:column}.ha-chapters{width:100%;display:flex;overflow-x:auto}.ha-chapter{min-width:145px}.ha-main,.ha-side{width:100%}.ha-stage{height:200px}.ha-heading{align-items:flex-start}.ha-moon{font-size:2.3rem}.ha-object{font-size:2.7rem}}
+
+/* V11: vitrine real — arte inteira e centralizada pelo canal alfa, não pela borda do arquivo. */
+#orchardExtras .orchard-grid .orchard-card{overflow:visible!important;min-width:0;isolation:isolate}
+#orchardExtras .orchard-card .pet-stage{display:flex;align-items:center;justify-content:center;width:100%;max-width:234px;height:172px;position:relative;margin:2px auto 8px;border:1px solid #72524d;border-radius:16px;background:radial-gradient(ellipse at 50% 65%,#53345c90,#1b1425 73%);box-shadow:inset 0 0 24px #101019,0 4px 13px #0006;overflow:hidden}
+#orchardExtras .orchard-card .pet-stage:after{content:"";position:absolute;bottom:10px;left:18%;width:64%;height:14px;border-radius:50%;background:#08080b60;filter:blur(8px);pointer-events:none}
+#orchardExtras .orchard-card .pet-stage canvas{display:block;max-width:100%;height:100%;object-fit:contain;image-rendering:pixelated;position:relative;z-index:2}
+#orchardExtras .orchard-card button{margin-top:auto!important}
+#gCv{display:block!important;width:100%!important;height:auto!important;max-width:540px!important;margin:0 auto!important;image-rendering:pixelated}
+@media(max-width:560px){#orchardExtras .orchard-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#orchardExtras .orchard-card{padding:8px!important}#orchardExtras .orchard-card .pet-stage{height:124px!important;border-radius:10px}#orchardExtras .orchard-card .pet-stage canvas{width:100%!important;height:auto!important;max-height:118px!important}#gCv{max-width:100%!important}}
+@media(prefers-reduced-motion:reduce){#orchardExtras .orchard-card .pet-stage canvas{animation:none!important}}
 </style>
 
+<style id="owner-ranking-style">
+.owner-rank-title {color:#ffd76a!important;font-weight:900!important;text-shadow:0 0 9px rgba(255,198,47,.65);font-style:normal!important;}
+</style>
+<style id="orchard-art-polish-v3">
+#orchardExtras{background:radial-gradient(ellipse at 50% 0%,#493045 0%,#241827 42%,#130f1a 100%)!important;border:4px solid #b7864e!important;border-radius:17px!important;box-shadow:inset 0 0 0 3px #36211f,inset 0 0 30px #080611,0 12px 35px #0009!important}
+#orchardExtras [data-extras-tab]{border:2px solid #af7c49!important;box-shadow:inset 0 -4px #21111c,0 3px 0 #100b10!important;transition:transform .15s,filter .15s}
+#orchardExtras [data-extras-tab]:hover{transform:translateY(-2px);filter:brightness(1.15)}
+.orchard-hero{height:clamp(170px,29vw,270px)!important;border:3px solid #b47a49!important;border-radius:11px!important;box-shadow:inset 0 0 0 4px #211623,0 5px 14px #0008!important;overflow:hidden!important;background-size:contain!important}
+.orchard-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))!important;gap:16px!important}
+.orchard-card{min-width:0!important;overflow:visible!important;background:linear-gradient(155deg,#53343c,#281c2e 56%,#1b1526)!important;border:3px solid #b27b4d!important;box-shadow:inset 0 0 0 3px #6d4935,0 7px 0 #120d16,0 10px 22px #0007!important;padding:16px!important;transition:transform .2s,border-color .2s!important}
+.orchard-card:before{content:"✦";position:absolute;right:11px;top:7px;color:#ffd68a;font-size:14px;opacity:.75}
+.orchard-card img{box-sizing:border-box!important;object-fit:contain!important;object-position:center!important;display:block!important;width:100%!important;max-width:165px!important;height:165px!important;margin:5px auto 12px!important;padding:12px!important;image-rendering:pixelated!important;filter:drop-shadow(0 7px 4px #0c0710bb)!important;animation:orchardFloat 3s ease-in-out infinite!important}
+.orchard-card button{width:100%;margin-top:9px}
+.orchard-mission{background:linear-gradient(100deg,#66412f,#302034)!important;border:3px solid #bb8750!important;box-shadow:inset 0 0 0 2px #38242c,0 6px 0 #130e18!important}
+@media(max-width:520px){.orchard-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}.orchard-card{padding:10px!important}.orchard-card img{height:108px!important;max-width:100%!important;padding:7px!important}.orchard-hero{height:170px!important}}
+@media(prefers-reduced-motion:reduce){.orchard-card img{animation:none!important}}
+</style>
+<style>
+.h8-shell{margin:24px 0;padding:18px;border:3px solid #9a592b;border-radius:14px;background:linear-gradient(145deg,#180f28,#0a1522);color:#f4dcb7;box-shadow:0 10px 45px #0009;font-family:inherit}.h8-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:14px}.h8-head small{color:#e5a86e;letter-spacing:2px}.h8-head h2{margin:5px 0;color:#ffc76c;font-size:1.5rem}.h8-head p{margin:0;font-size:.88rem}.h8-head span{color:#e4b7ff;border:1px solid #71449d;border-radius:7px;padding:8px;font-size:.7rem}.h8-grid{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(230px,1fr);gap:14px}.h8-canvas-wrap{position:relative;border:4px solid #56301f;background:#090c16;overflow:hidden;border-radius:8px}.h8-canvas-wrap canvas{display:block;width:100%;height:auto;image-rendering:pixelated;outline:0}.h8-talk{background:#140e20ed;border-top:2px solid #ac7043;color:#fbe7c9;min-height:52px;padding:11px 13px;font-size:.89rem}.h8-panel{border:2px solid #6b452c;border-radius:8px;padding:15px;background:#1a1625}.h8-panel h3{color:#ffcb75;margin:0 0 8px}.h8-panel h4{color:#d3abf8;margin:16px 0 7px}.h8-panel p{font-size:.89rem}.h8-stat{padding:8px;background:#2b2336;border-radius:6px}.h8-bag,.h8-journal{font-size:.85rem;line-height:1.55;max-height:160px;overflow:auto}.h8-bag span{display:inline-block;margin:3px;padding:6px 8px;background:#3a2948;border:1px solid #745086;border-radius:6px}.h8-journal div{padding:6px 0;border-bottom:1px solid #ffffff20}.h8-controls{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:10px}.h8-pad{text-align:center}.h8-pad button,.h8-action,.h8-reset,.h8-puzzle button{background:#4d2a5f;border:2px solid #b68bca;color:white;padding:10px 14px;border-radius:6px;cursor:pointer;touch-action:none;font-weight:bold}.h8-pad div{display:flex;gap:6px}.h8-action{background:#784321;border-color:#dfa267}.h8-reset{margin-top:18px;background:#38263e;font-size:.75rem}.h8-puzzle{padding:12px;margin-top:12px;border:2px solid #b47e4a;background:#271c2e;border-radius:8px}.h8-puzzle button{margin:4px;padding:9px}.h8-puzzle p{margin:7px 0}.h8-puzzle input{width:100%;max-width:230px;background:#100f1b;border:1px solid #ad8b67;color:white;padding:10px;border-radius:5px}.h8-puzzle .h8-close{background:#50313b}.h8-shell button:focus-visible{outline:3px solid #ffe18a}@media(max-width:760px){.h8-grid{grid-template-columns:1fr}.h8-head span{display:none}.h8-shell{padding:10px}.h8-controls{justify-content:center}}
+</style>
+<style id="halloween-v9-style">
+/* O início da Defesa deve ser alcançável mesmo em telefones de baixa altura. */
+.gov[hidden],#gOv[hidden]{display:none!important}
+.g-mobile-start{display:none;margin:0 auto 12px;min-height:48px;max-width:100%;font-size:1rem;position:relative;z-index:1}
+#gameDlg .panel,#gameDlg .row{min-width:0}
+#gameDlg #gOv{box-sizing:border-box;overflow-y:auto;overscroll-behavior:contain;gap:4px;scrollbar-width:thin}
+#gameDlg #gOv .row{flex-shrink:0;flex-wrap:wrap;justify-content:center}
+#gameDlg #gOv button{min-height:38px}
+@media(max-width:650px){
+ #gameDlg>.panel{padding:10px!important}
+ #gameDlg .g-mobile-start:not([hidden]){display:block}
+ #gameDlg #gOv{justify-content:flex-start!important;padding:7px 9px!important;gap:2px!important}
+ #gameDlg #gOvT{font-size:clamp(1rem,5vw,1.35rem)!important;margin:0 0 3px!important}
+ #gameDlg #gOvP{font-size:.74rem!important;margin:0 0 3px!important;line-height:1.3!important}
+ #gameDlg #gOvK{font-size:.68rem!important;margin:0 0 3px!important}
+ #gameDlg #gDifficulty{gap:4px!important;margin:2px 0 5px!important}
+ #gameDlg #gDifficulty button{padding:7px 8px!important;font-size:.74rem!important}
+ #gameDlg #gModeNote{font-size:.7rem!important;margin:0 0 4px!important}
+ #gameDlg #gOv .row button{padding:8px 13px!important}
+ #gameDlg .gctl{display:grid!important;grid-template-columns:1fr 1.2fr 1fr;gap:5px!important;margin:10px 0!important}
+ #gameDlg .gctl button{min-width:0!important;padding:12px 3px!important;font-size:.79rem!important;touch-action:none}
+ #gCv{width:100%!important;height:auto!important}
+ .h8-shell{margin:12px 0;padding:9px!important}
+ .h8-controls{gap:7px}
+ .h8-pad button,.h8-action{min-height:44px}
+ .h8-panel{padding:11px}
+ .h8-puzzle{position:relative;max-height:52vh;overflow-y:auto}
+}
+.h8-puzzle button{min-height:40px}.h8-puzzle .h8-inputrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.h8-puzzle input{font-size:16px}.h8-steps{color:#d6b0f2;font-size:.84rem;margin:7px 0}
+</style>
+<link rel="stylesheet" href="mundo_pomar.css">
+<style>
+#smUpdateLayer{position:fixed;inset:0;z-index:2147483000;background:rgba(6,9,17,.84);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+#smUpdateLayer.sm-show{display:flex}#smUpdatePanel{width:min(100%,580px);max-height:min(90dvh,790px);overflow-y:auto;overscroll-behavior:contain;background:linear-gradient(160deg,#253c30,#101c22 62%,#21192f);color:#fff3df;border:2px solid #d3a95c;border-radius:22px;box-shadow:0 25px 80px #000b;padding:clamp(17px,4vw,30px);position:relative;font-family:system-ui,Arial,sans-serif}
+#smUpdatePanel h2{font-size:clamp(1.45rem,5vw,2.1rem);line-height:1.12;margin:7px 0 12px;color:#ffe3a0}#smUpdatePanel p{line-height:1.5;color:#d9e3d9}#smUpdatePanel .sm-tag{display:inline-block;border:1px solid #a3c08b;border-radius:99px;padding:4px 10px;font-size:.76rem;color:#d3f3bc;letter-spacing:.07em;font-weight:800}
+#smUpdatePanel ul{list-style:none;padding:0;margin:12px 0 20px;display:grid;gap:10px}#smUpdatePanel li{border:1px solid #ffffff25;background:#ffffff0b;border-radius:12px;padding:11px 12px;line-height:1.4;font-size:.93rem}#smUpdatePanel li strong{color:#ffe0a2}#smUpdatePanel .sm-actions{display:flex;gap:9px;flex-wrap:wrap}#smUpdatePanel button,#smUpdatesReopen{font:700 .93rem system-ui,Arial,sans-serif;cursor:pointer;min-height:44px;border-radius:12px;padding:10px 16px}#smUpdatesClose{background:#e7b967;color:#1c211c;border:0;flex:1}#smUpdatesLater{background:#ffffff13;color:#f5e9d6;border:1px solid #ffffff65}#smUpdatesReopen{position:fixed;right:13px;bottom:14px;z-index:10000;background:#183629;color:#ffe3a1;border:1px solid #a47d43;box-shadow:0 5px 18px #0007;display:none}#smUpdatesReopen.sm-ready{display:block}
+@media(max-width:560px){#smUpdatePanel{padding:17px;border-radius:16px}#smUpdatePanel li{padding:9px 10px;font-size:.87rem}#smUpdatesReopen{bottom:calc(12px + env(safe-area-inset-bottom,0px));right:10px;padding:8px 11px;font-size:.78rem}}
+</style>
 </head>
 <body>
+<div id="smUpdateLayer" role="presentation"><section id="smUpdatePanel" role="dialog" aria-modal="true" aria-labelledby="smUpdateTitle" tabindex="-1"><span class="sm-tag">🥭 NOTAS DE ATUALIZAÇÃO · V17</span><h2 id="smUpdateTitle">Novidades do Pomar!</h2><p>Bem-vindo de volta! Veja o que mudou na última versão do Sam Manguinha.</p><ul>
+<li><strong>⚔️ Combates mais vivos</strong> — ataques, magia, dano, cura e defesa com animações.</li>
+<li><strong>🕷️ Nova Rainha das Aranhas</strong> — inimigo redesenhado e visual mais detalhado.</li>
+<li><strong>📱 Interface compacta</strong> — menus organizados para celular e computador.</li>
+<li><strong>🎭 Mais personalização</strong> — novos acessórios, visuais e títulos para conquistar.</li>
+<li><strong>🎶 Música de RPG</strong> — quatro temas para exploração, batalha, chefões e Halloween.</li>
+<li><strong>💬 Praça dos Jogadores</strong> — conversas com respostas, reações, filtros e desafios diários usando o mural real e moderado.</li>
+<li><strong>🕹️ Terminal da Manga</strong> — 18 códigos com efeitos visíveis, confirmação e coleção de descobertas; todos sem afetar o ranking.</li>
+<li><strong>⏸ Defesa do Pomar</strong> — pausa e retomada, com pausa automática ao trocar de aba.</li>
+<li><strong>🌙 RPG e Halloween</strong> — exploração e puzzles preservados; renderização suspensa quando a aventura de Halloween está fechada.</li>
+<li><strong>♿ Acessibilidade</strong> — contrastes, texto maior, efeitos leves e controles por toque mantidos.</li>
+<li><strong>🔒 Interação segura</strong> — mensagens enviadas ao servidor passam por moderação; não é chat ao vivo.</li>
+</ul><div class="sm-actions"><button id="smUpdatesClose" type="button">🥭 Entendi, vamos jogar!</button><button id="smUpdatesLater" type="button">Fechar</button></div></section></div><button type="button" id="smUpdatesReopen" aria-label="Ver novidades da atualização">✦ Novidades</button>
 <svg width="0" height="0" style="position:absolute;display:none" aria-hidden="true"><defs>
 <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5c3-1 6-1 8 1 2-2 5-2 8-1v14c-3-1-6-1-8 1-2-2-5-2-8-1zM12 6v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -1086,7 +1445,7 @@ dialog .row { display: flex; align-items: center; justify-content: space-between
 </defs></svg>
 <div class="leaves" id="leaves" aria-hidden="true"></div>
 <div id="fx" aria-hidden="true"></div>
-<div id="toast" role="status" aria-live="polite"></div>
+<div id="toast" role="status" aria-live="polite"></div><a class="sm165-skip" href="#stage">Pular para o jogo</a>
 
 <nav class="areas" id="areas" aria-label="Áreas do pomar amaldiçoado">
   <div class="logo" id="logoHome" role="button" tabindex="0" aria-label="Voltar ao início">
@@ -1095,6 +1454,7 @@ dialog .row { display: flex; align-items: center; justify-content: space-between
   </div>
   <div class="tabs2">
     <button type="button" data-p="home" id="homeBtn" aria-current="page"><svg class="ic"><use href="#i-home"/></svg><span>Início</span></button>
+    <button type="button" data-p="rpgDlg" id="rpgWorldBtn"><svg class="ic"><use href="#i-home"/></svg><span>Mundo RPG</span></button>
     <button type="button" data-p="eventDlg" id="eventBtn"><svg class="ic"><use href="#rpg-icon-map"/></svg><span>Mapa & Missões</span></button>
     <button type="button" data-p="diary" id="diaryBtn"><svg class="ic"><use href="#i-book"/></svg><span>Diário</span></button>
     <button type="button" data-p="profDlg" id="profBtn"><svg class="ic"><use href="#rpg-icon-cloak"/></svg><span>Personagem</span></button>
@@ -1176,7 +1536,17 @@ dialog .row { display: flex; align-items: center; justify-content: space-between
       <span>Grimório de Acesso</span>
       <small>Escolha seu destino nesta noite</small>
     </h2>
-    <div class="rpg-portal-grid">
+    
+<div class="sm17-home-cta" id="sm17HomeCTA" role="region" aria-label="O que fazer agora">
+ <div><b>✦ Seu próximo passo no Pomar</b><p>Explore o RPG, defenda as árvores ou converse com outros guardiões.</p></div>
+ <button type="button" id="sm17GoSocial" class="btn-gothic">💬 Praça dos Jogadores</button>
+ <button type="button" id="sm17GoGrimoire" class="btn-gothic alt">🔐 Códigos</button>
+</div>
+<div class="rpg-portal-grid">
+      <button type="button" class="portal-card" data-go="rpgDlg">
+        <div class="card-head"><svg class="portal-ic"><use href="#i-home"/></svg><h3>O Mundo do Pomar</h3></div>
+        <p>Nova aventura RPG híbrida: explore a vila, procure sementes, conheça personagens e descubra portais para a Defesa e Halloween.</p>
+      </button>
       <button type="button" class="portal-card" data-go="eventDlg">
         <div class="card-head"><svg class="portal-ic"><use href="#rpg-icon-map"/></svg><h3>Mapa das 6 Regiões</h3></div>
         <p>Explore a Estufa, a Trilha das Folhas e desvende a Árvore Ancestral.</p>
@@ -1267,6 +1637,29 @@ dialog .row { display: flex; align-items: center; justify-content: space-between
 <!-- ========================================================================= -->
 <!-- SANTUÁRIO DO PERSONAGEM & GUARDA-ROUPA OFICIAL (#profDlg) - SISTEMA ÚNICO -->
 <!-- ========================================================================= -->
+
+<section class="pane" id="rpgDlg" hidden aria-label="Mundo explorável do Pomar">
+ <div class="r12-shell">
+  <div class="r12-head"><div><small>Capítulo I · A Luz das Três Sementes</small><h2>O Mundo do Pomar</h2><p>Uma aventura que conecta as histórias do Sam Manguinha. Caminhe pela vila, explore a floresta, descubra o santuário e acesse os modos originais pelo próprio cenário.</p></div><span class="r12-pill" id="r12Counter">0/3 sementes</span></div>
+  <div class="r12-columns">
+   <div class="r12-main">
+    <div class="r12-frame"><canvas id="r12Canvas" width="768" height="448" tabindex="0" aria-label="Mapa RPG explorável, mova com WASD, setas ou controles na tela"></canvas>
+      <div class="r12-hud"><span id="r12MapName">Vila da Mangueira</span><span id="r12Region">O início de toda colheita</span></div>
+      <div class="r12-bubble" id="r12Bubble" hidden><strong id="r12TalkWho"></strong><p id="r12TalkText"></p><div id="r12Choices" class="r12-choices" hidden></div><button type="button" class="btn-gothic" id="r12TalkNext">Continuar</button></div>
+    </div>
+    <div class="r12-tip" id="r12Tip" aria-live="polite">Explore com WASD ou setas; aproxime-se e pressione E.</div>
+    <div class="r12-controls"><div class="r12-dpad"><button type="button" class="r12-up" data-r12move="up" aria-label="Andar para cima">▲</button><button type="button" class="r12-left" data-r12move="left" aria-label="Andar para esquerda">◀</button><button type="button" class="r12-down" data-r12move="down" aria-label="Andar para baixo">▼</button><button type="button" class="r12-right" data-r12move="right" aria-label="Andar para direita">▶</button></div><button type="button" class="r12-interact" id="r12Action">E · INVESTIGAR</button></div>
+   </div>
+   <aside class="r12-aside">
+    <section class="r12-card"><h3>📜 Jornada principal <small>Capítulo I</small></h3><p id="r12Objective" class="r12-objective">Converse com o Guardião Bento.</p><div id="r12Quests"></div><div class="r12-track"><span id="r12Progress" style="width:0%"></span></div><p class="r12-saved">Progresso salvo automaticamente neste navegador, separado dos demais modos.</p></section>
+    <section class="r12-card"><h3>🎒 Mochila</h3><div class="r12-bag" id="r12Inventory"></div></section>
+    <section class="r12-card"><h3>🚪 Portais rápidos</h3><div class="r12-shortcuts"><button type="button" data-r12open="gameDlg">⚔️ Defesa</button><button type="button" data-r12open="shop">🛒 Loja</button><button type="button" data-r12open="pets">🐾 Mascotes</button><button type="button" data-r12open="halloween">🎃 Halloween</button><button type="button" data-r12open="profDlg">🥭 Personagem</button><button type="button" data-r12open="eventDlg">🗺️ Missões</button></div></section>
+    <section class="r12-card"><h3>📖 Diário <button type="button" class="r12-reset" id="r12Reset">Reiniciar capítulo</button></h3><div id="r12Journal" class="r12-journal"></div></section>
+   </aside>
+  </div>
+ </div>
+</section>
+
 <section class="pane" id="profDlg" hidden aria-label="Personagem e Guarda-Roupa">
   <div class="map-header">
     <div>
@@ -1390,6 +1783,10 @@ dialog .row { display: flex; align-items: center; justify-content: space-between
         <button type="button" class="expression-btn" data-face="scared">Assustada</button>
         <button type="button" class="expression-btn" data-face="spirit">Espectral</button>
         <button type="button" class="expression-btn" data-face="brave">Destemida</button>
+        <button type="button" class="expression-btn" data-face="joyful">Radiante</button>
+        <button type="button" class="expression-btn" data-face="sleepy">Sonolenta</button>
+        <button type="button" class="expression-btn" data-face="fierce">Guerreira</button>
+        <button type="button" class="expression-btn" data-face="sly">Travessa</button>
       </div>
 
       <!-- Grid de Itens e Equipamentos -->
@@ -1554,6 +1951,8 @@ dialog .row { display: flex; align-items: center; justify-content: space-between
       </div>
     </div>
 
+
+<section id="h8World" class="h8-shell"><div class="h8-head"><div><small>AVENTURA JOGÁVEL • CAPÍTULO SOMBRIO</small><h2>O Pomar das Sombras</h2><p>Explore seis regiões com WASD ou setas. Investigue objetos com E; no celular, use os controles. Pistas de salas anteriores serão necessárias.</p></div><span id="h8Badge">INVESTIGAÇÃO</span></div><div class="h8-grid"><div class="h8-left"><div class="h8-canvas-wrap"><canvas id="h8Canvas" width="640" height="384" tabindex="0" aria-label="Mapa explorável do pomar"></canvas><div id="h8Talk" class="h8-talk" aria-live="polite">A noite parece observar cada passo...</div></div><div class="h8-controls"><div class="h8-pad"><button data-h8move="up" aria-label="Subir">▲</button><div><button data-h8move="left" aria-label="Esquerda">◀</button><button data-h8move="down" aria-label="Descer">▼</button><button data-h8move="right" aria-label="Direita">▶</button></div></div><button id="h8Interact" class="h8-action">E · INVESTIGAR</button><button id="h8Map" class="h8-action">MAPA</button></div></div><aside class="h8-panel"><h3 id="h8RoomTitle">Clareira da Bruxa</h3><p id="h8Objective"></p><div class="h8-stat">Pistas encontradas: <strong id="h8Progress">0/12</strong></div><h4>Bolsa de pistas</h4><div id="h8Bag" class="h8-bag">Vazia</div><h4>Diário de investigação</h4><div id="h8Journal" class="h8-journal">Siga as lanternas e converse com a bruxa.</div><div id="h8Puzzle" class="h8-puzzle" hidden></div><button id="h8Hint" type="button" class="h8-reset">💡 Pista sem spoiler</button><button id="h8Reset" class="h8-reset">Reiniciar esta aventura</button></aside></div></section>
     <!-- Portal para o Guarda-Roupa Oficial -->
     <div class="event-wardrobe-portal">
       <div>
@@ -1570,7 +1969,14 @@ dialog .row { display: flex; align-items: center; justify-content: space-between
 <!-- ========================================== -->
 <section class="pane" id="murDlg" hidden aria-label="Mural do Pomar">
   <h2 class="ptitle"><svg class="ic xl"><use href="#i-chat"/></svg>Mural dos Murmúrios</h2>
-  <form id="murForm" class="panel">
+  
+<section class="sm17-social" id="sm17Social" aria-label="Praça dos Jogadores">
+  <div class="sm17-social-head"><div><h3>🌳 Praça dos Jogadores</h3><p>Encontre outros guardiões no mural, responda às mensagens e participe de desafios. Publicações passam pela aprovação do administrador.</p></div><span class="sm17-online-indicator">Mural compartilhado · Não é chat ao vivo</span></div>
+  <div class="sm17-daily"><span class="sm17-daily-icon" aria-hidden="true">⚔️</span><div><b>Desafio da Comunidade</b><p id="sm17DailyText">Carregando desafio...</p><small>Desafio informal: compartilhe sua experiência; a pontuação oficial continua no ranking do Defesa.</small></div><button id="sm17Join" type="button" class="btn-gothic">Participar</button></div>
+  <div class="sm17-social-tools"><label for="sm17FeedFilter">Ver mensagens</label><select id="sm17FeedFilter"><option value="all">Todas as mensagens</option><option value="replies">Respostas e conversas</option><option value="challenge">Desafios</option></select><label for="sm17FeedSearch">Buscar no mural</label><input type="search" id="sm17FeedSearch" placeholder="Buscar @, tema ou palavra" maxlength="60"><button id="sm17Refresh" type="button" class="btn-gothic alt">↻ Atualizar feed</button></div>
+  <p class="sm17-social-note" id="sm17FeedStatus" role="status" aria-live="polite">Responda a uma mensagem usando o botão Responder em cada publicação. As respostas só aparecem após aprovação.</p>
+</section>
+<form id="murForm" class="panel">
     <label for="murCat">Categoria da Mensagem</label>
     <select id="murCat">
       <option value="nunca">Uma coisa que nunca falei</option>
@@ -1634,12 +2040,15 @@ dialog .row { display: flex; align-items: center; justify-content: space-between
 <section class="pane" id="gameDlg" hidden aria-label="Defesa do Pomar">
   <h2 class="ptitle"><svg class="ic xl"><use href="#i-game"/></svg>Defesa do Pomar Amaldiçoado</h2>
   <div class="panel" style="text-align:center">
+    <button type="button" id="gMobileStart" class="btn-gothic g-mobile-start" hidden>▶ Iniciar Defesa do Pomar</button><div class="sm17-defense-actions"><button id="sm17PauseBtn" type="button" class="btn-gothic alt" aria-pressed="false" disabled>⏸ Pausar</button><span id="sm17DefenseStatus" role="status" aria-live="polite">No jogo: ← → / A D para mover, Espaço para atirar; no celular use os botões.</span></div>
     <div style="position:relative;display:inline-block;max-width:100%;border-radius:12px;overflow:hidden;border:2px solid var(--border);box-shadow:var(--shadow-lg)">
-      <canvas id="gCv" width="360" height="480" aria-label="Área do jogo Defesa do Pomar" style="background:#000;display:block;max-width:100%;height:auto"></canvas>
+      <canvas id="gCv" width="360" height="480" role="img" aria-label="Jogo Defesa do Pomar. Use as setas ou A e D para mover e Espaço para atirar; controles na tela para celular" style="background:#000;display:block;max-width:100%;height:auto"></canvas><div id="sm17PauseCover" class="sm17-pause-cover" hidden><div><b>⏸ PARTIDA PAUSADA</b><p>Respire, a mangueira continua esperando.</p><button type="button" class="btn-gothic" id="sm17ResumeOverlay">▶ CONTINUAR</button></div></div>
       <div id="gOv" class="gov" style="position:absolute;inset:0;background:rgba(10,7,14,0.92);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center">
         <p class="who" id="gOvT" style="font-family:var(--font-gothic);font-size:2rem;color:var(--amber);margin:0 0 10px">Defenda as Árvores!</p>
         <p id="gOvP" style="font-size:0.86rem;color:var(--ink);line-height:1.45;margin:0 0 16px">Pragas descem do céu sombrio. Atire mangas para derrubá-las e colha as que caem. Sobreviva a 5 ondas.</p>
         <p class="sm" id="gOvK" style="color:var(--muted);font-size:0.75rem;margin-bottom:14px">Teclado: ← → ou A D para mover, Espaço para atirar. No celular, use os botões.</p>
+        <div id="gDifficulty" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:15px"><button type="button" class="btn-gothic" data-difficulty="normal" aria-pressed="true">🌱 Normal</button><button type="button" class="btn-gothic alt" data-difficulty="hard" aria-pressed="false">🔥 Difícil</button><button type="button" class="btn-gothic alt" data-difficulty="infinite" aria-pressed="false">♾️ Infinito</button></div>
+        <div id="gModeNote" class="sm" style="margin:-5px 0 12px;color:var(--gold)"></div>
         <div class="row" style="display:flex;gap:10px">
           <button type="button" class="btn-gothic alt" id="gBack">Voltar</button>
           <button type="button" class="btn-gothic" id="gPlay">Iniciar Batalha</button>
@@ -1654,6 +2063,18 @@ dialog .row { display: flex; align-items: center; justify-content: space-between
     <label class="chk" style="display:inline-flex;align-items:center;gap:6px;font-size:0.85rem;color:var(--muted);cursor:pointer">
       <input type="checkbox" id="gSnd"> Efeitos sonoros místicos
     </label>
+    <div class="panel" id="orchardExtras" style="margin-top:18px;text-align:left">
+      <h3 style="color:var(--amber);font-family:var(--font-title);margin:0 0 8px">🌟 Novidades do Pomar</h3>
+      <p class="sm">Economia de sementes local deste navegador. Mangas e ranking oficiais continuam no Supabase.</p>
+      <p id="orchardWallet" style="font-weight:800;color:var(--gold)"></p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        <button type="button" class="btn-gothic alt" data-extras-tab="shop">🛒 Loja</button>
+        <button type="button" class="btn-gothic alt" data-extras-tab="daily">📅 Missões diárias</button>
+        <button type="button" class="btn-gothic alt" data-extras-tab="pets">🐾 Mascotes</button>
+      </div>
+      <div id="orchardExtrasBody" aria-live="polite"></div>
+      <p id="infiniteRecord" class="sm"></p>
+    </div>
     <div style="margin-top:24px">
       <h3 style="font-family:var(--font-title);font-size:1.15rem;color:var(--amber);margin-bottom:10px">Recordes dos Defensores</h3>
       <ol class="list rk" id="gRank" style="max-width:480px;margin:0 auto"></ol>
@@ -1698,7 +2119,15 @@ dialog .row { display: flex; align-items: center; justify-content: space-between
     </div>
   </div>
   <p style="color:var(--muted);font-size:0.86rem;margin-bottom:18px">O pomar esconde enigmas entre páginas, horários e sombras. Cada segredo desvendado rende 5 mangas e 25 XP ao seu perfil.</p>
-  <div class="sgrid" id="sgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px"></div>
+  
+<section class="sm17-code-console" id="sm17CodeConsole" aria-label="Console de códigos especiais">
+ <div class="sm17-console-head"><div><h3>🕹️ Terminal da Manga</h3><p>Digite um código e toque em <b>Ativar</b>. Os efeitos são visuais, temporários e funcionam aqui no site.</p></div><b id="sm17Count" class="sm17-count" aria-live="polite">0/18</b></div>
+ <form id="sm17CodeForm" autocomplete="off"><label for="sm17CodeInput">Código secreto</label><div class="sm17-code-row"><input id="sm17CodeInput" name="code" type="text" inputmode="text" maxlength="30" placeholder="Experimente BATATA ou AMOGUS" spellcheck="false" required><button type="submit" class="btn-gothic">ATIVAR</button></div></form>
+ <p id="sm17CodeFeedback" role="status" aria-live="polite" class="sm17-code-feedback">Os efeitos não alteram ranking, mangas oficiais ou dados de outros jogadores.</p>
+ <div class="sm17-code-actions"><button type="button" id="sm17Hint" class="btn-gothic alt">💡 Uma pista</button><button type="button" id="sm17EffectsReset" class="btn-gothic alt">⏹ Desligar efeitos</button><button type="button" id="sm17ShowCodes" class="btn-gothic alt" aria-expanded="false">📖 Minha coleção</button></div>
+ <div id="sm17CodesFound" class="sm17-code-collection" hidden></div>
+</section>
+<div class="sgrid" id="sgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px"></div>
   <ol class="list" id="sList" style="display:none"></ol>
 </section>
 
@@ -1845,7 +2274,7 @@ dialog .row { display: flex; align-items: center; justify-content: space-between
   </div>
 </dialog>
 
-<!-- Mensagem Popup Genérica (#fxDlg) -->
+<div class="sm165-settings"><h3>♿ Acessibilidade e desempenho</h3><label><input id="sm165Contrast" type="checkbox"> Alto contraste</label><label><input id="sm165LargeText" type="checkbox"> Texto ampliado</label><label><input id="sm165LowFX" type="checkbox"> Efeitos leves (economia de bateria)</label><p class="sm">Preferências deste navegador. A opção de efeitos leves reduz partículas e movimentos sem mudar as regras do jogo.</p></div><!-- Mensagem Popup Genérica (#fxDlg) -->
 <dialog id="fxDlg" aria-label="Mensagem"><div id="fxBody"></div><div class="row"><span></span><button type="button" class="btn-gothic" id="fxClose">Fechar</button></div></dialog>
 
 <!-- Mascote Sam Manguinha -->
@@ -2229,7 +2658,6 @@ function go(k){
   if(k==="harvest"){showPane("home");$("hang").classList.add("pulse");setTimeout(()=>$("hang").classList.remove("pulse"),2600);toast("Clique nas mangas penduradas no galho!",3500)}
   else showPane(k);
 }
-document.querySelectorAll("[data-go]").forEach(b=>{b.onclick=()=>go(b.dataset.go)});
 $("homePosts").addEventListener("click",e=>{const b=e.target.closest("[data-n]");if(b){showPane("diary");openPost(b.dataset.n)}});
 function applyPrefs(){
   document.documentElement.dataset.theme=LS.get("sg_theme")||"dark";
@@ -2242,7 +2670,7 @@ $("setClose").onclick=()=>$("setDlg").close();
 $("optLeaves").onchange=e=>{LS.set("sg_leaves",e.target.checked?"1":"0");applyPrefs()};
 $("optCalm").onchange=e=>{LS.set("sg_calm",e.target.checked?"1":"0");applyPrefs()};
 document.querySelectorAll("[data-theme]").forEach(b=>{b.onclick=()=>{LS.set("sg_theme",b.dataset.theme);applyPrefs()}});
-{const sc=document.querySelector(".scene");for(let i=0;i<14;i++){const f=document.createElement("i");f.className="ff";f.style.cssText=`--x:${Math.random()*100}%;--y:${10+Math.random()*80}%;--t:${5+Math.random()*6}s;--d:-${Math.random()*8}s`;sc.appendChild(f)}}
+{const sc=document.querySelector(".hero-gate-art")||document.body;for(let i=0;i<14&&sc;i++){const f=document.createElement("i");f.className="ff";f.style.cssText=`--x:${Math.random()*100}%;--y:${10+Math.random()*80}%;--t:${5+Math.random()*6}s;--d:-${Math.random()*8}s`;sc.appendChild(f)}}
 
 /* curiosidades */
 function renderFacts(q){
@@ -2263,7 +2691,7 @@ $("curClose").onclick=()=>showPane("diary");
 
 /* ranking */
 function rankRows(el,rows,full){
-  el.innerHTML=rows.length?rows.map((r,i)=>`<li class="${r.handle===me?"me":""}"><span class="pos">${i<3?`<svg class="ic crown c${i+1}"><use href="#i-crown"/></svg>`:""}<b>${i+1}</b></span><canvas class="rav" width="16" height="20" data-i="${i}"></canvas><span class="nm">@${esc(r.handle)}${r.handle===me?" <em>(você)</em>":""}${r.title?` <em>· ${esc(r.title)}</em>`:""}${+r.ach?` <em>🏅${+r.ach}</em>`:""}</span><span class="ct">${(+r.mangoes||0).toLocaleString("pt-BR")}</span><span class="lv">Nv.${+r.level||1}${r.xp!=null?" · "+(+r.xp).toLocaleString("pt-BR")+" XP":""}</span>${unlocked&&full?`<button type="button" class="x" data-del="${esc(r.handle)}" aria-label="Remover do ranking">✕</button>`:""}</li>`).join(""):'<li class="empty2">Ninguém colheu ainda. Seja o primeiro!</li>';
+  el.innerHTML=rows.length?rows.map((r,i)=>`<li class="${r.handle===me?"me":""}"><span class="pos">${i<3?`<svg class="ic crown c${i+1}"><use href="#i-crown"/></svg>`:""}<b>${i+1}</b></span><canvas class="rav" width="16" height="20" data-i="${i}"></canvas><span class="nm">@${esc(r.handle)}${r.handle===me?" <em>(você)</em>":""}${r.title?` <em class="${r.handle.toLowerCase()==="sammanguinha"&&r.title==="Dono"?"owner-rank-title":""}">· ${r.title==="Dono"&&r.handle.toLowerCase()==="sammanguinha"?"👑 ":""}${esc(r.title)}</em>`:""}${+r.ach?` <em>🏅${+r.ach}</em>`:""}</span><span class="ct">${(+r.mangoes||0).toLocaleString("pt-BR")}</span><span class="lv">Nv.${+r.level||1}${r.xp!=null?" · "+(+r.xp).toLocaleString("pt-BR")+" XP":""}</span>${unlocked&&full?`<button type="button" class="x" data-del="${esc(r.handle)}" aria-label="Remover do ranking">✕</button>`:""}</li>`).join(""):'<li class="empty2">Ninguém colheu ainda. Seja o primeiro!</li>';
   el.querySelectorAll("canvas").forEach(c=>drawAv(c,rows[+c.dataset.i].avatar));
 }
 function renderRank(){
@@ -2713,70 +3141,350 @@ const treeCv=()=>_tree||(_tree=(()=>{const c=document.createElement("canvas");c.
 const playerCv=()=>{if(!gPl){gPl=document.createElement("canvas");gPl.width=16;gPl.height=20;drawAv(gPl,prof&&prof.avatar)}return gPl};
 const dr=(c,x,y,k)=>gx.drawImage(c,Math.round(x-c.width*k/2),Math.round(y-c.height*k/2),c.width*k,c.height*k);
 
-const gc=$("gCv"),gx=gc.getContext("2d"),GW=360,GH=480,K={};
+const gc=$("gCv"),gx=gc.getContext("2d"),K={};
+let GW=360,GH=480,gDifficulty="normal";
+const gHard=()=>gDifficulty!=="normal";
+const gInfinite=()=>gDifficulty==="infinite";
+function setGameDifficulty(mode){
+ if(gs)return;gDifficulty=["hard","infinite"].includes(mode)?mode:"normal";GW=gHard()?540:360;GH=gHard()?620:480;gc.width=GW;gc.height=GH;
+ document.querySelectorAll("#gDifficulty [data-difficulty]").forEach(b=>{const active=b.dataset.difficulty===gDifficulty;b.setAttribute("aria-pressed",String(active));b.classList.toggle("alt",!active)});
+ $("gOvP").textContent=gInfinite()?"Defesa Infinita: sobreviva ao maior número de ondas possível. Recorde local, sem envio ao ranking oficial.":gHard()?"Modo DIFÍCIL: arena maior, 5 árvores para proteger, 30% menos pragas, larvas precisam de 2 ataques para derrubar uma árvore e besouros derrubam com 1. Sobreviva a 10 ondas e ganhe pontos em dobro!":"Pragas descem do céu sombrio. Atire mangas para derrubá-las e colha as que caem. Sobreviva a 5 ondas.";
+ $("gModeNote").textContent=gDifficulty==="hard"?"👑 O Rei das Pragas surge na onda 10!":gInfinite()?"♾️ Ondas sem fim; recorde salvo neste navegador.":"🌱 5 ondas clássicas.";
+ drawG();
+}
+document.querySelectorAll("#gDifficulty [data-difficulty]").forEach(b=>b.addEventListener("click",()=>setGameDifficulty(b.dataset.difficulty)));
 let gs=null,gRun=null,gRaf=0,gLast=0;
+let sm17GamePaused=false;function sm17GamePause(on){sm17GamePaused=!!on;K.l=K.r=K.f=0;const b=document.getElementById("sm17PauseBtn"),info=document.getElementById("sm17DefenseStatus");if(b){b.disabled=!gs;b.textContent=sm17GamePaused?"▶ Retomar":"⏸ Pausar";b.setAttribute("aria-pressed",String(sm17GamePaused))}if(info)info.textContent=sm17GamePaused?"⏸ Pausado. Toque em Retomar para voltar.":"Defenda as árvores. Você pode pausar a qualquer momento.";const cover=document.getElementById("sm17PauseCover");if(cover)cover.hidden=!sm17GamePaused}
 let snd=LS.get("sg_snd")==="1";$("gSnd").checked=snd;$("gSnd").onchange=e=>{snd=e.target.checked;LS.set("sg_snd",snd?"1":"0")};
 function sfx(f,d){if(!snd)return;try{const A=sfx.A||(sfx.A=new(window.AudioContext||window.webkitAudioContext)()),o=A.createOscillator(),g=A.createGain();o.type="square";o.frequency.value=f;g.gain.value=.05;g.gain.exponentialRampToValueAtTime(.001,A.currentTime+d);o.connect(g);g.connect(A.destination);o.start();o.stop(A.currentTime+d)}catch(e){}}
 const near=(a,b,r)=>Math.abs(a.x-b.x)<r&&Math.abs(a.y-b.y)<r;
+const orchardCatalog=[
+ {id:"bat",name:"🦇 Morceguinho",cost:80,emoji:"🦇",desc:"Sombra protetora: ataca pragas automaticamente a cada 4 segundos."},
+ {id:"ghost",name:"👻 Fantasminha",cost:110,emoji:"👻",desc:"Espírito guardião: atravessa inimigos com um raio a cada 5 segundos."},
+ {id:"pumpkin",name:"🎃 Miniabóbora",cost:140,emoji:"🎃",desc:"Casca de ferro: protege uma árvore de um ataque a cada 12 segundos."},
+ {id:"firefly",name:"✨ Vaga-lume",cost:60,emoji:"✨",desc:"Luz da colheita: atrai mangas e regenera munição a cada 6 segundos."}
+];
+const orchardKey=()=>"sg_extras_v1_"+(String(typeof me!=="undefined"&&me||"visitante").toLowerCase());
+function orchardRead(){try{const a=JSON.parse(localStorage.getItem(orchardKey())||"null");if(a&&typeof a==="object")return a}catch(e){}return {seeds:0,owned:[],pet:"",best:0,day:"",claimed:[],stats:{games:0,kills:0,waves:0}}}
+function orchardSave(v){localStorage.setItem(orchardKey(),JSON.stringify(v))}
+const orchardDay=()=>new Date().toLocaleDateString("en-CA",{timeZone:"America/Sao_Paulo"});
+function orchardDaily(v){const today=orchardDay();if(v.day!==today){v.day=today;v.claimed=[];v.stats={games:0,kills:0,waves:0}}v.stats=v.stats||{games:0,kills:0,waves:0};v.owned=v.owned||[];v.claimed=v.claimed||[];return v}
+let orchardTab="shop";
+const orchardTasks=[{id:"games",name:"Jogue 2 partidas",goal:2,reward:45},{id:"kills",name:"Elimine 30 pragas",goal:30,reward:60},{id:"waves",name:"Sobreviva a 12 ondas no total",goal:12,reward:70}];
+const pixelAsset=n=>"sprites/"+n+".png";
+const pixelImages={};
+function pixelImage(n){if(!pixelImages[n]){const im=new Image();im.src=pixelAsset(n);pixelImages[n]=im}return pixelImages[n]}
+function pixelDraw(g,n,x,y,w,h){
+ const im=pixelImage(n);if(!im.complete||!im.naturalWidth)return false;
+ const ratio=Math.min(w/im.naturalWidth,h/im.naturalHeight),dw=im.naturalWidth*ratio,dh=im.naturalHeight*ratio;
+ g.save();g.imageSmoothingEnabled=false;g.drawImage(im,Math.round(x-dw/2),Math.round(y-dh/2),Math.round(dw),Math.round(dh));g.restore();return true
+}
+const petPowers={bat:"🦇 Tiro automático (4s)",ghost:"👻 Raio espectral (5s)",pumpkin:"🎃 Escudo de árvore (12s)",firefly:"✨ +2 mangas de munição (6s)"};
+const petSprite={bat:"morceguinho_idle",ghost:"fantasminha_idle",pumpkin:"miniabobora_idle",firefly:"vagalume_idle"};
+const petFrames={bat:["morceguinho_idle","morceguinho_voando","morceguinho_ataque"],ghost:["fantasminha_idle","fantasminha_voando","fantasminha_ataque"],pumpkin:["miniabobora_idle","miniabobora_andando","miniabobora_ataque"],firefly:["vagalume_idle","vagalume_voando","vagalume_ataque"]};
+function orchardRender(){
+ const el=$("orchardExtrasBody");if(!el)return;const v=orchardDaily(orchardRead());orchardSave(v);
+ $("orchardWallet").textContent="🌱 "+v.seeds+" sementes · Mascote: "+(orchardCatalog.find(x=>x.id===v.pet)?.name||"Nenhum");
+ $("infiniteRecord").textContent="♾️ Melhor Defesa Infinita neste navegador: onda "+(v.best||0);
+ document.querySelectorAll("#orchardExtras [data-extras-tab]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.extrasTab===orchardTab)));
+ const hero=(img,title)=>`<div class="orchard-hero" style="background-image:url('${pixelAsset(img)}')"><strong>${title}</strong></div>`;
+ if(orchardTab==="daily"){
+  el.innerHTML=hero("missoes_diarias_conceito","📜 Contratos do Pomar")+orchardTasks.map((t,i)=>{const done=Math.min(t.goal,v.stats[t.id]||0),claimed=v.claimed.includes(t.id);return `<div class="orchard-mission"><img alt="" src="${pixelAsset(["besouro","arvore_saudavel","trofeu"][i])}"><div class="mission-info"><b>${t.name}</b><div class="sm">${done}/${t.goal} · 🌱 +${t.reward} sementes</div><div class="orchard-progress"><span style="width:${100*done/t.goal}%"></span></div></div><button type="button" class="btn-gothic alt" data-daily="${t.id}" ${claimed||done<t.goal?"disabled":""}>${claimed?"Resgatada":"Resgatar"}</button></div>`}).join("");
+ }else{
+  el.innerHTML=hero("loja_pomar_conceito",orchardTab==="pets"?"🐾 Seus companheiros":"🛒 Mercado Assombrado")+`<div class="orchard-grid">`+orchardCatalog.filter(t=>orchardTab!=="pets"||v.owned.includes(t.id)).map(t=>`<div class="orchard-card ${v.pet===t.id?"selected":""}"><div class="pet-stage" aria-label="Animação de ${t.name}"><canvas width="210" height="168" data-pet-stage="${t.id}" role="img" aria-label="${t.name}"></canvas></div><b>${t.name}</b><span class="sm">${t.desc}</span><span class="sm orchard-power">${petPowers[t.id]}</span><span class="sm">${v.owned.includes(t.id)?"✓ Desbloqueado":"🌱 "+t.cost+" sementes"}</span><button type="button" class="btn-gothic alt" data-pet="${t.id}">${v.pet===t.id?"Desequipar":v.owned.includes(t.id)?"Equipar":"Comprar"}</button></div>`).join("")+`</div>`+(orchardTab==="pets"&&!v.owned.length?`<p class="sm">Nenhum mascote desbloqueado ainda. Visite a Loja do Pomar!</p>`:"");
+ }
+}
+function orchardAfterBattle(s,won){if(!me||!prof)return;const v=orchardDaily(orchardRead());v.stats.games++;v.stats.kills+=s.kills||0;v.stats.waves+=s.wave||0;v.seeds+=Math.min(150,Math.floor(s.score/150))+(won?20:0)+(s.bossDefeated?100:0);if(s.mode==="infinite")v.best=Math.max(v.best||0,s.wave);orchardSave(v);orchardRender();toast("🌱 Sementes recebidas! Veja a Loja do Pomar.",3500)}
+$("orchardExtras").addEventListener("click",e=>{const tab=e.target.closest("[data-extras-tab]");if(tab){orchardTab=tab.dataset.extrasTab;orchardRender();return}const pet=e.target.closest("[data-pet]");const daily=e.target.closest("[data-daily]");if(!pet&&!daily)return;if(!me||!prof){showGate();return}const v=orchardDaily(orchardRead());if(pet){const item=orchardCatalog.find(x=>x.id===pet.dataset.pet);if(!item)return;if(v.pet===item.id)v.pet="";else if(v.owned.includes(item.id))v.pet=item.id;else if(v.seeds>=item.cost){v.seeds-=item.cost;v.owned.push(item.id);v.pet=item.id}else{toast("Sementes insuficientes.");return}}else{const t=orchardTasks.find(x=>x.id===daily.dataset.daily);if(!t||v.claimed.includes(t.id)||(v.stats[t.id]||0)<t.goal)return;v.claimed.push(t.id);v.seeds+=t.reward;toast("Missão diária concluída! +"+t.reward+" sementes")};orchardSave(v);orchardRender()});
+$("gDifficulty").addEventListener("click",()=>orchardRender());
+orchardRender();
+
 function gameInit(){loadGRank();if(!gs)drawG()}
-function stopGame(){cancelAnimationFrame(gRaf);const was=gs;gs=null;gRun=null;if(was){$("gOvT").textContent="Partida interrompida";$("gOvP").textContent="Você saiu no meio do jogo. Essa partida não conta.";$("gOvK").textContent="";$("gPlay").textContent="Jogar de novo";$("gOv").hidden=false}}
+function stopGame(){cancelAnimationFrame(gRaf);const was=gs;gs=null;gRun=null;sm17GamePause(false);if(was){$("gOvT").textContent="Partida interrompida";$("gOvP").textContent="Você saiu no meio do jogo. Essa partida não conta.";$("gOvK").textContent="";$("gPlay").textContent="Jogar de novo";$("gOv").hidden=false}}
 async function startGame(){
   if(!me||!prof){showGate();return}
   gRun=null;gPl=null;let note="";
-  try{gRun=await rpc("game_start",{p_handle:me,p_token:tok})}catch(e){note=e.message==="rate"?"Limite de partidas de hoje atingido. Esta é uma partida de treino.":"Servidor do jogo indisponível. Esta é uma partida de treino e não vale ranking."}
+  try{if(!gInfinite())gRun=await rpc("game_start",{p_handle:me,p_token:tok})}catch(e){note=e.message==="rate"?"Limite de partidas de hoje atingido. Esta é uma partida de treino.":"Servidor do jogo indisponível. Esta é uma partida de treino e não vale ranking."}
   if($("gameDlg").hidden)return;
-  gs={x:GW/2,ammo:12,stun:0,hp:3,score:0,wave:1,wt:0,t:0,sp:0,ft:0,reg:0,sh:[],pe:[],it:[]};
-  $("gOv").hidden=true;if(note)toast(note,5000);
+  orchardFX.length=0;
+  gs={mode:gDifficulty,kills:0,boss:null,bossDefeated:false,x:GW/2,ammo:gHard()?24:12,stun:0,hp:gHard()?5:3,trees:Array(gHard()?5:3).fill(true),treeHits:Array(gHard()?5:3).fill(0),hard:gHard(),score:0,wave:1,wt:0,t:0,sp:0,ft:0,reg:0,petId:orchardRead().pet,petCooldown:2,petFlash:0,playerMaxHp:gHard()?8:6,playerHp:gHard()?8:6,invuln:0,bossShots:[],sh:[],pe:[],it:[]};
+  $("gOv").hidden=true;sm17GamePause(false);if(note)toast(note,5000);
   gLast=performance.now();cancelAnimationFrame(gRaf);gRaf=requestAnimationFrame(loop);
 }
 function loop(t){
   if(!gs)return;
+  if(sm17GamePaused || document.hidden){gLast=t;gRaf=requestAnimationFrame(loop);return}
   const dt=Math.min(.05,(t-gLast)/1000);gLast=t;
   if(!stepG(dt))return;
   drawG();gRaf=requestAnimationFrame(loop);
 }
 function stepG(dt){
-  const s=gs;s.t+=dt;s.wt+=dt;s.ft-=dt;s.stun-=dt;s.reg+=dt;
-  if(s.wt>=15){s.score+=50;sfx(880,.25);if(s.wave>=5){endG(true);return false}s.wave++;s.wt=0}
-  if(s.reg>=.9){s.reg=0;s.ammo=Math.min(12,s.ammo+1)}
-  const sp=s.stun>0?110:220,dir=(K.r?1:0)-(K.l?1:0);s.x=Math.max(20,Math.min(GW-20,s.x+dir*sp*dt));
-  if(K.f&&s.ft<=0&&s.ammo>0&&s.stun<=0){s.ft=.22;s.ammo--;s.sh.push({x:s.x,y:GH-100,vy:-430});sfx(660,.06)}
+  const s=gs;orchardUpdateFX(dt);s.t+=dt;s.wt+=dt;s.ft-=dt;s.stun-=dt;s.reg+=dt;s.petCooldown-=dt;s.petFlash=Math.max(0,(s.petFlash||0)-dt);if(s.petEffect)s.petEffect.ttl=Math.max(0,s.petEffect.ttl-dt);s.invuln=Math.max(0,(s.invuln||0)-dt);
+  if(s.wt>= (s.hard?18:15)){
+    if(s.mode==="hard"&&s.wave===10&&!s.bossDefeated){s.wt=19.5;}
+    else {s.score+=s.hard?100:50;sfx(880,.25);if(s.mode!=="infinite"&&s.wave>=(s.hard?10:5)){endG(true);return false}s.wave++;s.wt=0}
+  }
+  if(s.mode==="hard"&&s.wave===10&&!s.boss&&!s.bossDefeated){s.boss={x:GW/2,y:210,hp:12,max:12,attack:7,hit:0};toast("👑 O Rei das Pragas chegou! Acerte-o 12 vezes!",4500)}
+  if(s.boss){s.boss.x=GW/2+Math.sin(s.t*.9)*GW*.22;s.boss.attack-=dt;s.boss.hit=Math.max(0,(s.boss.hit||0)-dt);if(s.boss.attack<=0){s.boss.attack=4.5;const dx=s.x-s.boss.x,dy=GH-90-s.boss.y,len=Math.hypot(dx,dy)||1;for(const offset of [-.20,0,.20]){const a=Math.atan2(dy,dx)+offset;s.bossShots.push({x:s.boss.x,y:s.boss.y+35,vx:Math.cos(a)*195,vy:Math.sin(a)*195,r:11})}orchardBurst(s.boss.x,s.boss.y+40,"#d58aff",1.1,"ATAQUE!");sfx(180,.14)}}
+  if(s.reg>=.72){s.reg=0;s.ammo=Math.min(s.hard?26:12,s.ammo+1)}
+  const sp=s.stun>0?110:(s.hard?270:220),dir=(K.r?1:0)-(K.l?1:0);s.x=Math.max(38,Math.min(GW-38,s.x+dir*sp*dt));
+  if(K.f&&s.ft<=0&&s.ammo>0&&s.stun<=0){s.ft=s.hard?.13:.22;s.ammo--;s.sh.push({x:s.x,y:GH-100,vy:-500,trail:0});orchardBurst(s.x,GH-104,"#ffcf55",.27);sfx(660,.06)}
   s.sp-=dt;
   if(s.sp<=0){
-    s.sp=Math.max(.6,1.5-s.wave*.15);const x=24+Math.random()*(GW-48),r=Math.random();
-    if(r<.12)s.it.push({x,y:-10,vy:70,k:"m"});
-    else if(r<.12+.08+s.wave*.02)s.it.push({x,y:-10,vy:90,k:"r"});
-    else{const hp=s.wave>=3&&Math.random()<.3?2:1;s.pe.push({x,y:-10,vy:34+s.wave*9,hp})}
+    s.sp=s.hard?Math.max(.42,.98-s.wave*.047)/.7:Math.max(.6,1.5-s.wave*.15);const x=38+Math.random()*(GW-76),r=Math.random();
+    if(r<.182)s.it.push({x,y:-10,vy:65,k:"m"});
+    else if(r<.182+.045+s.wave*.009)s.it.push({x,y:-10,vy:90,k:"r"});
+    else{const beetle=s.hard?(Math.random()<Math.min(.64,.25+s.wave*.038)):(s.wave>=3&&Math.random()<.3);const hp=beetle?2:1;s.pe.push({x,y:-10,vy:(s.hard?49+s.wave*9:34+s.wave*9),hp,kind:beetle?"beetle":"larva"})}
   }
-  s.sh.forEach(b=>b.y+=b.vy*dt);s.sh=s.sh.filter(b=>b.y>-10);
-  s.pe.forEach(p=>p.y+=p.vy*dt);s.it.forEach(i=>i.y+=i.vy*dt);
-  for(const b of s.sh)for(const p of s.pe)if(!b.d&&!p.dead&&near(b,p,20)){b.d=1;if(--p.hp<=0){p.dead=1;s.score+=10;sfx(330,.08)}}
+  // Mascotes com poderes reais; todos funcionam apenas quando equipados.
+  if(s.petId&&s.petCooldown<=0){
+   const id=s.petId; s.petCooldown={bat:4,ghost:5,pumpkin:12,firefly:6}[id]||5;s.petFlash=.55;s.petEffect={id,ttl:.55,x:s.x+(s.x>GW*.66?-45:45),y:GH-132,tx:s.x,ty:GH-128};
+   if(id==="firefly"){s.ammo=Math.min(s.hard?26:12,s.ammo+2);orchardBurst(s.x+42,GH-120,"#d8ff81",.6,"+2 🥭")}
+   if(id==="pumpkin"){if(s.petEffect){s.petEffect.tx=GW*(.5)/s.trees.length;s.petEffect.ty=GH-104;}s.shield=(s.shield||0)+1;orchardBurst(s.x+42,GH-120,"#ffc26a",.7,"ESCUDO")}
+   if(id==="bat"||id==="ghost"){
+    const target=s.pe.filter(p=>!p.dead).sort((a,b)=>b.y-a.y)[0];if(target&&s.petEffect){s.petEffect.tx=target.x;s.petEffect.ty=target.y;}else if(s.boss&&s.petEffect){s.petEffect.tx=s.boss.x;s.petEffect.ty=s.boss.y;}
+    if(target){const damage=id==="ghost"?2:1;target.hp-=damage;target.hit=.32;orchardBurst(target.x,target.y,id==="ghost"?"#d7b0ff":"#ffd67e",1.1,"-"+damage);if(target.hp<=0){target.dead=1;s.kills++;s.score+=s.hard?20:10}}
+    else if(s.boss){s.boss.hp-=1;s.boss.hit=.3;orchardBurst(s.boss.x,s.boss.y,"#d9b0ff",1,"-1");if(s.boss.hp<=0){s.boss=null;s.bossDefeated=true;s.score+=1500;toast("👑 Rei das Pragas derrotado!",3500)}}
+    }
+   }
+  s.sh.forEach(b=>{b.y+=b.vy*dt;b.trail=(b.trail||0)+dt;if(b.trail>.055){b.trail=0;orchardFX.push({x:b.x+(Math.random()-.5)*8,y:b.y+9,vx:(Math.random()-.5)*18,vy:30,life:.18,max:.18,c:"#ffc45e",size:3})}});s.sh=s.sh.filter(b=>b.y>-10);
+  s.pe.forEach(p=>{p.y+=p.vy*dt;p.hit=Math.max(0,(p.hit||0)-dt)});s.it.forEach(i=>i.y+=i.vy*dt);
+  s.bossShots.forEach(b=>{b.x+=b.vx*dt;b.y+=b.vy*dt});
+  s.bossShots=s.bossShots.filter(b=>{if(Math.hypot(b.x-s.x,b.y-(GH-90))<b.r+19){orchardHurtPlayer(s,2,b.x,b.y,"REI DAS PRAGAS");return false}return b.y<GH+25&&b.x>-25&&b.x<GW+25});
+  s.pe.forEach(p=>{if(!p.dead&&Math.hypot(p.x-s.x,p.y-(GH-90))<(p.kind==="beetle"?39:34)){orchardHurtPlayer(s,p.kind==="beetle"?2:1,p.x,p.y,p.kind==="beetle"?"BESOURO":"LARVA");p.dead=true}});
+  for(const b of s.sh)for(const p of s.pe)if(!b.d&&!p.dead&&near(b,p,p.kind==="beetle"?37:32)){b.d=1;p.hit=.2;p.y-=5;orchardBurst(p.x,p.y,p.kind==="beetle"?"#b9ff79":"#ffcf73",1.35,"-1");if(--p.hp<=0){p.dead=1;s.kills++;s.score+=s.hard?20:10;sfx(330,.08)}}
+  if(s.boss)for(const b of s.sh)if(!b.d&&Math.abs(b.x-s.boss.x)<53&&Math.abs(b.y-s.boss.y)<42){b.d=1;s.boss.hp--;s.boss.hit=.28;orchardBurst(b.x,b.y,"#e0a5ff",1.5,"-1");s.score+=30;sfx(490,.07);if(s.boss.hp<=0){orchardBurst(s.boss.x,s.boss.y,"#ffdd83",4,"REI DERROTADO!");s.boss=null;s.bossDefeated=true;s.score+=1500;toast("👑 Rei das Pragas derrotado! +1500 pontos",4500);break}}
   s.sh=s.sh.filter(b=>!b.d);
-  s.pe=s.pe.filter(p=>{if(p.dead)return false;if(p.y>GH-60){s.hp--;sfx(120,.25);return false}return true});
+  s.pe=s.pe.filter(p=>{if(p.dead)return false;if(p.y>GH-60){const alive=s.trees.map((ok,i)=>ok?i:-1).filter(i=>i>=0);if(alive.length){const idx=Math.min(alive.length-1,Math.floor(p.x/GW*alive.length));const target=alive[idx];if((s.shield||0)>0){s.shield--;orchardBurst(GW*(target+.5)/s.trees.length,GH-72,"#ffcf70",.9,"DEFESA!")}
+      else if(!s.hard||p.kind==="beetle"||(s.treeHits[target]=(s.treeHits[target]||0)+1)>=2){s.trees[target]=false;s.hp=s.trees.filter(Boolean).length}} sfx(120,.25);return false}return true});
   const me2={x:s.x,y:GH-90};
-  s.it=s.it.filter(i=>{if(near(i,me2,24)){if(i.k==="m"){s.ammo=Math.min(12,s.ammo+3);s.score+=5;sfx(990,.08)}else{s.stun=1;sfx(100,.3)}return false}return i.y<GH});
-  if(s.hp<=0){endG(false);return false}
+  s.it=s.it.filter(i=>{if(near(i,me2,s.petId==="firefly"?72:40)){if(i.k==="m"){s.playerHp=Math.min(s.playerMaxHp,s.playerHp+2);s.ammo=Math.min(s.hard?26:12,s.ammo+4);s.score+=s.hard?15:8;orchardBurst(i.x,i.y,"#a5ff91",.85,"+2 VIDA");sfx(990,.08)}else{orchardHurtPlayer(s,1,i.x,i.y,"PEDRA");s.stun=.45;sfx(100,.3)}return false}return i.y<GH});
+  if(s.hp<=0||s.playerHp<=0){endG(false);return false}
   return true;
 }
-function drawG(){
-  const g=gx,s=gs||{x:GW/2,ammo:10,hp:3,score:0,wave:1,sh:[],pe:[],it:[],stun:0};
-  const bg=g.createLinearGradient(0,0,0,GH);bg.addColorStop(0,"#10261B");bg.addColorStop(1,"#1D4524");g.fillStyle=bg;g.fillRect(0,0,GW,GH);
-  g.textAlign="center";g.textBaseline="middle";
-  g.imageSmoothingEnabled=false;[60,180,300].forEach((x,i)=>{const c=i<s.hp?treeCv():spr("stump"),k=i<s.hp?2.6:3;g.drawImage(c,Math.round(x-c.width*k/2),Math.round(GH-8-c.height*k),c.width*k,c.height*k)});
-  s.pe.forEach(p=>dr(spr(p.hp>1?"beetle":"pest"),p.x,p.y,2.6));
-  s.it.forEach(i=>dr(spr(i.k==="m"?"mango":"rock"),i.x,i.y,2.4));
-  s.sh.forEach(b=>dr(spr("mango"),b.x,b.y,1.3));
-  g.globalAlpha=s.stun>0?.5:1;dr(playerCv(),s.x,GH-90,2.2);g.globalAlpha=1;
-  g.fillStyle="#F1E6C8";g.font="14px sans-serif";g.textAlign="left";
-  g.fillText("Pontos "+s.score+"  ·  Onda "+s.wave+"/5  ·  Mangas "+s.ammo,10,16);
+// Vida independente do personagem: árvores e personagem têm condições de derrota separadas.
+function orchardHurtPlayer(s,amount,x,y,source){
+ if(s.invuln>0||s.playerHp<=0)return;
+ s.playerHp=Math.max(0,s.playerHp-amount);s.invuln=1.05;s.stun=Math.max(s.stun,.2);
+ orchardBurst(x,y,"#ff718e",1.2,"-"+amount+" ❤");sfx(130,.14);
+ if(s.playerHp===0)toast("💔 Sam ficou sem vida!",2300);
 }
+// Impactos estilo RPG: partículas, números de dano e flashes sem imagens cortadas.
+const orchardFX=[];
+function orchardBurst(x,y,color="#ffeaa2",power=1,damage=""){
+ const count=document.documentElement.classList.contains('sm165-lowfx')||matchMedia('(prefers-reduced-motion: reduce)').matches?Math.min(4,Math.round(11*power)):Math.round(11*power);for(let i=0;i<count;i++){const a=Math.random()*Math.PI*2,v=(40+Math.random()*110)*power;orchardFX.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-20,life:.25+Math.random()*.24,max:.49,c:color,size:2+Math.random()*4})}
+ if(damage)orchardFX.push({x,y:y-14,vx:0,vy:-48,life:.6,max:.6,c:"#fff5d0",label:damage});
+}
+function orchardUpdateFX(dt){for(let i=orchardFX.length-1;i>=0;i--){const p=orchardFX[i];p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=100*dt;if(p.life<=0)orchardFX.splice(i,1)}}
+function orchardDrawFX(g){g.save();for(const p of orchardFX){g.globalAlpha=Math.min(1,p.life/(p.max||.5));if(p.label){g.textAlign="center";g.font="bold 17px monospace";g.fillStyle="#291321";g.fillText(p.label,p.x+1,p.y+2);g.fillStyle=p.c;g.fillText(p.label,p.x,p.y)}else{g.fillStyle=p.c;g.fillRect(Math.round(p.x),Math.round(p.y),Math.ceil(p.size),Math.ceil(p.size))}}g.restore()}
+
+function drawG(){
+  const g=gx,s=gs||{x:GW/2,ammo:10,hp:gHard()?5:3,trees:Array(gHard()?5:3).fill(true),treeHits:Array(gHard()?5:3).fill(0),hard:gHard(),score:0,wave:1,sh:[],pe:[],it:[],stun:0,ft:0,playerMaxHp:gHard()?8:6,playerHp:gHard()?8:6,bossShots:[],invuln:0,t:0};
+  const t=s.t||0;
+  v11Backdrop(g,t,GW,GH);
+  g.textAlign='center';g.textBaseline='middle';g.imageSmoothingEnabled=false;
+  // Bottom-anchored trees: roots never run below the canvas, unlike V10.
+  Array.from({length:s.trees.length},(_,i)=>GW*(i+.5)/s.trees.length).forEach((x,i)=>{
+    const alive=s.trees[i];const variant=!alive?'arvore_destruida':s.hard&&s.treeHits&&s.treeHits[i]>0?'arvore_danificada':'arvore_saudavel';
+    const sway=alive?Math.sin(t*.85+i*.92)*.018:0;
+    if(!v11Draw(g,variant,x,GH-19,s.hard?98:117,s.hard?114:126,{anchor:'bottom',rotate:sway})){
+      const c=alive?treeCv():spr('stump');const k=alive?2.6:3;g.drawImage(c,x-c.width*k/2,GH-16-c.height*k,c.width*k,c.height*k)
+    }
+    // Shield around vulnerable tree during pumpkin power.
+    if(alive&&s.shield>0&&s.petId==='pumpkin'){
+      g.save();g.strokeStyle='#eab365';g.globalAlpha=.4+.2*Math.sin(t*4+i);g.lineWidth=2;
+      g.beginPath();g.ellipse(x,GH-90,s.hard?42:46,63,0,0,Math.PI*2);g.stroke();g.restore();
+    }
+  });
+  if(s.boss){
+    const b=s.boss,pulse=Math.sin(t*3),hit=Math.max(0,b.hit||0),attack=(b.attack||0)<1;
+    g.save();g.globalAlpha=.3;g.fillStyle='#6d2c8a';g.beginPath();g.ellipse(b.x,b.y+74,78,9,0,0,Math.PI*2);g.fill();g.restore();
+    if(attack){g.save();g.globalAlpha=.18+.12*Math.sin(t*22);g.fillStyle='#ff7e26';g.beginPath();g.arc(b.x,b.y,104,0,Math.PI*2);g.fill();g.restore()}
+    const shake=hit>0?Math.sin(t*76)*4*hit/.3:0;
+    v11Draw(g,'rei_das_pragas_completo',b.x+shake,b.y+Math.sin(t*2.4)*2,195,166,{scale:1+Math.sin(t*2.2)*.018,rotate:attack?Math.sin(t*15)*.018:0,alpha:hit>0?.85:1});
+    if(hit>0){g.save();g.globalAlpha=.12*hit/.3;g.fillStyle='#fff9ff';g.beginPath();g.ellipse(b.x,b.y,98,75,0,0,Math.PI*2);g.fill();g.restore()}
+    const barw=116,y=b.y-94;g.fillStyle='#160f20';g.fillRect(b.x-barw/2-2,y-2,barw+4,12);
+    g.fillStyle='#9b3157';g.fillRect(b.x-barw/2,y,barw,8);g.fillStyle='#9dff95';g.fillRect(b.x-barw/2,y,barw*Math.max(0,b.hp/b.max),8);
+    g.fillStyle='#fff0dc';g.font='bold 13px sans-serif';g.fillText('REI DAS PRAGAS',b.x,y-12);
+  }
+  s.pe.forEach(p=>{
+    const beetle=p.kind==='beetle',sz=beetle?63:56;
+    const bob=Math.sin(t*8+p.x*.07)*2;
+    g.save();g.fillStyle='#06150c88';g.beginPath();g.ellipse(p.x,p.y+sz*.40,sz*.35,4,0,0,Math.PI*2);g.fill();
+    if(p.hit>0){g.shadowColor='#fff5bb';g.shadowBlur=12;g.globalAlpha=.76+Math.sin(t*64)*.2}
+    v11Draw(g,beetle?'besouro':'larva_pequena',p.x,p.y+bob,sz,sz);
+    g.restore();
+  });
+  (s.bossShots||[]).forEach(b=>{g.save();g.shadowColor='#bb70ff';g.shadowBlur=14;g.fillStyle='#a14cfc';g.beginPath();g.arc(b.x,b.y,b.r,0,Math.PI*2);g.fill();g.fillStyle='#fff2fb';g.fillRect(b.x-3,b.y-3,6,6);g.restore()});
+  s.it.forEach(i=>v11Draw(g,i.k==='m'?'manga':'semente',i.x,i.y,34,38));
+  s.sh.forEach(b=>{g.save();g.globalAlpha=.26;g.fillStyle='#fdaf44';g.fillRect(b.x-3,b.y+6,6,18);g.restore();v11Draw(g,'manga',b.x,b.y,22,28)});
+  g.save();g.globalAlpha=s.invuln>0&&Math.floor(t*13)%2===0?.46:s.stun>0?.7:1;
+  const moving=(K.r?1:0)-(K.l?1:0),shooting=(s.ft||0)>.075;
+  const playerName=shooting?'sam_atacando':moving?'sam_andando_1':'sam_idle';
+  v11Draw(g,playerName,s.x,GH-36+Math.sin(t*9)*Math.abs(moving)*1.2,65,70,{anchor:'bottom',rotate:moving*.025});
+  g.restore();
+  const pet=orchardCatalog.find(x=>x.id===s.petId);
+  if(pet){
+    const id=pet.id,petx=s.x+(s.x>GW*.66?-45:45)+Math.sin(t*1.8)*5,pety=GH-132+Math.sin(t*3.5+1)*5;
+    const arr=s.petFlash>.06?[petFrames[id][2]]:v11StageFrames[id];
+    g.save();
+    const shadowColor={bat:'#ba70f2',ghost:'#85eafa',pumpkin:'#ffb45a',firefly:'#e4ff9a'}[id];
+    g.globalAlpha=.25+.12*Math.sin(t*3);g.fillStyle=shadowColor;g.beginPath();g.ellipse(petx,pety+7,34,31,0,0,Math.PI*2);g.fill();g.restore();
+    v11Frame(g,arr,t+id.length*.13,4.2,petx,pety,id==='bat'?80:70,id==='bat'?70:71,{rotate:Math.sin(t*3)*.045,scale:s.petFlash>.06?1.12:1});
+  }
+  v11Magic(g,s);
+  orchardDrawFX(g);
+  // HUD: warm, crisp panels; keep the text within the canvas in both modes.
+  g.save();g.fillStyle='#08131bd8';g.fillRect(5,3,GW-10,s.hard?92:72);
+  g.fillStyle='#f4e9ca';g.font='bold 13px sans-serif';g.textAlign='left';
+  g.fillText((s.hard?'DIFÍCIL · ':'')+'Pontos '+s.score+' · Onda '+s.wave+(s.mode==='infinite'?'∞':'/'+(s.hard?10:5))+' · 🥭 '+s.ammo,12,17);
+  g.font='12px sans-serif';g.fillText('Árvores: '+s.hp+'/'+s.trees.length+(s.shield?' · Escudos: '+s.shield:''),12,37);
+  const hp=Math.max(0,s.playerHp??s.playerMaxHp??6),maxHp=s.playerMaxHp||6;
+  const barY=s.hard?68:47;g.fillStyle='#251523';g.fillRect(10,barY,150,18);
+  g.fillStyle=hp/maxHp>.35?'#e65a7a':'#ff8d45';g.fillRect(13,barY+3,144*hp/maxHp,12);
+  g.strokeStyle='#f4cb9e';g.lineWidth=1.4;g.strokeRect(10,barY,150,18);
+  g.fillStyle='#fff';g.font='bold 11px sans-serif';g.fillText('❤ '+hp+'/'+maxHp,20,barY+9);
+  if(s.hard&&s.treeHits){g.font='11px sans-serif';g.fillText('Larvas: 2 mordidas · Besouros: 1',12,89)}
+  g.restore();
+}
+
+
+// ===== V11 — animação contínua, recorte visual de alfa em memória, sem alterar o PNG =====
+const v11AlphaBounds = Object.create(null);
+const v11PreviewKey = Object.create(null);
+const v11StageFrames = {
+  bat:['morceguinho_idle','morceguinho_voando'],
+  ghost:['fantasminha_idle','fantasminha_voando'],
+  pumpkin:['miniabobora_idle','miniabobora_andando'],
+  firefly:['vagalume_idle','vagalume_voando']
+};
+function v11Bounds(n){
+  if(v11AlphaBounds[n])return v11AlphaBounds[n];
+  const im=pixelImage(n);if(!im.complete||!im.naturalWidth)return null;
+  try{
+    const c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;
+    const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(im,0,0);
+    const a=ctx.getImageData(0,0,c.width,c.height).data;
+    let left=c.width,top=c.height,right=-1,bottom=-1;
+    // Ignore semitransparent fringe, but keep tips, wings, leaves and roots.
+    for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++){
+      if(a[(y*c.width+x)*4+3]>18){left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y)}
+    }
+    if(right<0)return null;
+    return v11AlphaBounds[n]={sx:Math.max(0,left-3),sy:Math.max(0,top-3),sw:Math.min(c.width,right+4)-Math.max(0,left-3),sh:Math.min(c.height,bottom+4)-Math.max(0,top-3)};
+  }catch(e){return v11AlphaBounds[n]={sx:0,sy:0,sw:im.naturalWidth,sh:im.naturalHeight}}
+}
+function v11Draw(g,n,cx,cy,w,h,opts={}){
+  const im=pixelImage(n);if(!im.complete||!im.naturalWidth)return false;
+  const bb=v11Bounds(n);if(!bb)return false;
+  const factor=Math.min(w/bb.sw,h/bb.sh);
+  const dw=bb.sw*factor,dh=bb.sh*factor;
+  g.save();g.imageSmoothingEnabled=false;
+  if(opts.alpha!=null)g.globalAlpha*=opts.alpha;
+  g.translate(cx,cy);
+  if(opts.rotate)g.rotate(opts.rotate);
+  if(opts.flip)g.scale(-1,1);
+  if(opts.scale)g.scale(opts.scale,opts.scale);
+  let dx=-dw/2,dy=opts.anchor==='bottom'?-dh: -dh/2;
+  if(opts.anchor==='top')dy=0;
+  g.drawImage(im,bb.sx,bb.sy,bb.sw,bb.sh,dx,dy,dw,dh);
+  g.restore();return true;
+}
+function v11Ease(a){return a*a*(3-2*a)}
+function v11Frame(g,names,phase,fps,x,y,w,h,opts={}){
+  const n=names.length,frame=phase*fps,idx=Math.floor(frame)%n,lerp=frame-Math.floor(frame);
+  const oldName=names[(idx+n-1)%n],newName=names[idx];
+  // Fast cross dissolve immediately after an animation's frame boundary.
+  const blend=v11Ease(Math.min(1,lerp/.30));
+  if(blend<1)v11Draw(g,oldName,x,y,w,h,{...opts,alpha:1-blend});
+  v11Draw(g,newName,x,y,w,h,{...opts,alpha:blend});
+}
+function v11Backdrop(g,t,gw,gh){
+  if(!v11Backdrop.cache ||v11Backdrop.w!==gw||v11Backdrop.h!==gh){
+    const c=document.createElement('canvas');c.width=gw;c.height=gh;
+    const b=c.getContext('2d');const grd=b.createLinearGradient(0,0,0,gh);
+    grd.addColorStop(0,'#0c142d');grd.addColorStop(.42,'#15233c');grd.addColorStop(.79,'#19472c');grd.addColorStop(1,'#12381f');
+    b.fillStyle=grd;b.fillRect(0,0,gw,gh);
+    b.fillStyle='#ffffff11';for(let i=0;i<30;i++){let x=(i*59+23)%gw,y=24+(i*47)%(gh*.38);b.fillRect(x,y,1+(i%2),1+(i%2))}
+    b.fillStyle='#e7cd9d34';b.beginPath();b.arc(gw*.83,gh*.13,25,0,Math.PI*2);b.fill();
+    b.fillStyle='#142b29';b.beginPath();b.moveTo(0,gh*.75);
+    for(let x=0;x<=gw;x+=8)b.lineTo(x,gh*.74+Math.sin(x*.025)*8);
+    b.lineTo(gw,gh);b.lineTo(0,gh);b.fill();
+    b.fillStyle='#204d2b';b.fillRect(0,gh-39,gw,39);
+    for(let i=0;i<85;i++){const x=(i*43+31)%gw,y=gh-7-(i*17)%32;b.fillStyle=(i%3===0?'#60a34d3a':'#a9cb5c33');b.fillRect(x,y,2+(i%3),1+(i%2))}
+    v11Backdrop.cache=c;v11Backdrop.w=gw;v11Backdrop.h=gh;
+  }
+  g.drawImage(v11Backdrop.cache,0,0);
+  // Gentle animated fireflies. No random allocation per frame.
+  g.save();for(let i=0;i<9;i++){
+    const x=(i*73+17+Math.sin(t*.27+i)*8)%gw,y=gh*.60+Math.sin(i*2.3+t*.7)*18;
+    g.globalAlpha=.24+.28*(.5+.5*Math.sin(t*2+i*3));g.fillStyle='#e3ef93';g.fillRect(x,y,2,2);
+  }g.restore();
+}
+function v11Magic(g,s){
+  const fx=s.petEffect;if(!fx || fx.ttl<=0)return;
+  const fraction=1-fx.ttl/.55,scale=Math.min(1,Math.max(0,fraction));
+  const tx=fx.tx??fx.x,ty=fx.ty??fx.y;
+  g.save();g.globalAlpha=.85*(1-scale*.65);
+  if(fx.id==='ghost'){
+    const x=fx.x,y=fx.y;
+    g.lineCap='round';
+    g.strokeStyle='#1339ae';g.lineWidth=17*(1-scale)+3;g.beginPath();g.moveTo(x,y);g.lineTo(tx,ty);g.stroke();
+    g.strokeStyle='#76f5ff';g.lineWidth=9*(1-scale)+2;g.beginPath();g.moveTo(x,y);g.lineTo(tx,ty);g.stroke();
+    g.strokeStyle='#f6ffff';g.lineWidth=3;g.beginPath();g.moveTo(x,y);g.lineTo(tx,ty);g.stroke();
+    for(let i=0;i<6;i++){const k=(i/6+scale)%1;g.fillStyle=i%2?'#a4ffff':'#d7bdff';g.fillRect(x+(tx-x)*k-2,y+(ty-y)*k+Math.sin(k*14)*5,5,5)}
+  }else if(fx.id==='bat'){
+    for(let i=0;i<3;i++){g.strokeStyle=i%2?'#d4adff':'#9e56ff';g.lineWidth=4-i*.5;g.beginPath();g.arc(tx,ty,(i+1)*13+scale*43,Math.PI*.2,Math.PI*1.8);g.stroke()}
+    g.fillStyle='#f6b2ff';g.beginPath();g.arc(tx,ty,8*(1-scale)+2,0,Math.PI*2);g.fill();
+  }else if(fx.id==='pumpkin'){
+    const cx=fx.tx??GW*.5,cy=fx.ty??GH-110;
+    g.strokeStyle='#ffc76e';g.lineWidth=7*(1-scale)+2;
+    g.beginPath();g.arc(cx,cy,24+38*scale,0,Math.PI*2);g.stroke();
+    g.strokeStyle='#c8fa9d';g.lineWidth=2;g.beginPath();g.arc(cx,cy,14+32*scale,0,Math.PI*2);g.stroke();
+  }else if(fx.id==='firefly'){
+    for(let i=0;i<9;i++){const a=(i/9)*Math.PI*2+scale*3,r=12+48*scale;
+      g.fillStyle=i%2?'#ffe483':'#b7f86a';g.beginPath();g.arc(fx.x+Math.cos(a)*r,fx.y+Math.sin(a)*r,3+3*(1-scale),0,Math.PI*2);g.fill();
+    }
+  }
+  g.restore();
+}
+function v11ShopPreviews(t){
+  const cards=document.querySelectorAll('canvas[data-pet-stage]');
+  const panel=document.querySelector('#orchardExtras');
+  const pr=panel?panel.getBoundingClientRect():null;
+  const visible=pr&&pr.bottom>=0&&pr.top<window.innerHeight;
+  if(cards.length && !document.hidden && visible && (!v11ShopPreviews.prev || t-v11ShopPreviews.prev>45)){
+    v11ShopPreviews.prev=t;cards.forEach(c=>{
+    if(!c.isConnected ||c.closest('[hidden]'))return;
+    const id=c.dataset.petStage,names=v11StageFrames[id];if(!names)return;
+    const ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);
+    const phase=t*.001;
+    const glow={bat:'#ad5cff',ghost:'#8defff',pumpkin:'#ffc160',firefly:'#ceff79'}[id];
+    const cg=ctx.createRadialGradient(c.width/2,c.height*.62,5,c.width/2,c.height*.62,c.height*.52);
+    cg.addColorStop(0,glow+'55');cg.addColorStop(1,glow+'00');ctx.fillStyle=cg;ctx.fillRect(0,0,c.width,c.height);
+    const bob=Math.sin(phase*2.2+id.length)*5;
+    const sway=Math.sin(phase*2.4+id.length)*.03;
+    v11Frame(ctx,names,phase+id.length*.2,3.3,c.width/2,c.height*.54+bob,c.width*.78,c.height*.83,{rotate:sway});
+  });}
+  requestAnimationFrame(v11ShopPreviews);
+}
+requestAnimationFrame(v11ShopPreviews);
+function v11Preload(){
+  ['rei_das_pragas_completo','arvore_saudavel','arvore_danificada','arvore_destruida',
+   'sam_idle','sam_andando_1','sam_atacando','manga','semente','besouro','larva_pequena',
+   ...Object.values(petFrames).flat()].forEach(n=>pixelImage(n));
+}
+v11Preload();
+
+
 async function endG(won){
   const s=gs;cancelAnimationFrame(gRaf);
-  if(won)s.score+=Math.max(0,s.hp)*100;
-  drawG();gs=null;sfx(won?1200:150,.4);
+  if(won)s.score+=Math.max(0,s.hp)*(s.hard?200:100);
+  drawG();gs=null;sm17GamePause(false);sfx(won?1200:150,.4);
+  orchardAfterBattle(s,won);try{window.SamHybridRPG?.onDefenseResult?.(won)}catch(ex){}
   $("gOvT").textContent=won?"Vitória! O pomar está salvo":"As pragas venceram";
-  $("gOvP").textContent="Pontuação: "+s.score+" (onda "+s.wave+" de 5).";
-  $("gOvK").textContent=gRun?"Salvando seu resultado…":"Partida de treino: não conta no ranking.";
+  $("gOvP").textContent=(s.mode==="infinite"?"Defesa Infinita · ":s.hard?"Modo Difícil · ":"")+"Pontuação: "+s.score+" (onda "+s.wave+(s.mode==="infinite"?"": " de "+(s.hard?10:5))+").";
+  $("gOvK").textContent=s.mode==="infinite"?"Recorde infinito salvo localmente; não conta no ranking oficial.":gRun?"Salvando seu resultado…":"Partida de treino: não conta no ranking.";
   $("gPlay").textContent="Jogar de novo";$("gOv").hidden=false;
   if(!gRun)return;
   try{
@@ -2799,7 +3507,7 @@ addEventListener("keyup",e=>{if(KM[e.key])K[KM[e.key]]=0});
 [["gL","l"],["gR","r"],["gF","f"]].forEach(([id,k])=>{const b=$(id);
   b.addEventListener("pointerdown",e=>{e.preventDefault();K[k]=1});
   ["pointerup","pointerleave","pointercancel"].forEach(ev=>b.addEventListener(ev,()=>{K[k]=0}))});
-document.addEventListener("visibilitychange",()=>{if(document.hidden){K.l=K.r=K.f=0}});
+document.addEventListener("visibilitychange",()=>{if(document.hidden){K.l=K.r=K.f=0;if(gs)sm17GamePause(true)}});
 
 /* ===== etapas 5-8: missões, evento, segredos, perfil, reações ===== */
 const RXS=["🥭","❤️","😂","🌱"],seenA=new Set();
@@ -2821,11 +3529,14 @@ async function loadQuests(){
   if(!me||!prof){$("qList").innerHTML='<p class="state">Entre com seu @ para ver suas missões.</p>';return}
   $("qList").innerHTML='<p class="state">Carregando…</p>';
   try{QS=await rpc("quest_state",{p_handle:me,p_token:tok});renderQuests()}
-  catch(e){$("qList").innerHTML='<p class="state">Não consegui carregar agora. Tente de novo em instantes.</p>'}
+  catch(e){console.error("quest_state falhou:",e);const m=String(e&&e.message||e);const miss=/function|schema cache|does not exist|404|PGRST/i.test(m);
+    $("qList").innerHTML='<div class="state"><p>'+(miss?'O servidor não tem a função de conquistas instalada (ou ela foi apagada no reset).':'Não consegui carregar as conquistas.')+'</p><p class="sm">Detalhe: '+esc(m)+'</p><button type="button" class="btn-gothic alt" id="qRetry">Tentar de novo</button></div>';
+    const rb=$("qRetry");if(rb)rb.onclick=loadQuests}
 }
 function renderQuests(){
   const L=(QS&&QS.goals||[]).filter(g=>g.type===qType);
-  $("qTabM").className=qType==="quest"?"":"alt";$("qTabA").className=qType==="ach"?"":"alt";
+  if(!L.length){$("qList").innerHTML='<p class="state">'+((QS&&QS.goals&&QS.goals.length)?'Nada nesta aba ainda.':'O servidor não devolveu nenhuma missão ou conquista. Rode o SQL de catálogo (supabase_extras.sql) no Supabase.')+'</p>';return}
+  $("qTabM").classList.toggle("on",qType==="quest");$("qTabA").classList.toggle("on",qType==="ach");
   $("qList").innerHTML=L.map(g=>{
     const hid=g.kind==="hidden"&&!g.done,ready=!g.done&&g.prog>=g.goal,rw=[g.rm?"+"+g.rm+" mangas":"",g.rx?"+"+g.rx+" XP":"",g.ptitle?"título “"+g.ptitle+"”":""].filter(Boolean).join(", ");
     return`<div class="goal${g.done?" done":""}"><span class="gic">${hid?"❔":g.icon}</span><div><b>${esc(g.title)}</b><p class="sm">${hid?"Procure com atenção.":esc(g.descr)}</p><div class="pbar"><i style="width:${Math.round(g.prog/g.goal*100)}%"></i></div><span class="sm">${g.prog}/${g.goal} · Recompensa: ${esc(rw)}</span></div>${ready?`<button type="button" data-g="${esc(g.id)}">Resgatar</button>`:`<span class="gst ${g.done?"fin":""}">${g.done?"Concluída":g.prog>0?"Em andamento":"Disponível"}</span>`}</div>`}).join("")||'<p class="state">Nenhuma missão disponível no momento. Volte mais tarde!</p>';
@@ -2841,12 +3552,12 @@ async function loadExtra(){
   if(!me||!prof)return;
   try{QS=await rpc("quest_state",{p_handle:me,p_token:tok})}catch(e){return}
   const G=QS.goals,ach=G.filter(g=>g.type==="ach"),dn=G.filter(g=>g.done);renderProfile();
-  $("pName").textContent="@"+me+(QS.title?" · "+QS.title:"");
-  $("pTitle").innerHTML='<option value="">Sem título</option>'+ach.filter(g=>g.done&&g.ptitle).map(g=>`<option value="${esc(g.id)}"${g.ptitle===QS.title?" selected":""}>${esc(g.ptitle)}</option>`).join("");
+  $("pName").textContent="@"+me+(QS.title?" · "+(QS.title==="Dono"?"👑 ":"")+QS.title:"");
+  $("pTitle").innerHTML='<option value="">Sem título</option>'+ach.filter(g=>g.done&&g.ptitle).map(g=>`<option value="${esc(g.id)}"${g.ptitle===QS.title?" selected":""}>${esc(g.ptitle)}</option>`).join("")+(me.toLowerCase()==="sammanguinha"?`<option value="__owner__"${QS.title==="Dono"?" selected":""}>👑 Dono — Exclusivo</option>`:"");
   $("pStats").innerHTML=[`<li><b>Mangas:</b> ${mine.toLocaleString("pt-BR")}</li>`,`<li><b>Segredos:</b> ${Object.keys(found).length}/${SECRETS.length}</li>`,`<li><b>Conquistas:</b> ${ach.filter(g=>g.done).length}/${ach.length}</li>`,`<li><b>Missões:</b> ${G.filter(g=>g.type==="quest"&&g.done).length}/${G.filter(g=>g.type==="quest").length}</li>`].join("");
   $("pHist").innerHTML=ach.filter(g=>g.done).map(g=>`<li><span class="gic">${g.icon}</span><span class="nm">${esc(g.title)}</span></li>`).join("")||'<li class="state">Nenhuma conquista ainda. Veja a aba Missões.</li>';
 }
-$("pTitle").onchange=async e=>{try{await rpc("title_set",{p_handle:me,p_token:tok,p_id:e.target.value});toast("Título atualizado.");loadExtra()}catch(err){toast("Esse título ainda não foi conquistado.")}};
+$("pTitle").onchange=async e=>{if(e.target.value==="__owner__"){if(me.toLowerCase()!=="sammanguinha")return;toast("👑 Título Dono selecionado!");$("pName").textContent="@"+me+" · Dono";return;}try{await rpc("title_set",{p_handle:me,p_token:tok,p_id:e.target.value});toast("Título atualizado.");loadExtra()}catch(err){toast("Esse título ainda não foi conquistado.")}};
 /* evento do dia (o servidor decide quando está ativo) */
 let EV=null,evT=0;
 async function pollEvent(){
@@ -2940,7 +3651,36 @@ $("hero").addEventListener("click",async e=>{
     { id: "leaf-aura", name: "Véu de Folhas Secas", desc: "Uma espiral de folhas outonais flutua continuamente ao seu redor.", rarity: "Incomum", kind: "gear", slot: "aura", icon: "leaves", from: "Resolva a trilha", quest: "trail" },
     { id: "firefly-familiar", name: "Vagalume-Guia", desc: "Um companheiro luminoso que voa ao seu lado e afasta sombras.", rarity: "Épico", kind: "gear", slot: "companion", icon: "firefly", from: "Encontre o santuário", quest: "sanctuary" },
 
+    // V14 · Novos acessórios de personagem; recompensas ligadas à campanha RPG e às conquistas.
+    { id: "starlit-circlet", name: "Tiara da Lua Nova", desc: "Um círculo prateado de estrelas que acompanha a sua caminhada.", rarity: "Comum", kind: "gear", slot: "head", icon: "star", from: "Presente inicial", starter: true },
+    { id: "forest-hood", name: "Capuz do Bosque", desc: "Folhas frias cobrem a cabeça como um capuz protetor.", rarity: "Raro", kind: "gear", slot: "head", icon: "leaves", from: "Capítulo II · Bosque das Teias", epicChapter: 2 },
+    { id: "mushroom-cap", name: "Cogumelo Astral", desc: "Chapéu violeta de cogumelo luminoso.", rarity: "Épico", kind: "gear", slot: "head", icon: "moth", from: "Derrote a Rainha das Aranhas", epicBoss: "spider" },
+    { id: "storm-crown", name: "Coroa das Tempestades", desc: "Uma coroa de vento elétrico e âmbar azul.", rarity: "Lendário", kind: "gear", slot: "head", icon: "crown-rpg", from: "Capítulo V · Vigília da Lua", epicChapter: 5 },
+    { id: "star-spectacles", name: "Óculos Estelares", desc: "Lentes douradas que capturam a luz mais fraca.", rarity: "Comum", kind: "gear", slot: "face", icon: "eye", from: "Presente inicial", starter: true },
+    { id: "prism-visor", name: "Viseira do Prisma", desc: "Um visor cristalino azul, nascido nas minas antigas.", rarity: "Épico", kind: "gear", slot: "face", icon: "eye", from: "Derrote o Besouro Prismático", epicBoss: "crystalBoss" },
+    { id: "amber-coat", name: "Jaqueta do Entardecer", desc: "Colete acolchoado em âmbar de aventurista.", rarity: "Comum", kind: "gear", slot: "body", icon: "armor", from: "Presente inicial", starter: true },
+    { id: "prism-armor", name: "Armadura do Prisma", desc: "Peitoral de cristal e couro azul de explorador.", rarity: "Épico", kind: "gear", slot: "body", icon: "armor", from: "Capítulo III · Minas", epicChapter: 3 },
+    { id: "night-cape", name: "Capa da Meia-Noite", desc: "Tecido escuro com pequenos brilhos de ametista.", rarity: "Raro", kind: "gear", slot: "cape", icon: "cloak", from: "Derrote a Rainha das Aranhas", epicBoss: "spider" },
+    { id: "aurora-cape", name: "Capa da Aurora", desc: "Panos turquesa que respondem à luz das estrelas.", rarity: "Lendário", kind: "gear", slot: "cape", icon: "cloak", from: "Derrote a Sentinela do Eclipse", epicBoss: "moonGuardian" },
+    { id: "moon-staff", name: "Cajado do Luar", desc: "Bastão com gema azul que pulsa quando o herói conjura.", rarity: "Raro", kind: "gear", slot: "hand", icon: "orb", from: "Capítulo I · Estufa", epicChapter: 1 },
+    { id: "orchard-torch", name: "Tocha das Brasas", desc: "Uma tocha de chama morna, nunca violenta.", rarity: "Incomum", kind: "gear", slot: "hand", icon: "lantern", from: "Presente inicial", starter: true },
+    { id: "ember-aura", name: "Aura de Brasas", desc: "Partículas douradas giram em torno do herói.", rarity: "Épico", kind: "gear", slot: "aura", icon: "star", from: "Capítulo I · Estufa", epicChapter: 1 },
+    { id: "aurora-aura", name: "Aura da Aurora", desc: "Círculo esverdeado que pulsa sob a lua.", rarity: "Lendário", kind: "gear", slot: "aura", icon: "orb", from: "Capítulo V · Vigília", epicChapter: 5 },
+    { id: "owl-familiar", name: "Corujinha da Meia-Noite", desc: "Companheira lilás que observa as trilhas escuras.", rarity: "Raro", kind: "gear", slot: "companion", icon: "moth", from: "Capítulo II · Bosque", epicChapter: 2 },
+    { id: "title-first-step", name: "Semente Valente", desc: "Para quem deu o primeiro passo em uma nova aventura.", rarity: "Comum", kind: "title", icon: "seed", from: "Presente inicial", starter: true },
+    { id: "title-wayfarer", name: "Andarilho das Raízes", desc: "Os caminhos do pomar reconhecem seus passos.", rarity: "Incomum", kind: "title", icon: "map", from: "Capítulo I · Estufa", epicChapter: 1 },
+    { id: "title-webbreaker", name: "Rompedor de Teias", desc: "A Rainha das Aranhas se lembra de sua coragem.", rarity: "Épico", kind: "title", icon: "star", from: "Vencer a Rainha das Aranhas", epicBoss: "spider" },
+    { id: "title-prismkeeper", name: "Coração de Cristal", desc: "Você devolveu a canção aos cristais.", rarity: "Épico", kind: "title", icon: "orb", from: "Vencer o Besouro Prismático", epicBoss: "crystalBoss" },
+    { id: "title-storykeeper", name: "Guardião de Histórias", desc: "As memórias guardadas dizem seu nome.", rarity: "Raro", kind: "title", icon: "scroll", from: "Capítulo IV · Pântano", epicChapter: 4 },
+    { id: "title-eclipse", name: "Filho do Eclipse", desc: "O céu abriu passagem diante de você.", rarity: "Lendário", kind: "title", icon: "star", from: "Vencer a Sentinela Lunar", epicBoss: "moonGuardian" },
+    { id: "title-kingfall", name: "Vencedor da Maldição", desc: "O Rei das Pragas já caiu diante de você.", rarity: "Lendário", kind: "title", icon: "crown-rpg", from: "Vencer o Rei das Pragas", epicBoss: "finalKing" },
+    { id: "title-healer", name: "Alma do Pomar", desc: "Escolheu cuidar da memória de todos.", rarity: "Secreto", kind: "title", icon: "heart", from: "Final secreto · A Mesa para Todos", epicEnding: "reconciliar", secret: true },
+    { id: "title-survivor", name: "Incansável", desc: "Caminhou e resistiu por dez níveis de experiência.", rarity: "Épico", kind: "title", icon: "armor", from: "Alcance nível 10 de RPG", epicLevel: 10 },
+    { id: "title-halloween", name: "Ecos da Meia-Noite", desc: "Conhece as lembranças que habitam as sombras.", rarity: "Secreto", kind: "title", icon: "moth", from: "Conclua O Pomar das Sombras", epicFlag: "halloweenComplete", secret: true },
+    { id: "title-defender", name: "Escudo da Colheita", desc: "Nenhuma praga apagará suas árvores.", rarity: "Raro", kind: "title", icon: "armor", from: "Vença o Defesa do Pomar", epicFlag: "defenseSaved" },
+
     // Títulos
+    { id: "title-owner", name: "👑 Dono", desc: "Título dourado reservado ao criador do pomar, @sammanguinha.", rarity: "Exclusivo", kind: "title", icon: "crown", from: "Exclusivo de @sammanguinha", ownerOnly: true },
     { id: "title-liberator", name: "Guardião das Lembranças", desc: "Distinção concedida a quem libertou as histórias do pomar.", rarity: "Lendário", kind: "title", icon: "star", from: "Final da campanha (Libertação)", ending: "release", secret: true },
     { id: "title-vigil", name: "Vigia da Última Árvore", desc: "Distinção concedida a quem selou o pacto de proteção eterna.", rarity: "Lendário", kind: "title", icon: "eye", from: "Final da campanha (Pacto)", ending: "pact", secret: true }
   ];
@@ -2997,6 +3737,8 @@ $("hero").addEventListener("click",async e=>{
   let rpgStorageKey = rpgStorageKeyForUser();
   let rpgState = rpgReadState(rpgStorageKey);
   const rpgSave = () => LS.set(rpgStorageKey, JSON.stringify(rpgState));
+  const rpgOwner = () => typeof me !== "undefined" && String(me).replace(/^@/, "").toLowerCase() === "sammanguinha" && !!tok;
+  if (!rpgOwner() && rpgState.equipped.title === "title-owner") { rpgState.equipped.title = ""; rpgSave(); }
 
   const rpgHas = id => !!rpgState.done[id];
   const rpgOwns = id => rpgState.items.includes(id) || id === "none" || (id === "sprout-pin" && !rpgHas("gate"));
@@ -3011,7 +3753,16 @@ $("hero").addEventListener("click",async e=>{
     return false;
   }
 
+  const rpgEpicAchievements = () => {try{const handle=(localStorage.getItem('sg_handle')||'visitante').toLowerCase();return JSON.parse(localStorage.getItem('sam_rpg_hibrido_v12_'+handle)||'null')?.epic||{}}catch(e){return {}}};
   function rpgCanOwn(item) {
+    if (item.starter) return true;
+    const ep = rpgEpicAchievements();
+    if(item.epicChapter!==undefined)return (ep.chapter||0)>=item.epicChapter;
+    if(item.epicLevel!==undefined)return (ep.level||1)>=item.epicLevel;
+    if(item.epicBoss)return Array.isArray(ep.defeated)&&ep.defeated.includes(item.epicBoss);
+    if(item.epicEnding)return ep.ending===item.epicEnding;
+    if(item.epicFlag)return !!ep.flags?.[item.epicFlag];
+    if (item.ownerOnly) return typeof me !== "undefined" && String(me).replace(/^@/, "").toLowerCase() === "sammanguinha" && !!tok;
     if (item.id === "none" || item.id === "sprout-pin") return true;
     if (item.quest) return rpgHas(item.quest);
     if (item.branch) return rpgHas("greenhouse") && rpgState.seedChoice === item.branch;
@@ -3256,6 +4007,10 @@ $("hero").addEventListener("click",async e=>{
         mouth.setAttribute("d", "M47 67 Q50 69 53 67");
         eyeL.setAttribute("r", "4"); eyeR.setAttribute("r", "4");
         eyeL.setAttribute("fill", "#38ef7d"); eyeR.setAttribute("fill", "#38ef7d");
+      } else if(faceId==='joyful'){mouth.setAttribute('d','M43 64 Q50 79 57 64');eyeL.setAttribute('r','3.6');eyeR.setAttribute('r','3.6');eyeL.setAttribute('fill','#241408');eyeR.setAttribute('fill','#241408');
+      } else if(faceId==='sleepy'){mouth.setAttribute('d','M46 68 Q50 71 54 68');eyeL.setAttribute('r','1.8');eyeR.setAttribute('r','1.8');eyeL.setAttribute('fill','#41352b');eyeR.setAttribute('fill','#41352b');
+      } else if(faceId==='fierce'){mouth.setAttribute('d','M45 69 L54 68');eyeL.setAttribute('r','2.8');eyeR.setAttribute('r','2.8');eyeL.setAttribute('fill','#cc6532');eyeR.setAttribute('fill','#cc6532');
+      } else if(faceId==='sly'){mouth.setAttribute('d','M44 67 Q53 72 56 63');eyeL.setAttribute('r','3');eyeR.setAttribute('r','4');eyeL.setAttribute('fill','#241408');eyeR.setAttribute('fill','#241408');
       } else if (faceId === "brave") {
         mouth.setAttribute("d", "M46 68 Q50 67 54 65");
         eyeL.setAttribute("r", "3.2"); eyeR.setAttribute("r", "3.2");
@@ -3270,6 +4025,8 @@ $("hero").addEventListener("click",async e=>{
       if (hatId === "none") {
         hatShape.setAttribute("fill", "none");
         hatShape.setAttribute("d", "M0 0");
+      } else if (hatId === "starlit-circlet" || hatId === "storm-crown") {hatShape.setAttribute('d','M25 32 L33 25 L42 29 L50 18 L58 29 L67 25 L75 32 Z M25 33 L75 33 L75 37 L25 37 Z');hatShape.setAttribute('fill',hatId==='storm-crown'?'#78e1f0':'#efc371');hatShape.setAttribute('stroke','#75517e');
+      } else if(hatId==='forest-hood'||hatId==='mushroom-cap'){hatShape.setAttribute('d',hatId==='mushroom-cap'?'M16 32 Q50 2 84 32 L75 38 L25 38 Z':'M29 27 Q50 9 71 27 L71 43 L29 43 Z');hatShape.setAttribute('fill',hatId==='mushroom-cap'?'#795394':'#42634b');hatShape.setAttribute('stroke','#312442');
       } else if (hatId === "sprout-pin") {
         hatShape.setAttribute("d", "M50 20 C46 14 48 8 52 6 C54 10 52 16 50 20 Z");
         hatShape.setAttribute("fill", "#cd7f32");
@@ -3297,13 +4054,13 @@ $("hero").addEventListener("click",async e=>{
     // 4. Camada de Máscara
     const maskLayer = $("layerMask");
     if (maskLayer) {
-      maskLayer.setAttribute("opacity", rpgState.equipped.face === "moon-mask" ? "1" : "0");
+      maskLayer.setAttribute('opacity',rpgState.equipped.face?'1':'0');const mp=$('maskPath');if(mp){mp.setAttribute('fill',rpgState.equipped.face==='star-spectacles'?'#ab875c':rpgState.equipped.face==='prism-visor'?'#60abc5':'#6a4c28');mp.setAttribute('opacity',rpgState.equipped.face==='star-spectacles'?'0.72':'1')}
     }
 
     // 5. Camada de Armadura de Raízes
     const bodyLayer = $("layerBody");
     if (bodyLayer) {
-      bodyLayer.setAttribute("opacity", rpgState.equipped.body === "root-armor" ? "1" : "0");
+      bodyLayer.setAttribute('opacity',rpgState.equipped.body?'1':'0');const bodyPath=$('bodyArmorPath');if(bodyPath)bodyPath.setAttribute('fill',rpgState.equipped.body==='prism-armor'?'#536fa8':rpgState.equipped.body==='amber-coat'?'#b47d38':'#4a2f18');
     }
 
     // 6. Camada de Capa
@@ -3313,6 +4070,7 @@ $("hero").addEventListener("click",async e=>{
       if (capeId === "leaf-cape") {
         capeLayer.setAttribute("opacity", "1");
         capeLayer.setAttribute("fill", "#8c441c");
+      } else if(capeId==='night-cape'||capeId==='aurora-cape'){capeLayer.setAttribute('opacity','1');capeLayer.setAttribute('fill',capeId==='aurora-cape'?'#349c98':'#34285b');
       } else if (capeId === "secret-veil") {
         capeLayer.setAttribute("opacity", "0.85");
         capeLayer.setAttribute("fill", "#4a286a");
@@ -3329,21 +4087,25 @@ $("hero").addEventListener("click",async e=>{
     if (auraEl) {
       auraEl.className = "doll-aura";
       if (rpgState.equipped.aura === "leaf-aura") auraEl.classList.add("leaves");
-      else if (rpgState.equipped.aura === "secret-veil") auraEl.classList.add("veil");
+      else if (rpgState.equipped.aura === "secret-veil"||rpgState.equipped.aura==='aurora-aura') auraEl.classList.add('veil');else if(rpgState.equipped.aura==='ember-aura')auraEl.classList.add('spectral');
       else if (rpgState.equipped.cape === "dawn-cape") auraEl.classList.add("spectral");
     }
 
     // 8. Companheiro Familiar
     const companionEl = $("dollCompanion");
     if (companionEl) {
-      companionEl.style.display = rpgState.equipped.companion === "firefly-familiar" ? "block" : "none";
+      companionEl.style.display = rpgState.equipped.companion ? 'block' : 'none';companionEl.style.color=rpgState.equipped.companion==='owl-familiar'?'#aaa4ff':'#ffdc83';
     }
 
+    // 8b. O item segurado agora aparece de verdade no personagem.
+    const handLayer=$('layerHand');if(handLayer){handLayer.setAttribute('opacity',rpgState.equipped.hand?'1':'0');const hand=$('handItemG');if(hand){const id=rpgState.equipped.hand||'';hand.querySelector('rect')?.setAttribute('fill',id==='moon-staff'?'#85d6ed':id==='orchard-torch'?'#ffb953':'#e9c66e');}}
     // 9. Banner de Título
     const titleBanner = $("dollTitleBanner");
     if (titleBanner) {
       const activeTitle = rpgItems.find(x => x.id === rpgState.equipped.title);
-      titleBanner.textContent = activeTitle ? activeTitle.name : "Explorador do Pomar";
+      const isOwnerTitle = activeTitle && activeTitle.id === "title-owner" && rpgOwner();
+      titleBanner.textContent = isOwnerTitle ? "👑 Dono" : activeTitle && activeTitle.id !== "title-owner" ? activeTitle.name : "Explorador do Pomar";
+      titleBanner.classList.toggle("owner-title", !!isOwnerTitle);
     }
 
     // 10. Atualiza Canvas de Pixel Art em paralelo
@@ -3368,7 +4130,7 @@ $("hero").addEventListener("click",async e=>{
       return true;
     });
 
-    grid.innerHTML = filtered.map(item => {
+    grid.innerHTML = filtered.filter(item => !item.ownerOnly || rpgOwner()).map(item => {
       const isOwned = rpgCanOwn(item);
       const isEquipped = item.slot ? rpgState.equipped[item.slot] === item.id : (item.kind === "title" && rpgState.equipped.title === item.id);
       const icon = item.icon || "star";
@@ -3454,7 +4216,7 @@ $("hero").addEventListener("click",async e=>{
     // 2. Abas de Categoria do Guarda-Roupa
     const wtab = e.target.closest("[data-wtab]");
     if (wtab) {
-      document.querySelectorAll(".wardrobe-tab").forEach(t => t.classList.remove("on"));
+      (wtab.parentElement||document).querySelectorAll(".wardrobe-tab").forEach(t => t.classList.remove("on"));
       wtab.classList.add("on");
       wardrobeFilter = wtab.dataset.wtab;
       wardrobeRender();
@@ -3498,7 +4260,7 @@ $("hero").addEventListener("click",async e=>{
     const equipBtn = e.target.closest("[data-toggle-equip]");
     if (equipBtn) {
       const item = rpgItems.find(x => x.id === equipBtn.dataset.toggleEquip);
-      if (item) {
+      if (item && rpgCanOwn(item)) {
         if (item.slot) {
           const isEquipped = rpgState.equipped[item.slot] === item.id;
           rpgState.equipped[item.slot] = isEquipped ? "" : item.id;
@@ -3510,6 +4272,7 @@ $("hero").addEventListener("click",async e=>{
           rpgState.equipped.title = isEquipped ? "" : item.id;
         }
         rpgSave();
+        dollRender();
         wardrobeRender();
         if (typeof toast === "function") toast(rpgState.equipped[item.slot || "title"] === item.id ? "Equipado: " + item.name : "Desequipado.", 2500);
       }
@@ -3643,15 +4406,97 @@ $("hero").addEventListener("click",async e=>{
 </script>
 
 <script>
-// Click do logo e atalhos adicionais
-document.getElementById("logoHome")?.addEventListener("click", () => {
-  if (typeof showPane === "function") showPane("home");
-});
-document.getElementById("cheat")?.addEventListener("click", () => {
-  if (typeof resetCheat === "function") resetCheat();
-  const dlg = document.getElementById("cDlg");
-  if (dlg) { dlg.showModal(); document.getElementById("cIn")?.focus(); }
-});
+document.getElementById("logoHome")?.addEventListener("click",()=>{if(typeof showPane==="function")showPane("home")});
 </script>
+
+<script>
+/* Pomar das Sombras V9 — campanha explorável com 6 salas, puzzles multi-etapa e progresso V8 preservado. */
+(()=>{'use strict';
+const root=document.getElementById('h8World');if(!root)return;
+const $=id=>document.getElementById(id),cv=$('h8Canvas'),ctx=cv.getContext('2d');ctx.imageSmoothingEnabled=false;
+const W=640,H=384,keys=new Set(),safe=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rooms=[
+ {name:'Clareira da Bruxa',sky:'#101a31',ground:'#243d2e',objects:[{x:128,y:185,type:'witch',id:'witch',label:'Lívia, a bruxa'},{x:368,y:150,type:'clock',id:'clock',label:'Relógio partido'},{x:526,y:278,type:'gate',id:'gate',label:'Portão da biblioteca'}]},
+ {name:'Biblioteca Enterrada',sky:'#23142e',ground:'#403037',objects:[{x:128,y:172,type:'books',id:'books',label:'Estante dos quatro volumes'},{x:342,y:164,type:'altar',id:'runes',label:'Mesa de runas'},{x:536,y:272,type:'gate',id:'rootdoor',label:'Passagem para a cripta'}]},
+ {name:'Cripta das Sete Chamas',sky:'#171027',ground:'#28283c',objects:[{x:128,y:160,type:'grave',id:'grave',label:'Lápide de um guardião'},{x:335,y:158,type:'altar',id:'flames',label:'Altar das sete chamas'},{x:526,y:264,type:'gate',id:'cryptdoor',label:'Porta do observatório'}]},
+ {name:'Observatório da Lua Rachada',sky:'#0b1c34',ground:'#28334a',objects:[{x:132,y:170,type:'clock',id:'telescope',label:'Lente do observatório'},{x:340,y:157,type:'altar',id:'stars',label:'Mapa das constelações'},{x:526,y:264,type:'gate',id:'observdoor',label:'Porta do jardim'}]},
+ {name:'Jardim dos Retratos',sky:'#2b1731',ground:'#2e3e36',objects:[{x:125,y:166,type:'books',id:'portrait',label:'Retratos da família'},{x:338,y:153,type:'grave',id:'well',label:'Poço das lembranças'},{x:529,y:268,type:'gate',id:'gardendoor',label:'Porta do coração'}]},
+ {name:'Coração do Pomar',sky:'#25102a',ground:'#392a39',objects:[{x:127,y:165,type:'altar',id:'seal',label:'Selo das raízes'},{x:340,y:151,type:'boss',id:'guardian',label:'Guardião do Eco'},{x:532,y:271,type:'gate',id:'return',label:'Retornar à clareira'}]}
+];
+const steps=['witch','clock','books','runes','grave','flames','telescope','stars','portrait','well','seal','ending'];
+const names={witch:'Bilhete de Lívia',clock:'Engrenagem de 03:15',books:'Cifra dos livros',runes:'Selo da biblioteca',grave:'Nome SOMBRA',flames:'Brasas da cripta',telescope:'Lente lunar',stars:'Mapa das estrelas',portrait:'Retrato revelado',well:'Água das lembranças',seal:'Selo das raízes',ending:'Destino do pomar'};
+const storeKey=()=> 'sg_halloween_world_v8_'+(typeof me!=='undefined'&&me?String(me).toLowerCase():'visitante');
+const fresh=()=>({room:0,x:320,y:280,flags:[],journal:[],ending:'',mistakes:0});let st=fresh(),puzzle=null,tick=0;
+function load(){try{const d=JSON.parse(localStorage.getItem(storeKey())||'null');if(d&&Array.isArray(d.flags)&&Array.isArray(d.journal))st={...fresh(),...d}}catch(e){}st.room=Math.max(0,Math.min(5,Number(st.room)||0))}
+function save(){try{localStorage.setItem(storeKey(),JSON.stringify(st))}catch(e){}}
+const has=k=>st.flags.includes(k);
+function flag(k,note){if(!has(k)){st.flags.push(k);if(note)st.journal.unshift(note);save();update()}}
+function say(t){$('h8Talk').textContent=t}
+const sm17HalloweenHints={witch:'Converse com Lívia, ao lado da primeira árvore.',clock:'A hora pequena é três. Pense no que é um quarto da volta de um ponteiro de minutos.',books:'Os volumes deixam uma ordem anotada no diário. Consulte as palavras, não só as figuras.',runes:'Observe o diário da Biblioteca. O primeiro volume fala do que fica debaixo da terra.',grave:'A lápide fala do que acompanha a luz sem nunca tocá-la.',flames:'Você precisa relacionar o número do relógio com o altar da cripta.',telescope:'Procure o desenho do céu que falta à lente.',stars:'A posição das estrelas é descrita depois que a lente volta a funcionar.',portrait:'Observe os retratos antes de procurar o poço.',well:'O poço guarda as lembranças reveladas pelo retrato.',seal:'O selo só aceita a síntese das descobertas anteriores.',ending:'O último personagem está diante de você. Ouça tudo antes de escolher.'};
+$('h8Hint')?.addEventListener('click',()=>{const missing=steps.find(key=>!has(key));say('💡 PISTA: '+(sm17HalloweenHints[missing]||'Releia o diário de investigação e examine o local anterior.'))});
+function update(){const room=rooms[st.room];$('h8RoomTitle').textContent='Capítulo '+(st.room+1)+' · '+room.name;$('h8Progress').textContent=steps.filter(has).length+'/12';$('h8Bag').innerHTML=st.flags.length?st.flags.map(k=>'<span>'+safe(names[k]||k)+'</span>').join(''):'Vazia';$('h8Journal').innerHTML=st.journal.length?st.journal.map(t=>'<div>'+safe(t)+'</div>').join(''):'Procure Lívia na clareira e examine cada objeto.';$('h8Objective').textContent=st.ending?'Aventura concluída: '+(st.ending==='liberdade'?'as memórias foram libertadas.':'as memórias foram seladas.'):'Investigue os três pontos de interesse e combine pistas de capítulos diferentes.';$('h8Badge').textContent=st.ending?'CONCLUÍDO':'CAPÍTULO '+(st.room+1)+'/6'}
+function px(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),w,h)}
+function sprite(type,x,y,t=0){ctx.save();ctx.translate(Math.round(x),Math.round(y+Math.sin(t)*1.8));
+if(type==='hero'||type==='witch'){const w=type==='witch';px(-12,-10,24,26,w?'#704293':(typeof draft!=='undefined'&&typeof COLS!=='undefined'&&COLS[draft.c]?COLS[draft.c][1]:'#e98231'));px(-9,-9,18,16,w?'#c69ed8':'#ffcb67');px(-7,-3,4,4,'#171426');px(4,-3,4,4,'#171426');px(-16,-14,32,5,'#2a193d');px(-9,-28,18,15,'#442256');px(-5,-35,10,9,'#442256');px(-13,14,9,8,'#32213f');px(4,14,9,8,'#32213f');px(-9,22,7,5,'#121523');px(3,22,7,5,'#121523');px(-15,-6,5,15,w?'#9a5aaf':'#d77824')}
+else if(type==='clock'){px(-25,-35,50,69,'#4d4059');px(-20,-30,40,56,'#c89b63');px(-16,-25,32,32,'#272239');px(-2,-22,4,18,'#ffe0a1');px(0,-5,13,4,'#ffe0a1');px(-27,28,54,8,'#251b2e')}
+else if(type==='gate'){px(-30,-40,60,76,'#71657c');px(-23,-31,46,66,'#161526');px(-33,-40,66,11,'#a08ca4');px(-19,-22,7,49,'#4d3859');px(12,-22,7,49,'#4d3859');px(-4,-6,9,9,'#efc17c')}
+else if(type==='books'){px(-31,-37,62,74,'#754931');for(let i=0;i<9;i++){px(-27+i*6,-28+i%3*3,5,25,['#c75965','#9670ca','#4fa393','#d8b15b'][i%4]);px(-27+i*6,5+i%2*3,5,23,['#8c52ae','#d08b43','#428d7e'][i%3])}px(-33,30,66,8,'#291b2d')}
+else if(type==='altar'){px(-31,-5,62,38,'#685679');px(-36,-13,72,11,'#ad86a8');px(-20,-31,40,19,'#342440');px(-9,-39,18,21,'#b568db');px(-5,-35,10,15,'#f4c0fa')}
+else if(type==='grave'){px(-27,-30,54,67,'#7b8195');px(-22,-37,44,13,'#a2a4b7');px(-15,-15,30,4,'#313142');px(-12,-4,24,4,'#313142');px(-10,8,20,4,'#313142')}
+else if(type==='boss'){px(-36,-29,72,59,'#503063');px(-24,-39,48,29,'#714288');px(-34,-52,15,29,'#c368ac');px(19,-52,15,29,'#c368ac');px(-21,-12,14,9,'#f67bb4');px(7,-12,14,9,'#f67bb4');px(-9,8,18,11,'#a5e78a');px(-41,13,13,24,'#392347');px(28,13,13,24,'#392347')}
+ctx.restore()}
+function render(t){if(document.hidden||document.getElementById("eventDlg")?.hidden){requestAnimationFrame(render);return}tick=t*.001;const r=rooms[st.room];ctx.fillStyle=r.sky;ctx.fillRect(0,0,W,H);for(let i=0;i<52;i++){const x=(i*137+51)%W,y=(i*71+17)%125;px(x,y,2,2,'#8c81a7')}px(0,128,W,256,r.ground);for(let y=145;y<H;y+=32)for(let x=0;x<W;x+=32){px(x+(y%64?6:0),y,30,1,'#ffffff11');px(x+9,y+13,5,3,'#111c2244')}
+for(let i=0;i<9;i++){const x=(i*91+30)%W;px(x,110,11,43,'#171b2a');px(x-17,97,46,18,'#233c30');px(x-12,84,36,15,'#335440')}
+rooms[st.room].objects.forEach(o=>{sprite(o.type,o.x,o.y,tick*(o.type==='witch'?2:0));if(Math.hypot(o.x-st.x,o.y-st.y)<74){px(o.x-8,o.y-61,16,18,'#f3ca86');px(o.x-1,o.y-57,3,9,'#322338');px(o.x-1,o.y-44,3,3,'#322338')}});sprite('hero',st.x,st.y,tick*5);px(8,8,325,30,'#120d23dd');ctx.fillStyle='#ffdda1';ctx.font='bold 15px monospace';ctx.fillText('CAP '+(st.room+1)+' · '+r.name,17,29);requestAnimationFrame(render)}
+function nearby(){return rooms[st.room].objects.map(o=>({...o,d:Math.hypot(o.x-st.x,o.y-st.y)})).sort((a,b)=>a.d-b.d)[0]}
+function openPuzzle(title,description,buttons,fn){puzzle=fn;const div=$('h8Puzzle');div.hidden=false;div.innerHTML='<strong>'+safe(title)+'</strong><p>'+safe(description)+'</p><div class="h8-steps">Observe as pistas registradas no diário.</div>'+buttons.map((b,i)=>'<button type="button" data-h8choice="'+i+'">'+safe(b)+'</button>').join('')+'<button type="button" class="h8-close" data-h8close="1">Fechar</button>';div.scrollIntoView({block:'nearest',behavior:'smooth'})}
+function inputPuzzle(title,description,answer,fn){puzzle=()=>{};const div=$('h8Puzzle');div.hidden=false;div.innerHTML='<strong>'+safe(title)+'</strong><p>'+safe(description)+'</p><form id="h8AnswerForm" class="h8-inputrow"><input id="h8Answer" aria-label="Sua resposta" autocomplete="off" maxlength="28" placeholder="Digite a resposta" required><button type="submit">Confirmar</button></form><button type="button" class="h8-close" data-h8close="1">Fechar</button>';puzzle={answer,fn};div.scrollIntoView({block:'nearest',behavior:'smooth'})}
+function close(){puzzle=null;$('h8Puzzle').hidden=true}
+function fail(message){st.mistakes=(st.mistakes||0)+1;save();say(message+' Tentativas: '+st.mistakes)}
+function travel(room,msg){st.room=room;st.x=68;st.y=273;save();update();say(msg)}
+let seq=[];
+function interact(){if(puzzle)return;const o=nearby();if(!o||o.d>78){say('Aproxime-se de um objeto destacado para investigar.');return}
+switch(o.id){
+case 'witch':flag('witch','Lívia: “O ponteiro menor aponta para a terceira hora. O maior aponta para um quarto do ciclo. A ordem dos livros é raiz, folha, chama e lua.”');say('Lívia: “A maldição não começou no relógio. Procure quem foi esquecido nos retratos.”');break;
+case 'clock':inputPuzzle('O relógio partido','O ponteiro menor marca a terceira hora; o maior percorreu um quarto de uma volta. Escreva o horário em HH:MM.','03:15',()=>{flag('clock','Relógio: 03:15. A engrenagem oculta abriu o portão.');say('O mecanismo desperta. A biblioteca está acessível.');close()});break;
+case 'gate':has('clock')?travel(1,'O portão se abre. Os livros parecem sussurrar seu nome.'):say('O portão exige a hora correta do relógio.');break;
+case 'books':flag('books','Biblioteca: quatro volumes na ordem RAIZ → FOLHA → CHAMA → LUA. As runas correspondem aos números 1, 2, 3, 4 nessa ordem.');say('Você copiou a ordem dos quatro volumes para o diário.');break;
+case 'runes':if(!has('books')){say('A mesa exige o estudo dos quatro volumes.');break}seq=[];openPuzzle('Mesa das quatro runas','Toque as runas na ordem da biblioteca. Cada erro apaga toda a sequência.',['LUA','CHAMA','RAIZ','FOLHA'],i=>{seq.push(i);$('h8Puzzle').querySelector('.h8-steps').textContent='Runas ativadas: '+seq.length+'/4';if(seq.length===4){if(seq.join(',')==='2,3,1,0'){flag('runes','Runas: RAIZ → FOLHA → CHAMA → LUA. A passagem da cripta foi aberta.');say('Quatro runas se acendem e as raízes se afastam.');close()}else{seq=[];fail('As runas se apagam. Releia a ordem anotada no diário.')}}});break;
+case 'rootdoor':has('runes')?travel(2,'A cripta respira como se estivesse viva.'):say('A passagem exige as quatro runas corretas.');break;
+case 'grave':inputPuzzle('Nome apagado','A lápide diz: “Eu nasço quando a luz encontra um obstáculo, e sigo o corpo sem tocá-lo.” Escreva meu nome.','SOMBRA',()=>{flag('grave','Lápide: o nome é SOMBRA. O epitáfio possui seis letras.');say('O nome reaparece na pedra.');close()});break;
+case 'flames':if(!has('grave')||!has('clock')){say('Faltam duas memórias: a hora e o nome da lápide.');break}inputPuzzle('Altar das sete chamas','Código: o número de letras do nome da lápide, seguido pelos dois algarismos da hora do relógio (sem minutos). Exemplo: 503.','603',()=>{flag('flames','Altar: 6 letras de SOMBRA + 03 horas = 603. As chamas abriram o observatório.');say('Uma chama azul indica a saída para o observatório.');close()});break;
+case 'cryptdoor':has('flames')?travel(3,'A lua rachada projeta sombras impossíveis sobre o observatório.'):say('Resta acender as chamas da cripta.');break;
+case 'telescope':flag('telescope','Lente: a lua aparece no quadrante OESTE. Sob ela, três estrelas formam um triângulo; a estrela solitária fica ao NORTE.');say('Você alinhou a lente e registrou a posição das estrelas.');break;
+case 'stars':if(!has('telescope')){say('A lente precisa ser ajustada antes de interpretar o mapa.');break}inputPuzzle('Mapa das constelações','O diário diz: a lua está a OESTE; a estrela solitária, ao NORTE. Digite as duas direções separadas por hífen.','OESTE-NORTE',()=>{flag('stars','Constelação: OESTE-NORTE. A luz indica um jardim escondido.');say('As estrelas traçam uma porta luminosa.');close()});break;
+case 'observdoor':has('stars')?travel(4,'No jardim, retratos observam cada movimento.'):say('O mapa das constelações ainda está incompleto.');break;
+case 'portrait':flag('portrait','Retratos: a guardiã do pomar se chamava ÍRIS. Sua imagem foi retirada de todos os registros, exceto deste quadro.');say('Você encontra o nome ÍRIS escondido atrás de uma moldura.');break;
+case 'well':if(!has('portrait')||!has('grave')){say('O poço exige um nome de família e uma palavra da cripta.');break}inputPuzzle('Poço das lembranças','Una o nome da guardiã do retrato à palavra da lápide, nesta ordem, separados por hífen.','IRIS-SOMBRA',()=>{flag('well','Poço: ÍRIS-SOMBRA. A água revela que o Guardião aprisionou as memórias para proteger o pomar.');say('Uma voz na água pede que você escolha com cuidado.');close()});break;
+case 'gardendoor':has('well')?travel(5,'O coração do pomar pulsa sob raízes antigas.'):say('O poço ainda guarda uma lembrança necessária.');break;
+case 'seal':if(!has('well')||!has('stars')||!has('flames')){say('O selo exige memórias da cripta, do observatório e do jardim.');break}inputPuzzle('Selo das raízes','Código final: número de letras de SOMBRA + número de letras de IRIS + número de runas usadas na biblioteca. Digite os três algarismos, sem espaços.','644',()=>{flag('seal','Selo final: 6 letras, 4 letras, 4 runas = 644. O Guardião agora pode ouvir você.');say('As raízes se abrem. O Guardião espera sua decisão.');close()});break;
+case 'guardian':if(!has('seal')){say('O Guardião não responde enquanto o selo estiver fechado.');break}openPuzzle('O Guardião do Eco','“Se devolver as memórias, a verdade também trará dor. Se guardá-las, o pomar perderá sua história.” O que fará?',['LIBERTAR AS MEMÓRIAS','SELAR AS MEMÓRIAS'],i=>{st.ending=i===0?'liberdade':'silêncio';flag('ending','Final: '+(i===0?'as memórias de Íris foram libertadas.':'as memórias de Íris foram seladas.')+' Você encontrou '+steps.filter(has).length+' pistas.');save();update();say(i===0?'As raízes florescem e Íris é lembrada. O pomar finalmente desperta.':'O pomar fica em silêncio. A maldição recua, mas Íris permanece esquecida.');close()});break;
+case 'return':travel(0,'Você retorna à clareira levando o peso das memórias.');break;
+}}
+function move(dx,dy){if(puzzle)return;st.x=Math.max(25,Math.min(W-25,st.x+dx));st.y=Math.max(167,Math.min(H-29,st.y+dy));save()}
+let prev=0;function movement(t){const dt=Math.min(35,t-prev||16);prev=t;let dx=(keys.has('arrowright')||keys.has('d')?1:0)-(keys.has('arrowleft')||keys.has('a')?1:0),dy=(keys.has('arrowdown')||keys.has('s')?1:0)-(keys.has('arrowup')||keys.has('w')?1:0);if(dx||dy){const len=Math.hypot(dx,dy);move(dx/len*dt*.17,dy/len*dt*.17)}requestAnimationFrame(movement)}
+document.addEventListener('keydown',e=>{if(!root.isConnected||!root.getBoundingClientRect().width)return;if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;const k=e.key.toLowerCase();if(['arrowup','arrowdown','arrowleft','arrowright','w','a','s','d'].includes(k)&&document.activeElement===cv){keys.add(k);e.preventDefault()}if(k==='e'&&document.activeElement===cv){interact();e.preventDefault()}});
+document.addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));root.querySelectorAll('[data-h8move]').forEach(b=>{const m={up:[0,-16],down:[0,16],left:[-16,0],right:[16,0]}[b.dataset.h8move];b.addEventListener('click',()=>{move(...m);cv.focus()})});$('h8Interact').addEventListener('click',interact);$('h8Map').addEventListener('click',()=>say('Mapa: Clareira → Biblioteca → Cripta → Observatório → Jardim → Coração do Pomar. Releia o diário para combinar pistas.'));$('h8Reset').addEventListener('click',()=>{if(confirm('Reiniciar apenas O Pomar das Sombras?')){st=fresh();close();save();update();say('A investigação recomeçou.')}});
+$('h8Puzzle').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.h8close){close();return}if(b.dataset.h8choice!==undefined&&typeof puzzle==='function')puzzle(Number(b.dataset.h8choice))});
+$('h8Puzzle').addEventListener('submit',e=>{if(e.target.id!=='h8AnswerForm')return;e.preventDefault();if(!puzzle||typeof puzzle!=='object')return;const val=$('h8Answer').value.trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/\s+/g,'');if(val===puzzle.answer)puzzle.fn();else fail('A resposta não corresponde às pistas reunidas.');});
+load();update();requestAnimationFrame(render);requestAnimationFrame(movement);
+})();
+</script>
+<script>
+/* Início móvel acessível, sem interferir na lógica original da partida. */
+(()=>{const btn=document.getElementById('gMobileStart'),overlay=document.getElementById('gOv'),play=document.getElementById('gPlay');if(!btn||!overlay||!play)return;const sync=()=>{btn.hidden=overlay.hidden;btn.textContent=play.textContent.includes('novo')?'▶ Jogar novamente':'▶ Iniciar Defesa do Pomar'};btn.addEventListener('click',()=>play.click());new MutationObserver(sync).observe(overlay,{attributes:true,attributeFilter:['hidden']});new MutationObserver(sync).observe(play,{childList:true,subtree:true});sync()})();
+</script>
+<link rel="stylesheet" href="visual_v14.css"><link rel="stylesheet" href="melhorias_v16_5.css"><link rel="stylesheet" href="revisao_v17.css">
+<script src="rpg_epico_expansao.js"></script>
+<script src="musica_rpg_v14.js"></script>
+<script src="mundo_pomar.js"></script>
+<script src="interface_v14.js"></script>
+<script>
+(()=>{'use strict';const version='17.0.0';const key='sm_last_seen_update_version';const layer=document.getElementById('smUpdateLayer');const panel=document.getElementById('smUpdatePanel');const openBtn=document.getElementById('smUpdatesReopen');const closeBtn=document.getElementById('smUpdatesClose');const laterBtn=document.getElementById('smUpdatesLater');if(!layer||!panel||!openBtn||!closeBtn||!laterBtn)return;let priorFocus=null;const read=()=>{try{return localStorage.getItem(key)}catch(e){return null}};const save=()=>{try{localStorage.setItem(key,version)}catch(e){}};function show(){priorFocus=document.activeElement;layer.classList.add('sm-show');document.body.style.overflow='hidden';closeBtn.focus({preventScroll:true})}function hide(){save();layer.classList.remove('sm-show');document.body.style.overflow='';if(priorFocus&&priorFocus.isConnected&&typeof priorFocus.focus==='function')priorFocus.focus({preventScroll:true})}closeBtn.addEventListener('click',hide);laterBtn.addEventListener('click',hide);openBtn.addEventListener('click',show);layer.addEventListener('click',e=>{if(e.target===layer)hide()});document.addEventListener('keydown',e=>{if(!layer.classList.contains('sm-show'))return;if(e.key==='Escape'){e.preventDefault();hide()}else if(e.key==='Tab'){const items=[closeBtn,laterBtn];if(e.shiftKey&&document.activeElement===items[0]){e.preventDefault();items[1].focus()}else if(!e.shiftKey&&document.activeElement===items[1]){e.preventDefault();items[0].focus()}}});openBtn.classList.add('sm-ready');if(read()!==version)requestAnimationFrame(()=>requestAnimationFrame(show));})();
+</script>
+<script src="revisao_v17.js" defer></script>
 </body>
 </html>

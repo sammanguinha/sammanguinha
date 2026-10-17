@@ -1,0 +1,17 @@
+SAM MANGUINHA V16.5 — ATUALIZAÇÃO DE MELHORIAS
+
+Base: V15. Mantidos os arquivos, nomes e sistemas anteriores.
+
+ALTERAÇÕES:
+- Ajustes de acessibilidade: foco visível, link para pular navegação, alto contraste, texto maior e modo de efeitos leves.
+- Ajustes de responsividade, área de toque e organização do Grimório.
+- 12 códigos adicionais com efeitos engraçados locais: TANANAN, BATATA, CALABRESO, AMOGUS, EOMANGA, SIGMA, ARROZ, ABACAXI, MATRIX, INVERTER, ARCOIRIS, PARABENS.
+- Descobertas salvas por usuário no localStorage do navegador; os efeitos visuais são reversíveis e reiniciam ao recarregar.
+- Painel de novidades V16.5 aparece uma vez por versão, com reabertura manual.
+- Nenhuma recompensa oficial (mangas/XP/ranking Supabase) é concedida pelos códigos novos; isso exigiria suporte seguro no backend.
+
+PUBLICAÇÃO:
+Extraia tudo e envie todos os arquivos juntos, com index.html na raiz. Mantenha os novos melhorias_v16_5.js e melhorias_v16_5.css ao lado do HTML.
+
+LIMITAÇÕES:
+Esta é uma atualização de qualidade e conteúdo leve, não uma auditoria completa do backend nem um novo motor gráfico. Verifique Supabase, contas e ranking no ambiente de produção.

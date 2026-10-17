@@ -1,0 +1,73 @@
+/* Sam Manguinha: O Mundo do Pomar — jogo explorável híbrido */
+#rpgDlg .r12-shell{background:linear-gradient(145deg,#241b33,#111b23 70%,#24182d);border:2px solid #af7b46;border-radius:18px;padding:clamp(10px,2.7vw,24px);box-shadow:0 12px 38px #0007,inset 0 0 0 2px #d8a65b15;color:#f6e8cd;overflow:hidden}
+.r12-head{display:flex;gap:16px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;margin-bottom:18px}.r12-head small{text-transform:uppercase;letter-spacing:.17em;color:#e5ae6b;font-size:.71rem;font-weight:800}.r12-head h2{font-family:var(--font-gothic,serif);font-size:clamp(1.65rem,4vw,2.5rem);line-height:1.1;margin:5px 0;color:#ffcf78;text-shadow:2px 3px #070d10}.r12-head p{max-width:750px;color:#d4c4dc;font-size:.91rem;margin:5px 0}.r12-pill{border-radius:14px;border:1px solid #8f6c48;background:#2e2937;padding:9px 14px;color:#fce6ae;font-size:.83rem;font-weight:750;white-space:nowrap}
+.r12-columns{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(240px,.85fr);gap:16px;align-items:start}.r12-main,.r12-aside{min-width:0}.r12-frame{position:relative;background:#0b111c;border:4px solid #9e6b46;border-radius:11px;overflow:hidden;box-shadow:0 8px 22px #0009,inset 0 0 0 2px #3d2a28}
+#r12Canvas{display:block;max-width:100%;width:100%;height:auto;image-rendering:pixelated;touch-action:manipulation;outline-offset:-2px}
+.r12-hud{position:absolute;inset:8px 8px auto 8px;display:flex;align-items:center;justify-content:space-between;gap:8px;pointer-events:none}.r12-hud>span{color:#fff1c8;background:#0e1421db;border:1px solid #92714a;border-radius:7px;padding:5px 10px;font-size:.77rem;font-weight:800;text-shadow:1px 1px #161225}
+.r12-bubble{position:absolute;left:10px;right:10px;bottom:12px;background:#150e25f5;border:2px solid #b8895b;border-radius:12px;padding:14px 15px;box-shadow:0 4px 20px #000c;display:grid;gap:8px;z-index:3}.r12-bubble[hidden]{display:none!important}.r12-bubble strong{color:#ffd38b;font-size:1rem}.r12-bubble p{color:#fae5d0;margin:0;font-size:.88rem;line-height:1.5}.r12-bubble button{justify-self:end;min-height:36px}
+.r12-tip{min-height:48px;display:flex;align-items:center;gap:8px;padding:8px 2px;color:#eed3ac;font-size:.88rem}.r12-tip b{color:#ffcc7d}.r12-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:5px 0 0}.r12-dpad{display:grid;grid-template-columns:repeat(3,57px);grid-template-rows:repeat(2,48px);gap:5px;user-select:none;touch-action:none}.r12-dpad>button,.r12-interact{background:#3d2a3b;border:2px solid #d6a057;color:#ffe9bf;box-shadow:0 4px 0 #1e1327;border-radius:11px;font-weight:900;min-height:47px;touch-action:none;cursor:pointer}.r12-dpad>button:active,.r12-interact:active,.r12-dpad>button.pressed{transform:translateY(3px);box-shadow:0 1px 0 #1e1327;background:#6f4350}.r12-dpad .r12-up{grid-column:2;grid-row:1}.r12-dpad .r12-left{grid-column:1;grid-row:2}.r12-dpad .r12-down{grid-column:2;grid-row:2}.r12-dpad .r12-right{grid-column:3;grid-row:2}.r12-interact{padding:12px 18px;min-width:145px;font-size:.95rem;background:#6a3e37}
+.r12-card{border-radius:12px;border:1px solid #8d6546;background:linear-gradient(160deg,#312435,#1c2030);padding:14px;margin:0 0 12px;box-shadow:0 4px 10px #0004}.r12-card h3{color:#ffd08a;margin:0 0 10px;font-size:1.08rem;display:flex;align-items:center;justify-content:space-between;gap:8px}.r12-card h3 small{font-size:.7rem;color:#dab892}.r12-card p{font-size:.84rem;line-height:1.5;margin:4px 0 8px;color:#eeddd0}.r12-objective{font-weight:800;color:#fff2c9!important}.r12-quest-row{font-size:.82rem;color:#dccad1;padding:5px 0;border-bottom:1px solid #ffffff15}.r12-quest-row.done{color:#a8e4a6}.r12-track{height:9px;background:#19151e;border-radius:9px;overflow:hidden;border:1px solid #805f43;margin-top:10px}.r12-track span{display:block;height:100%;background:linear-gradient(90deg,#89bf66,#ffca65);transition:width .3s}
+.r12-bag{display:flex;gap:7px;flex-wrap:wrap;align-items:center;min-height:38px}.r12-tag{display:flex;align-items:center;gap:6px;border-radius:9px;padding:5px 9px;font-size:.75rem;font-weight:650;background:#433044;border:1px solid #946d53;color:#ffdfb1}.r12-tag.dim{opacity:.5}.r12-shortcuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.r12-shortcuts button{border:1px solid #9e7957;border-radius:9px;padding:10px 6px;min-height:48px;background:#302738;color:#f7e2c6;font-size:.82rem;cursor:pointer;transition:background .15s}.r12-shortcuts button:hover{background:#594252}.r12-journal{font-size:.78rem;line-height:1.5;max-height:155px;overflow-y:auto;color:#d9c9dd}.r12-journal div{border-bottom:1px dashed #7a5f5347;padding:6px 0}.r12-saved{font-size:.71rem;color:#b9b2a8;margin-top:6px}.r12-reset{background:transparent;border:1px solid #876e67;color:#d4b4af;border-radius:6px;font-size:.73rem;padding:4px 9px;cursor:pointer}
+@media(max-width:870px){.r12-columns{grid-template-columns:1fr}.r12-aside{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.r12-aside>.r12-card{margin:0}.r12-aside>.r12-card:first-child{grid-column:span 2}}
+@media(max-width:540px){#rpgDlg .r12-shell{padding:9px;border-width:1px}.r12-head{margin-bottom:10px}.r12-head h2{font-size:1.55rem}.r12-frame{border-width:2px}.r12-bubble{left:4px;right:4px;bottom:4px;padding:10px}.r12-hud>span{font-size:.65rem;padding:4px 6px}.r12-controls{flex-wrap:nowrap;justify-content:space-around}.r12-dpad{grid-template-columns:repeat(3,50px);grid-template-rows:repeat(2,44px);gap:4px}.r12-dpad>button{min-height:44px}.r12-interact{min-width:120px;font-size:.85rem;padding:8px}.r12-aside{grid-template-columns:1fr}.r12-aside>.r12-card:first-child{grid-column:span 1}.r12-shortcuts button{font-size:.77rem}.r12-tip{font-size:.79rem}}
+@media(prefers-reduced-motion:reduce){.r12-track span,.r12-shortcuts button{transition:none}}
+
+.r12-choices{display:flex;gap:8px;flex-wrap:wrap}.r12-choices[hidden]{display:none!important}.r12-choice{background:#4b3150;border:2px solid #ad8d65;border-radius:9px;color:#ffe5af;padding:9px 15px;font-weight:800;min-height:42px;cursor:pointer}.r12-choice:hover,.r12-choice:focus-visible{background:#735276}
+
+/* RPG híbrido V13 — interfaces do combate, classes, atributos e artefatos */
+#rpgDlg .r13-story-card{border-color:#b89460;background:linear-gradient(140deg,#433044,#242235)}
+#rpgDlg .r13-stat-card{border-color:#7e7797}
+#rpgDlg .r13-artifacts-card{border-color:#7e7350}
+#rpgDlg .r13-caption{font-size:.74rem;color:#ceb9cf;line-height:1.48;margin:7px 0}
+#rpgDlg .r13-life{padding:8px 10px;border:1px solid #9c6d6a;border-radius:9px;background:#341f30;color:#f8d6c3;font-weight:800;font-size:.84rem;letter-spacing:.015em}
+#rpgDlg .r13-attrs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px}
+#rpgDlg .r13-attrs span{border:1px solid #796875;background:#282132;border-radius:8px;padding:8px 9px;display:flex;align-items:center;justify-content:space-between;gap:5px;font-size:.74rem;color:#eed5c6}
+#rpgDlg .r13-attrs strong{color:#f9c47b;margin-left:auto;font-size:.91rem}
+#rpgDlg .r13-attrs button{min-width:26px;height:26px;padding:0;border:1px solid #b49755;border-radius:6px;background:#594358;color:#fff3cb;font-size:1.05rem;cursor:pointer;font-weight:800}
+#rpgDlg .r13-item{border:1px solid #5a5361;border-radius:9px;padding:9px;margin:7px 0;background:#221d2e;display:grid;grid-template-columns:1fr auto;gap:4px 7px;align-items:center}
+#rpgDlg .r13-item.on{border-color:#d4aa5c;background:#382e3c}
+#rpgDlg .r13-item b{font-size:.78rem;color:#fce6bc}
+#rpgDlg .r13-item small{display:block;grid-column:1/-1;color:#d6c9d2;font-size:.7rem;line-height:1.35}
+#rpgDlg .r13-item button{border:1px solid #a88553;background:#44364b;color:#f9ddb2;font-weight:700;border-radius:7px;min-height:32px;padding:5px 9px;cursor:pointer;font-size:.72rem}
+#rpgDlg .r13-class-overlay[hidden],#rpgDlg .r13-combat[hidden]{display:none!important}
+#rpgDlg .r13-class-overlay,#rpgDlg .r13-combat{position:fixed;inset:0;z-index:9990;background:#060710ed;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:clamp(10px,3vw,28px);overscroll-behavior:contain}
+#rpgDlg .r13-class-card,#rpgDlg .r13-battle-card{max-width:870px;width:100%;margin:auto;padding:clamp(15px,3vw,26px);border:3px solid #c08a53;border-radius:17px;background:linear-gradient(155deg,#37233f 0%,#1a2030 58%,#302239 100%);box-shadow:0 12px 70px #000e;color:#f8e8d1}
+#rpgDlg .r13-class-card h2,#rpgDlg .r13-battle-card h2{font-family:var(--font-gothic,Georgia,serif);font-size:clamp(1.45rem,3vw,2.1rem);margin:5px 0 8px;color:#ffca7b}
+#rpgDlg .r13-class-card>small,#rpgDlg .r13-battle-card header small{letter-spacing:.13em;color:#e6b17e;font-size:.72rem;font-weight:800}
+#rpgDlg .r13-class-card>p,#rpgDlg .r13-battle-card header p{color:#d9c3da;font-size:.88rem;line-height:1.5;margin:6px 0 15px}
+#rpgDlg .r13-class-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+#rpgDlg .r13-class-grid button{background:linear-gradient(150deg,#432e45,#2a2e43);border:2px solid #847092;border-radius:12px;color:#f7ddc0;padding:17px 12px;min-height:195px;text-align:left;display:flex;flex-direction:column;gap:12px;cursor:pointer;transition:transform .18s,border-color .18s}
+#rpgDlg .r13-class-grid button:hover,#rpgDlg .r13-class-grid button:focus-visible{border-color:#fbd17b;transform:translateY(-3px)}
+#rpgDlg .r13-class-grid b{font-size:1.05rem;color:#ffd99d}
+#rpgDlg .r13-class-grid span{font-size:.82rem;line-height:1.5}
+#rpgDlg .r13-class-grid small{font-size:.76rem;color:#aedbbf}
+#rpgDlg .r13-class-grid strong{margin-top:auto;font-size:.72rem;color:#e2c1f7}
+#rpgDlg .r13-battle-card{max-width:720px}
+#rpgDlg .r13-battle-field{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;padding:12px;border:1px solid #6f6179;border-radius:11px;background:linear-gradient(165deg,#272e43,#211a30)}
+#rpgDlg .r13-enemy-figure,#rpgDlg .r13-player-figure{text-align:center;min-width:0;display:flex;align-items:center;flex-direction:column;gap:6px}
+#rpgDlg .r13-enemy-figure img{width:clamp(74px,19vw,126px);height:clamp(74px,19vw,126px);object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 5px 12px #10051a)}
+#rpgDlg .r13-player-figure canvas{width:clamp(74px,18vw,112px);height:clamp(90px,20vw,130px);object-fit:contain;image-rendering:pixelated}
+#rpgDlg .r13-battle-vs{font-size:2rem;color:#eab97d;text-shadow:0 0 12px #d98434}
+#rpgDlg .r13-enemy-figure span,#rpgDlg .r13-player-figure span{font-size:.78rem;color:#efdcc7;font-weight:700}
+#rpgDlg .r13-bar{width:100%;height:12px;background:#110e19;border:1px solid #8c7064;border-radius:8px;overflow:hidden}
+#rpgDlg .r13-bar i{height:100%;display:block;background:linear-gradient(90deg,#e3a46a,#8fdf90);transition:width .3s}
+#rpgDlg .r13-bar.enemy i{background:linear-gradient(90deg,#d14881,#e69565)}
+#rpgDlg .r13-weak{font-size:.77rem;color:#f5dbaa;background:#473246;padding:9px;border-radius:8px;margin:10px 0}
+#rpgDlg .r13-combat-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#rpgDlg .r13-combat-controls button{background:#493148;color:#f9e2c2;border:1px solid #c29858;border-radius:9px;min-height:44px;font-size:.8rem;font-weight:800;padding:8px 7px;cursor:pointer}
+#rpgDlg .r13-combat-controls button:hover,#rpgDlg .r13-combat-controls button:focus-visible{background:#725065}
+#rpgDlg .r13-combat-log{max-height:120px;overflow-y:auto;background:#151420;border-radius:9px;border:1px solid #5d5367;margin-top:12px;padding:6px 12px}
+#rpgDlg .r13-combat-log p{font-size:.78rem;margin:6px 0;color:#eee0d0;line-height:1.4;border-bottom:1px solid #fff1;padding-bottom:5px}
+@media(max-width:870px){#rpgDlg .r13-story-card{grid-column:span 2}#rpgDlg .r13-stat-card,#rpgDlg .r13-artifacts-card{grid-column:auto}}
+@media(max-width:540px){#rpgDlg .r13-story-card,#rpgDlg .r13-stat-card,#rpgDlg .r13-artifacts-card{grid-column:span 1}#rpgDlg .r13-class-grid{grid-template-columns:1fr}#rpgDlg .r13-class-grid button{min-height:114px;padding:12px;gap:6px}#rpgDlg .r13-class-overlay{align-items:flex-start}#rpgDlg .r13-combat{padding:9px;align-items:flex-start}#rpgDlg .r13-battle-card{padding:11px;border-width:2px}#rpgDlg .r13-battle-field{gap:5px;padding:6px}#rpgDlg .r13-battle-vs{font-size:1.25rem}#rpgDlg .r13-enemy-figure span,#rpgDlg .r13-player-figure span{font-size:.64rem}#rpgDlg .r13-combat-controls{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}#rpgDlg .r13-combat-controls button{font-size:.71rem;min-height:43px}}
+@media(prefers-reduced-motion:reduce){#rpgDlg .r13-class-grid button,#rpgDlg .r13-bar i{transition:none}}
+#rpgDlg .r12-bubble{max-height:calc(100% - 8px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+#rpgDlg .r12-bubble .r12-choice{flex:1 1 110px}
+#rpgDlg .r13-side-card{border-color:#66978b;background:linear-gradient(140deg,#252b38,#1c2a2d)}
+@media(max-width:540px){#rpgDlg .r13-side-card{grid-column:span 1}#rpgDlg .r12-bubble{padding:7px;gap:5px}#rpgDlg .r12-bubble p{font-size:.74rem;line-height:1.35}#rpgDlg .r12-bubble button{min-height:32px;padding:6px 10px}}
+#rpgDlg .r13-chronicle-card{border-color:#8471a4}
+#rpgDlg .r13-chronicles{max-height:300px;overflow-y:auto;scrollbar-width:thin;padding-right:5px}
+#rpgDlg .r13-chronicle-line{border-bottom:1px solid #c3acdb30;padding:9px 0}
+#rpgDlg .r13-chronicle-line strong{font-size:.77rem;color:#ffd99b}
+#rpgDlg .r13-chronicle-line p{font-size:.73rem;color:#d8c9e0;line-height:1.44;margin:5px 0}
+@media(max-width:540px){#rpgDlg .r13-chronicle-card{grid-column:span 1}}

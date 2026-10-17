@@ -1,0 +1,38 @@
+SAM MANGUINHA — V12: O MUNDO DO POMAR (RPG HÍBRIDO)
+======================================================
+
+CONTEÚDO
+- index.html (site original V11 preservado, com novo painel RPG)
+- mundo_pomar.css (interface do mundo explorável)
+- mundo_pomar.js (jogo do mundo explorável)
+- sprites/ e halloween_art/ (arte local existente)
+- banner-halloween.jpg, favicon.ico e favicon.png
+
+NOVIDADES DA V12
+- Mundo top-down com três áreas: Vila da Mangueira, Trilha Encantada e Santuário das Raízes.
+- Exploração com colisões, diálogos, coleta de 3 sementes e enigma do altar.
+- Diário, progresso e inventário locais, salvos por perfil/identificador no navegador.
+- Recompensa única de 50 sementes da LOJA LOCAL após recuperar a Relíquia do Guardião.
+- Portais para a Defesa do Pomar, a Loja, os Mascotes, o Personagem e o Halloween V11.
+- Teclado WASD/setas, E/Espaço para interagir, controles de toque e câmera com zoom no celular.
+
+COMO ENTRAR
+- Abra o site, faça login conforme o fluxo já existente e selecione "Mundo RPG" na barra de navegação.
+- Também há um cartão "O Mundo do Pomar" na página inicial.
+- Explore os prédios e a passagem ao norte para sair da vila.
+
+INSTALAÇÃO NO CLOUDFLARE
+- Faça upload de TODO o conteúdo extraído mantendo as pastas e arquivos lado a lado:
+  index.html, mundo_pomar.css, mundo_pomar.js, sprites/, halloween_art/, favicon e banner.
+- Não envie somente o HTML: os arquivos externos são necessários para o RPG.
+- Faça deploy como uma nova versão; não precisa alterar as tabelas do Supabase.
+
+LIMITAÇÕES
+- A missão do RPG e a recompensa de sementes usam localStorage por navegador/perfil;
+  não sincronizam automaticamente com o ranking ou economia oficial do servidor.
+- Os portais abrem os sistemas originais preservados, em vez de reconstruí-los.
+- Foi verificado com testes de lógica e renderização isolada no Chromium em telas
+  de computador e celular; não houve teste end-to-end do site completo no servidor
+  de produção ou em telefone físico, portanto faça backup da V11 antes de publicar.
+- Os sprites detalhados do Adobe ainda NÃO substituem os sprites usados no site:
+  para evitar novos recortes, esta V12 preserva os assets estáveis da V11.

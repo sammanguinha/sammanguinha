@@ -1,0 +1,48 @@
+SAM MANGUINHA V17 — REVISÃO GERAL + PRAÇA DOS JOGADORES
+
+INSTALAÇÃO
+1. Faça backup da implantação atual no Cloudflare.
+2. Extraia o ZIP inteiro.
+3. Publique TODOS os arquivos e pastas, mantendo index.html na raiz e os arquivos JS/CSS e pastas sprites/ e halloween_art/ nos lugares originais.
+4. Abra uma janela privada ou atualize ignorando cache para conferir se os arquivos novos foram carregados.
+5. A tela de novidades será exibida uma vez por versão (V17).
+
+MUDANÇAS VERIFICÁVEIS
+- GRIMÓRIO: novo Terminal da Manga, 18 códigos de zoeira com efeitos visíveis e botão de desligar.
+  Experimente BATATA, AMOGUS, SIGMA, MATRIX, ARCOIRIS, PARABENS, TANANAN, CAPIVARA, ERROR404.
+  Aceita códigos sem acentos, espaços ou traços. Código original do site continua no diálogo tradicional.
+- DEFESA: botão de pausa, tecla P, overlay de retomada e pausa automática ao mudar de aba.
+  Modo efeitos leves também diminui partículas geradas no Canvas, não só animações CSS.
+- RPG: fraqueza exibida acompanha a fase elemental real do chefão; custo de MP considera bônus de artefatos;
+  histórico com suporte a leitores de tela e foco preservado ao reconstruir os botões.
+- HALLOWEEN: botão de dica contextual, personagem da aventura com cor sincronizada ao avatar do site;
+  não desenha a aventura continuamente quando o painel está oculto.
+- PRAÇA DOS JOGADORES: ampliou o MURAL EXISTENTE; pesquisa, filtros, resposta com @ e ID de postagem,
+  desafio diário, reação pelo sistema antigo e atualização do feed.
+  O Mural usa os endpoints Supabase existentes, SEM criar tabelas ou funções novas.
+  Mensagens só aparecem depois de aprovadas pelo administrador. NÃO É CHAT EM TEMPO REAL.
+- Acessibilidade: as opções de contraste, texto ampliado e efeitos reduzidos continuam funcionando.
+- Nova tela de novidades para a versão V17.
+
+DADOS E COMPATIBILIDADE
+- Mesmas chaves de login, saves, perfil, campanha, missões, loja, Halloween e ranking.
+- Progresso dos códigos da V16.5 é lido automaticamente. Efeitos são locais e reversíveis.
+- Não contém script de migração de banco. NÃO MODIFICA tabelas/RLS/funções remotas.
+
+COMO OS JOGADORES INTERAGEM
+- Entram no Mural dos Murmúrios / Praça dos Jogadores.
+- Podem publicar mensagens, responder clicando no botão Responder, participar de um desafio diário e reagir.
+- Toda publicação fica PENDENTE até a aprovação de um administrador.
+- A atualização do feed é manual pelo botão "Atualizar feed"; outros jogadores não precisam estar conectados simultaneamente.
+- Para chat instantâneo, salas privadas ou coop ao vivo seria necessária nova implementação de backend, controles de abuso,
+  autenticação, banco de dados e regras de segurança; essas funções NÃO foram implantadas.
+
+TESTES EFETUADOS
+- Sintaxe de 11 blocos/arquivos JS: PASSOU.
+- Verificação de referências de arquivos locais e IDs HTML: PASSOU.
+- Teste em DOM/navegador dos controles novos, 390px e 1280px: códigos, ativa/desativa, formulário legado,
+  busca e filtros do mural, resposta e pausa: PASSOU.
+- Teste do jogo completo navegando pelo servidor local e Supabase REAL: NÃO REALIZADO (navegador de testes bloqueou rede).
+- Multiplayer em tempo real, celular físico e banco externo: NÃO TESTADOS.
+
+VEJA AUDITORIA_V17.md para observações e riscos remanescentes.

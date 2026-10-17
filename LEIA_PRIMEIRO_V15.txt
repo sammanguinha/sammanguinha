@@ -1,0 +1,5 @@
+Sam Manguinha V15 — tela de novidades.
+O painel aparece uma vez por versão por navegador, usando localStorage.
+É possível reabrir em “✦ Novidades”.
+Para alterar as notas em futuras versões, edite o painel smUpdatePanel e a constante version no fim do index.html.
+Todos os arquivos da V14 foram preservados.

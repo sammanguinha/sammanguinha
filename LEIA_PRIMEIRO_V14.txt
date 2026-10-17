@@ -1,0 +1,28 @@
+SAM MANGUINHA V14 — CRÔNICAS E MELODIAS
+====================================
+
+Esta versão continua a V13 e preserva os saves locais existentes.
+
+NOVIDADES
+• Layout mais compacto em desktop e telefone: Início, RPG, Visual e Defesa no menu principal; Diário, Halloween, Ranking, Galeria, Segredos e Admin em “Mais”.
+• Portal inicial com as 4 atividades centrais e gaveta de atividades secundárias.
+• RPG com abas Missão, Herói, Relíquias, Bestiário, Crônicas e Extras.
+• Combate por turnos com sequências visuais de ataque, conjuração, impacto, defesa, cura e contra-ataque; botões temporariamente desabilitados para impedir golpes repetidos durante cada animação.
+• Nova Rainha das Aranhas: arquivo SVG LOCAL, oito patas inteiras, transparente, adaptável às telas. O estudo visual foi feito com Adobe, mas foi incluída uma versão local independente de links temporários para não quebrar no Cloudflare.
+• Trilha ORIGINAL de RPG com 4 temas procedurais via Web Audio: exploração, batalha, chefão e Halloween. Clique “♫ Música” para ativar, clique ▾ para ajustar volume (disponível no computador). O navegador não permite iniciar áudio automaticamente sem toque do jogador.
+• Novos itens no guarda-roupa: coroas, chapéus, óculos, armaduras, capas, cajado, tocha, auras e familiar Corujinha.
+• Vários títulos desbloqueáveis pela campanha RPG, chefões, nível, Defesa do Pomar e final do Halloween, além de expressões adicionais.
+
+PUBLICAÇÃO NO CLOUDFLARE
+1. Extraia o ZIP.
+2. Publique os arquivos e pastas do INTERIOR da pasta sam_manguinha_v14_reformulado, mantendo caminhos relativos. Garanta que index.html fique na raiz publicada.
+3. Não remova mundo_pomar.js, rpg_epico_expansao.js, interface_v14.js, musica_rpg_v14.js, mundo_pomar.css ou visual_v14.css.
+4. Teste a batalha e a música no seu navegador e no celular. Atualize o cache/abra uma aba anônima se vir um design antigo.
+
+INTEGRIDADE/TESTES
+- Sintaxe dos 4 arquivos JavaScript verificada com Node.js.
+- Navegação, bestiário, modal de batalha e ausência de overflow horizontal verificadas em navegador Chromium de teste nas larguras 390 e 1280 px.
+- Testado clique no comando de ataque: trava temporariamente os botões e os libera após a sequência.
+- Reprodução de áudio controlada por gesto do jogador; não testada em dispositivo físico.
+- Não foi publicado automaticamente nem testado em todos os navegadores e aparelhos físicos.
+- Perfil, título e estado do RPG são salvos por navegador/usuário local conforme as versões anteriores; fazer backup do projeto e dados antes de substituir a publicação.
