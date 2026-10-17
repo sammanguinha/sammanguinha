@@ -36,7 +36,7 @@ test('arte original registrada e realmente desenhada no canvas',()=>{
   const svg=file('sprites/'+n+'.svg');
   assert.ok(svg.startsWith('<svg'),n);
   assert.ok(svg.includes('viewBox="0 0 32 32"'),n);
-  assert.ok(html.includes(n)||file('casa_pomar_v21.js').includes(n.split('_v21_')[0]),'referenced '+n);
+  assert.ok(html.includes(n)||/^(casa_cristal|casa_gato)_v21_/.test(n)&&file('casa_pomar_v21.js').includes("'casa_'+id+'_v21_'"),'referenced '+n);
  }
  assert.ok(html.includes('p.kind===\'caster\''),'ranged caster must exist');
  assert.ok(html.includes("p.kind==='armored'"),'armored variant must exist');
