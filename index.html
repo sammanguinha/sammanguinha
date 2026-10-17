@@ -3255,15 +3255,15 @@ $("gDifficulty").addEventListener("click",()=>orchardRender());
 orchardRender();
 
 function gameInit(){loadGRank();if(!gs)drawG()}
-function stopGame(){cancelAnimationFrame(gRaf);const was=gs;gs=null;gRun=null;sm17GamePause(false);if(was){$("gOvT").textContent="Partida interrompida";$("gOvP").textContent="Você saiu no meio do jogo. Essa partida não conta.";$("gOvK").textContent="";$("gPlay").textContent="Jogar de novo";$("gOv").hidden=false}}
+function stopGame(){cancelAnimationFrame(gRaf);const was=gs;gs=null;gRun=null;$("sm21WaveUpgrade").hidden=true;sm17GamePause(false);if(was){$("gOvT").textContent="Partida interrompida";$("gOvP").textContent="Você saiu no meio do jogo. Essa partida não conta.";$("gOvK").textContent="";$("gPlay").textContent="Jogar de novo";$("gOv").hidden=false}}
 async function startGame(){
   if(!me||!prof){showGate();return}
   gRun=null;gPl=null;let note="";
   try{if(gDifficulty==="normal")gRun=await rpc("game_start",{p_handle:me,p_token:tok});else note="Modo "+(gDifficulty==="hard"?"Difícil":"Infinito")+" com recorde local; ranking oficial é do modo Normal."}catch(e){note=e.message==="rate"?"Limite de partidas de hoje atingido. Esta é uma partida de treino.":"Servidor do jogo indisponível. Esta é uma partida de treino e não vale ranking."}
   if($("gameDlg").hidden)return;
   orchardFX.length=0;
-  gs={dashCd:0,novaCd:0,dashes:0,novas:0,dashFx:0,novaFx:0,combo:0,bestCombo:0,comboTimer:0,lastDir:1,mode:gDifficulty,kills:0,boss:null,bossDefeated:false,x:GW/2,ammo:gHard()?24:12,stun:0,hp:gHard()?5:3,trees:Array(gHard()?5:3).fill(true),treeHits:Array(gHard()?5:3).fill(0),hard:gHard(),score:0,wave:1,wt:0,t:0,sp:0,ft:0,reg:0,petId:orchardRead().pet,petCooldown:2,petFlash:0,playerMaxHp:gHard()?8:6,playerHp:gHard()?8:6,invuln:0,bossShots:[],sh:[],pe:[],it:[]};
-  $("gOv").hidden=true;sm17GamePause(false);if(note)toast(note,5000);
+  gs={weapon:$("sm21Weapon").value,reloadRate:.72,fireFactor:1,dashFactor:1,essence:0,repairCd:0,repairs:0,shots:0,upgrades:[],upgrading:false,precision:false,shotHits:0,shield:0,dashCd:0,novaCd:0,dashes:0,novas:0,dashFx:0,novaFx:0,combo:0,bestCombo:0,comboTimer:0,lastDir:1,mode:gDifficulty,kills:0,boss:null,bossDefeated:false,x:GW/2,ammo:gHard()?24:12,stun:0,hp:gHard()?5:3,trees:Array(gHard()?5:3).fill(true),treeHits:Array(gHard()?5:3).fill(0),hard:gHard(),score:0,wave:1,wt:0,t:0,sp:0,ft:0,reg:0,petId:orchardRead().pet,petCooldown:2,petFlash:0,playerMaxHp:gHard()?8:6,playerHp:gHard()?8:6,invuln:0,bossShots:[],sh:[],pe:[],it:[]};
+  $("gOv").hidden=true;$("sm21WaveUpgrade").hidden=true;sm17GamePause(false);sm21UpdateStatus(gs);if(note)toast(note,5000);
   gLast=performance.now();cancelAnimationFrame(gRaf);gRaf=requestAnimationFrame(loop);
 }
 function loop(t){
@@ -3385,22 +3385,27 @@ addEventListener('keydown',e=>{
 });
 
 function stepG(dt){
-  const s=gs;orchardUpdateFX(dt);s.dashCd=Math.max(0,s.dashCd-dt);s.novaCd=Math.max(0,s.novaCd-dt);s.dashFx=Math.max(0,s.dashFx-dt);s.novaFx=Math.max(0,s.novaFx-dt);s.comboTimer=Math.max(0,s.comboTimer-dt);if(!s.comboTimer)s.combo=0;s.bestCombo=Math.max(s.bestCombo||0,s.combo||0);const dashButton=$("sm20Dash"),novaButton=$("sm20Nova");if(dashButton){dashButton.disabled=s.dashCd>0;$("sm20DashCd").textContent=s.dashCd>0?s.dashCd.toFixed(1)+"s":"Pronto"}if(novaButton){novaButton.disabled=s.novaCd>0||s.ammo<3;$("sm20NovaCd").textContent=s.novaCd>0?s.novaCd.toFixed(1)+"s":s.ammo<3?"3 mangas":"Pronto"}$("sm20Combo").textContent="Combo x"+(1+Math.min(3,Math.floor((s.combo||0)/5)));s.t+=dt;s.wt+=dt;s.ft-=dt;s.stun-=dt;s.reg+=dt;s.petCooldown-=dt;s.petFlash=Math.max(0,(s.petFlash||0)-dt);if(s.petEffect)s.petEffect.ttl=Math.max(0,s.petEffect.ttl-dt);s.invuln=Math.max(0,(s.invuln||0)-dt);
-  if(s.wt>= (s.hard?18:15)){
-    if(s.mode==="hard"&&s.wave===10&&!s.bossDefeated){s.wt=19.5;}
-    else {s.score+=s.hard?100:50;sfx(880,.25);if(s.mode!=="infinite"&&s.wave>=(s.hard?10:5)){endG(true);return false}s.wave++;s.wt=0}
-  }
-  if(s.mode==="hard"&&s.wave===10&&!s.boss&&!s.bossDefeated){s.boss={x:GW/2,y:210,hp:12,max:12,attack:7,hit:0};toast("👑 O Rei das Pragas chegou! Acerte-o 12 vezes!",4500)}
+  const s=gs;if(s.upgrading){sm21UpdateStatus(s);return true}s.repairCd=Math.max(0,s.repairCd-dt);orchardUpdateFX(dt);s.dashCd=Math.max(0,s.dashCd-dt);s.novaCd=Math.max(0,s.novaCd-dt);s.dashFx=Math.max(0,s.dashFx-dt);s.novaFx=Math.max(0,s.novaFx-dt);s.comboTimer=Math.max(0,s.comboTimer-dt);if(!s.comboTimer)s.combo=0;s.bestCombo=Math.max(s.bestCombo||0,s.combo||0);sm21UpdateStatus(s);const dashButton=$("sm20Dash"),novaButton=$("sm20Nova");if(dashButton){dashButton.disabled=s.dashCd>0;$("sm20DashCd").textContent=s.dashCd>0?s.dashCd.toFixed(1)+"s":"Pronto"}if(novaButton){novaButton.disabled=s.novaCd>0||s.ammo<3;$("sm20NovaCd").textContent=s.novaCd>0?s.novaCd.toFixed(1)+"s":s.ammo<3?"3 mangas":"Pronto"}$("sm20Combo").textContent="Combo x"+(1+Math.min(3,Math.floor((s.combo||0)/5)));s.t+=dt;s.wt+=dt;s.ft-=dt;s.stun-=dt;s.reg+=dt;s.petCooldown-=dt;s.petFlash=Math.max(0,(s.petFlash||0)-dt);if(s.petEffect)s.petEffect.ttl=Math.max(0,s.petEffect.ttl-dt);s.invuln=Math.max(0,(s.invuln||0)-dt);
+  if(!sm21Wave(s,dt))return false;
   if(s.boss){s.boss.x=GW/2+Math.sin(s.t*.9)*GW*.22;s.boss.attack-=dt;s.boss.hit=Math.max(0,(s.boss.hit||0)-dt);if(s.boss.attack<=0){s.boss.attack=4.5;const dx=s.x-s.boss.x,dy=GH-90-s.boss.y,len=Math.hypot(dx,dy)||1;for(const offset of [-.20,0,.20]){const a=Math.atan2(dy,dx)+offset;s.bossShots.push({x:s.boss.x,y:s.boss.y+35,vx:Math.cos(a)*195,vy:Math.sin(a)*195,r:11})}orchardBurst(s.boss.x,s.boss.y+40,"#d58aff",1.1,"ATAQUE!");sfx(180,.14)}}
-  if(s.reg>=.72){s.reg=0;s.ammo=Math.min(s.hard?26:12,s.ammo+1)}
+  if(s.reg>=s.reloadRate){s.reg-=s.reloadRate;s.ammo=Math.min(s.hard?26:12,s.ammo+1)}
   const sp=s.stun>0?110:(s.hard?270:220),dir=(K.r?1:0)-(K.l?1:0);if(dir)s.lastDir=dir;s.x=Math.max(38,Math.min(GW-38,s.x+dir*sp*dt));
-  if(K.f&&s.ft<=0&&s.ammo>0&&s.stun<=0){s.ft=s.hard?.13:.22;s.ammo--;s.sh.push({x:s.x,y:GH-100,vy:-500,trail:0});orchardBurst(s.x,GH-104,"#ffcf55",.27);sfx(660,.06)}
+  if(K.f&&s.ft<=0&&s.ammo>0&&s.stun<=0)sm21Fire(s)
   s.sp-=dt;
   if(s.sp<=0){
-    s.sp=s.hard?Math.max(.42,.98-s.wave*.047)/.7:Math.max(.6,1.5-s.wave*.15);const x=38+Math.random()*(GW-76),r=Math.random();
-    if(r<.182)s.it.push({x,y:-10,vy:65,k:"m"});
-    else if(r<.182+.045+s.wave*.009)s.it.push({x,y:-10,vy:90,k:"r"});
-    else{const beetle=s.hard?(Math.random()<Math.min(.64,.25+s.wave*.038)):(s.wave>=3&&Math.random()<.3);const spore=!beetle&&s.wave>=2&&Math.random()<.18;const hp=beetle?2:1;s.pe.push({x,y:-10,originX:x,phase:Math.random()*6.28,vy:(s.hard?49+s.wave*9:34+s.wave*9)*(spore?.85:1),hp,kind:beetle?"beetle":spore?"spore":"larva"})}
+    // Tipos possuem atributos e padrões reais: mago de longa distância, besouro blindado e esporo errante.
+    s.sp=s.hard?Math.max(.52,1.17-s.wave*.045):Math.max(.72,1.65-s.wave*.15);
+    const x=38+Math.random()*(GW-76),r=Math.random();
+    if(r<.15)s.it.push({x,y:-10,vy:68,k:"m"});
+    else if(r<.19)s.it.push({x,y:-10,vy:84,k:"r"});
+    else{
+      const kindRoll=Math.random();let kind='larva',hp=1,vy=(s.hard?53+s.wave*8:43+s.wave*7);
+      if(s.wave>=4&&kindRoll<.11){kind='armored';hp=3;vy*=.65}
+      else if(s.wave>=3&&kindRoll<.24){kind='caster';hp=2;vy*=.72}
+      else if(kindRoll<.40){kind='beetle';hp=2;vy*=.82}
+      else if(s.wave>=2&&kindRoll<.60){kind='spore';vy*=.95}
+      s.pe.push({kind,hp,x,y:-10,originX:x,phase:Math.random()*Math.PI*2,vy,cast:2.6+Math.random()*1.6,anim:0,hit:0});
+    }
   }
   // Mascotes com poderes reais; todos funcionam apenas quando equipados.
   if(s.petId&&s.petCooldown<=0){
