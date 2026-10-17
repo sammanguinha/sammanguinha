@@ -1,0 +1,34 @@
+name: V19 - Expedição Astral - Qualidade (sem deploy)
+on:
+  push:
+    branches:
+      - dev/v19-expedicao-cinematica
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    name: Sintaxe, progressão, sprites e migração
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Conferir JavaScript da Expedição
+        run: node --check expedicao_v18.js
+      - name: Executar testes de regressão V19
+        run: node --test tests/expedicao_v19_smoke.test.cjs
+      - name: Validar integração sem backend nem deploy
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          html=Path('index.html').read_text(encoding='utf-8')
+          for tag in ('expedicao_v18.js?v=19','expedicao_v18.css?v=19',"const version='19.0.0'",'NOTAS DE ATUALIZAÇÃO · V19.0'):
+            assert tag in html,tag
+          for asset in ('sprites/espirito_lunar_v19.svg','sprites/reliquia_lunar_v19.svg','sprites/portal_astral_v19.svg'):
+            p=Path(asset)
+            assert p.is_file() and p.read_text(encoding='utf-8').lstrip().startswith('<svg')
+          assert len(html.encode('utf-8'))<650_000
+          print('Verificações locais concluídas; sem publicar em produção.')
+          PY
