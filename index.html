@@ -3199,7 +3199,7 @@ const gInfinite=()=>gDifficulty==="infinite";
 function setGameDifficulty(mode){
  if(gs)return;gDifficulty=["hard","infinite"].includes(mode)?mode:"normal";GW=gHard()?540:360;GH=gHard()?620:480;gc.width=GW;gc.height=GH;
  document.querySelectorAll("#gDifficulty [data-difficulty]").forEach(b=>{const active=b.dataset.difficulty===gDifficulty;b.setAttribute("aria-pressed",String(active));b.classList.toggle("alt",!active)});
- $("gOvP").textContent=gInfinite()?"Defesa Infinita: sobreviva ao maior número de ondas possível. Recorde local, sem envio ao ranking oficial.":gHard()?"Modo DIFÍCIL: arena maior, 5 árvores para proteger, 30% menos pragas, larvas precisam de 2 ataques para derrubar uma árvore e besouros derrubam com 1. Sobreviva a 10 ondas e ganhe pontos em dobro!":"Pragas descem do céu sombrio. Atire mangas para derrubá-las e colha as que caem. Sobreviva a 5 ondas.";
+ $("gOvP").textContent=gInfinite()?"Defesa Infinita: sobreviva ao maior número de ondas possível. Recorde local, sem envio ao ranking oficial.":gHard()?"Modo DIFÍCIL: arena maior, 5 árvores para proteger, 30% menos pragas, larvas precisam de 2 ataques para derrubar uma árvore e besouros derrubam com 1. Sobreviva a 10 ondas e ganhe pontos em dobro!":"Defesa Tática: sobreviva a 5 ondas, escolha bênçãos e derrote o Rei do Eclipse na quinta onda.";
  $("gModeNote").textContent=gDifficulty==="hard"?"👑 O Rei das Pragas surge na onda 10!":gInfinite()?"♾️ Ondas sem fim; recorde salvo neste navegador.":"🌱 5 ondas clássicas.";
  drawG();
 }
@@ -3226,7 +3226,7 @@ const orchardDay=()=>new Date().toLocaleDateString("en-CA",{timeZone:"America/Sa
 function orchardDaily(v){const today=orchardDay();if(v.day!==today){v.day=today;v.claimed=[];v.stats={games:0,kills:0,waves:0,dashes:0,novas:0,combo:0}}v.stats={games:0,kills:0,waves:0,dashes:0,novas:0,combo:0,...(v.stats||{})};v.owned=v.owned||[];v.claimed=v.claimed||[];return v}
 let orchardTab="shop";
 const orchardTasks=[{id:"games",name:"🌱 Iniciação — jogue 2 partidas",goal:2,reward:45},{id:"kills",name:"⚔️ Guardião — elimine 30 pragas",goal:30,reward:60},{id:"waves",name:"🌳 Vigília — sobreviva a 12 ondas",goal:12,reward:70},{id:"dashes",name:"💨 Vento Vivo — use 5 impulsos",goal:5,reward:35},{id:"novas",name:"💥 Eclipse — conjure 3 explosões",goal:3,reward:50},{id:"combo",name:"✨ Lenda — alcance combo x4",goal:15,reward:80}];
-const pixelAsset=n=>"sprites/"+n+(n==="esporo_v20"?".svg":".png");
+const pixelAsset=n=>"sprites/"+n+((n==="esporo_v20"||/_v21(?:_idle|_cast|_hurt|_attack|_brilho)?$/.test(n))?".svg":".png");
 const pixelImages={};
 function pixelImage(n){if(!pixelImages[n]){const im=new Image();im.src=pixelAsset(n);pixelImages[n]=im}return pixelImages[n]}
 function pixelDraw(g,n,x,y,w,h){
@@ -3289,7 +3289,7 @@ function sm21UpgradeUI(s){
  s.upgrading=true;K.l=K.r=K.f=0;
  const layer=$("sm21WaveUpgrade"),list=$("sm21UpgradeChoices");layer.hidden=false;list.replaceChildren();
  $("sm21UpgradeTitle").textContent="Onda "+s.wave+" concluída! Escolha uma bênção";
- const index=((s.wave-1)*2)%sm21Blessings.length;
+ const index=(s.wave-1)%sm21Blessings.length;
  sm21Choices=[0,1,2].map(i=>sm21Blessings[(index+i*2)%sm21Blessings.length]);
  sm21Choices.forEach((item,i)=>{
    const b=document.createElement('button');b.type='button';b.dataset.bless=i;
@@ -3418,7 +3418,7 @@ function stepG(dt){
     else if(s.boss){s.boss.hp-=1;s.boss.hit=.3;orchardBurst(s.boss.x,s.boss.y,"#d9b0ff",1,"-1");sm21BossDown(s)}
     }
    }
-  s.sh.forEach(b=>{b.y+=b.vy*dt;b.trail=(b.trail||0)+dt;if(b.trail>.055){b.trail=0;orchardFX.push({x:b.x+(Math.random()-.5)*8,y:b.y+9,vx:(Math.random()-.5)*18,vy:30,life:.18,max:.18,c:"#ffc45e",size:3})}});s.sh=s.sh.filter(b=>b.y>-10);
+  s.sh.forEach(b=>{b.y+=b.vy*dt;b.trail=(b.trail||0)+dt;if(b.trail>.055){b.trail=0;if(orchardFX.length<340)orchardFX.push({x:b.x+(Math.random()-.5)*8,y:b.y+9,vx:(Math.random()-.5)*18,vy:30,life:.18,max:.18,c:"#ffc45e",size:3})}});s.sh=s.sh.filter(b=>b.y>-10);
   s.pe.forEach(p=>{p.y+=p.vy*dt;if(p.kind==="spore")p.x=Math.max(30,Math.min(GW-30,(p.originX||p.x)+Math.sin(s.t*2.7+p.phase)*27));p.hit=Math.max(0,(p.hit||0)-dt);p.anim=Math.max(0,(p.anim||0)-dt);
  if(p.kind==="caster"&&p.y>65&&p.y<GH*.59){p.cast-=dt;if(p.cast<=0){p.cast=4.8;p.anim=.6;const angle=Math.atan2(GH-90-p.y,s.x-p.x);s.bossShots.push({x:p.x,y:p.y+15,vx:Math.cos(angle)*145,vy:Math.sin(angle)*145,r:7,source:'caster'});orchardBurst(p.x,p.y,"#d8b2ff",.5)}}});s.it.forEach(i=>i.y+=i.vy*dt);
   s.bossShots.forEach(b=>{b.x+=b.vx*dt;b.y+=b.vy*dt});
@@ -3444,6 +3444,7 @@ function orchardHurtPlayer(s,amount,x,y,source){
 // Impactos estilo RPG: partículas, números de dano e flashes sem imagens cortadas.
 const orchardFX=[];
 function orchardBurst(x,y,color="#ffeaa2",power=1,damage=""){
+ if(orchardFX.length>320)orchardFX.splice(0,Math.min(100,orchardFX.length-300));
  const count=document.documentElement.classList.contains('sm165-lowfx')||matchMedia('(prefers-reduced-motion: reduce)').matches?Math.min(4,Math.round(11*power)):Math.round(11*power);for(let i=0;i<count;i++){const a=Math.random()*Math.PI*2,v=(40+Math.random()*110)*power;orchardFX.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-20,life:.25+Math.random()*.24,max:.49,c:color,size:2+Math.random()*4})}
  if(damage)orchardFX.push({x,y:y-14,vx:0,vy:-48,life:.6,max:.6,c:"#fff5d0",label:damage});
 }
@@ -3475,23 +3476,23 @@ function drawG(){
     g.save();g.globalAlpha=.3;g.fillStyle='#6d2c8a';g.beginPath();g.ellipse(b.x,b.y+74,78,9,0,0,Math.PI*2);g.fill();g.restore();
     if(attack){g.save();g.globalAlpha=.18+.12*Math.sin(t*22);g.fillStyle='#ff7e26';g.beginPath();g.arc(b.x,b.y,104,0,Math.PI*2);g.fill();g.restore()}
     const shake=hit>0?Math.sin(t*76)*4*hit/.3:0;
-    v11Draw(g,'rei_das_pragas_completo',b.x+shake,b.y+Math.sin(t*2.4)*2,195,166,{scale:1+Math.sin(t*2.2)*.018,rotate:attack?Math.sin(t*15)*.018:0,alpha:hit>0?.85:1});
+    if(!v11Draw(g,hit>0?'rei_eclipse_v21_hurt':attack?'rei_eclipse_v21_attack':'rei_eclipse_v21_idle',b.x+shake,b.y+Math.sin(t*2.4)*2,172,168,{scale:1+Math.sin(t*2.2)*.02,rotate:attack?Math.sin(t*15)*.018:0})){v11Draw(g,'rei_das_pragas_completo',b.x,b.y,171,160)}
     if(hit>0){g.save();g.globalAlpha=.12*hit/.3;g.fillStyle='#fff9ff';g.beginPath();g.ellipse(b.x,b.y,98,75,0,0,Math.PI*2);g.fill();g.restore()}
-    const barw=116,y=b.y-94;g.fillStyle='#160f20';g.fillRect(b.x-barw/2-2,y-2,barw+4,12);
+    const barw=116,y=b.y-89;g.fillStyle='#160f20';g.fillRect(b.x-barw/2-2,y-2,barw+4,12);
     g.fillStyle='#9b3157';g.fillRect(b.x-barw/2,y,barw,8);g.fillStyle='#9dff95';g.fillRect(b.x-barw/2,y,barw*Math.max(0,b.hp/b.max),8);
-    g.fillStyle='#fff0dc';g.font='bold 13px sans-serif';g.fillText('REI DAS PRAGAS',b.x,y-12);
+    g.fillStyle='#fff0dc';g.font='bold 13px sans-serif';g.fillText('REI DO ECLIPSE',b.x,y-12);if(attack){g.save();g.strokeStyle='#ffb8ef';g.lineWidth=2;g.globalAlpha=.38+.25*Math.sin(t*18);g.beginPath();g.arc(b.x,b.y,86,0,Math.PI*2);g.stroke();g.restore()}
   }
   s.pe.forEach(p=>{
-    const beetle=p.kind==='beetle',sz=beetle?63:56;
+    const beetle=p.kind==='beetle',sz=p.kind==='armored'?70:p.kind==='caster'?61:beetle?63:56;
     const bob=Math.sin(t*8+p.x*.07)*2;
     g.save();g.fillStyle='#06150c88';g.beginPath();g.ellipse(p.x,p.y+sz*.40,sz*.35,4,0,0,Math.PI*2);g.fill();
     if(p.hit>0){g.shadowColor='#fff5bb';g.shadowBlur=12;g.globalAlpha=.76+Math.sin(t*64)*.2}
-    if(!v11Draw(g,beetle?'besouro':p.kind==='spore'?'esporo_v20':'larva_pequena',p.x,p.y+bob,sz,sz)){const fallback=spr(beetle?'beetle':'pest');g.drawImage(fallback,p.x-20,p.y+bob-20,40,40)}
+    const sprite=p.kind==='armored'?(p.hit>0?'carapaca_v21_hurt':'carapaca_v21_idle'):p.kind==='caster'?(p.hit>0?'arqueiro_sombra_v21_hurt':p.anim>0?'arqueiro_sombra_v21_cast':'arqueiro_sombra_v21_idle'):beetle?'besouro':p.kind==='spore'?'esporo_v20':'larva_pequena';if(!v11Draw(g,sprite,p.x,p.y+bob,sz,sz)){const fallback=spr(beetle?'beetle':'pest');g.drawImage(fallback,p.x-20,p.y+bob-20,40,40)}
     g.restore();
   });
   (s.bossShots||[]).forEach(b=>{g.save();g.shadowColor='#bb70ff';g.shadowBlur=14;g.fillStyle='#a14cfc';g.beginPath();g.arc(b.x,b.y,b.r,0,Math.PI*2);g.fill();g.fillStyle='#fff2fb';g.fillRect(b.x-3,b.y-3,6,6);g.restore()});
   s.it.forEach(i=>v11Draw(g,i.k==='m'?'manga':'semente',i.x,i.y,34,38));
-  s.sh.forEach(b=>{g.save();g.globalAlpha=.26;g.fillStyle='#fdaf44';g.fillRect(b.x-3,b.y+6,6,18);g.restore();v11Draw(g,'manga',b.x,b.y,22,28)});
+  s.sh.forEach(b=>{g.save();g.globalAlpha=.26;g.fillStyle='#fdaf44';g.fillRect(b.x-3,b.y+6,6,18);g.restore();v11Draw(g,b.arcane?'manga_runica_v21':'manga',b.x,b.y,b.arcane?27:22,b.arcane?31:28)});
   g.save();g.globalAlpha=s.invuln>0&&Math.floor(t*13)%2===0?.46:s.stun>0?.7:1;
   const moving=(K.r?1:0)-(K.l?1:0),shooting=(s.ft||0)>.075;
   const playerName=shooting?'sam_atacando':moving?'sam_andando_1':'sam_idle';
@@ -3507,6 +3508,7 @@ function drawG(){
     v11Frame(g,arr,t+id.length*.13,4.2,petx,pety,id==='bat'?80:70,id==='bat'?70:71,{rotate:Math.sin(t*3)*.045,scale:s.petFlash>.06?1.12:1});
   }
   v11Magic(g,s);
+  if(s.repairCd>0){g.save();g.globalAlpha=s.repairCd/1.2;v11Draw(g,"runa_reparo_v21",GW/2,GH-88,58,58,{alpha:s.repairCd/1.2});g.restore()}
   if(s.novaFx>0){g.save();g.strokeStyle="#bda5ff";g.shadowColor="#9bdfff";g.shadowBlur=24;g.lineWidth=4;g.globalAlpha=Math.min(1,s.novaFx/.35);g.beginPath();g.arc(s.x,GH-135,154*(1-s.novaFx/.65),0,Math.PI*2);g.stroke();g.restore()}
   if(s.dashFx>0){g.save();g.strokeStyle="#72e6e6";g.globalAlpha=Math.min(1,s.dashFx/.35);for(let i=0;i<4;i++){g.beginPath();g.moveTo(s.x-(s.lastDir||1)*(15+i*12),GH-108+i*7);g.lineTo(s.x-(s.lastDir||1)*(36+i*12),GH-108+i*7);g.stroke()}g.restore()}
   orchardDrawFX(g);
@@ -3647,7 +3649,7 @@ function v11ShopPreviews(t){
 requestAnimationFrame(v11ShopPreviews);
 function v11Preload(){
   ['rei_das_pragas_completo','arvore_saudavel','arvore_danificada','arvore_destruida',
-   'sam_idle','sam_andando_1','sam_atacando','manga','semente','besouro','larva_pequena','esporo_v20',
+   'sam_idle','sam_andando_1','sam_atacando','manga','semente','besouro','larva_pequena','esporo_v20','arqueiro_sombra_v21_idle','arqueiro_sombra_v21_cast','arqueiro_sombra_v21_hurt','carapaca_v21_idle','carapaca_v21_hurt','rei_eclipse_v21_idle','rei_eclipse_v21_attack','rei_eclipse_v21_hurt','manga_runica_v21','runa_reparo_v21',
    ...Object.values(petFrames).flat()].forEach(n=>pixelImage(n));
 }
 v11Preload();
