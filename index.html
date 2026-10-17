@@ -2084,7 +2084,7 @@ dialog[open]{max-height:92vh;overflow:auto}
         <p id="gOvP" style="font-size:0.86rem;color:var(--ink);line-height:1.45;margin:0 0 16px">Proteja as árvores durante 5 ondas, escolha bênçãos e derrote o Rei do Eclipse na onda final.</p>
         <p class="sm" id="gOvK" style="color:var(--muted);font-size:0.75rem;margin-bottom:14px">Teclado: ← → ou A D para mover, Espaço para atirar. No celular, use os botões.</p>
         <div class="sm21-loadout"><label for="sm21Weapon">⚔ Estilo de combate</label><select id="sm21Weapon"><option value="classic">🏹 Arco da Colheita — equilibrado</option><option value="twin">🥭 Rajada Dupla — dois projéteis, duas mangas</option><option value="arcane">🔮 Canhão Rúnico — ataque forte, lento e caro</option></select><small id="sm21WeaponHint">O Arco da Colheita equilibra precisão e economia de munição.</small></div><div id="gDifficulty" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:15px"><button type="button" class="btn-gothic" data-difficulty="normal" aria-pressed="true">🌱 Normal</button><button type="button" class="btn-gothic alt" data-difficulty="hard" aria-pressed="false">🔥 Difícil</button><button type="button" class="btn-gothic alt" data-difficulty="infinite" aria-pressed="false">♾️ Infinito</button></div>
-        <div id="gModeNote" class="sm" style="margin:-5px 0 12px;color:var(--gold)"></div>
+        <div id="gModeNote" class="sm" style="margin:-5px 0 12px;color:var(--gold)"></div><div id="sm21BattleResults" class="sm21-battle-results" hidden aria-label="Relatório de combate"></div>
         <div class="row" style="display:flex;gap:10px">
           <button type="button" class="btn-gothic alt" id="gBack">Voltar</button>
           <button type="button" class="btn-gothic" id="gPlay">Iniciar Batalha</button>
@@ -3255,7 +3255,7 @@ $("gDifficulty").addEventListener("click",()=>orchardRender());
 orchardRender();
 
 function gameInit(){loadGRank();if(!gs)drawG()}
-function stopGame(){cancelAnimationFrame(gRaf);const was=gs;gs=null;gRun=null;$("sm21WaveUpgrade").hidden=true;sm17GamePause(false);if(was){$("gOvT").textContent="Partida interrompida";$("gOvP").textContent="Você saiu no meio do jogo. Essa partida não conta.";$("gOvK").textContent="";$("gPlay").textContent="Jogar de novo";$("gOv").hidden=false}}
+function stopGame(){cancelAnimationFrame(gRaf);const was=gs;gs=null;gRun=null;$("sm21WaveUpgrade").hidden=true;sm17GamePause(false);if(was){$("sm21BattleResults").hidden=true;$("gOvT").textContent="Partida interrompida";$("gOvP").textContent="Você saiu no meio do jogo. Essa partida não conta.";$("gOvK").textContent="";$("gPlay").textContent="Jogar de novo";$("gOv").hidden=false}}
 async function startGame(){
   if(!me||!prof){showGate();return}
   gRun=null;gPl=null;let note="";
@@ -3263,7 +3263,7 @@ async function startGame(){
   if($("gameDlg").hidden)return;
   orchardFX.length=0;
   gs={weapon:$("sm21Weapon").value,reloadRate:.72,fireFactor:1,dashFactor:1,essence:0,repairCd:0,repairs:0,shots:0,upgrades:[],upgrading:false,precision:false,shotHits:0,shield:0,dashCd:0,novaCd:0,dashes:0,novas:0,dashFx:0,novaFx:0,combo:0,bestCombo:0,comboTimer:0,lastDir:1,mode:gDifficulty,kills:0,boss:null,bossDefeated:false,x:GW/2,ammo:gHard()?24:12,stun:0,hp:gHard()?5:3,trees:Array(gHard()?5:3).fill(true),treeHits:Array(gHard()?5:3).fill(0),hard:gHard(),score:0,wave:1,wt:0,t:0,sp:0,ft:0,reg:0,petId:orchardRead().pet,petCooldown:2,petFlash:0,playerMaxHp:gHard()?8:6,playerHp:gHard()?8:6,invuln:0,bossShots:[],sh:[],pe:[],it:[]};
-  $("gOv").hidden=true;$("sm21WaveUpgrade").hidden=true;sm17GamePause(false);sm21UpdateStatus(gs);if(note)toast(note,5000);
+  $("gOv").hidden=true;$("sm21BattleResults").hidden=true;$("sm21WaveUpgrade").hidden=true;sm17GamePause(false);sm21UpdateStatus(gs);if(note)toast(note,5000);
   gLast=performance.now();cancelAnimationFrame(gRaf);gRaf=requestAnimationFrame(loop);
 }
 function loop(t){
@@ -3660,7 +3660,12 @@ async function endG(won){
   if(won)s.score+=Math.max(0,s.hp)*(s.hard?200:100);
   drawG();gs=null;sm17GamePause(false);sfx(won?1200:150,.4);
   orchardAfterBattle(s,won);try{window.SamHybridRPG?.onDefenseResult?.(won)}catch(ex){}
+
   $("gOvT").textContent=won?"Vitória! O pomar está salvo":"As pragas venceram";
+  const grade=won&&s.hp===s.trees.length&&s.playerHp>=s.playerMaxHp*.6?'S':won&&s.hp>1?'A':won?'B':'C';
+  const battleReport=$("sm21BattleResults");battleReport.replaceChildren();
+  [["✦ Rank",grade],["⚔ Eliminações",s.kills],["🌳 Reparos",s.repairs],["✨ Melhor combo",s.bestCombo],["🏹 Disparos",s.shots],["👑 Chefe",s.bossDefeated?"Derrotado":"Não derrotado"]].forEach(([key,value])=>{const item=document.createElement("span"),label=document.createElement("small"),result=document.createElement("strong");label.textContent=key;result.textContent=String(value);item.append(label,result);battleReport.append(item)});
+  battleReport.hidden=false;
   $("gOvP").textContent=(s.mode==="infinite"?"Defesa Infinita · ":s.hard?"Modo Difícil · ":"")+"Pontuação: "+s.score+" (onda "+s.wave+(s.mode==="infinite"?"": " de "+(s.hard?10:5))+").";
   $("gOvK").textContent=s.mode==="infinite"?"Recorde infinito salvo localmente; não conta no ranking oficial.":gRun?"Salvando seu resultado…":"Partida de treino: não conta no ranking.";
   $("gPlay").textContent="Jogar de novo";$("gOv").hidden=false;
