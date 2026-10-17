@@ -1,0 +1,29 @@
+/* Crônicas do Pomar V21 — direção de arte RPG original, performance e acessibilidade. */
+:root{--sm21-ether:#b9cafa;--sm21-gold:#f6d59b;--sm21-violet:#a990d9;--sm21-shade:#101728}
+.sm21-house-portal{position:relative;overflow:hidden;border-color:#a898d7!important;background:radial-gradient(circle at 88% 16%,#e9cba32b,transparent 35%),linear-gradient(145deg,#232b45,#132b32)!important}
+.sm21-house-portal::before{content:"✦";position:absolute;right:21px;top:12px;font-size:2rem;color:#ead5ff;text-shadow:0 0 18px #b59ce0}
+.sm21-house-portal .portal-badge{font-size:.65rem;letter-spacing:.12em;color:#b9f5ce;font-weight:800}
+#gameDlg{position:relative}
+#gameDlg>.ptitle{color:#f0d29b;filter:drop-shadow(0 2px 12px #bc7e9144)}
+#gameDlg #gCv{image-rendering:pixelated;touch-action:none;border:1px solid #e4c89d33}
+#gameDlg .panel{border-color:#b0968766}
+.sm21-defense-dashboard{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;margin:10px 0;padding:8px;border-radius:13px;background:#151d35;border:1px solid #5f678b}
+.sm21-defense-dashboard span{padding:5px 10px;color:#eadbca;font-size:.8rem;font-weight:700;border-radius:9px;background:#2d2c48}
+#sm21Essence{color:#ccbeff}.sm21-loadout{display:flex;flex-direction:column;align-items:stretch;gap:6px;margin:0 0 15px;max-width:345px;width:100%;text-align:left;border:1px solid #8b79ad;border-radius:10px;padding:10px;background:#22253b}
+.sm21-loadout label{color:#f8dca2;font-size:.8rem;font-weight:800}.sm21-loadout select{color:#f3f3f6;background:#292e4c;border:1px solid #bbb4ca;border-radius:8px;min-height:39px;font:inherit;font-size:13px;padding:6px 4px;width:100%}.sm21-loadout small{font-size:.69rem;color:#d9d4e8;line-height:1.4}
+.sm21-wave-upgrade{position:absolute;inset:0;background:#090e1aee;backdrop-filter:blur(6px);z-index:15;display:flex;align-items:center;justify-content:center;padding:clamp(7px,2vw,16px);color:#eee6db;text-align:center}
+.sm21-wave-upgrade[hidden]{display:none!important}
+.sm21-upgrade-panel{width:100%;max-height:100%;overflow-y:auto;border:2px solid #a58db7;border-radius:16px;padding:12px 13px;background:radial-gradient(circle at top,#3d305c,#1a253c 50%,#10182b);box-shadow:0 0 45px #bc9ce233;display:grid;gap:9px}
+.sm21-upgrade-eyebrow{color:#e0c1ff;font-size:.72rem;letter-spacing:.14em;font-weight:800}
+.sm21-upgrade-panel h3{margin:0;font-size:clamp(1.3rem,3vw,1.7rem);color:#f7d89d;font-weight:900}
+.sm21-upgrade-panel p,.sm21-upgrade-panel small{margin:0;color:#e0dae3;font-size:.76rem;line-height:1.4}
+.sm21-upgrade-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.sm21-upgrade-choices button{display:grid;place-items:center;align-content:center;gap:5px;min-height:110px;border:1px solid #aa9cbe;border-radius:11px;background:linear-gradient(145deg,#3a4465,#292341);color:#fff4de;padding:8px;cursor:pointer}
+.sm21-upgrade-choices button strong{font-size:.8rem}.sm21-upgrade-choices button span{font-size:1.6rem}.sm21-upgrade-choices button small{font-size:.65rem}
+.sm21-upgrade-choices button:hover{background:#596485;border-color:#f8dd9c;transform:translateY(-2px)}
+#sm21Repair:not(:disabled){border-color:#92dcb1!important;box-shadow:inset 0 0 12px #68b69622}
+#gameDlg button:focus-visible,#gameDlg select:focus-visible{outline:3px solid #fbe19c!important;outline-offset:2px}
+#sm21HouseSelected{color:#ead7ad}
+@media(max-width:700px){.sm21-upgrade-choices{grid-template-columns:1fr}.sm21-upgrade-panel{padding:9px}.sm21-upgrade-choices button{min-height:55px;display:flex;flex-direction:row;justify-content:start;text-align:left;padding:6px}.sm21-upgrade-choices button span{flex:0 0 27px;font-size:1.3rem}.sm21-upgrade-choices button small{flex:1}.sm21-wave-upgrade{padding:5px}.sm21-upgrade-panel p{font-size:.67rem}}
+@media(max-width:420px){#gOv{padding:8px!important;overflow:auto}#gOvT{font-size:1.5rem!important}#gOvP{font-size:.75rem!important;margin-bottom:8px!important}#gOvK{font-size:.66rem!important;margin-bottom:9px!important}#gDifficulty{margin-bottom:8px!important}.sm21-defense-dashboard span{font-size:.66rem;padding:4px 5px}.sm21-loadout{margin-bottom:8px;padding:6px}}
+@media(prefers-reduced-motion:reduce){.sm21-upgrade-choices button:hover{transform:none}.sm21-house-portal::before{animation:none!important}}
