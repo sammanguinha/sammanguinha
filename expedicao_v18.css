@@ -96,3 +96,7 @@
 @media(max-width:700px){.sm18-side{grid-template-columns:1fr}.sm18-hud{grid-template-columns:repeat(3,minmax(0,1fr))}.sm18-hud span{font-size:.77rem;padding:8px 3px}.sm19-dialog{padding:11px 13px 10px}.sm19-dialog-header{margin-bottom:4px}.sm19-dialog-sigil{width:25px;height:25px}.sm19-dialog-header strong{font-size:.89rem}#sm19DialogText{font-size:.77rem;line-height:1.4}#sm19DialogNext{min-height:35px;padding:6px 12px;font-size:.78rem}.sm18-controls{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.sm18-controls button{font-size:.79rem;min-height:46px;padding:6px 4px}.sm18-controls .sm18-hit,.sm18-controls .sm18-heal{grid-column:span 1;min-height:46px}.sm19-timeline{letter-spacing:.11em}}
 @media(max-width:425px){.sm18-hud span{font-size:.7rem;white-space:normal}.sm18-controls button{font-size:.72rem}.sm18-overlay{padding:13px 8px}.sm18-overlay h3{font-size:1.35rem}.sm18-overlay p{font-size:.72rem}}
 @media(prefers-reduced-motion:reduce){.sm18-head:after,.sm18-medal.unlocked,.sm19-dialog{animation:none!important}.sm18-controls button,.sm18-overlay button,#sm19Replay{transition:none!important}}
+
+/* Controle responsivo e gestos — somente na área jogável. */
+#sm18Canvas{touch-action:none;user-select:none;-webkit-user-select:none}
+.sm19-dialog button:focus-visible,.sm18-controls button:focus-visible{outline:3px solid #fff4c5;outline-offset:3px}
