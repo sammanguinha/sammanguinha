@@ -3273,6 +3273,117 @@ function loop(t){
   if(!stepG(dt))return;
   drawG();gRaf=requestAnimationFrame(loop);
 }
+
+// V21 — Sistema de combate: progressão real, escolhas por onda, chefes e manutenção de árvores.
+const sm21Blessings=[
+ {id:'carregador',icon:'🏹',title:'Munição Veloz',desc:'Recarga de mangas 25% mais rápida.',apply:s=>s.reloadRate=Math.max(.36,s.reloadRate*.75)},
+ {id:'cura',icon:'❤️',title:'Fruta Vital',desc:'Aumenta sua vida máxima em 2 e cura 3 pontos.',apply:s=>{s.playerMaxHp+=2;s.playerHp=Math.min(s.playerMaxHp,s.playerHp+3)}},
+ {id:'baluarte',icon:'🌳',title:'Raiz Guardiã',desc:'Restaura uma árvore perdida ou cria 2 escudos.',apply:s=>{const dead=s.trees.findIndex(ok=>!ok);if(dead>=0){s.trees[dead]=true;s.treeHits[dead]=0;s.hp=s.trees.filter(Boolean).length}else s.shield=Math.min(5,(s.shield||0)+2)}},
+ {id:'arcano',icon:'✨',title:'Reserva de Essência',desc:'Ganhe 8 essências para reparar árvores durante a batalha.',apply:s=>s.essence=Math.min(12,s.essence+8)},
+ {id:'fluxo',icon:'⚡',title:'Golpe Preciso',desc:'Seu próximo disparo a cada 4 acertos causa dano dobrado.',apply:s=>s.precision=true},
+ {id:'mestre',icon:'💨',title:'Passo do Vento',desc:'Impulso recarrega 35% mais rápido e dura mais.',apply:s=>s.dashFactor=Math.max(.5,s.dashFactor*.65)}
+];
+const sm21WeaponNames={classic:'Arco da Colheita',twin:'Rajada Dupla',arcane:'Canhão Rúnico'};
+let sm21Choices=[];
+function sm21UpgradeUI(s){
+ s.upgrading=true;K.l=K.r=K.f=0;
+ const layer=$("sm21WaveUpgrade"),list=$("sm21UpgradeChoices");layer.hidden=false;list.replaceChildren();
+ $("sm21UpgradeTitle").textContent="Onda "+s.wave+" concluída! Escolha uma bênção";
+ const index=((s.wave-1)*2)%sm21Blessings.length;
+ sm21Choices=[0,1,2].map(i=>sm21Blessings[(index+i*2)%sm21Blessings.length]);
+ sm21Choices.forEach((item,i)=>{
+   const b=document.createElement('button');b.type='button';b.dataset.bless=i;
+   const emblem=document.createElement('span');emblem.textContent=item.icon;
+   const title=document.createElement('strong');title.textContent=(i+1)+'. '+item.title;
+   const desc=document.createElement('small');desc.textContent=item.desc;
+   b.append(emblem,title,desc);b.addEventListener('click',()=>sm21PickBless(i));list.append(b);
+ });
+ list.querySelector('button')?.focus({preventScroll:true});
+}
+function sm21PickBless(i){
+ const s=gs,item=sm21Choices[i];if(!s||!s.upgrading||!item)return false;
+ item.apply(s);s.upgrades.push(item.id);s.upgrading=false;
+ $("sm21WaveUpgrade").hidden=true;s.wave++;s.wt=0;s.sp=0;s.boss=null;s.bossDefeated=false;
+ K.l=K.r=K.f=0;toast("✦ Bênção adquirida: "+item.title,3000);
+ $("gF")?.focus({preventScroll:true});return true;
+}
+function sm21Kill(s,p){
+ if(p.dead)return false;
+ p.dead=true;s.kills++;s.combo=(s.combo||0)+1;s.comboTimer=5;
+ s.bestCombo=Math.max(s.bestCombo||0,s.combo);s.essence=Math.min(12,(s.essence||0)+1+(s.combo%5===0?1:0));
+ s.score+=s.hard?20:10;
+ orchardBurst(p.x,p.y,p.kind==='caster'?'#bd9df4':'#e9d29e',.8,'+'+(s.hard?20:10));
+ return true;
+}
+function sm21BossDown(s){
+ if(!s.boss||s.boss.hp>0)return;
+ orchardBurst(s.boss.x,s.boss.y,'#ffdf93',4,'REI DERROTADO!');
+ s.boss=null;s.bossDefeated=true;
+ s.score+=s.mode==='normal'?100:350;
+ s.essence=Math.min(12,s.essence+6);
+ toast('👑 Rei do Eclipse derrotado! O pomar está salvo por enquanto.',3900);
+}
+function sm21Repair(){
+ const s=gs;if(!s||s.upgrading||sm17GamePaused||document.hidden||s.essence<6||s.repairCd>0)return false;
+ let target=s.trees.findIndex(ok=>!ok),desc='';
+ if(target>=0){s.trees[target]=true;s.treeHits[target]=0;s.hp=s.trees.filter(Boolean).length;desc='ÁRVORE RESTAURADA'}
+ else {target=s.treeHits.findIndex(n=>n>0);if(target>=0){s.treeHits[target]=0;desc='CASCA CURADA'}
+ else if((s.shield||0)<3){s.shield=(s.shield||0)+1;target=Math.floor(s.trees.length/2);desc='ESCUDO DE RAIZ'}
+ else {toast('Suas árvores já estão protegidas!');return false}}
+ s.essence-=6;s.repairs++;s.repairCd=1.2;
+ const xx=GW*(target+.5)/s.trees.length;orchardBurst(xx,GH-88,'#99ffc3',2,desc);
+ sfx(830,.17);toast('🌳 '+desc+' · -6 essências',2300);return true;
+}
+$("sm21Repair")?.addEventListener('click',sm21Repair);
+$("sm21Weapon")?.addEventListener('change',e=>{
+ const hints={classic:'Disparo preciso. Gasta 1 manga, recupera o ritmo depressa.',
+ twin:'Dispara duas mangas simultâneas por 2 de munição. Boa cobertura lateral.',
+ arcane:'Cada projétil mágico causa 2 de dano; consome 2 mangas e demora mais.'};
+ $("sm21WeaponHint").textContent=hints[e.target.value]||hints.classic;
+});
+function sm21Wave(s,dt){
+ const length=s.hard?18:15;
+ const bossWave=(s.mode==='normal'&&s.wave===5)||(s.mode==='hard'&&s.wave===10)||(s.mode==='infinite'&&s.wave%5===0);
+ if(bossWave&&s.wt>=3&&!s.boss&&!s.bossDefeated){
+   const hp=s.mode==='normal'?8:s.mode==='hard'?13:9+Math.floor(s.wave/5);
+   s.boss={x:GW/2,y:GH*.37,hp,max:hp,attack:4.5,hit:0,phase:0};
+   toast('👑 O REI DO ECLIPSE CHEGOU! Desvie das runas e ataque!',4500);
+ }
+ if(s.wt>=length){
+   if(bossWave&&!s.bossDefeated){s.wt=length;return true}
+   s.score+=s.hard?100:50;sfx(800,.25);
+   if(s.mode!=='infinite'&&s.wave>=(s.hard?10:5)){endG(true);return false}
+   if(s.mode!=='infinite'||s.wave%2===0)sm21UpgradeUI(s);
+   else {s.wave++;s.wt=0;s.bossDefeated=false}
+ }
+ return true;
+}
+function sm21Fire(s){
+ const isTwin=s.weapon==='twin',isArcane=s.weapon==='arcane',cost=(isTwin||isArcane)?2:1;
+ if(s.ammo<cost)return;
+ s.ft=(isTwin?.34:isArcane?.40:s.hard?.13:.21)*(s.fireFactor||1);
+ s.ammo-=cost;s.shots=(s.shots||0)+1;
+ const shot=(dx,power)=>s.sh.push({x:s.x+dx,y:GH-100,vy:isArcane?-445:-540,trail:0,power,arcane:isArcane});
+ if(isTwin){shot(-12,1);shot(12,1)}
+ else shot(0,isArcane?2:1);
+ orchardBurst(s.x,GH-107,isArcane?'#aaceff':'#f8cf74',isArcane?.5:.3);
+ sfx(isArcane?470:670,.07);
+}
+function sm21UpdateStatus(s){
+ const repair=$("sm21Repair"),cd=$("sm21RepairCd");
+ repair.disabled=!gs||!!s.upgrading||s.essence<6||s.repairCd>0;
+ cd.textContent=s.repairCd>0?s.repairCd.toFixed(1)+'s':s.essence>=6?'Pronto':'6 ✦';
+ $("sm21Essence").textContent='✦ Essência '+(s.essence||0)+'/12';
+ $("sm21TreeInfo").textContent='🌳 Árvores '+s.hp+'/'+s.trees.length+' · Escudo '+(s.shield||0);
+ $("sm21WaveInfo").textContent=(s.upgrading?'✦ Escolha uma bênção · ':'🛡 ')+(sm21WeaponNames[s.weapon]||'Arco da Colheita')+' · Onda '+s.wave;
+}
+addEventListener('keydown',e=>{
+ if(!gs||document.hidden)return;
+ if(gs.upgrading&&['1','2','3'].includes(e.key)){e.preventDefault();sm21PickBless(Number(e.key)-1);return}
+ if(gs.upgrading||sm17GamePaused||e.repeat||e.target.closest?.('input,textarea,select,[contenteditable]'))return;
+ if(e.key==='r'||e.key==='R'){e.preventDefault();sm21Repair()}
+});
+
 function stepG(dt){
   const s=gs;orchardUpdateFX(dt);s.dashCd=Math.max(0,s.dashCd-dt);s.novaCd=Math.max(0,s.novaCd-dt);s.dashFx=Math.max(0,s.dashFx-dt);s.novaFx=Math.max(0,s.novaFx-dt);s.comboTimer=Math.max(0,s.comboTimer-dt);if(!s.comboTimer)s.combo=0;s.bestCombo=Math.max(s.bestCombo||0,s.combo||0);const dashButton=$("sm20Dash"),novaButton=$("sm20Nova");if(dashButton){dashButton.disabled=s.dashCd>0;$("sm20DashCd").textContent=s.dashCd>0?s.dashCd.toFixed(1)+"s":"Pronto"}if(novaButton){novaButton.disabled=s.novaCd>0||s.ammo<3;$("sm20NovaCd").textContent=s.novaCd>0?s.novaCd.toFixed(1)+"s":s.ammo<3?"3 mangas":"Pronto"}$("sm20Combo").textContent="Combo x"+(1+Math.min(3,Math.floor((s.combo||0)/5)));s.t+=dt;s.wt+=dt;s.ft-=dt;s.stun-=dt;s.reg+=dt;s.petCooldown-=dt;s.petFlash=Math.max(0,(s.petFlash||0)-dt);if(s.petEffect)s.petEffect.ttl=Math.max(0,s.petEffect.ttl-dt);s.invuln=Math.max(0,(s.invuln||0)-dt);
   if(s.wt>= (s.hard?18:15)){
