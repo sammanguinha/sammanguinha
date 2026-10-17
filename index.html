@@ -1374,10 +1374,10 @@ dialog[open]{max-height:92vh;overflow:auto}
 </style>
 </head>
 <body>
-<div id="smUpdateLayer" role="presentation"><section id="smUpdatePanel" role="dialog" aria-modal="true" aria-labelledby="smUpdateTitle" tabindex="-1"><span class="sm-tag">🥭 NOTAS DE ATUALIZAÇÃO · V18.0</span><h2 id="smUpdateTitle">A Lenda Astral Despertou!</h2><p>Uma nova aventura está disponível sem perder seus modos anteriores.</p><ul>
-<li><strong>✨ Expedição Astral</strong> — três mapas táticos, pragas inteligentes, chefão e portais dourados.</li>
-<li><strong>🥭 Coleção de medalhas</strong> — seis conquistas cosméticas locais e salvamento da aventura por @.</li>
-<li><strong>📱 Controles acessíveis</strong> — teclado, toque, pausa, sons opcionais e layout renovado.</li>
+<div id="smUpdateLayer" role="presentation"><section id="smUpdatePanel" role="dialog" aria-modal="true" aria-labelledby="smUpdateTitle" tabindex="-1"><span class="sm-tag">🥭 NOTAS DE ATUALIZAÇÃO · V19.0</span><h2 id="smUpdateTitle">O Eclipse das Cinco Luas!</h2><p>Uma nova aventura está disponível sem perder seus modos anteriores.</p><ul>
+<li><strong>🌙 Expedição Astral V19</strong> — cinco capítulos com narrativa interativa, relíquias e chefões.</li>
+<li><strong>📜 Memórias do Pomar</strong> — relíquias colecionáveis, oito medalhas cosméticas e salvamento por @.</li>
+<li><strong>⚔️ Combate evoluído</strong> — pulso astral, guarda, espíritos à distância, partículas, sprites novos, toques e deslizes no celular.</li>
 <li><strong>🔐 Login mais seguro</strong> — não troca a chave de acesso se o servidor rejeitar a entrada.</li>
 <li><strong>⚔️ Combates mais vivos</strong> — ataques, magia, dano, cura e defesa com animações.</li>
 <li><strong>🕷️ Nova Rainha das Aranhas</strong> — inimigo redesenhado e visual mais detalhado.</li>
@@ -4495,16 +4495,16 @@ load();update();requestAnimationFrame(render);requestAnimationFrame(movement);
 (()=>{const btn=document.getElementById('gMobileStart'),overlay=document.getElementById('gOv'),play=document.getElementById('gPlay');if(!btn||!overlay||!play)return;const sync=()=>{btn.hidden=overlay.hidden;btn.textContent=play.textContent.includes('novo')?'▶ Jogar novamente':'▶ Iniciar Defesa do Pomar'};btn.addEventListener('click',()=>play.click());new MutationObserver(sync).observe(overlay,{attributes:true,attributeFilter:['hidden']});new MutationObserver(sync).observe(play,{childList:true,subtree:true});sync()})();
 </script>
 <link rel="stylesheet" href="visual_v14.css"><link rel="stylesheet" href="melhorias_v16_5.css"><link rel="stylesheet" href="revisao_v17.css"><link rel="stylesheet" href="polimento_v17_1.css">
-<link rel="stylesheet" href="expedicao_v18.css">
+<link rel="stylesheet" href="expedicao_v18.css?v=19">
 <script src="rpg_epico_expansao.js"></script>
 <script src="musica_rpg_v14.js"></script>
 <script src="mundo_pomar.js"></script>
 <script src="interface_v14.js"></script>
 <script>
-(()=>{'use strict';const version='18.0.0';const key='sm_last_seen_update_version';const layer=document.getElementById('smUpdateLayer');const panel=document.getElementById('smUpdatePanel');const openBtn=document.getElementById('smUpdatesReopen');const closeBtn=document.getElementById('smUpdatesClose');const laterBtn=document.getElementById('smUpdatesLater');if(!layer||!panel||!openBtn||!closeBtn||!laterBtn)return;let priorFocus=null;const read=()=>{try{return localStorage.getItem(key)}catch(e){return null}};const save=()=>{try{localStorage.setItem(key,version)}catch(e){}};function show(){priorFocus=document.activeElement;layer.classList.add('sm-show');document.body.style.overflow='hidden';closeBtn.focus({preventScroll:true})}function hide(){save();layer.classList.remove('sm-show');document.body.style.overflow='';if(priorFocus&&priorFocus.isConnected&&typeof priorFocus.focus==='function')priorFocus.focus({preventScroll:true})}closeBtn.addEventListener('click',hide);laterBtn.addEventListener('click',hide);openBtn.addEventListener('click',show);layer.addEventListener('click',e=>{if(e.target===layer)hide()});document.addEventListener('keydown',e=>{if(!layer.classList.contains('sm-show'))return;if(e.key==='Escape'){e.preventDefault();hide()}else if(e.key==='Tab'){const items=[closeBtn,laterBtn];if(e.shiftKey&&document.activeElement===items[0]){e.preventDefault();items[1].focus()}else if(!e.shiftKey&&document.activeElement===items[1]){e.preventDefault();items[0].focus()}}});openBtn.classList.add('sm-ready');if(read()!==version)requestAnimationFrame(()=>requestAnimationFrame(show));})();
+(()=>{'use strict';const version='19.0.0';const key='sm_last_seen_update_version';const layer=document.getElementById('smUpdateLayer');const panel=document.getElementById('smUpdatePanel');const openBtn=document.getElementById('smUpdatesReopen');const closeBtn=document.getElementById('smUpdatesClose');const laterBtn=document.getElementById('smUpdatesLater');if(!layer||!panel||!openBtn||!closeBtn||!laterBtn)return;let priorFocus=null;const read=()=>{try{return localStorage.getItem(key)}catch(e){return null}};const save=()=>{try{localStorage.setItem(key,version)}catch(e){}};function show(){priorFocus=document.activeElement;layer.classList.add('sm-show');document.body.style.overflow='hidden';closeBtn.focus({preventScroll:true})}function hide(){save();layer.classList.remove('sm-show');document.body.style.overflow='';if(priorFocus&&priorFocus.isConnected&&typeof priorFocus.focus==='function')priorFocus.focus({preventScroll:true})}closeBtn.addEventListener('click',hide);laterBtn.addEventListener('click',hide);openBtn.addEventListener('click',show);layer.addEventListener('click',e=>{if(e.target===layer)hide()});document.addEventListener('keydown',e=>{if(!layer.classList.contains('sm-show'))return;if(e.key==='Escape'){e.preventDefault();hide()}else if(e.key==='Tab'){const items=[closeBtn,laterBtn];if(e.shiftKey&&document.activeElement===items[0]){e.preventDefault();items[1].focus()}else if(!e.shiftKey&&document.activeElement===items[1]){e.preventDefault();items[0].focus()}}});openBtn.classList.add('sm-ready');if(read()!==version)requestAnimationFrame(()=>requestAnimationFrame(show));})();
 </script>
 <script src="revisao_v17.js" defer></script>
 <script src="polimento_v17_1.js" defer></script>
-<script src="expedicao_v18.js" defer></script>
+<script src="expedicao_v18.js?v=19" defer></script>
 </body>
 </html>
