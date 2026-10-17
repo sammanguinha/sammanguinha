@@ -75,7 +75,7 @@ async function cloudRead(){
   if(existing){state=sanitize(result);localSave();status('✓ Casa sincronizada com seu @');}
   else {state=current;status('Sua casa foi iniciada · salvamento online ativo');markDirty(false)}
   remoteLoaded=true;syncExpeditionUnlock();renderInventory();updateLabels();render(performance.now());
- }catch(err){status('Modo offline · edição salva no navegador');message('A casa funciona sem conexão. Sincronização: '+err.message)}
+ }catch(err){status('Modo offline · edição salva no navegador');message('A casa funciona sem conexão. Sincronização: '+err.message);syncExpeditionUnlock()}
 }
 async function cloudSave(){
  if(saving||!dirty||!account||!token())return;
@@ -101,7 +101,7 @@ function identify(){
  clearTimeout(saveTimer);account=next;state=localLoad(next);
  selected='cama';hover=null;drag=null;dirty=false;remoteLoaded=false;
  renderInventory();updateLabels();message('Seu refúgio espera novas aventuras.');
- syncExpeditionUnlock();cloudRead();
+ cloudRead();
 }
 function unlocked(item){return item.unlock?state.owned.includes(item.id):true}
 function renderInventory(){
