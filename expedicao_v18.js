@@ -4,7 +4,7 @@ const $=id=>document.getElementById(id);
 const levels=[
  {title:'Clareira das Três Luas',sub:'Encontre as mangas antes do último raio de luar.',dark:'#183b3a',floor:'#23493f',wall:'#172823',map:[
  '##################',
- '#S.....#........P#',
+ '#S.R...#........P#',
  '#.###..#..####...#',
  '#...#.....#......#',
  '###.#..M..#..M...#',
@@ -17,7 +17,7 @@ const levels=[
  '##################']},
  {title:'Vale dos Besouros Reais',sub:'Os guardiões das folhas marcham pelo vale.',dark:'#422735',floor:'#533342',wall:'#2c1b30',map:[
  '##################',
- '#S......#.....M.P#',
+ '#S..R...#.....M.P#',
  '#.####..#..####..#',
  '#.....E....#.....#',
  '#..#....M..#..#..#',
@@ -30,7 +30,7 @@ const levels=[
  '##################']},
  {title:'Templo da Manga Celestial',sub:'O Rei das Pragas protege a última colheita.',dark:'#35295c',floor:'#483976',wall:'#24243e',map:[
  '##################',
- '#S..M............#',
+ '#S..M.R..........#',
  '#.###..#...####..#',
  '#...#..#.........#',
  '#...#..#..M..#...#',
@@ -115,7 +115,7 @@ nav.addEventListener('click',open);
 const home=$('home');const hub=document.createElement('section');hub.id='sm18Hub';hub.className='sm18-hub';hub.innerHTML='<div class="sm18-hub-title"><div><span class="sm18-eyebrow">ATUALIZAÇÃO V19 · O ECLIPSE SE APROXIMA</span><h2>🥭 O seu Pomar evoluiu.</h2><p>Uma nova expedição, coleções e desafios aguardam você.</p></div><button type="button" id="sm18HubPlay">✦ Iniciar Expedição</button></div><div class="sm18-hub-stats"><span><b id="sm18HomeChapter">1/5</b><small>Região astral</small></span><span><b id="sm18HomeMango">0</b><small>Mangas coletadas</small></span><span><b id="sm18HomeMedals">0/8</b><small>Medalhas locais</small></span></div>';
 const homeFirst=home?.querySelector('.rpg-portal-section');if(homeFirst)homeFirst.before(hub);else home?.prepend(hub);
 $('sm18HubPlay')?.addEventListener('click',open);
-function createStage(index){const lv=levels[index];let pos=null,mangos=0;const enemies=[],tiles=lv.map.map((line,y)=>Array.from(line).map((ch,x)=>{if(ch==='S'){pos={x,y};return'.'}if(ch==='E'||ch==='A'||ch==='B'){const boss=ch==='B',spider=ch==='A',hp=boss?(index===4?9:6):spider?3:index===0?1:index>=3?3:2;enemies.push({x,y,hp,maxHp:hp,boss,spider,id:`${index}:${x}:${y}`,cool:0});return'.'}if(ch==='M'){mangos++;return'M'}return ch}));if(!pos||mangos!==3)throw Error('Mapa sem início ou 3 mangas');return {pos,tiles,enemies,mangos:0,stageDamage:0};}
+function createStage(index){const lv=levels[index];let pos=null,mangos=0;const enemies=[],tiles=lv.map.map((line,y)=>Array.from(line).map((ch,x)=>{if(ch==='S'){pos={x,y};return'.'}if(ch==='E'||ch==='A'||ch==='B'){const boss=ch==='B',spider=ch==='A',hp=boss?(index===4?9:6):spider?3:index===0?1:index>=3?3:2;enemies.push({x,y,hp,maxHp:hp,boss,spider,kind:!boss&&!spider&&index>=3?'wisp':'bug',id:`${index}:${x}:${y}`,cool:0});return'.'}if(ch==='M'){mangos++;return'M'}return ch}));if(!pos||mangos!==3)throw Error('Mapa sem início ou 3 mangas');return {pos,tiles,enemies,mangos:0,stageDamage:0};}
 function fresh(){state=newGame();Object.assign(state,createStage(0));persist();updateUi();}
 function hydrate(){let x=read(saveKey(),null);if(!x){x=read(oldSaveKey(),null);if(x&&x.v===18){x={...x,v:19,energy:1,shield:0,relics:0,seenScenes:[],maxHp:10};write(saveKey(),x);}}
 if(!x||x.v!==19||!Number.isInteger(x.level)||x.level<0||x.level>=levels.length||!Array.isArray(x.tiles)||x.tiles.length!==H||!x.tiles.every(row=>Array.isArray(row)&&row.length===W)||!Array.isArray(x.enemies)||!x.pos||!Number.isInteger(x.pos.x)||!Number.isInteger(x.pos.y)||!Number.isInteger(x.hp)){fresh();return}
@@ -143,7 +143,7 @@ function distance(a,b){return Math.abs(a.x-b.x)+Math.abs(a.y-b.y)}
 /* Motor cinematográfico V19: sprites do repositório + animação real no Canvas. */
 const reducedMotion=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches||false;
 const pics={};
-const assets={hero:'sam_idle.png',walk:'sam_andando_1.png',strike:'sam_atacando.png',mango:'manga.png',bug:'besouro.png',spider:'aranha_infectada.png',boss:'rei_das_pragas_idle.png',seed:'semente.png',potion:'pocao.png',tree:'arvore_saudavel.png'};
+const assets={hero:'sam_idle.png',walk:'sam_andando_1.png',strike:'sam_atacando.png',mango:'manga.png',bug:'besouro.png',spider:'aranha_infectada.png',boss:'rei_das_pragas_idle.png',seed:'semente.png',potion:'pocao.png',tree:'arvore_saudavel.png',wisp:'espirito_lunar_v19.svg',relic:'reliquia_lunar_v19.svg',portal:'portal_astral_v19.svg'};
 for(const [key,path] of Object.entries(assets)){const im=new Image();im.decoding='async';im.src='sprites/'+path;im.onload=()=>{if(!root.hidden)draw()};pics[key]=im}
 const canvas=$('sm18Canvas'),ctx=canvas.getContext('2d',{alpha:false});
 if(!ctx)throw Error('Não foi possível iniciar o Canvas da Expedição.');
@@ -176,8 +176,8 @@ function tileGround(x,y,lv,time){const px=x*C,py=y*C,ch=tile(x,y),n=rnd(x*19+y*4
  if(n<.08){dot(px+28,py+13,2,'#a8f9c751')}
  if(ch==='M'){glow(px+20,py+20,26,'#ffda527a');drawEntity('mango',x,y-(reducedMotion?0:Math.sin(time/440+x)*.07),time)}
  if(ch==='H'){glow(px+20,py+20,23,'#64e9a279');box(px+7,py+9,26,23,'#245d62');box(px+9,py+11,22,19,'#368e7d');ctx.fillStyle='#d4ffdb';ctx.font='bold 23px sans-serif';ctx.fillText('♥',px+10,py+30)}
- if(ch==='R'){glow(px+20,py+20,25,'#a1b5ff83');box(px+11,py+9,19,24,'#615d9d');box(px+13,py+7,15,23,'#ccc3ee');box(px+17,py+11,7,14,'#464d89');dot(px+20,py+17,3,'#fff5d9')}
- if(ch==='P'){const open=state.mangos===3;glow(px+20,py+20,open?33:21,open?'#f9bd48b0':'#ad8dd659');box(px+5,py+3,30,35,open?'#9c682e':'#494261');box(px+8,py+6,24,32,open?'#fbd56e':'#887a9b');box(px+12,py+11,16,27,open?'#73546a':'#313047');if(open){for(let k=0;k<3;k++)dot(px+13+k*6,py+20+Math.sin(time/220+k)*7,2,'#fff7aa')}}}
+ if(ch==='R'){glow(px+20,py+20,25,'#a1b5ff83');if(!imageSprite('relic',px+5,py+4,31,32)){box(px+13,py+7,15,23,'#ccc3ee');dot(px+20,py+17,3,'#fff5d9')}}
+ if(ch==='P'){const open=state.mangos===3;glow(px+20,py+20,open?33:21,open?'#f9bd48b0':'#ad8dd659');if(!imageSprite('portal',px+2,py+2,36,36)){box(px+5,py+3,30,35,open?'#9c682e':'#494261');box(px+8,py+6,24,32,open?'#fbd56e':'#887a9b')}if(open){for(let k=0;k<3;k++)dot(px+13+k*6,py+20+Math.sin(time/220+k)*7,2,'#fff7aa')}}}
 function draw(time=performance.now()){if(!ctx||!state?.tiles)return;
  ambientFrame=time;
  const lv=levels[state.level];ctx.save();
@@ -187,7 +187,7 @@ function draw(time=performance.now()){if(!ctx||!state?.tiles)return;
  for(let y=0;y<H;y++)for(let x=0;x<W;x++)tileGround(x,y,lv,time);
  for(let j=0;j<8;j++){const ax=rnd(j+73+state.level)*700,ay=rnd(j+87)*460;glow(ax,ay,28+Math.sin(time/800+j)*7,state.level===4?'#dc9beb17':'#a9ecd318')}
  if(time<ringUntil){const p=1-(ringUntil-time)/780;ctx.strokeStyle='rgba(244,203,130,'+(1-p)+')';ctx.lineWidth=4;ctx.beginPath();ctx.arc(state.pos.x*C+20,state.pos.y*C+20,Math.max(3,p*165),0,Math.PI*2);ctx.stroke()}
- for(const e of state.enemies){const ep=actorPos(e,e.id,time);const key=e.boss?'boss':e.spider?'spider':'bug';drawEntity(key,ep.x,ep.y,time,e.boss,e.spider);const width=32,den=e.maxHp||e.hp||1;box(ep.x*C+4,ep.y*C+1,width,4,'#210c1f');box(ep.x*C+4,ep.y*C+1,Math.max(0,width*e.hp/den),4,e.boss?'#f6d36b':'#ef7a79');if(distance(e,state.pos)===1){ctx.strokeStyle=e.boss?'#f7c17f9a':'#dd666562';ctx.lineWidth=1.5;ctx.strokeRect(ep.x*C+1,ep.y*C+1,38,38)}}
+ for(const e of state.enemies){const ep=actorPos(e,e.id,time);const key=e.boss?'boss':e.spider?'spider':e.kind==='wisp'?'wisp':'bug';drawEntity(key,ep.x,ep.y,time,e.boss,e.spider);const width=32,den=e.maxHp||e.hp||1;box(ep.x*C+4,ep.y*C+1,width,4,'#210c1f');box(ep.x*C+4,ep.y*C+1,Math.max(0,width*e.hp/den),4,e.boss?'#f6d36b':'#ef7a79');if(distance(e,state.pos)===1){ctx.strokeStyle=e.boss?'#f7c17f9a':'#dd666562';ctx.lineWidth=1.5;ctx.strokeRect(ep.x*C+1,ep.y*C+1,38,38)}}
  const hp=actorPos(state.pos,'hero',time),attacking=time<attackUntil;drawEntity(attacking?'strike':tween&&time-tween.at<tween.duration?'walk':'hero',hp.x,hp.y,time,false,false,attacking);
  if(state.shield){ctx.strokeStyle='#8fddff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(hp.x*C+20,hp.y*C+20,21+Math.sin(time/200)*1.5,0,Math.PI*2);ctx.stroke()}
  if(attacking){ctx.strokeStyle='#f6e39b';ctx.lineWidth=4;ctx.beginPath();ctx.arc(hp.x*C+20,hp.y*C+18,24,-1.2,1.4);ctx.stroke()}
@@ -206,7 +206,7 @@ function showOverlay(){const over=$('sm18Overlay');over.hidden=false;const title
 function hideOverlay(){if(state.finished||state.hp===0)return;state.paused=false;$('sm18Overlay').hidden=true;active=true;updateUi();persist();showScene('chapter-'+state.level,chapters[state.level]);if(!dialogOpen)$('sm18Pause').focus({preventScroll:true})}
 function pause(){if(root.hidden||dialogOpen)return;state.paused=!state.paused;persist();if(state.paused)showOverlay();else {$('sm18Overlay').hidden=true;updateUi()}}
 function finish(){feedback('portal',state.pos.x,state.pos.y);if(state.relics>=2)award('pact');state.finished=true;state.paused=true;state.clears=levels.length;state.score+=200+state.hp*25;award('victory');message('🌟 O eclipse terminou. O pacto do pomar foi renovado!');persist();showOverlay();draw();audio(880)}
-function proceed(){if(state.mangos<3){message('Colete as 3 mangas para abrir o portal!');audio(180);return}if(state.level===levels.length-1){if(state.enemies.some(e=>e.boss)){message('👑 O Rei das Pragas ainda protege o Templo. Derrote o chefão para atravessar!');audio(170);return}if(state.stageDamage===0)award('untouched');finish();return}if(state.stageDamage===0)award('untouched');if(state.level===0)award('level1');if(state.level===1)award('level2');if(state.level>=3&&state.relics>=2)award('pact');const next=state.level+1;state.score+=75+state.hp*8;state.clears=next;state.hp=Math.min(state.maxHp,state.hp+2);state.potions=Math.min(5,state.potions+1);feedback('portal',state.pos.x,state.pos.y);state.level=next;state.shield=0;state.energy=Math.min(3,state.energy+1);Object.assign(state,createStage(next));state.paused=true;message('✨ Portal atravessado! Uma nova região desperta.');persist();showOverlay();draw();audio(650)}
+function proceed(){if(state.mangos<3){message('Colete as 3 mangas para abrir o portal!');audio(180);return}if(state.enemies.some(e=>e.boss)){message('👑 Um guardião ainda protege este portal. Vença-o antes de avançar.');audio(170);return}if(state.level===levels.length-1){if(state.stageDamage===0)award('untouched');finish();return}if(state.stageDamage===0)award('untouched');if(state.level===0)award('level1');if(state.level===1)award('level2');if(state.level>=3&&state.relics>=2)award('pact');const next=state.level+1;state.score+=75+state.hp*8;state.clears=next;state.hp=Math.min(state.maxHp,state.hp+2);state.potions=Math.min(5,state.potions+1);feedback('portal',state.pos.x,state.pos.y);state.level=next;state.shield=0;state.energy=Math.min(3,state.energy+1);Object.assign(state,createStage(next));state.paused=true;message('✨ Portal atravessado! Uma nova região desperta.');persist();showOverlay();draw();audio(650)}
 function hit(enemy,damage=1){feedback('hit',enemy.x,enemy.y);floatText(enemy.x,enemy.y,'-'+damage,'#ffb0a2');enemy.hp-=damage;state.score+=5*damage;audio(250);message('⚔️ Golpe certeiro contra a praga!');if(enemy.hp<=0){state.enemies=state.enemies.filter(e=>e!==enemy);state.kills++;state.score+=25;message(enemy.boss?'👑 Rei das Pragas derrotado!':'🪲 Praga derrotada!');if(state.kills>=8)award('hunter')}}
 function enemiesTurn(){const taken=new Set(state.enemies.map(e=>`${e.x},${e.y}`));for(const e of state.enemies){if(state.hp<=0)break;const dist=distance(e,state.pos);if(dist===1){if(state.shield){feedback('shield',state.pos.x,state.pos.y);message('🛡️ Sua guarda absorveu o ataque!');state.shield=0;audio(470)}else{const dmg=e.boss?2:1;state.hp=Math.max(0,state.hp-dmg);state.stageDamage+=dmg;feedback('hit',state.pos.x,state.pos.y);floatText(state.pos.x,state.pos.y,'-'+dmg,'#ff8a98');message('💔 Uma praga atacou! Recuar também é estratégia.');audio(160)}continue}if(dist>7)continue;const dirs=[{x:Math.sign(state.pos.x-e.x),y:0},{x:0,y:Math.sign(state.pos.y-e.y)}];if(Math.abs(state.pos.y-e.y)>Math.abs(state.pos.x-e.x))dirs.reverse();for(const d of dirs){if(!d.x&&!d.y)continue;const nx=e.x+d.x,ny=e.y+d.y,key=`${nx},${ny}`;if(wall(nx,ny)||taken.has(key)||(nx===state.pos.x&&ny===state.pos.y)||tile(nx,ny)==='P')continue;taken.delete(`${e.x},${e.y}`);e.x=nx;e.y=ny;taken.add(key);break}}if(state.hp<=0){state.paused=true;message('As pragas venceram esta tentativa. Seu recorde local permanece.');persist();showOverlay()} }
 function action(type){if(root.hidden||dialogOpen||state.paused||state.finished||state.hp<=0)return;let turn=false;const before={hero:{...state.pos},enemies:state.enemies.map(e=>({id:e.id,x:e.x,y:e.y}))};
