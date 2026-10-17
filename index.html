@@ -1372,6 +1372,19 @@ dialog[open]{max-height:92vh;overflow:auto}
 #smUpdatePanel .sm-update-history{display:grid;gap:10px;margin:15px 0 19px}#smUpdatePanel .sm-update-version{border:1px solid #d3a95c66;background:#09151e66;border-radius:13px;overflow:hidden}#smUpdatePanel .sm-update-version[open]{border-color:#d3a95c}#smUpdatePanel .sm-update-version summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 14px;cursor:pointer;color:#f8e6c5;min-height:49px}#smUpdatePanel .sm-update-version summary::-webkit-details-marker{display:none}#smUpdatePanel .sm-update-version summary:before{content:'▸';color:#f3cf85;font-size:1.2rem}#smUpdatePanel .sm-update-version[open] summary:before{content:'▾'}#smUpdatePanel .sm-update-version summary span:first-of-type{flex:1}#smUpdatePanel .sm-update-version summary b{color:#ffe3a0;margin-right:7px}#smUpdatePanel .sm-update-count{font-size:.73rem;color:#c4d8cb;white-space:nowrap}#smUpdatePanel .sm-update-version summary:focus-visible{outline:3px solid #ffdf9b;outline-offset:-3px}#smUpdatePanel .sm-update-version ul{margin:0 11px 12px!important;gap:7px}#smUpdatePanel .sm-update-version li{font-size:.87rem;padding:9px 11px}@media(max-width:560px){#smUpdatePanel .sm-update-version summary{padding:10px 9px;font-size:.85rem}#smUpdatePanel .sm-update-count{font-size:.66rem}}#smUpdatePanel ul{list-style:none;padding:0;margin:12px 0 20px;display:grid;gap:10px}#smUpdatePanel li{border:1px solid #ffffff25;background:#ffffff0b;border-radius:12px;padding:11px 12px;line-height:1.4;font-size:.93rem}#smUpdatePanel li strong{color:#ffe0a2}#smUpdatePanel .sm-actions{display:flex;gap:9px;flex-wrap:wrap}#smUpdatePanel button,#smUpdatesReopen{font:700 .93rem system-ui,Arial,sans-serif;cursor:pointer;min-height:44px;border-radius:12px;padding:10px 16px}#smUpdatesClose{background:#e7b967;color:#1c211c;border:0;flex:1}#smUpdatesLater{background:#ffffff13;color:#f5e9d6;border:1px solid #ffffff65}#smUpdatesReopen{position:fixed;right:13px;bottom:14px;z-index:10000;background:#183629;color:#ffe3a1;border:1px solid #a47d43;box-shadow:0 5px 18px #0007;display:none}#smUpdatesReopen.sm-ready{display:block}
 @media(max-width:560px){#smUpdatePanel{padding:17px;border-radius:16px}#smUpdatePanel li{padding:9px 10px;font-size:.87rem}#smUpdatesReopen{bottom:calc(12px + env(safe-area-inset-bottom,0px));right:10px;padding:8px 11px;font-size:.78rem}}
 </style>
+
+<style id="sm20-pomar-vivo-css">
+#sm20Live{margin:0 0 24px;border:2px solid #886baf;border-radius:18px;background:radial-gradient(circle at 5% 0%,#57447a45,transparent 45%),linear-gradient(150deg,#171829,#0b1d20);color:#f4f0e5;padding:clamp(12px,3vw,22px);box-shadow:0 12px 35px #0005}
+.sm20-live-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;flex-wrap:wrap}.sm20-live-heading h3{margin:5px 0 3px;color:#ffe6a2;font-size:clamp(1.2rem,3vw,1.65rem)}.sm20-live-heading p{font-size:.85rem;max-width:520px;color:#cbdad3;line-height:1.5}.sm20-live-kicker{color:#cda9ff;font-size:.72rem;letter-spacing:.12em;font-weight:800}
+#sm20LiveStatus{border:1px solid #977fa5;border-radius:99px;padding:6px 11px;font-size:.73rem;color:#d8d3e3}#sm20LiveStatus[data-state=ok]{color:#b8ffcc;border-color:#519f72}#sm20LiveStatus[data-state=error]{color:#ffb6b6;border-color:#c26262}
+.sm20-live-rooms{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.sm20-live-rooms button,.sm20-live-entry button,.sm20-skills button{border:1px solid #857598;background:#292238;color:#f5eddc;border-radius:10px;padding:10px 13px;font-weight:700;cursor:pointer;min-height:42px}.sm20-live-rooms button[aria-pressed=true]{background:#ab82d1;color:#1b102b;border-color:#e4beff}
+.sm20-live-feed{list-style:none;margin:0;padding:12px;display:flex;flex-direction:column;gap:9px;height:clamp(210px,40vh,370px);overflow-y:auto;overscroll-behavior:contain;border:1px solid #8c7e9255;border-radius:13px;background:#060e15b0}.sm20-live-msg{background:#2d334755;padding:10px 11px;border-radius:10px;max-width:95%;border-left:3px solid #bc98fa}.sm20-live-meta{display:flex;gap:12px;align-items:center}.sm20-live-meta b{color:#e6c6ff}.sm20-live-meta time{font-size:.7rem;color:#c9cacb}.sm20-live-msg p{margin:5px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:.89rem}.sm20-report{border:0;background:none;color:#c7bcb4;text-decoration:underline;cursor:pointer;font-size:.7rem;padding:3px}
+.sm20-live-form{margin-top:11px;display:grid;gap:6px}.sm20-live-form label{font-size:.8rem;font-weight:700}.sm20-live-entry{display:flex;gap:8px}.sm20-live-entry input{flex:1;min-width:0;border:1px solid #9f91b0;border-radius:11px;padding:12px;background:#141d2a;color:#fff;font:inherit;font-size:16px}.sm20-live-entry button{background:#e7b966;color:#1d211c;border:0}.sm20-live-form small{color:#c1c8c8;line-height:1.4}
+.sm20-defense-hint{margin:15px auto 0;display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;font-size:.82rem;color:#efe2be}.sm20-defense-hint strong{color:#f5c8ff}.sm20-skills{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;align-items:center;margin:0 auto 11px}.sm20-skills button{display:flex;gap:7px;background:linear-gradient(125deg,#37284f,#1b4651);border-color:#bd9ad5}.sm20-skills button span{color:#deffaf;font-size:.72rem}.sm20-skills button:disabled{opacity:.65;filter:grayscale(.5)}#sm20Combo{font-weight:800;color:#ffdf7e;padding:6px 10px}
+#sm20Live button:focus-visible,.sm20-skills button:focus-visible{outline:3px solid #f4d56b;outline-offset:2px}
+@media(max-width:600px){.sm20-live-rooms button{flex:1;font-size:.79rem;padding:8px 5px}.sm20-live-feed{height:260px}.sm20-live-entry button{padding:9px}.sm20-skills button{flex:1;justify-content:center}.sm20-defense-hint{line-height:1.5}}
+@media(prefers-reduced-motion:reduce){#sm20Live *{animation:none!important;transition:none!important}}
+</style>
 </head>
 <body>
 <div id="smUpdateLayer" role="presentation"><section id="smUpdatePanel" role="dialog" aria-modal="true" aria-labelledby="smUpdateTitle" tabindex="-1"><span class="sm-tag">🥭 NOTAS DE ATUALIZAÇÃO · V19.0</span><h2 id="smUpdateTitle">O Eclipse das Cinco Luas!</h2><p>Uma nova aventura está disponível sem perder seus modos anteriores.</p><div class="sm-update-history"><details class="sm-update-version" open><summary><span><b>V19</b> Expedição Astral — Eclipse das Cinco Luas</span><span class="sm-update-count">3 novidades</span></summary><ul><li><strong>🌙 Expedição Astral V19</strong> — cinco capítulos com narrativa interativa, relíquias e chefões.</li><li><strong>📜 Memórias do Pomar</strong> — relíquias colecionáveis, oito medalhas cosméticas e salvamento por @.</li><li><strong>⚔️ Combate evoluído</strong> — pulso astral, guarda, espíritos à distância, partículas, sprites novos, toques e deslizes no celular.</li></ul></details><details class="sm-update-version"><summary><span><b>V18</b> Melhorias gerais e modos de jogo</span><span class="sm-update-count">12 novidades</span></summary><ul><li><strong>🔐 Login mais seguro</strong> — não troca a chave de acesso se o servidor rejeitar a entrada.</li><li><strong>⚔️ Combates mais vivos</strong> — ataques, magia, dano, cura e defesa com animações.</li><li><strong>🕷️ Nova Rainha das Aranhas</strong> — inimigo redesenhado e visual mais detalhado.</li><li><strong>📱 Interface compacta</strong> — menus organizados para celular e computador.</li><li><strong>🎭 Mais personalização</strong> — novos acessórios, visuais e títulos para conquistar.</li><li><strong>🎶 Música de RPG</strong> — quatro temas para exploração, batalha, chefões e Halloween.</li><li><strong>💬 Praça dos Jogadores</strong> — conversas com respostas, reações, filtros e desafios diários usando o mural real e moderado.</li><li><strong>🕹️ Terminal da Manga</strong> — 18 códigos com efeitos visíveis, confirmação e coleção de descobertas; todos sem afetar o ranking.</li><li><strong>⏸ Defesa do Pomar</strong> — pausa e retomada, com pausa automática ao trocar de aba.</li><li><strong>🌙 RPG e Halloween</strong> — exploração e puzzles preservados; renderização suspensa quando a aventura de Halloween está fechada.</li><li><strong>♿ Acessibilidade</strong> — contrastes, texto maior, efeitos leves e controles por toque mantidos.</li><li><strong>🔒 Interação segura</strong> — mensagens enviadas ao servidor passam por moderação; não é chat ao vivo.</li></ul></details></div><div class="sm-actions"><button id="smUpdatesClose" type="button">🥭 Entendi, vamos jogar!</button><button id="smUpdatesLater" type="button">Fechar</button></div></section></div><button type="button" id="smUpdatesReopen" aria-label="Ver novidades da atualização">✦ Novidades</button>
@@ -1956,6 +1969,7 @@ dialog[open]{max-height:92vh;overflow:auto}
 <!-- MURAL DOS MURMÚRIOS (#murDlg)              -->
 <!-- ========================================== -->
 <section class="pane" id="murDlg" hidden aria-label="Mural do Pomar">
+<section id="sm20Live" class="sm20-live" aria-label="Chat ao vivo do Pomar"><div class="sm20-live-heading"><div><span class="sm20-live-kicker">✦ V20 · Praça Ao Vivo</span><h3>🌐 Vozes do Pomar</h3><p>Converse em tempo real com outros guardiões! Mensagens públicas; não compartilhe contatos ou informações pessoais.</p></div><span id="sm20LiveStatus" role="status" aria-live="polite">Conectando…</span></div><div class="sm20-live-rooms" role="group" aria-label="Salas do chat"><button type="button" data-sm20-room="praca" aria-pressed="true">🌳 Praça</button><button type="button" data-sm20-room="defesa" aria-pressed="false">⚔️ Defesa</button><button type="button" data-sm20-room="rpg" aria-pressed="false">🌙 RPG</button><button id="sm20LiveRefresh" type="button" title="Atualizar mensagens">↻ Atualizar</button></div><ol id="sm20LiveFeed" class="sm20-live-feed" aria-label="Mensagens recentes" aria-live="off"></ol><form id="sm20LiveForm" class="sm20-live-form"><label for="sm20LiveInput">Sua mensagem pública</label><div class="sm20-live-entry"><input id="sm20LiveInput" type="text" maxlength="180" minlength="2" autocomplete="off" placeholder="Converse com os guardiões…" required><button id="sm20LiveSend" type="submit">➤ Enviar</button></div><small><span id="sm20LiveCount">0/180</span> · 7 segundos entre envios · denuncie conteúdo inadequado. <strong>O mural moderado continua abaixo.</strong></small></form></section>
   <h2 class="ptitle"><svg class="ic xl"><use href="#i-chat"/></svg>Mural dos Murmúrios</h2>
   
 <section class="sm17-social" id="sm17Social" aria-label="Praça dos Jogadores">
@@ -2043,11 +2057,11 @@ dialog[open]{max-height:92vh;overflow:auto}
         </div>
       </div>
     </div>
-    <div class="gctl" style="display:flex;gap:12px;justify-content:center;margin:16px 0">
+    <div class="sm20-defense-hint"><strong>⚡ Habilidades especiais</strong><span>Q: Impulso evasivo · E: Explosão astral · Combo aumenta seus pontos. No celular, use os novos botões.</span></div><div class="gctl" style="display:flex;gap:12px;justify-content:center;margin:16px 0">
       <button type="button" class="btn-gothic alt" id="gL" style="padding:12px 24px">◀ Esquerda</button>
       <button type="button" class="btn-gothic" id="gF" style="padding:12px 28px">🥭 Atirar</button>
       <button type="button" class="btn-gothic alt" id="gR" style="padding:12px 24px">Direita ▶</button>
-    </div>
+    </div><div class="sm20-skills"><button type="button" id="sm20Dash" aria-label="Usar impulso evasivo">💨 Impulso <span id="sm20DashCd">Pronto</span></button><button type="button" id="sm20Nova" aria-label="Usar explosão astral">💥 Explosão <span id="sm20NovaCd">Pronto</span></button><span id="sm20Combo" aria-live="polite">Combo x1</span></div>
     <label class="chk" style="display:inline-flex;align-items:center;gap:6px;font-size:0.85rem;color:var(--muted);cursor:pointer">
       <input type="checkbox" id="gSnd"> Efeitos sonoros místicos
     </label>
@@ -3142,6 +3156,10 @@ function setGameDifficulty(mode){
 }
 document.querySelectorAll("#gDifficulty [data-difficulty]").forEach(b=>b.addEventListener("click",()=>setGameDifficulty(b.dataset.difficulty)));
 let gs=null,gRun=null,gRaf=0,gLast=0;
+// V20: novas habilidades com recarga por partida. Não alteram a pontuação fora do motor de jogo.
+function sm20Dash(){if(!gs||sm17GamePaused||document.hidden||gs.dashCd>0)return;const d=(K.r?1:0)-(K.l?1:0);gs.x=Math.max(38,Math.min(GW-38,gs.x+(d||((gs.lastDir||1)))*Math.min(115,GW*.23)));gs.dashCd=7;gs.invuln=Math.max(gs.invuln,0.65);gs.dashFx=.45;orchardBurst(gs.x,GH-93,"#74e8fd",1.9,"IMPULSO");sfx(750,.10)}
+function sm20Nova(){if(!gs||sm17GamePaused||document.hidden||gs.novaCd>0||gs.ammo<3)return;const s=gs;s.ammo-=3;s.novaCd=13;s.novaFx=.65;const cy=GH-135,range=154;orchardBurst(s.x,cy,"#c1a4ff",3.1,"EXPLOSÃO!");s.pe.forEach(p=>{if(p.dead||Math.hypot(p.x-s.x,p.y-cy)>range)return;p.hp-=2;p.hit=.45;if(p.hp<=0){p.dead=1;s.kills++;s.combo=(s.combo||0)+1;s.comboTimer=5;s.score+=10*Math.min(4,Math.floor(s.combo/5)+1)}});if(s.boss&&Math.hypot(s.boss.x-s.x,s.boss.y-cy)<range+45){s.boss.hp-=2;s.boss.hit=.5;if(s.boss.hp<=0){s.boss=null;s.bossDefeated=true;s.score+=1500;toast("👑 Rei das Pragas derrotado!",3500)}}sfx(150,.24)}
+$("sm20Dash")?.addEventListener("click",sm20Dash);$("sm20Nova")?.addEventListener("click",sm20Nova);
 let sm17GamePaused=false;function sm17GamePause(on){sm17GamePaused=!!on;K.l=K.r=K.f=0;const b=document.getElementById("sm17PauseBtn"),info=document.getElementById("sm17DefenseStatus");if(b){b.disabled=!gs;b.textContent=sm17GamePaused?"▶ Retomar":"⏸ Pausar";b.setAttribute("aria-pressed",String(sm17GamePaused))}if(info)info.textContent=sm17GamePaused?"⏸ Pausado. Toque em Retomar para voltar.":"Defenda as árvores. Você pode pausar a qualquer momento.";const cover=document.getElementById("sm17PauseCover");if(cover)cover.hidden=!sm17GamePaused}
 let snd=LS.get("sg_snd")==="1";$("gSnd").checked=snd;$("gSnd").onchange=e=>{snd=e.target.checked;LS.set("sg_snd",snd?"1":"0")};
 function sfx(f,d){if(!snd)return;try{const A=sfx.A||(sfx.A=new(window.AudioContext||window.webkitAudioContext)()),o=A.createOscillator(),g=A.createGain();o.type="square";o.frequency.value=f;g.gain.value=.05;g.gain.exponentialRampToValueAtTime(.001,A.currentTime+d);o.connect(g);g.connect(A.destination);o.start();o.stop(A.currentTime+d)}catch(e){}}
@@ -3195,7 +3213,7 @@ async function startGame(){
   try{if(!gInfinite())gRun=await rpc("game_start",{p_handle:me,p_token:tok})}catch(e){note=e.message==="rate"?"Limite de partidas de hoje atingido. Esta é uma partida de treino.":"Servidor do jogo indisponível. Esta é uma partida de treino e não vale ranking."}
   if($("gameDlg").hidden)return;
   orchardFX.length=0;
-  gs={mode:gDifficulty,kills:0,boss:null,bossDefeated:false,x:GW/2,ammo:gHard()?24:12,stun:0,hp:gHard()?5:3,trees:Array(gHard()?5:3).fill(true),treeHits:Array(gHard()?5:3).fill(0),hard:gHard(),score:0,wave:1,wt:0,t:0,sp:0,ft:0,reg:0,petId:orchardRead().pet,petCooldown:2,petFlash:0,playerMaxHp:gHard()?8:6,playerHp:gHard()?8:6,invuln:0,bossShots:[],sh:[],pe:[],it:[]};
+  gs={dashCd:0,novaCd:0,dashFx:0,novaFx:0,combo:0,comboTimer:0,lastDir:1,mode:gDifficulty,kills:0,boss:null,bossDefeated:false,x:GW/2,ammo:gHard()?24:12,stun:0,hp:gHard()?5:3,trees:Array(gHard()?5:3).fill(true),treeHits:Array(gHard()?5:3).fill(0),hard:gHard(),score:0,wave:1,wt:0,t:0,sp:0,ft:0,reg:0,petId:orchardRead().pet,petCooldown:2,petFlash:0,playerMaxHp:gHard()?8:6,playerHp:gHard()?8:6,invuln:0,bossShots:[],sh:[],pe:[],it:[]};
   $("gOv").hidden=true;sm17GamePause(false);if(note)toast(note,5000);
   gLast=performance.now();cancelAnimationFrame(gRaf);gRaf=requestAnimationFrame(loop);
 }
@@ -3207,7 +3225,7 @@ function loop(t){
   drawG();gRaf=requestAnimationFrame(loop);
 }
 function stepG(dt){
-  const s=gs;orchardUpdateFX(dt);s.t+=dt;s.wt+=dt;s.ft-=dt;s.stun-=dt;s.reg+=dt;s.petCooldown-=dt;s.petFlash=Math.max(0,(s.petFlash||0)-dt);if(s.petEffect)s.petEffect.ttl=Math.max(0,s.petEffect.ttl-dt);s.invuln=Math.max(0,(s.invuln||0)-dt);
+  const s=gs;orchardUpdateFX(dt);s.dashCd=Math.max(0,s.dashCd-dt);s.novaCd=Math.max(0,s.novaCd-dt);s.dashFx=Math.max(0,s.dashFx-dt);s.novaFx=Math.max(0,s.novaFx-dt);s.comboTimer=Math.max(0,s.comboTimer-dt);if(!s.comboTimer)s.combo=0;const dashButton=$("sm20Dash"),novaButton=$("sm20Nova");if(dashButton){dashButton.disabled=s.dashCd>0;$("sm20DashCd").textContent=s.dashCd>0?s.dashCd.toFixed(1)+"s":"Pronto"}if(novaButton){novaButton.disabled=s.novaCd>0||s.ammo<3;$("sm20NovaCd").textContent=s.novaCd>0?s.novaCd.toFixed(1)+"s":s.ammo<3?"3 mangas":"Pronto"}$("sm20Combo").textContent="Combo x"+(1+Math.min(3,Math.floor((s.combo||0)/5)));s.t+=dt;s.wt+=dt;s.ft-=dt;s.stun-=dt;s.reg+=dt;s.petCooldown-=dt;s.petFlash=Math.max(0,(s.petFlash||0)-dt);if(s.petEffect)s.petEffect.ttl=Math.max(0,s.petEffect.ttl-dt);s.invuln=Math.max(0,(s.invuln||0)-dt);
   if(s.wt>= (s.hard?18:15)){
     if(s.mode==="hard"&&s.wave===10&&!s.bossDefeated){s.wt=19.5;}
     else {s.score+=s.hard?100:50;sfx(880,.25);if(s.mode!=="infinite"&&s.wave>=(s.hard?10:5)){endG(true);return false}s.wave++;s.wt=0}
@@ -3215,7 +3233,7 @@ function stepG(dt){
   if(s.mode==="hard"&&s.wave===10&&!s.boss&&!s.bossDefeated){s.boss={x:GW/2,y:210,hp:12,max:12,attack:7,hit:0};toast("👑 O Rei das Pragas chegou! Acerte-o 12 vezes!",4500)}
   if(s.boss){s.boss.x=GW/2+Math.sin(s.t*.9)*GW*.22;s.boss.attack-=dt;s.boss.hit=Math.max(0,(s.boss.hit||0)-dt);if(s.boss.attack<=0){s.boss.attack=4.5;const dx=s.x-s.boss.x,dy=GH-90-s.boss.y,len=Math.hypot(dx,dy)||1;for(const offset of [-.20,0,.20]){const a=Math.atan2(dy,dx)+offset;s.bossShots.push({x:s.boss.x,y:s.boss.y+35,vx:Math.cos(a)*195,vy:Math.sin(a)*195,r:11})}orchardBurst(s.boss.x,s.boss.y+40,"#d58aff",1.1,"ATAQUE!");sfx(180,.14)}}
   if(s.reg>=.72){s.reg=0;s.ammo=Math.min(s.hard?26:12,s.ammo+1)}
-  const sp=s.stun>0?110:(s.hard?270:220),dir=(K.r?1:0)-(K.l?1:0);s.x=Math.max(38,Math.min(GW-38,s.x+dir*sp*dt));
+  const sp=s.stun>0?110:(s.hard?270:220),dir=(K.r?1:0)-(K.l?1:0);if(dir)s.lastDir=dir;s.x=Math.max(38,Math.min(GW-38,s.x+dir*sp*dt));
   if(K.f&&s.ft<=0&&s.ammo>0&&s.stun<=0){s.ft=s.hard?.13:.22;s.ammo--;s.sh.push({x:s.x,y:GH-100,vy:-500,trail:0});orchardBurst(s.x,GH-104,"#ffcf55",.27);sfx(660,.06)}
   s.sp-=dt;
   if(s.sp<=0){
@@ -3231,7 +3249,7 @@ function stepG(dt){
    if(id==="pumpkin"){if(s.petEffect){s.petEffect.tx=GW*(.5)/s.trees.length;s.petEffect.ty=GH-104;}s.shield=(s.shield||0)+1;orchardBurst(s.x+42,GH-120,"#ffc26a",.7,"ESCUDO")}
    if(id==="bat"||id==="ghost"){
     const target=s.pe.filter(p=>!p.dead).sort((a,b)=>b.y-a.y)[0];if(target&&s.petEffect){s.petEffect.tx=target.x;s.petEffect.ty=target.y;}else if(s.boss&&s.petEffect){s.petEffect.tx=s.boss.x;s.petEffect.ty=s.boss.y;}
-    if(target){const damage=id==="ghost"?2:1;target.hp-=damage;target.hit=.32;orchardBurst(target.x,target.y,id==="ghost"?"#d7b0ff":"#ffd67e",1.1,"-"+damage);if(target.hp<=0){target.dead=1;s.kills++;s.score+=s.hard?20:10}}
+    if(target){const damage=id==="ghost"?2:1;target.hp-=damage;target.hit=.32;orchardBurst(target.x,target.y,id==="ghost"?"#d7b0ff":"#ffd67e",1.1,"-"+damage);if(target.hp<=0){target.dead=1;s.kills++;s.combo=(s.combo||0)+1;s.comboTimer=5;s.score+=(s.hard?20:10)*(1+Math.min(3,Math.floor(s.combo/5)))}}
     else if(s.boss){s.boss.hp-=1;s.boss.hit=.3;orchardBurst(s.boss.x,s.boss.y,"#d9b0ff",1,"-1");if(s.boss.hp<=0){s.boss=null;s.bossDefeated=true;s.score+=1500;toast("👑 Rei das Pragas derrotado!",3500)}}
     }
    }
@@ -3270,6 +3288,8 @@ function drawG(){
   const g=gx,s=gs||{x:GW/2,ammo:10,hp:gHard()?5:3,trees:Array(gHard()?5:3).fill(true),treeHits:Array(gHard()?5:3).fill(0),hard:gHard(),score:0,wave:1,sh:[],pe:[],it:[],stun:0,ft:0,playerMaxHp:gHard()?8:6,playerHp:gHard()?8:6,bossShots:[],invuln:0,t:0};
   const t=s.t||0;
   v11Backdrop(g,t,GW,GH);
+  // Camadas de atmosferas: nuvens suaves, pétalas e vaga-lumes em paralaxe.
+  g.save();const lowFX=document.documentElement.classList.contains("sm165-lowfx")||matchMedia("(prefers-reduced-motion: reduce)").matches;for(let i=0;i<(lowFX?6:24);i++){const x=((i*97.7+t*(9+i%3*6))%(GW+45))-20,y=90+(i*79)%(GH-150);g.globalAlpha=.12+.14*Math.sin(t*1.1+i)*Math.sin(t*1.1+i);g.fillStyle=i%3===0?"#f8b8ce":i%3===1?"#deec9f":"#85dcd9";g.fillRect(x,y,2+(i%3),2+(i%3))}g.restore();
   g.textAlign='center';g.textBaseline='middle';g.imageSmoothingEnabled=false;
   // Bottom-anchored trees: roots never run below the canvas, unlike V10.
   Array.from({length:s.trees.length},(_,i)=>GW*(i+.5)/s.trees.length).forEach((x,i)=>{
@@ -3321,6 +3341,8 @@ function drawG(){
     v11Frame(g,arr,t+id.length*.13,4.2,petx,pety,id==='bat'?80:70,id==='bat'?70:71,{rotate:Math.sin(t*3)*.045,scale:s.petFlash>.06?1.12:1});
   }
   v11Magic(g,s);
+  if(s.novaFx>0){g.save();g.strokeStyle="#bda5ff";g.shadowColor="#9bdfff";g.shadowBlur=24;g.lineWidth=4;g.globalAlpha=Math.min(1,s.novaFx/.35);g.beginPath();g.arc(s.x,GH-135,154*(1-s.novaFx/.65),0,Math.PI*2);g.stroke();g.restore()}
+  if(s.dashFx>0){g.save();g.strokeStyle="#72e6e6";g.globalAlpha=Math.min(1,s.dashFx/.35);for(let i=0;i<4;i++){g.beginPath();g.moveTo(s.x-(s.lastDir||1)*(15+i*12),GH-108+i*7);g.lineTo(s.x-(s.lastDir||1)*(36+i*12),GH-108+i*7);g.stroke()}g.restore()}
   orchardDrawFX(g);
   // HUD: warm, crisp panels; keep the text within the canvas in both modes.
   g.save();g.fillStyle='#08131bd8';g.fillRect(5,3,GW-10,s.hard?92:72);
@@ -3491,6 +3513,7 @@ async function loadGRank(){
 }
 $("gPlay").onclick=startGame;$("gBack").onclick=()=>showPane("home");
 const KM={ArrowLeft:"l",a:"l",A:"l",ArrowRight:"r",d:"r",D:"r"," ":"f"};
+addEventListener("keydown",e=>{if(!gs||sm17GamePaused||e.repeat||e.target.closest?.("input,textarea,select,[contenteditable]"))return;if(e.key==="q"||e.key==="Q"){e.preventDefault();sm20Dash()}if(e.key==="e"||e.key==="E"){e.preventDefault();sm20Nova()}});
 addEventListener("keydown",e=>{if(!gs||!KM[e.key])return;e.preventDefault();K[KM[e.key]]=1});
 addEventListener("keyup",e=>{if(KM[e.key])K[KM[e.key]]=0});
 [["gL","l"],["gR","r"],["gF","f"]].forEach(([id,k])=>{const b=$(id);
@@ -4490,5 +4513,7 @@ load();update();requestAnimationFrame(render);requestAnimationFrame(movement);
 <script src="revisao_v17.js" defer></script>
 <script src="polimento_v17_1.js" defer></script>
 <script src="expedicao_v18.js?v=19" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.10/dist/umd/supabase.min.js" defer></script>
+<script src="pomar_ao_vivo_v20.js?v=20" defer></script>
 </body>
 </html>
