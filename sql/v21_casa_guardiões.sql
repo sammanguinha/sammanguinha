@@ -31,8 +31,8 @@ begin
  if p_state is null or jsonb_typeof(p_state)<>'object' or length(p_state::text)>6000 then raise exception 'casa_invalida'; end if;
  if p_state->>'theme' not in ('bosque','astral','amanhecer') then raise exception 'tema_invalido'; end if;
  if p_state->>'floor' not in ('carvalho','marmore','musgo') then raise exception 'piso_invalido'; end if;
- if jsonb_typeof(p_state->'placed')<>'array' or jsonb_array_length(p_state->'placed')>24 then raise exception 'moveis_invalidos'; end if;
- if jsonb_typeof(p_state->'owned')<>'array' or jsonb_array_length(p_state->'owned')>16 then raise exception 'inventario_invalido'; end if;
+ if coalesce(jsonb_typeof(p_state->'placed'),'null')<>'array' or jsonb_array_length(p_state->'placed')>24 then raise exception 'moveis_invalidos'; end if;
+ if coalesce(jsonb_typeof(p_state->'owned'),'null')<>'array' or jsonb_array_length(p_state->'owned')>16 then raise exception 'inventario_invalido'; end if;
  for obj in select value from jsonb_array_elements(p_state->'owned')
  loop
   if jsonb_typeof(obj)<>'string' or (obj#>>'{}') <> all(allowed) then raise exception 'item_invalido'; end if;
@@ -44,7 +44,7 @@ begin
   if jsonb_typeof(furniture)<>'object' or furniture->>'id' <> all(allowed) or jsonb_typeof(furniture->'x')<>'number' or jsonb_typeof(furniture->'y')<>'number' then raise exception 'movel_invalido'; end if;
   key:=furniture->>'id';x:=(furniture->>'x')::int;y:=(furniture->>'y')::int;
   if x<0 or x>11 or y<0 or y>5 then raise exception 'posicao_invalida';end if;
-  if key<>any(ownership) and key<>all(array['cama','mesa','estante','planta','tapete','lampiao']) then raise exception 'item_nao_adquirido'; end if;
+  if not (key=any(ownership)) and not (key=any(array['cama','mesa','estante','planta','tapete','lampiao'])) then raise exception 'item_nao_adquirido'; end if;
   if (x::text||':'||y::text)=any(seen) then raise exception 'colisao_de_moveis'; end if;
   seen:=array_append(seen,x::text||':'||y::text);
  end loop;
