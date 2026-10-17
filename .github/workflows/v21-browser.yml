@@ -1,0 +1,29 @@
+name: V21 - Navegador e mobile (sem deploy)
+on:
+  push:
+    branches: [dev/v21-reinos-do-pomar]
+    paths:
+      - 'index.html'
+      - 'casa_v21.js'
+      - 'sprites/**'
+      - 'tests/v21_browser_smoke.cjs'
+      - '.github/workflows/v21-browser.yml'
+  workflow_dispatch:
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright@1.56.1
+      - run: npx playwright install chromium --with-deps
+      - run: node tests/v21_browser_smoke.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v21-capturas-casa-defesa
+          path: test-artifacts/
+          if-no-files-found: ignore
