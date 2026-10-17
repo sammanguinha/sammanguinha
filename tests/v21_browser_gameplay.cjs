@@ -129,6 +129,20 @@ const server=http.createServer((req,res)=>{
    assert.equal(victory.defeated,true,device.name+' boss defeated by projectile damage');
    assert.equal(victory.ended,true,device.name+' victory occurs after boss defeated');
    assert.match(victory.screen,/Vitória/,device.name+' victory screen');
+   const battleReport=await page.evaluate(()=>[...document.querySelectorAll('#sm21BattleResults span')].map(x=>x.textContent));
+   assert.equal(battleReport.length,6,device.name+' real battle report has six metrics');
+   assert.ok(battleReport.some(x=>x.includes('Derrotado')),device.name+' boss kill appears in scorecard');
+   if(device.name==='mobile'){
+     await page.evaluate(()=>document.getElementById('houseBtn').click());
+     await page.locator('#sm21HouseFloor').selectOption('musgo');
+   }
+   await page.evaluate(()=>document.getElementById('homeBtn').click());
+   await page.waitForFunction(()=>!document.getElementById('sm21JourneyClaim').disabled,null,{timeout:7000});
+   const walletBefore=await page.evaluate(()=>JSON.parse(localStorage.getItem('sg_extras_v1_guardiaoteste21')).seeds);
+   await page.locator('#sm21JourneyClaim').click();
+   const walletAfter=await page.evaluate(()=>JSON.parse(localStorage.getItem('sg_extras_v1_guardiaoteste21')).seeds);
+   assert.equal(walletAfter-walletBefore,25,device.name+' cross-mode daily reward changes real house currency');
+   assert.equal(await page.locator('#sm21JourneyClaim').isDisabled(),true,device.name+' daily reward cannot be claimed twice');
    assert.deepEqual(errors,[],device.name+' uncaught JS exceptions');
    fs.mkdirSync(path.join(ROOT,'test-artifacts'),{recursive:true});
    await page.evaluate(()=>document.getElementById('houseBtn').click());
