@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" shape-rendering="crispEdges">
+<defs><linearGradient id="h" x2="0" y2="1"><stop stop-color="#e7e0ff"/><stop offset=".55" stop-color="#9984d9"/><stop offset="1" stop-color="#533e8e"/></linearGradient></defs>
+<path fill="#1b1734" d="M12 2h8v2h4v4h2v4h2v11h-3v3h-4v-3h-3v4h-4v-4h-3v3H7v-3H4V12h2V8h2V4h4z"/>
+<path fill="url(#h)" d="M12 4h8v2h4v4h2v12h-3v2h-3v-4h-3v5h-2v-5h-3v4H9v-2H6V11h2V7h4z"/>
+<path fill="#fcf6d8" d="M9 9h3v3H9zM21 9h3v3h-3zM14 5h4v2h-4z"/>
+<path fill="#ffe29c" d="M10 14h4v4h-4zM19 14h4v4h-4z"/>
+<path fill="#382750" d="M11 15h2v3h-2zM20 15h2v3h-2zM16 20h2v2h-2z"/>
+<path fill="#b9effa" d="M5 10h2v4H5zM25 6h2v4h-2zM16 1h2v3h-2zM3 22h2v3H3zM27 21h3v2h-3z"/>
+<path fill="#c6b9ef" d="M3 8h2v2H3zM28 12h2v4h-2zM8 27h3v2H8zM23 27h3v2h-3z"/>
+</svg>
