@@ -1,0 +1,41 @@
+name: Pacote Cloudflare Pages V20
+on:
+  push:
+    branches: [dev/v20-pomar-vivo]
+    paths:
+      - 'index.html'
+      - '*.js'
+      - '*.css'
+      - 'sprites/**'
+      - 'audio/**'
+      - 'halloween_art/**'
+      - '.github/workflows/empacotar-cloudflare-v20.yml'
+  workflow_dispatch:
+jobs:
+  zip-estatico:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validar codigo publico
+        run: node --test tests/v20_pomar_vivo.test.cjs
+      - name: Preparar somente arquivos publicos
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          find . -maxdepth 1 -type f \( -iname '*.html' -o -iname '*.css' -o -iname '*.js' -o -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' -o -iname '*.gif' -o -iname '*.svg' -o -iname '*.ico' -o -iname '*.mp3' -o -iname '*.ogg' -o -iname '*.wav' -o -iname '*.woff*' -o -name '_redirects' -o -name '_headers' \) -exec cp -t dist/ {} +
+          for dir in sprites audio halloween_art; do
+            if [ -d "$dir" ]; then cp -a "$dir" dist/; fi
+          done
+          test -f dist/index.html
+          test -f dist/pomar_ao_vivo_v20.js
+          test -f dist/sprites/esporo_v20.svg
+          if find dist -iname 'wrangler*' | grep -q .; then echo 'Erro: wrangler no pacote publico'; exit 1; fi
+          cd dist
+          zip -qr ../Sam-Manguinha-V20-Cloudflare-Pages.zip .
+          unzip -l ../Sam-Manguinha-V20-Cloudflare-Pages.zip | sed -n '1,25p'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V20-Cloudflare-Pages
+          path: Sam-Manguinha-V20-Cloudflare-Pages.zip
+          retention-days: 30

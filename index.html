@@ -1372,9 +1372,23 @@ dialog[open]{max-height:92vh;overflow:auto}
 #smUpdatePanel .sm-update-history{display:grid;gap:10px;margin:15px 0 19px}#smUpdatePanel .sm-update-version{border:1px solid #d3a95c66;background:#09151e66;border-radius:13px;overflow:hidden}#smUpdatePanel .sm-update-version[open]{border-color:#d3a95c}#smUpdatePanel .sm-update-version summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 14px;cursor:pointer;color:#f8e6c5;min-height:49px}#smUpdatePanel .sm-update-version summary::-webkit-details-marker{display:none}#smUpdatePanel .sm-update-version summary:before{content:'▸';color:#f3cf85;font-size:1.2rem}#smUpdatePanel .sm-update-version[open] summary:before{content:'▾'}#smUpdatePanel .sm-update-version summary span:first-of-type{flex:1}#smUpdatePanel .sm-update-version summary b{color:#ffe3a0;margin-right:7px}#smUpdatePanel .sm-update-count{font-size:.73rem;color:#c4d8cb;white-space:nowrap}#smUpdatePanel .sm-update-version summary:focus-visible{outline:3px solid #ffdf9b;outline-offset:-3px}#smUpdatePanel .sm-update-version ul{margin:0 11px 12px!important;gap:7px}#smUpdatePanel .sm-update-version li{font-size:.87rem;padding:9px 11px}@media(max-width:560px){#smUpdatePanel .sm-update-version summary{padding:10px 9px;font-size:.85rem}#smUpdatePanel .sm-update-count{font-size:.66rem}}#smUpdatePanel ul{list-style:none;padding:0;margin:12px 0 20px;display:grid;gap:10px}#smUpdatePanel li{border:1px solid #ffffff25;background:#ffffff0b;border-radius:12px;padding:11px 12px;line-height:1.4;font-size:.93rem}#smUpdatePanel li strong{color:#ffe0a2}#smUpdatePanel .sm-actions{display:flex;gap:9px;flex-wrap:wrap}#smUpdatePanel button,#smUpdatesReopen{font:700 .93rem system-ui,Arial,sans-serif;cursor:pointer;min-height:44px;border-radius:12px;padding:10px 16px}#smUpdatesClose{background:#e7b967;color:#1c211c;border:0;flex:1}#smUpdatesLater{background:#ffffff13;color:#f5e9d6;border:1px solid #ffffff65}#smUpdatesReopen{position:fixed;right:13px;bottom:14px;z-index:10000;background:#183629;color:#ffe3a1;border:1px solid #a47d43;box-shadow:0 5px 18px #0007;display:none}#smUpdatesReopen.sm-ready{display:block}
 @media(max-width:560px){#smUpdatePanel{padding:17px;border-radius:16px}#smUpdatePanel li{padding:9px 10px;font-size:.87rem}#smUpdatesReopen{bottom:calc(12px + env(safe-area-inset-bottom,0px));right:10px;padding:8px 11px;font-size:.78rem}}
 </style>
+
+<style id="sm20-pomar-vivo-css">
+#sm20Live{margin:0 0 24px;border:2px solid #886baf;border-radius:18px;background:radial-gradient(circle at 5% 0%,#57447a45,transparent 45%),linear-gradient(150deg,#171829,#0b1d20);color:#f4f0e5;padding:clamp(12px,3vw,22px);box-shadow:0 12px 35px #0005}
+.sm20-live-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;flex-wrap:wrap}.sm20-live-heading h3{margin:5px 0 3px;color:#ffe6a2;font-size:clamp(1.2rem,3vw,1.65rem)}.sm20-live-heading p{font-size:.85rem;max-width:520px;color:#cbdad3;line-height:1.5}.sm20-live-kicker{color:#cda9ff;font-size:.72rem;letter-spacing:.12em;font-weight:800}
+#sm20LiveStatus{border:1px solid #977fa5;border-radius:99px;padding:6px 11px;font-size:.73rem;color:#d8d3e3}#sm20LiveStatus[data-state=ok]{color:#b8ffcc;border-color:#519f72}#sm20LiveStatus[data-state=error]{color:#ffb6b6;border-color:#c26262}
+.sm20-live-rooms{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.sm20-live-rooms button,.sm20-live-entry button,.sm20-skills button{border:1px solid #857598;background:#292238;color:#f5eddc;border-radius:10px;padding:10px 13px;font-weight:700;cursor:pointer;min-height:42px}.sm20-live-rooms button[aria-pressed=true]{background:#ab82d1;color:#1b102b;border-color:#e4beff}
+.sm20-live-feed{list-style:none;margin:0;padding:12px;display:flex;flex-direction:column;gap:9px;height:clamp(210px,40vh,370px);overflow-y:auto;overscroll-behavior:contain;border:1px solid #8c7e9255;border-radius:13px;background:#060e15b0}.sm20-live-msg{background:#2d334755;padding:10px 11px;border-radius:10px;max-width:95%;border-left:3px solid #bc98fa}.sm20-live-meta{display:flex;gap:12px;align-items:center}.sm20-live-meta b{color:#e6c6ff}.sm20-live-meta time{font-size:.7rem;color:#c9cacb}.sm20-live-msg p{margin:5px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:.89rem}.sm20-report{border:0;background:none;color:#c7bcb4;text-decoration:underline;cursor:pointer;font-size:.7rem;padding:3px}
+.sm20-live-form{margin-top:11px;display:grid;gap:6px}.sm20-live-form label{font-size:.8rem;font-weight:700}.sm20-live-entry{display:flex;gap:8px}.sm20-live-entry input{flex:1;min-width:0;border:1px solid #9f91b0;border-radius:11px;padding:12px;background:#141d2a;color:#fff;font:inherit;font-size:16px}.sm20-live-entry button{background:#e7b966;color:#1d211c;border:0}.sm20-live-form small{color:#c1c8c8;line-height:1.4}
+.sm20-defense-hint{margin:15px auto 0;display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;font-size:.82rem;color:#efe2be}.sm20-defense-hint strong{color:#f5c8ff}.sm20-skills{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;align-items:center;margin:0 auto 11px}.sm20-skills button{display:flex;gap:7px;background:linear-gradient(125deg,#37284f,#1b4651);border-color:#bd9ad5}.sm20-skills button span{color:#deffaf;font-size:.72rem}.sm20-skills button:disabled{opacity:.65;filter:grayscale(.5)}#sm20Combo{font-weight:800;color:#ffdf7e;padding:6px 10px}
+#sm20Live button:focus-visible,.sm20-skills button:focus-visible{outline:3px solid #f4d56b;outline-offset:2px}
+@media(max-width:600px){.sm20-live-rooms button{flex:1;font-size:.79rem;padding:8px 5px}.sm20-live-feed{height:260px}.sm20-live-entry button{padding:9px}.sm20-skills button{flex:1;justify-content:center}.sm20-defense-hint{line-height:1.5}}
+@media(prefers-reduced-motion:reduce){#sm20Live *{animation:none!important;transition:none!important}}
+ .sm20-wardrobe-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:12px 0 16px;padding:12px;background:#1c273a;border:1px solid #9b85ad;border-radius:12px;color:#f8e6c5}.sm20-wardrobe-tools label{font-weight:700;font-size:.79rem}.sm20-wardrobe-tools input[type=search]{flex:1;min-width:140px;background:#0d1525;border:1px solid #796587;border-radius:8px;color:#fff;padding:10px;font-size:16px}.sm20-wardrobe-owned{display:flex;align-items:center;gap:6px}#sm20WardrobeStat{font-size:.76rem;color:#d0deb7}
+</style>
 </head>
 <body>
-<div id="smUpdateLayer" role="presentation"><section id="smUpdatePanel" role="dialog" aria-modal="true" aria-labelledby="smUpdateTitle" tabindex="-1"><span class="sm-tag">🥭 NOTAS DE ATUALIZAÇÃO · V19.0</span><h2 id="smUpdateTitle">O Eclipse das Cinco Luas!</h2><p>Uma nova aventura está disponível sem perder seus modos anteriores.</p><div class="sm-update-history"><details class="sm-update-version" open><summary><span><b>V19</b> Expedição Astral — Eclipse das Cinco Luas</span><span class="sm-update-count">3 novidades</span></summary><ul><li><strong>🌙 Expedição Astral V19</strong> — cinco capítulos com narrativa interativa, relíquias e chefões.</li><li><strong>📜 Memórias do Pomar</strong> — relíquias colecionáveis, oito medalhas cosméticas e salvamento por @.</li><li><strong>⚔️ Combate evoluído</strong> — pulso astral, guarda, espíritos à distância, partículas, sprites novos, toques e deslizes no celular.</li></ul></details><details class="sm-update-version"><summary><span><b>V18</b> Melhorias gerais e modos de jogo</span><span class="sm-update-count">12 novidades</span></summary><ul><li><strong>🔐 Login mais seguro</strong> — não troca a chave de acesso se o servidor rejeitar a entrada.</li><li><strong>⚔️ Combates mais vivos</strong> — ataques, magia, dano, cura e defesa com animações.</li><li><strong>🕷️ Nova Rainha das Aranhas</strong> — inimigo redesenhado e visual mais detalhado.</li><li><strong>📱 Interface compacta</strong> — menus organizados para celular e computador.</li><li><strong>🎭 Mais personalização</strong> — novos acessórios, visuais e títulos para conquistar.</li><li><strong>🎶 Música de RPG</strong> — quatro temas para exploração, batalha, chefões e Halloween.</li><li><strong>💬 Praça dos Jogadores</strong> — conversas com respostas, reações, filtros e desafios diários usando o mural real e moderado.</li><li><strong>🕹️ Terminal da Manga</strong> — 18 códigos com efeitos visíveis, confirmação e coleção de descobertas; todos sem afetar o ranking.</li><li><strong>⏸ Defesa do Pomar</strong> — pausa e retomada, com pausa automática ao trocar de aba.</li><li><strong>🌙 RPG e Halloween</strong> — exploração e puzzles preservados; renderização suspensa quando a aventura de Halloween está fechada.</li><li><strong>♿ Acessibilidade</strong> — contrastes, texto maior, efeitos leves e controles por toque mantidos.</li><li><strong>🔒 Interação segura</strong> — mensagens enviadas ao servidor passam por moderação; não é chat ao vivo.</li></ul></details></div><div class="sm-actions"><button id="smUpdatesClose" type="button">🥭 Entendi, vamos jogar!</button><button id="smUpdatesLater" type="button">Fechar</button></div></section></div><button type="button" id="smUpdatesReopen" aria-label="Ver novidades da atualização">✦ Novidades</button>
+<div id="smUpdateLayer" role="presentation"><section id="smUpdatePanel" role="dialog" aria-modal="true" aria-labelledby="smUpdateTitle" tabindex="-1"><span class="sm-tag">🥭 NOTAS DE ATUALIZAÇÃO · V20.0</span><h2 id="smUpdateTitle">Pomar Vivo — A Praça Desperta!</h2><p>Uma nova aventura está disponível sem perder seus modos anteriores.</p><div class="sm-update-history"><details class="sm-update-version" open><summary><span><b>V20</b> Pomar Vivo — Defesa, Visual e Comunidade</span><span class="sm-update-count">4 novidades</span></summary><ul><li><strong>⚡ Defesa evoluída</strong> — impulso evasivo, explosão astral, combo, esporos errantes e ambiente mais vivo.</li><li><strong>🎭 21 acessórios inéditos</strong> — chapéus, máscaras, roupas, capas, auras, companheiros e títulos com filtros.</li><li><strong>💬 Praça Ao Vivo</strong> — salas de conversa em tempo real com denúncias, limite de envio e sincronização automática.</li><li><strong>🌳 Comunidade conectada</strong> — mural moderado continua disponível junto do chat e dos desafios.</li></ul></details><details class="sm-update-version"><summary><span><b>V19</b> Expedição Astral — Eclipse das Cinco Luas</span><span class="sm-update-count">3 novidades</span></summary><ul><li><strong>🌙 Expedição Astral V19</strong> — cinco capítulos com narrativa interativa, relíquias e chefões.</li><li><strong>📜 Memórias do Pomar</strong> — relíquias colecionáveis, oito medalhas cosméticas e salvamento por @.</li><li><strong>⚔️ Combate evoluído</strong> — pulso astral, guarda, espíritos à distância, partículas, sprites novos, toques e deslizes no celular.</li></ul></details><details class="sm-update-version"><summary><span><b>V18</b> Melhorias gerais e modos de jogo</span><span class="sm-update-count">12 novidades</span></summary><ul><li><strong>🔐 Login mais seguro</strong> — não troca a chave de acesso se o servidor rejeitar a entrada.</li><li><strong>⚔️ Combates mais vivos</strong> — ataques, magia, dano, cura e defesa com animações.</li><li><strong>🕷️ Nova Rainha das Aranhas</strong> — inimigo redesenhado e visual mais detalhado.</li><li><strong>📱 Interface compacta</strong> — menus organizados para celular e computador.</li><li><strong>🎭 Mais personalização</strong> — novos acessórios, visuais e títulos para conquistar.</li><li><strong>🎶 Música de RPG</strong> — quatro temas para exploração, batalha, chefões e Halloween.</li><li><strong>💬 Praça dos Jogadores</strong> — conversas com respostas, reações, filtros e desafios diários usando o mural real e moderado.</li><li><strong>🕹️ Terminal da Manga</strong> — 18 códigos com efeitos visíveis, confirmação e coleção de descobertas; todos sem afetar o ranking.</li><li><strong>⏸ Defesa do Pomar</strong> — pausa e retomada, com pausa automática ao trocar de aba.</li><li><strong>🌙 RPG e Halloween</strong> — exploração e puzzles preservados; renderização suspensa quando a aventura de Halloween está fechada.</li><li><strong>♿ Acessibilidade</strong> — contrastes, texto maior, efeitos leves e controles por toque mantidos.</li><li><strong>🔒 Interação segura</strong> — mensagens enviadas ao servidor passam por moderação; não é chat ao vivo.</li></ul></details></div><div class="sm-actions"><button id="smUpdatesClose" type="button">🥭 Entendi, vamos jogar!</button><button id="smUpdatesLater" type="button">Fechar</button></div></section></div><button type="button" id="smUpdatesReopen" aria-label="Ver novidades da atualização">✦ Novidades</button>
 <svg width="0" height="0" style="position:absolute;display:none" aria-hidden="true"><defs>
 <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5c3-1 6-1 8 1 2-2 5-2 8-1v14c-3-1-6-1-8 1-2-2-5-2-8-1zM12 6v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -1782,7 +1796,7 @@ dialog[open]{max-height:92vh;overflow:auto}
         <svg class="ic" style="width:18px;height:18px;color:var(--amber)"><use href="#rpg-icon-armor"/></svg>
         <span>Catálogo & Inventário</span>
       </div>
-      <div class="inventory-grid" id="inventoryGrid" aria-live="polite"></div>
+      <div class="sm20-wardrobe-tools"><label for="sm20WardrobeSearch">🔍 Buscar acessórios</label><input id="sm20WardrobeSearch" type="search" placeholder="Chapéu, capa, aura, raridade…" maxlength="45"><label class="sm20-wardrobe-owned"><input id="sm20WardrobeOwned" type="checkbox"> Apenas desbloqueados</label><span id="sm20WardrobeStat" aria-live="polite"></span></div><div class="inventory-grid" id="inventoryGrid" aria-live="polite"></div>
       <div id="hats" class="opts" style="display:none"></div>
 
       <!-- Barra de Ação e Salvar -->
@@ -1956,6 +1970,7 @@ dialog[open]{max-height:92vh;overflow:auto}
 <!-- MURAL DOS MURMÚRIOS (#murDlg)              -->
 <!-- ========================================== -->
 <section class="pane" id="murDlg" hidden aria-label="Mural do Pomar">
+<section id="sm20Live" class="sm20-live" aria-label="Chat ao vivo do Pomar"><div class="sm20-live-heading"><div><span class="sm20-live-kicker">✦ V20 · Praça Ao Vivo</span><h3>🌐 Vozes do Pomar</h3><p>Converse em tempo real com outros guardiões! Mensagens públicas; não compartilhe contatos ou informações pessoais.</p></div><span id="sm20LiveStatus" role="status" aria-live="polite">Conectando…</span></div><div class="sm20-live-rooms" role="group" aria-label="Salas do chat"><button type="button" data-sm20-room="praca" aria-pressed="true">🌳 Praça</button><button type="button" data-sm20-room="defesa" aria-pressed="false">⚔️ Defesa</button><button type="button" data-sm20-room="rpg" aria-pressed="false">🌙 RPG</button><button id="sm20LiveRefresh" type="button" title="Atualizar mensagens">↻ Atualizar</button></div><ol id="sm20LiveFeed" class="sm20-live-feed" aria-label="Mensagens recentes" aria-live="off"></ol><form id="sm20LiveForm" class="sm20-live-form"><label for="sm20LiveInput">Sua mensagem pública</label><div class="sm20-live-entry"><input id="sm20LiveInput" type="text" maxlength="180" minlength="2" autocomplete="off" placeholder="Converse com os guardiões…" required><button id="sm20LiveSend" type="submit">➤ Enviar</button></div><small><span id="sm20LiveCount">0/180</span> · 7 segundos entre envios · denuncie conteúdo inadequado. <strong>O mural moderado continua abaixo.</strong></small></form></section>
   <h2 class="ptitle"><svg class="ic xl"><use href="#i-chat"/></svg>Mural dos Murmúrios</h2>
   
 <section class="sm17-social" id="sm17Social" aria-label="Praça dos Jogadores">
@@ -2043,11 +2058,11 @@ dialog[open]{max-height:92vh;overflow:auto}
         </div>
       </div>
     </div>
-    <div class="gctl" style="display:flex;gap:12px;justify-content:center;margin:16px 0">
+    <div class="sm20-defense-hint"><strong>⚡ Habilidades especiais</strong><span>Q: Impulso evasivo · E: Explosão astral · Combo aumenta seus pontos. No celular, use os novos botões.</span></div><div class="gctl" style="display:flex;gap:12px;justify-content:center;margin:16px 0">
       <button type="button" class="btn-gothic alt" id="gL" style="padding:12px 24px">◀ Esquerda</button>
       <button type="button" class="btn-gothic" id="gF" style="padding:12px 28px">🥭 Atirar</button>
       <button type="button" class="btn-gothic alt" id="gR" style="padding:12px 24px">Direita ▶</button>
-    </div>
+    </div><div class="sm20-skills"><button type="button" id="sm20Dash" aria-label="Usar impulso evasivo">💨 Impulso <span id="sm20DashCd">Pronto</span></button><button type="button" id="sm20Nova" aria-label="Usar explosão astral">💥 Explosão <span id="sm20NovaCd">Pronto</span></button><span id="sm20Combo" aria-live="polite">Combo x1</span></div>
     <label class="chk" style="display:inline-flex;align-items:center;gap:6px;font-size:0.85rem;color:var(--muted);cursor:pointer">
       <input type="checkbox" id="gSnd"> Efeitos sonoros místicos
     </label>
@@ -2242,7 +2257,7 @@ dialog[open]{max-height:92vh;overflow:auto}
     <div class="row" style="margin-top:14px"><button type="button" class="btn-gothic" id="aClose4">Fechar</button></div>
   </div>
   <div id="murPane" hidden>
-    <ol class="list" id="murList" style="list-style:none;padding:0;margin:0;max-height:280px;overflow-y:auto"></ol>
+    <h3 style="color:var(--amber);margin:8px 0">📜 Publicações pendentes</h3><ol class="list" id="murList" style="list-style:none;padding:0;margin:0;max-height:280px;overflow-y:auto"></ol><section class="sm20-admin-live" aria-label="Moderação da Praça Ao Vivo"><div class="row" style="margin:16px 0 8px"><h3 style="color:var(--amber);margin:0">📡 Praça Ao Vivo</h3><button type="button" id="sm20AdminChatRefresh" class="btn-gothic alt">↻ Atualizar</button></div><p class="sm">Mensagens recentes e denúncias. O administrador pode ocultar ou restaurar mensagens sem excluir o histórico.</p><ol class="list" id="sm20AdminChatList" style="list-style:none;padding:0;margin:0;max-height:320px;overflow-y:auto"></ol></section>
     <div class="row" style="margin-top:14px"><button type="button" class="btn-gothic" id="aClose3">Fechar</button></div>
   </div>
 </dialog>
@@ -2983,7 +2998,22 @@ $("pForm").onsubmit=async e=>{
   else{fails++;$("pErr").textContent="Senha incorreta.";await new Promise(r=>setTimeout(r,Math.min(6000,fails*1500)))}
   $("pOk").disabled=false;
 };
-const tab=n=>{["aForm","visPane","murPane","galAdm"].forEach((id,i)=>{$(id).hidden=i!==n});["tabPost","tabVis","tabMur","tabGal"].forEach((id,i)=>{$(id).classList.toggle("on",i===n);$(id).classList.toggle("alt",i!==n)});if(n===2)loadAdminMural();if(n===3)loadAdminGal()};
+const tab=n=>{["aForm","visPane","murPane","galAdm"].forEach((id,i)=>{$(id).hidden=i!==n});["tabPost","tabVis","tabMur","tabGal"].forEach((id,i)=>{$(id).classList.toggle("on",i===n);$(id).classList.toggle("alt",i!==n)});if(n===2){loadAdminMural();loadAdminLive()}if(n===3)loadAdminGal()};
+async function loadAdminLive(){
+ const target=$("sm20AdminChatList");if(!target)return;
+ target.innerHTML='<li class="state">Buscando conversas…</li>';
+ try{
+ const messages=await rpc("sm_live_admin_list",{p_pw:ADMPW});
+ target.innerHTML=messages.map(m=>`<li data-chat-id="${Number(m.id)}" style="display:block;padding:10px;border-bottom:1px solid #ffffff23"><b>@${esc(m.handle)}</b> · ${esc(m.room)} · <span class="sm">${m.status==='ok'?'Visível':'Oculta'} · ${Number(m.reports)||0} denúncia(s)</span><p style="white-space:pre-wrap;overflow-wrap:anywhere;margin:5px 0">${esc(m.body)}</p><button type="button" data-chat-set="${m.status==='ok'?'hidden':'ok'}" class="btn-gothic alt">${m.status==='ok'?'Ocultar':'Restaurar'}</button></li>`).join('')||'<li class="state">Nenhuma mensagem ainda.</li>';
+ }catch(e){target.textContent="Não consegui carregar o chat: "+e.message}
+}
+$("sm20AdminChatRefresh")?.addEventListener("click",loadAdminLive);
+$("sm20AdminChatList")?.addEventListener("click",async e=>{
+ const btn=e.target.closest("[data-chat-set]"),item=btn?.closest("[data-chat-id]");if(!btn||!item)return;
+ btn.disabled=true;
+ try{await rpc("sm_live_admin_set",{p_pw:ADMPW,p_id:Number(item.dataset.chatId),p_status:btn.dataset.chatSet});await loadAdminLive();toast("Moderação do chat atualizada.")}
+ catch(err){toast("Erro ao moderar: "+err.message);btn.disabled=false}
+});
 async function loadAdminMural(){
   try{
     const v=await rpc("admin_mural",{p_pw:ADMPW});
@@ -3142,6 +3172,10 @@ function setGameDifficulty(mode){
 }
 document.querySelectorAll("#gDifficulty [data-difficulty]").forEach(b=>b.addEventListener("click",()=>setGameDifficulty(b.dataset.difficulty)));
 let gs=null,gRun=null,gRaf=0,gLast=0;
+// V20: novas habilidades com recarga por partida. Não alteram a pontuação fora do motor de jogo.
+function sm20Dash(){if(!gs||sm17GamePaused||document.hidden||gs.dashCd>0)return;const d=(K.r?1:0)-(K.l?1:0);gs.x=Math.max(38,Math.min(GW-38,gs.x+(d||((gs.lastDir||1)))*Math.min(115,GW*.23)));gs.dashCd=7;gs.dashes=(gs.dashes||0)+1;gs.invuln=Math.max(gs.invuln,0.65);gs.dashFx=.45;orchardBurst(gs.x,GH-93,"#74e8fd",1.9,"IMPULSO");sfx(750,.10)}
+function sm20Nova(){if(!gs||sm17GamePaused||document.hidden||gs.novaCd>0||gs.ammo<3)return;const s=gs;s.ammo-=3;s.novas=(s.novas||0)+1;s.novaCd=13;s.novaFx=.65;const cy=GH-135,range=154;orchardBurst(s.x,cy,"#c1a4ff",3.1,"EXPLOSÃO!");s.pe.forEach(p=>{if(p.dead||Math.hypot(p.x-s.x,p.y-cy)>range)return;p.hp-=2;p.hit=.45;if(p.hp<=0){p.dead=1;s.kills++;s.combo=(s.combo||0)+1;s.comboTimer=5;s.score+=10*Math.min(4,Math.floor(s.combo/5)+1)}});if(s.boss&&Math.hypot(s.boss.x-s.x,s.boss.y-cy)<range+45){s.boss.hp-=2;s.boss.hit=.5;if(s.boss.hp<=0){s.boss=null;s.bossDefeated=true;s.score+=1500;toast("👑 Rei das Pragas derrotado!",3500)}}sfx(150,.24)}
+$("sm20Dash")?.addEventListener("click",sm20Dash);$("sm20Nova")?.addEventListener("click",sm20Nova);
 let sm17GamePaused=false;function sm17GamePause(on){sm17GamePaused=!!on;K.l=K.r=K.f=0;const b=document.getElementById("sm17PauseBtn"),info=document.getElementById("sm17DefenseStatus");if(b){b.disabled=!gs;b.textContent=sm17GamePaused?"▶ Retomar":"⏸ Pausar";b.setAttribute("aria-pressed",String(sm17GamePaused))}if(info)info.textContent=sm17GamePaused?"⏸ Pausado. Toque em Retomar para voltar.":"Defenda as árvores. Você pode pausar a qualquer momento.";const cover=document.getElementById("sm17PauseCover");if(cover)cover.hidden=!sm17GamePaused}
 let snd=LS.get("sg_snd")==="1";$("gSnd").checked=snd;$("gSnd").onchange=e=>{snd=e.target.checked;LS.set("sg_snd",snd?"1":"0")};
 function sfx(f,d){if(!snd)return;try{const A=sfx.A||(sfx.A=new(window.AudioContext||window.webkitAudioContext)()),o=A.createOscillator(),g=A.createGain();o.type="square";o.frequency.value=f;g.gain.value=.05;g.gain.exponentialRampToValueAtTime(.001,A.currentTime+d);o.connect(g);g.connect(A.destination);o.start();o.stop(A.currentTime+d)}catch(e){}}
@@ -3153,13 +3187,13 @@ const orchardCatalog=[
  {id:"firefly",name:"✨ Vaga-lume",cost:60,emoji:"✨",desc:"Luz da colheita: atrai mangas e regenera munição a cada 6 segundos."}
 ];
 const orchardKey=()=>"sg_extras_v1_"+(String(typeof me!=="undefined"&&me||"visitante").toLowerCase());
-function orchardRead(){try{const a=JSON.parse(localStorage.getItem(orchardKey())||"null");if(a&&typeof a==="object")return a}catch(e){}return {seeds:0,owned:[],pet:"",best:0,day:"",claimed:[],stats:{games:0,kills:0,waves:0}}}
+function orchardRead(){try{const a=JSON.parse(localStorage.getItem(orchardKey())||"null");if(a&&typeof a==="object")return a}catch(e){}return {seeds:0,owned:[],pet:"",best:0,day:"",claimed:[],stats:{games:0,kills:0,waves:0,dashes:0,novas:0,combo:0}}}
 function orchardSave(v){localStorage.setItem(orchardKey(),JSON.stringify(v))}
 const orchardDay=()=>new Date().toLocaleDateString("en-CA",{timeZone:"America/Sao_Paulo"});
-function orchardDaily(v){const today=orchardDay();if(v.day!==today){v.day=today;v.claimed=[];v.stats={games:0,kills:0,waves:0}}v.stats=v.stats||{games:0,kills:0,waves:0};v.owned=v.owned||[];v.claimed=v.claimed||[];return v}
+function orchardDaily(v){const today=orchardDay();if(v.day!==today){v.day=today;v.claimed=[];v.stats={games:0,kills:0,waves:0,dashes:0,novas:0,combo:0}}v.stats={games:0,kills:0,waves:0,dashes:0,novas:0,combo:0,...(v.stats||{})};v.owned=v.owned||[];v.claimed=v.claimed||[];return v}
 let orchardTab="shop";
-const orchardTasks=[{id:"games",name:"Jogue 2 partidas",goal:2,reward:45},{id:"kills",name:"Elimine 30 pragas",goal:30,reward:60},{id:"waves",name:"Sobreviva a 12 ondas no total",goal:12,reward:70}];
-const pixelAsset=n=>"sprites/"+n+".png";
+const orchardTasks=[{id:"games",name:"🌱 Iniciação — jogue 2 partidas",goal:2,reward:45},{id:"kills",name:"⚔️ Guardião — elimine 30 pragas",goal:30,reward:60},{id:"waves",name:"🌳 Vigília — sobreviva a 12 ondas",goal:12,reward:70},{id:"dashes",name:"💨 Vento Vivo — use 5 impulsos",goal:5,reward:35},{id:"novas",name:"💥 Eclipse — conjure 3 explosões",goal:3,reward:50},{id:"combo",name:"✨ Lenda — alcance combo x4",goal:15,reward:80}];
+const pixelAsset=n=>"sprites/"+n+(n==="esporo_v20"?".svg":".png");
 const pixelImages={};
 function pixelImage(n){if(!pixelImages[n]){const im=new Image();im.src=pixelAsset(n);pixelImages[n]=im}return pixelImages[n]}
 function pixelDraw(g,n,x,y,w,h){
@@ -3177,12 +3211,12 @@ function orchardRender(){
  document.querySelectorAll("#orchardExtras [data-extras-tab]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.extrasTab===orchardTab)));
  const hero=(img,title)=>`<div class="orchard-hero" style="background-image:url('${pixelAsset(img)}')"><strong>${title}</strong></div>`;
  if(orchardTab==="daily"){
-  el.innerHTML=hero("missoes_diarias_conceito","📜 Contratos do Pomar")+orchardTasks.map((t,i)=>{const done=Math.min(t.goal,v.stats[t.id]||0),claimed=v.claimed.includes(t.id);return `<div class="orchard-mission"><img alt="" src="${pixelAsset(["besouro","arvore_saudavel","trofeu"][i])}"><div class="mission-info"><b>${t.name}</b><div class="sm">${done}/${t.goal} · 🌱 +${t.reward} sementes</div><div class="orchard-progress"><span style="width:${100*done/t.goal}%"></span></div></div><button type="button" class="btn-gothic alt" data-daily="${t.id}" ${claimed||done<t.goal?"disabled":""}>${claimed?"Resgatada":"Resgatar"}</button></div>`}).join("");
+  el.innerHTML=hero("missoes_diarias_conceito","📜 Contratos do Pomar")+orchardTasks.map((t,i)=>{const done=Math.min(t.goal,v.stats[t.id]||0),claimed=v.claimed.includes(t.id);return `<div class="orchard-mission"><img alt="" src="${pixelAsset(["besouro","arvore_saudavel","trofeu","sam_andando_1","rei_das_pragas_completo","manga"][i])}"><div class="mission-info"><b>${t.name}</b><div class="sm">${done}/${t.goal} · 🌱 +${t.reward} sementes</div><div class="orchard-progress"><span style="width:${100*done/t.goal}%"></span></div></div><button type="button" class="btn-gothic alt" data-daily="${t.id}" ${claimed||done<t.goal?"disabled":""}>${claimed?"Resgatada":"Resgatar"}</button></div>`}).join("");
  }else{
   el.innerHTML=hero("loja_pomar_conceito",orchardTab==="pets"?"🐾 Seus companheiros":"🛒 Mercado Assombrado")+`<div class="orchard-grid">`+orchardCatalog.filter(t=>orchardTab!=="pets"||v.owned.includes(t.id)).map(t=>`<div class="orchard-card ${v.pet===t.id?"selected":""}"><div class="pet-stage" aria-label="Animação de ${t.name}"><canvas width="210" height="168" data-pet-stage="${t.id}" role="img" aria-label="${t.name}"></canvas></div><b>${t.name}</b><span class="sm">${t.desc}</span><span class="sm orchard-power">${petPowers[t.id]}</span><span class="sm">${v.owned.includes(t.id)?"✓ Desbloqueado":"🌱 "+t.cost+" sementes"}</span><button type="button" class="btn-gothic alt" data-pet="${t.id}">${v.pet===t.id?"Desequipar":v.owned.includes(t.id)?"Equipar":"Comprar"}</button></div>`).join("")+`</div>`+(orchardTab==="pets"&&!v.owned.length?`<p class="sm">Nenhum mascote desbloqueado ainda. Visite a Loja do Pomar!</p>`:"");
  }
 }
-function orchardAfterBattle(s,won){if(!me||!prof)return;const v=orchardDaily(orchardRead());v.stats.games++;v.stats.kills+=s.kills||0;v.stats.waves+=s.wave||0;v.seeds+=Math.min(150,Math.floor(s.score/150))+(won?20:0)+(s.bossDefeated?100:0);if(s.mode==="infinite")v.best=Math.max(v.best||0,s.wave);orchardSave(v);orchardRender();toast("🌱 Sementes recebidas! Veja a Loja do Pomar.",3500)}
+function orchardAfterBattle(s,won){if(!me||!prof)return;const v=orchardDaily(orchardRead());v.stats.games++;v.stats.kills+=s.kills||0;v.stats.waves+=s.wave||0;v.stats.dashes+=(s.dashes||0);v.stats.novas+=(s.novas||0);v.stats.combo=Math.max(v.stats.combo||0,s.bestCombo||0);v.seeds+=Math.min(150,Math.floor(s.score/150))+(won?20:0)+(s.bossDefeated?100:0);if(s.mode==="infinite")v.best=Math.max(v.best||0,s.wave);orchardSave(v);orchardRender();toast("🌱 Sementes recebidas! Veja a Loja do Pomar.",3500)}
 $("orchardExtras").addEventListener("click",e=>{const tab=e.target.closest("[data-extras-tab]");if(tab){orchardTab=tab.dataset.extrasTab;orchardRender();return}const pet=e.target.closest("[data-pet]");const daily=e.target.closest("[data-daily]");if(!pet&&!daily)return;if(!me||!prof){showGate();return}const v=orchardDaily(orchardRead());if(pet){const item=orchardCatalog.find(x=>x.id===pet.dataset.pet);if(!item)return;if(v.pet===item.id)v.pet="";else if(v.owned.includes(item.id))v.pet=item.id;else if(v.seeds>=item.cost){v.seeds-=item.cost;v.owned.push(item.id);v.pet=item.id}else{toast("Sementes insuficientes.");return}}else{const t=orchardTasks.find(x=>x.id===daily.dataset.daily);if(!t||v.claimed.includes(t.id)||(v.stats[t.id]||0)<t.goal)return;v.claimed.push(t.id);v.seeds+=t.reward;toast("Missão diária concluída! +"+t.reward+" sementes")};orchardSave(v);orchardRender()});
 $("gDifficulty").addEventListener("click",()=>orchardRender());
 orchardRender();
@@ -3192,10 +3226,10 @@ function stopGame(){cancelAnimationFrame(gRaf);const was=gs;gs=null;gRun=null;sm
 async function startGame(){
   if(!me||!prof){showGate();return}
   gRun=null;gPl=null;let note="";
-  try{if(!gInfinite())gRun=await rpc("game_start",{p_handle:me,p_token:tok})}catch(e){note=e.message==="rate"?"Limite de partidas de hoje atingido. Esta é uma partida de treino.":"Servidor do jogo indisponível. Esta é uma partida de treino e não vale ranking."}
+  try{if(gDifficulty==="normal")gRun=await rpc("game_start",{p_handle:me,p_token:tok});else note="Modo "+(gDifficulty==="hard"?"Difícil":"Infinito")+" com recorde local; ranking oficial é do modo Normal."}catch(e){note=e.message==="rate"?"Limite de partidas de hoje atingido. Esta é uma partida de treino.":"Servidor do jogo indisponível. Esta é uma partida de treino e não vale ranking."}
   if($("gameDlg").hidden)return;
   orchardFX.length=0;
-  gs={mode:gDifficulty,kills:0,boss:null,bossDefeated:false,x:GW/2,ammo:gHard()?24:12,stun:0,hp:gHard()?5:3,trees:Array(gHard()?5:3).fill(true),treeHits:Array(gHard()?5:3).fill(0),hard:gHard(),score:0,wave:1,wt:0,t:0,sp:0,ft:0,reg:0,petId:orchardRead().pet,petCooldown:2,petFlash:0,playerMaxHp:gHard()?8:6,playerHp:gHard()?8:6,invuln:0,bossShots:[],sh:[],pe:[],it:[]};
+  gs={dashCd:0,novaCd:0,dashes:0,novas:0,dashFx:0,novaFx:0,combo:0,bestCombo:0,comboTimer:0,lastDir:1,mode:gDifficulty,kills:0,boss:null,bossDefeated:false,x:GW/2,ammo:gHard()?24:12,stun:0,hp:gHard()?5:3,trees:Array(gHard()?5:3).fill(true),treeHits:Array(gHard()?5:3).fill(0),hard:gHard(),score:0,wave:1,wt:0,t:0,sp:0,ft:0,reg:0,petId:orchardRead().pet,petCooldown:2,petFlash:0,playerMaxHp:gHard()?8:6,playerHp:gHard()?8:6,invuln:0,bossShots:[],sh:[],pe:[],it:[]};
   $("gOv").hidden=true;sm17GamePause(false);if(note)toast(note,5000);
   gLast=performance.now();cancelAnimationFrame(gRaf);gRaf=requestAnimationFrame(loop);
 }
@@ -3207,7 +3241,7 @@ function loop(t){
   drawG();gRaf=requestAnimationFrame(loop);
 }
 function stepG(dt){
-  const s=gs;orchardUpdateFX(dt);s.t+=dt;s.wt+=dt;s.ft-=dt;s.stun-=dt;s.reg+=dt;s.petCooldown-=dt;s.petFlash=Math.max(0,(s.petFlash||0)-dt);if(s.petEffect)s.petEffect.ttl=Math.max(0,s.petEffect.ttl-dt);s.invuln=Math.max(0,(s.invuln||0)-dt);
+  const s=gs;orchardUpdateFX(dt);s.dashCd=Math.max(0,s.dashCd-dt);s.novaCd=Math.max(0,s.novaCd-dt);s.dashFx=Math.max(0,s.dashFx-dt);s.novaFx=Math.max(0,s.novaFx-dt);s.comboTimer=Math.max(0,s.comboTimer-dt);if(!s.comboTimer)s.combo=0;s.bestCombo=Math.max(s.bestCombo||0,s.combo||0);const dashButton=$("sm20Dash"),novaButton=$("sm20Nova");if(dashButton){dashButton.disabled=s.dashCd>0;$("sm20DashCd").textContent=s.dashCd>0?s.dashCd.toFixed(1)+"s":"Pronto"}if(novaButton){novaButton.disabled=s.novaCd>0||s.ammo<3;$("sm20NovaCd").textContent=s.novaCd>0?s.novaCd.toFixed(1)+"s":s.ammo<3?"3 mangas":"Pronto"}$("sm20Combo").textContent="Combo x"+(1+Math.min(3,Math.floor((s.combo||0)/5)));s.t+=dt;s.wt+=dt;s.ft-=dt;s.stun-=dt;s.reg+=dt;s.petCooldown-=dt;s.petFlash=Math.max(0,(s.petFlash||0)-dt);if(s.petEffect)s.petEffect.ttl=Math.max(0,s.petEffect.ttl-dt);s.invuln=Math.max(0,(s.invuln||0)-dt);
   if(s.wt>= (s.hard?18:15)){
     if(s.mode==="hard"&&s.wave===10&&!s.bossDefeated){s.wt=19.5;}
     else {s.score+=s.hard?100:50;sfx(880,.25);if(s.mode!=="infinite"&&s.wave>=(s.hard?10:5)){endG(true);return false}s.wave++;s.wt=0}
@@ -3215,14 +3249,14 @@ function stepG(dt){
   if(s.mode==="hard"&&s.wave===10&&!s.boss&&!s.bossDefeated){s.boss={x:GW/2,y:210,hp:12,max:12,attack:7,hit:0};toast("👑 O Rei das Pragas chegou! Acerte-o 12 vezes!",4500)}
   if(s.boss){s.boss.x=GW/2+Math.sin(s.t*.9)*GW*.22;s.boss.attack-=dt;s.boss.hit=Math.max(0,(s.boss.hit||0)-dt);if(s.boss.attack<=0){s.boss.attack=4.5;const dx=s.x-s.boss.x,dy=GH-90-s.boss.y,len=Math.hypot(dx,dy)||1;for(const offset of [-.20,0,.20]){const a=Math.atan2(dy,dx)+offset;s.bossShots.push({x:s.boss.x,y:s.boss.y+35,vx:Math.cos(a)*195,vy:Math.sin(a)*195,r:11})}orchardBurst(s.boss.x,s.boss.y+40,"#d58aff",1.1,"ATAQUE!");sfx(180,.14)}}
   if(s.reg>=.72){s.reg=0;s.ammo=Math.min(s.hard?26:12,s.ammo+1)}
-  const sp=s.stun>0?110:(s.hard?270:220),dir=(K.r?1:0)-(K.l?1:0);s.x=Math.max(38,Math.min(GW-38,s.x+dir*sp*dt));
+  const sp=s.stun>0?110:(s.hard?270:220),dir=(K.r?1:0)-(K.l?1:0);if(dir)s.lastDir=dir;s.x=Math.max(38,Math.min(GW-38,s.x+dir*sp*dt));
   if(K.f&&s.ft<=0&&s.ammo>0&&s.stun<=0){s.ft=s.hard?.13:.22;s.ammo--;s.sh.push({x:s.x,y:GH-100,vy:-500,trail:0});orchardBurst(s.x,GH-104,"#ffcf55",.27);sfx(660,.06)}
   s.sp-=dt;
   if(s.sp<=0){
     s.sp=s.hard?Math.max(.42,.98-s.wave*.047)/.7:Math.max(.6,1.5-s.wave*.15);const x=38+Math.random()*(GW-76),r=Math.random();
     if(r<.182)s.it.push({x,y:-10,vy:65,k:"m"});
     else if(r<.182+.045+s.wave*.009)s.it.push({x,y:-10,vy:90,k:"r"});
-    else{const beetle=s.hard?(Math.random()<Math.min(.64,.25+s.wave*.038)):(s.wave>=3&&Math.random()<.3);const hp=beetle?2:1;s.pe.push({x,y:-10,vy:(s.hard?49+s.wave*9:34+s.wave*9),hp,kind:beetle?"beetle":"larva"})}
+    else{const beetle=s.hard?(Math.random()<Math.min(.64,.25+s.wave*.038)):(s.wave>=3&&Math.random()<.3);const spore=!beetle&&s.wave>=2&&Math.random()<.18;const hp=beetle?2:1;s.pe.push({x,y:-10,originX:x,phase:Math.random()*6.28,vy:(s.hard?49+s.wave*9:34+s.wave*9)*(spore?.85:1),hp,kind:beetle?"beetle":spore?"spore":"larva"})}
   }
   // Mascotes com poderes reais; todos funcionam apenas quando equipados.
   if(s.petId&&s.petCooldown<=0){
@@ -3231,12 +3265,12 @@ function stepG(dt){
    if(id==="pumpkin"){if(s.petEffect){s.petEffect.tx=GW*(.5)/s.trees.length;s.petEffect.ty=GH-104;}s.shield=(s.shield||0)+1;orchardBurst(s.x+42,GH-120,"#ffc26a",.7,"ESCUDO")}
    if(id==="bat"||id==="ghost"){
     const target=s.pe.filter(p=>!p.dead).sort((a,b)=>b.y-a.y)[0];if(target&&s.petEffect){s.petEffect.tx=target.x;s.petEffect.ty=target.y;}else if(s.boss&&s.petEffect){s.petEffect.tx=s.boss.x;s.petEffect.ty=s.boss.y;}
-    if(target){const damage=id==="ghost"?2:1;target.hp-=damage;target.hit=.32;orchardBurst(target.x,target.y,id==="ghost"?"#d7b0ff":"#ffd67e",1.1,"-"+damage);if(target.hp<=0){target.dead=1;s.kills++;s.score+=s.hard?20:10}}
+    if(target){const damage=id==="ghost"?2:1;target.hp-=damage;target.hit=.32;orchardBurst(target.x,target.y,id==="ghost"?"#d7b0ff":"#ffd67e",1.1,"-"+damage);if(target.hp<=0){target.dead=1;s.kills++;s.combo=(s.combo||0)+1;s.comboTimer=5;s.score+=s.hard?20:10}}
     else if(s.boss){s.boss.hp-=1;s.boss.hit=.3;orchardBurst(s.boss.x,s.boss.y,"#d9b0ff",1,"-1");if(s.boss.hp<=0){s.boss=null;s.bossDefeated=true;s.score+=1500;toast("👑 Rei das Pragas derrotado!",3500)}}
     }
    }
   s.sh.forEach(b=>{b.y+=b.vy*dt;b.trail=(b.trail||0)+dt;if(b.trail>.055){b.trail=0;orchardFX.push({x:b.x+(Math.random()-.5)*8,y:b.y+9,vx:(Math.random()-.5)*18,vy:30,life:.18,max:.18,c:"#ffc45e",size:3})}});s.sh=s.sh.filter(b=>b.y>-10);
-  s.pe.forEach(p=>{p.y+=p.vy*dt;p.hit=Math.max(0,(p.hit||0)-dt)});s.it.forEach(i=>i.y+=i.vy*dt);
+  s.pe.forEach(p=>{p.y+=p.vy*dt;if(p.kind==="spore")p.x=Math.max(30,Math.min(GW-30,(p.originX||p.x)+Math.sin(s.t*2.7+p.phase)*27));p.hit=Math.max(0,(p.hit||0)-dt)});s.it.forEach(i=>i.y+=i.vy*dt);
   s.bossShots.forEach(b=>{b.x+=b.vx*dt;b.y+=b.vy*dt});
   s.bossShots=s.bossShots.filter(b=>{if(Math.hypot(b.x-s.x,b.y-(GH-90))<b.r+19){orchardHurtPlayer(s,2,b.x,b.y,"REI DAS PRAGAS");return false}return b.y<GH+25&&b.x>-25&&b.x<GW+25});
   s.pe.forEach(p=>{if(!p.dead&&Math.hypot(p.x-s.x,p.y-(GH-90))<(p.kind==="beetle"?39:34)){orchardHurtPlayer(s,p.kind==="beetle"?2:1,p.x,p.y,p.kind==="beetle"?"BESOURO":"LARVA");p.dead=true}});
@@ -3270,6 +3304,8 @@ function drawG(){
   const g=gx,s=gs||{x:GW/2,ammo:10,hp:gHard()?5:3,trees:Array(gHard()?5:3).fill(true),treeHits:Array(gHard()?5:3).fill(0),hard:gHard(),score:0,wave:1,sh:[],pe:[],it:[],stun:0,ft:0,playerMaxHp:gHard()?8:6,playerHp:gHard()?8:6,bossShots:[],invuln:0,t:0};
   const t=s.t||0;
   v11Backdrop(g,t,GW,GH);
+  // Camadas de atmosferas: nuvens suaves, pétalas e vaga-lumes em paralaxe.
+  g.save();const lowFX=document.documentElement.classList.contains("sm165-lowfx")||matchMedia("(prefers-reduced-motion: reduce)").matches;for(let i=0;i<(lowFX?6:24);i++){const x=((i*97.7+t*(9+i%3*6))%(GW+45))-20,y=90+(i*79)%(GH-150);g.globalAlpha=.12+.14*Math.sin(t*1.1+i)*Math.sin(t*1.1+i);g.fillStyle=i%3===0?"#f8b8ce":i%3===1?"#deec9f":"#85dcd9";g.fillRect(x,y,2+(i%3),2+(i%3))}g.restore();
   g.textAlign='center';g.textBaseline='middle';g.imageSmoothingEnabled=false;
   // Bottom-anchored trees: roots never run below the canvas, unlike V10.
   Array.from({length:s.trees.length},(_,i)=>GW*(i+.5)/s.trees.length).forEach((x,i)=>{
@@ -3300,7 +3336,7 @@ function drawG(){
     const bob=Math.sin(t*8+p.x*.07)*2;
     g.save();g.fillStyle='#06150c88';g.beginPath();g.ellipse(p.x,p.y+sz*.40,sz*.35,4,0,0,Math.PI*2);g.fill();
     if(p.hit>0){g.shadowColor='#fff5bb';g.shadowBlur=12;g.globalAlpha=.76+Math.sin(t*64)*.2}
-    v11Draw(g,beetle?'besouro':'larva_pequena',p.x,p.y+bob,sz,sz);
+    if(!v11Draw(g,beetle?'besouro':p.kind==='spore'?'esporo_v20':'larva_pequena',p.x,p.y+bob,sz,sz)){const fallback=spr(beetle?'beetle':'pest');g.drawImage(fallback,p.x-20,p.y+bob-20,40,40)}
     g.restore();
   });
   (s.bossShots||[]).forEach(b=>{g.save();g.shadowColor='#bb70ff';g.shadowBlur=14;g.fillStyle='#a14cfc';g.beginPath();g.arc(b.x,b.y,b.r,0,Math.PI*2);g.fill();g.fillStyle='#fff2fb';g.fillRect(b.x-3,b.y-3,6,6);g.restore()});
@@ -3321,6 +3357,8 @@ function drawG(){
     v11Frame(g,arr,t+id.length*.13,4.2,petx,pety,id==='bat'?80:70,id==='bat'?70:71,{rotate:Math.sin(t*3)*.045,scale:s.petFlash>.06?1.12:1});
   }
   v11Magic(g,s);
+  if(s.novaFx>0){g.save();g.strokeStyle="#bda5ff";g.shadowColor="#9bdfff";g.shadowBlur=24;g.lineWidth=4;g.globalAlpha=Math.min(1,s.novaFx/.35);g.beginPath();g.arc(s.x,GH-135,154*(1-s.novaFx/.65),0,Math.PI*2);g.stroke();g.restore()}
+  if(s.dashFx>0){g.save();g.strokeStyle="#72e6e6";g.globalAlpha=Math.min(1,s.dashFx/.35);for(let i=0;i<4;i++){g.beginPath();g.moveTo(s.x-(s.lastDir||1)*(15+i*12),GH-108+i*7);g.lineTo(s.x-(s.lastDir||1)*(36+i*12),GH-108+i*7);g.stroke()}g.restore()}
   orchardDrawFX(g);
   // HUD: warm, crisp panels; keep the text within the canvas in both modes.
   g.save();g.fillStyle='#08131bd8';g.fillRect(5,3,GW-10,s.hard?92:72);
@@ -3459,7 +3497,7 @@ function v11ShopPreviews(t){
 requestAnimationFrame(v11ShopPreviews);
 function v11Preload(){
   ['rei_das_pragas_completo','arvore_saudavel','arvore_danificada','arvore_destruida',
-   'sam_idle','sam_andando_1','sam_atacando','manga','semente','besouro','larva_pequena',
+   'sam_idle','sam_andando_1','sam_atacando','manga','semente','besouro','larva_pequena','esporo_v20',
    ...Object.values(petFrames).flat()].forEach(n=>pixelImage(n));
 }
 v11Preload();
@@ -3491,6 +3529,7 @@ async function loadGRank(){
 }
 $("gPlay").onclick=startGame;$("gBack").onclick=()=>showPane("home");
 const KM={ArrowLeft:"l",a:"l",A:"l",ArrowRight:"r",d:"r",D:"r"," ":"f"};
+addEventListener("keydown",e=>{if(!gs||sm17GamePaused||e.repeat||e.target.closest?.("input,textarea,select,[contenteditable]"))return;if(e.key==="q"||e.key==="Q"){e.preventDefault();sm20Dash()}if(e.key==="e"||e.key==="E"){e.preventDefault();sm20Nova()}});
 addEventListener("keydown",e=>{if(!gs||!KM[e.key])return;e.preventDefault();K[KM[e.key]]=1});
 addEventListener("keyup",e=>{if(KM[e.key])K[KM[e.key]]=0});
 [["gL","l"],["gR","r"],["gF","f"]].forEach(([id,k])=>{const b=$(id);
@@ -3603,6 +3642,28 @@ $("hero").addEventListener("click",async e=>{
 
   // Catálogo Completo Unificado de Equipamentos e Itens
   const rpgItems = [
+    // V20 · Coleção Pomar Vivo: recompensas com visuais renderizados.
+    { kind: "gear", id: "astral-beret", name: "Boina do Astrônomo", slot: "head", rarity: "Comum", icon: "star", from: "Presente V20", starter: true, desc: "Boina de veludo azul com estrela bordada." },
+    { kind: "gear", id: "guardian-helm", name: "Elmo do Guardião", slot: "head", rarity: "Raro", icon: "armor", from: "Conclua o portão", quest: "gate", desc: "Elmo de bronze com pluma verde do pomar." },
+    { kind: "gear", id: "eclipse-horns", name: "Chifres do Eclipse", slot: "head", rarity: "Lendário", icon: "crown", from: "Capítulo V do RPG", epicChapter: 5, desc: "Chifres lunares esculpidos no cristal noturno." },
+    { kind: "gear", id: "sunflower-band", name: "Tiara de Girassol", slot: "head", rarity: "Comum", icon: "leaves", from: "Presente V20", starter: true, desc: "Pequenos girassóis acompanhando a fruta." },
+    { kind: "gear", id: "forest-goggles", name: "Óculos de Botânico", slot: "face", rarity: "Comum", icon: "eye", from: "Presente V20", starter: true, desc: "Lentes verdes para exploradores do bosque." },
+    { kind: "gear", id: "raven-mask", name: "Máscara de Corvo", slot: "face", rarity: "Épico", icon: "mask", from: "Encontre o Santuário", quest: "sanctuary", desc: "Máscara enigmática usada pelos vigias antigos." },
+    { kind: "gear", id: "heart-glasses", name: "Óculos Corações", slot: "face", rarity: "Comum", icon: "eye", from: "Presente V20", starter: true, desc: "Óculos cor-de-rosa que trazem alegria à praça." },
+    { kind: "gear", id: "petal-cloak", name: "Manto de Pétalas", slot: "cape", rarity: "Comum", icon: "cloak", from: "Presente V20", starter: true, desc: "Pétalas giram como vento de primavera." },
+    { kind: "gear", id: "galaxy-cloak", name: "Manto Galáctico", slot: "cape", rarity: "Épico", icon: "star", from: "Capítulo IV do RPG", epicChapter: 4, desc: "Tecido azulado com estrelas bordadas." },
+    { kind: "gear", id: "ember-mantle", name: "Capa Brasa", slot: "cape", rarity: "Raro", icon: "cloak", from: "Decifre a árvore", quest: "tree", desc: "Manto rubro feito de folhas incandescentes." },
+    { kind: "gear", id: "lunar-vest", name: "Colete da Lua", slot: "body", rarity: "Comum", icon: "armor", from: "Presente V20", starter: true, desc: "Peitoral de cetim lunar bordado." },
+    { kind: "gear", id: "knight-bark", name: "Couraça do Cavaleiro", slot: "body", rarity: "Épico", icon: "armor", from: "Conclua a árvore", quest: "tree", desc: "Armadura com nervuras de carvalho ancestral." },
+    { kind: "gear", id: "jade-wand", name: "Cajado de Jade", slot: "hand", rarity: "Comum", icon: "star", from: "Presente V20", starter: true, desc: "Bastão verde usado por iniciantes da expedição." },
+    { kind: "gear", id: "mango-banner", name: "Estandarte do Pomar", slot: "hand", rarity: "Raro", icon: "leaves", from: "Encontre a trilha", quest: "trail", desc: "Estandarte de seda com uma manga dourada." },
+    { kind: "gear", id: "crystal-lamp", name: "Luminária de Cristal", slot: "hand", rarity: "Raro", icon: "lantern", from: "Resolva a estufa", quest: "greenhouse", desc: "Cristal violeta que ilumina a escuridão." },
+    { kind: "gear", id: "rainbow-aura", name: "Aura Arco-íris", slot: "aura", rarity: "Comum", icon: "star", from: "Presente V20", starter: true, desc: "Um halo colorido com brilho suave." },
+    { kind: "gear", id: "moonfire-aura", name: "Chama Lunar", slot: "aura", rarity: "Lendário", icon: "star", from: "Capítulo V do RPG", epicChapter: 5, desc: "Chamas azuladas que não queimam." },
+    { kind: "gear", id: "butterfly-buddy", name: "Borboleta de Névoa", slot: "companion", rarity: "Comum", icon: "firefly", from: "Presente V20", starter: true, desc: "Uma borboleta que dança ao redor do herói." },
+    { kind: "gear", id: "shadow-fox", name: "Raposa Sombria", slot: "companion", rarity: "Épico", icon: "moth", from: "Conclua o Santuário", quest: "sanctuary", desc: "Raposa espectral que observa o bosque." },
+    { kind: "title", id: "title-moon", name: "Mensageiro da Lua", slot: "title", rarity: "Comum", icon: "star", from: "Presente V20", starter: true, desc: "Um título para o começo da aventura." },
+    { kind: "title", id: "title-forest", name: "Protetor do Bosque", slot: "title", rarity: "Épico", icon: "leaves", from: "Conclua a árvore", quest: "tree", desc: "A floresta reconhece sua coragem." },
     // Cabeça / Chapéus
     { id: "none", name: "Sem Chapéu", desc: "A casca da manga limpa sob a luz lunar.", rarity: "Comum", kind: "gear", slot: "head", icon: "sprout", from: "Visual inicial", serverHat: "none" },
     { id: "sprout-pin", name: "Broto de Cobre", desc: "Um broche de cobre em formato de folha feito para mangas jovens.", rarity: "Comum", kind: "gear", slot: "head", icon: "leaves", from: "Presente de chegada", quest: "gate", serverHat: "folha" },
@@ -4008,12 +4069,14 @@ $("hero").addEventListener("click",async e=>{
     }
 
     // 3. Camada de Chapéu (SVG)
-    const hatId = typeof draft !== "undefined" && draft.h ? draft.h : (rpgState.equipped.head || "sprout-pin");
+    const chosenHat = rpgItems.find(x=>x.id===rpgState.equipped.head);
+    const hatId=chosenHat&&!chosenHat.serverHat?chosenHat.id:(typeof draft!=="undefined"&&draft.h?draft.h:(rpgState.equipped.head||"sprout-pin"));
     const hatShape = $("hatShape");
     if (hatShape) {
       if (hatId === "none") {
         hatShape.setAttribute("fill", "none");
         hatShape.setAttribute("d", "M0 0");
+      } else if(hatId==="astral-beret"||hatId==="guardian-helm"||hatId==="eclipse-horns"||hatId==="sunflower-band"){const shapes={ "astral-beret":["M21 28 Q22 13 45 13 Q76 8 78 29 L71 33 L25 33 Z","#3c5e92"],"guardian-helm":["M28 35 L29 21 L43 15 L58 15 L72 21 L72 35 Z M47 15 L50 5 L53 15 Z","#8aa49b"],"eclipse-horns":["M23 36 Q17 17 22 3 L38 29 L50 33 L64 29 L79 3 Q83 18 77 36 Z","#8573cb"],"sunflower-band":["M27 32 Q50 24 73 32 L73 36 Q50 27 27 36 Z M45 27 L50 18 L55 27 Z","#e8b44a"]};const shape=shapes[hatId];hatShape.setAttribute("d",shape[0]);hatShape.setAttribute("fill",shape[1]);hatShape.setAttribute("stroke","#362b35");
       } else if (hatId === "starlit-circlet" || hatId === "storm-crown") {hatShape.setAttribute('d','M25 32 L33 25 L42 29 L50 18 L58 29 L67 25 L75 32 Z M25 33 L75 33 L75 37 L25 37 Z');hatShape.setAttribute('fill',hatId==='storm-crown'?'#78e1f0':'#efc371');hatShape.setAttribute('stroke','#75517e');
       } else if(hatId==='forest-hood'||hatId==='mushroom-cap'){hatShape.setAttribute('d',hatId==='mushroom-cap'?'M16 32 Q50 2 84 32 L75 38 L25 38 Z':'M29 27 Q50 9 71 27 L71 43 L29 43 Z');hatShape.setAttribute('fill',hatId==='mushroom-cap'?'#795394':'#42634b');hatShape.setAttribute('stroke','#312442');
       } else if (hatId === "sprout-pin") {
@@ -4043,13 +4106,13 @@ $("hero").addEventListener("click",async e=>{
     // 4. Camada de Máscara
     const maskLayer = $("layerMask");
     if (maskLayer) {
-      maskLayer.setAttribute('opacity',rpgState.equipped.face?'1':'0');const mp=$('maskPath');if(mp){mp.setAttribute('fill',rpgState.equipped.face==='star-spectacles'?'#ab875c':rpgState.equipped.face==='prism-visor'?'#60abc5':'#6a4c28');mp.setAttribute('opacity',rpgState.equipped.face==='star-spectacles'?'0.72':'1')}
+      maskLayer.setAttribute('opacity',rpgState.equipped.face?'1':'0');const mp=$('maskPath');if(mp){mp.setAttribute('fill',rpgState.equipped.face==='star-spectacles'?'#ab875c':rpgState.equipped.face==='prism-visor'?'#60abc5':rpgState.equipped.face==='forest-goggles'?'#61905b':rpgState.equipped.face==='heart-glasses'?'#eb7898':rpgState.equipped.face==='raven-mask'?'#252d4b':'#6a4c28');mp.setAttribute('opacity',rpgState.equipped.face==='star-spectacles'?'0.72':'1')}
     }
 
     // 5. Camada de Armadura de Raízes
     const bodyLayer = $("layerBody");
     if (bodyLayer) {
-      bodyLayer.setAttribute('opacity',rpgState.equipped.body?'1':'0');const bodyPath=$('bodyArmorPath');if(bodyPath)bodyPath.setAttribute('fill',rpgState.equipped.body==='prism-armor'?'#536fa8':rpgState.equipped.body==='amber-coat'?'#b47d38':'#4a2f18');
+      bodyLayer.setAttribute('opacity',rpgState.equipped.body?'1':'0');const bodyPath=$('bodyArmorPath');if(bodyPath)bodyPath.setAttribute('fill',rpgState.equipped.body==='prism-armor'?'#536fa8':rpgState.equipped.body==='amber-coat'?'#b47d38':rpgState.equipped.body==='lunar-vest'?'#9baade':rpgState.equipped.body==='knight-bark'?'#567350':'#4a2f18');
     }
 
     // 6. Camada de Capa
@@ -4059,6 +4122,7 @@ $("hero").addEventListener("click",async e=>{
       if (capeId === "leaf-cape") {
         capeLayer.setAttribute("opacity", "1");
         capeLayer.setAttribute("fill", "#8c441c");
+      } else if(['petal-cloak','galaxy-cloak','ember-mantle'].includes(capeId)){capeLayer.setAttribute('opacity','.9');capeLayer.setAttribute('fill',{'petal-cloak':'#c47ca1','galaxy-cloak':'#2e467d','ember-mantle':'#ad4e36'}[capeId]);
       } else if(capeId==='night-cape'||capeId==='aurora-cape'){capeLayer.setAttribute('opacity','1');capeLayer.setAttribute('fill',capeId==='aurora-cape'?'#349c98':'#34285b');
       } else if (capeId === "secret-veil") {
         capeLayer.setAttribute("opacity", "0.85");
@@ -4077,17 +4141,17 @@ $("hero").addEventListener("click",async e=>{
       auraEl.className = "doll-aura";
       if (rpgState.equipped.aura === "leaf-aura") auraEl.classList.add("leaves");
       else if (rpgState.equipped.aura === "secret-veil"||rpgState.equipped.aura==='aurora-aura') auraEl.classList.add('veil');else if(rpgState.equipped.aura==='ember-aura')auraEl.classList.add('spectral');
-      else if (rpgState.equipped.cape === "dawn-cape") auraEl.classList.add("spectral");
+      else if(rpgState.equipped.aura==='rainbow-aura')auraEl.classList.add('veil');else if(rpgState.equipped.aura==='moonfire-aura')auraEl.classList.add('spectral');else if (rpgState.equipped.cape === "dawn-cape") auraEl.classList.add("spectral");
     }
 
     // 8. Companheiro Familiar
     const companionEl = $("dollCompanion");
     if (companionEl) {
-      companionEl.style.display = rpgState.equipped.companion ? 'block' : 'none';companionEl.style.color=rpgState.equipped.companion==='owl-familiar'?'#aaa4ff':'#ffdc83';
+      companionEl.style.display = rpgState.equipped.companion ? 'block' : 'none';companionEl.style.color=rpgState.equipped.companion==='owl-familiar'?'#aaa4ff':rpgState.equipped.companion==='shadow-fox'?'#ac94ff':rpgState.equipped.companion==='butterfly-buddy'?'#f5a5e7':'#ffdc83';
     }
 
     // 8b. O item segurado agora aparece de verdade no personagem.
-    const handLayer=$('layerHand');if(handLayer){handLayer.setAttribute('opacity',rpgState.equipped.hand?'1':'0');const hand=$('handItemG');if(hand){const id=rpgState.equipped.hand||'';hand.querySelector('rect')?.setAttribute('fill',id==='moon-staff'?'#85d6ed':id==='orchard-torch'?'#ffb953':'#e9c66e');}}
+    const handLayer=$('layerHand');if(handLayer){handLayer.setAttribute('opacity',rpgState.equipped.hand?'1':'0');const hand=$('handItemG');if(hand){const id=rpgState.equipped.hand||'';hand.querySelector('rect')?.setAttribute('fill',id==='moon-staff'?'#85d6ed':id==='orchard-torch'?'#ffb953':id==='jade-wand'?'#54b883':id==='mango-banner'?'#ffe381':id==='crystal-lamp'?'#9e88f2':'#e9c66e');}}
     // 9. Banner de Título
     const titleBanner = $("dollTitleBanner");
     if (titleBanner) {
@@ -4108,7 +4172,11 @@ $("hero").addEventListener("click",async e=>{
     if (!grid) return;
 
     // Filtra itens conforme aba ativa
+    const term=($("sm20WardrobeSearch")?.value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+    const onlyOwned=!!$("sm20WardrobeOwned")?.checked;
     const filtered = rpgItems.filter(item => {
+      if(onlyOwned&&!rpgCanOwn(item))return false;
+      if(term&&![item.name,item.desc,item.rarity,item.from].join(" ").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().includes(term))return false;
       if (wardrobeFilter === "all") return true;
       if (wardrobeFilter === "head") return item.slot === "head";
       if (wardrobeFilter === "face") return item.slot === "face";
@@ -4119,7 +4187,9 @@ $("hero").addEventListener("click",async e=>{
       return true;
     });
 
-    grid.innerHTML = filtered.filter(item => !item.ownerOnly || rpgOwner()).map(item => {
+    const visible=filtered.filter(item=>!item.ownerOnly||rpgOwner());
+    const stat=$("sm20WardrobeStat");if(stat)stat.textContent=visible.filter(rpgCanOwn).length+" desbloqueados de "+visible.length+" visíveis";
+    grid.innerHTML = visible.map(item => {
       const isOwned = rpgCanOwn(item);
       const isEquipped = item.slot ? rpgState.equipped[item.slot] === item.id : (item.kind === "title" && rpgState.equipped.title === item.id);
       const icon = item.icon || "star";
@@ -4156,7 +4226,7 @@ $("hero").addEventListener("click",async e=>{
           <div class="item-actions">${actionButtons}</div>
         </article>
       `;
-    }).join("");
+    }).join("")||'<p class="state">Nenhum item encontrado. Tente outro nome ou filtro.</p>';
 
     // Atualiza Seletores de Expressão
     document.querySelectorAll(".expression-btn").forEach(btn => {
@@ -4185,6 +4255,8 @@ $("hero").addEventListener("click",async e=>{
   // =========================================================================
   // LISTENERS E EVENTOS GLOBAIS DO RPG E GUARDA-ROUPA
   // =========================================================================
+  $("sm20WardrobeSearch")?.addEventListener("input",wardrobeRender);
+  $("sm20WardrobeOwned")?.addEventListener("change",wardrobeRender);
   document.addEventListener("click", e => {
     // 1. Clique nos Nós do Mapa
     const node = e.target.closest("[data-rpg-area]");
@@ -4485,10 +4557,12 @@ load();update();requestAnimationFrame(render);requestAnimationFrame(movement);
 <script src="mundo_pomar.js"></script>
 <script src="interface_v14.js"></script>
 <script>
-(()=>{'use strict';const version='19.0.0';const key='sm_last_seen_update_version';const layer=document.getElementById('smUpdateLayer');const panel=document.getElementById('smUpdatePanel');const openBtn=document.getElementById('smUpdatesReopen');const closeBtn=document.getElementById('smUpdatesClose');const laterBtn=document.getElementById('smUpdatesLater');if(!layer||!panel||!openBtn||!closeBtn||!laterBtn)return;let priorFocus=null;const read=()=>{try{return localStorage.getItem(key)}catch(e){return null}};const save=()=>{try{localStorage.setItem(key,version)}catch(e){}};function show(){priorFocus=document.activeElement;layer.classList.add('sm-show');document.body.style.overflow='hidden';closeBtn.focus({preventScroll:true})}function hide(){save();layer.classList.remove('sm-show');document.body.style.overflow='';if(priorFocus&&priorFocus.isConnected&&typeof priorFocus.focus==='function')priorFocus.focus({preventScroll:true})}closeBtn.addEventListener('click',hide);laterBtn.addEventListener('click',hide);openBtn.addEventListener('click',show);layer.addEventListener('click',e=>{if(e.target===layer)hide()});document.addEventListener('keydown',e=>{if(!layer.classList.contains('sm-show'))return;if(e.key==='Escape'){e.preventDefault();hide()}else if(e.key==='Tab'){const items=[closeBtn,laterBtn];if(e.shiftKey&&document.activeElement===items[0]){e.preventDefault();items[1].focus()}else if(!e.shiftKey&&document.activeElement===items[1]){e.preventDefault();items[0].focus()}}});openBtn.classList.add('sm-ready');if(read()!==version)requestAnimationFrame(()=>requestAnimationFrame(show));})();
+(()=>{'use strict';const version='20.0.0';const key='sm_last_seen_update_version';const layer=document.getElementById('smUpdateLayer');const panel=document.getElementById('smUpdatePanel');const openBtn=document.getElementById('smUpdatesReopen');const closeBtn=document.getElementById('smUpdatesClose');const laterBtn=document.getElementById('smUpdatesLater');if(!layer||!panel||!openBtn||!closeBtn||!laterBtn)return;let priorFocus=null;const read=()=>{try{return localStorage.getItem(key)}catch(e){return null}};const save=()=>{try{localStorage.setItem(key,version)}catch(e){}};function show(){priorFocus=document.activeElement;layer.classList.add('sm-show');document.body.style.overflow='hidden';closeBtn.focus({preventScroll:true})}function hide(){save();layer.classList.remove('sm-show');document.body.style.overflow='';if(priorFocus&&priorFocus.isConnected&&typeof priorFocus.focus==='function')priorFocus.focus({preventScroll:true})}closeBtn.addEventListener('click',hide);laterBtn.addEventListener('click',hide);openBtn.addEventListener('click',show);layer.addEventListener('click',e=>{if(e.target===layer)hide()});document.addEventListener('keydown',e=>{if(!layer.classList.contains('sm-show'))return;if(e.key==='Escape'){e.preventDefault();hide()}else if(e.key==='Tab'){const items=[closeBtn,laterBtn];if(e.shiftKey&&document.activeElement===items[0]){e.preventDefault();items[1].focus()}else if(!e.shiftKey&&document.activeElement===items[1]){e.preventDefault();items[0].focus()}}});openBtn.classList.add('sm-ready');if(read()!==version)requestAnimationFrame(()=>requestAnimationFrame(show));})();
 </script>
 <script src="revisao_v17.js" defer></script>
 <script src="polimento_v17_1.js" defer></script>
 <script src="expedicao_v18.js?v=19" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.50.0/dist/umd/supabase.js" defer></script>
+<script src="pomar_ao_vivo_v20.js?v=20" defer></script>
 </body>
 </html>
