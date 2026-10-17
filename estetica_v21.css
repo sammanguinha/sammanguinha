@@ -42,3 +42,9 @@
 .sm21-journey button:focus-visible{outline:3px solid #ffe6b7;outline-offset:2px}
 @media(max-width:570px){.sm21-journey-actions{grid-template-columns:1fr}.sm21-journey-actions button{padding:9px}.sm21-journey-top h3{font-size:1.1rem}.sm21-journey-progress{align-items:stretch}#sm21JourneyClaim{width:100%}}
 @media(prefers-reduced-motion:reduce){#sm21JourneyBar{transition:none}}
+
+/* Espólio e pontuação RPG: estatísticas calculadas a partir da partida jogada. */
+.sm21-battle-results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:2px auto 13px;width:100%;max-width:375px}
+.sm21-battle-results[hidden]{display:none!important}.sm21-battle-results span{display:grid;place-items:center;gap:3px;min-width:0;border:1px solid #7e769f;border-radius:9px;background:#1d2849;color:#fcebc7;padding:7px 5px;text-align:center}
+.sm21-battle-results small{font-size:.65rem;color:#e3d7d1}.sm21-battle-results strong{font-size:.9rem;color:#f8cf86;overflow-wrap:anywhere}
+@media(max-width:420px){.sm21-battle-results{gap:4px}.sm21-battle-results span{padding:4px 3px}.sm21-battle-results small{font-size:.58rem}.sm21-battle-results strong{font-size:.78rem}}
