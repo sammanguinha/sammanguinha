@@ -73,7 +73,7 @@ async function cloudRead(){
   // O estado recém-criado no servidor vem vazio. Não destruir a decoração offline.
   const existing=Array.isArray(result?.placed)&&result.placed.length>0;
   if(existing){state=sanitize(result);localSave();status('✓ Casa sincronizada com seu @');}
-  else {state=current;status('Sua casa foi iniciada · salvamento online ativo');markDirty()}
+  else {state=current;status('Sua casa foi iniciada · salvamento online ativo');markDirty(false)}
   remoteLoaded=true;renderInventory();updateLabels();render(performance.now());
  }catch(err){status('Modo offline · edição salva no navegador');message('A casa funciona sem conexão. Sincronização: '+err.message)}
 }
@@ -87,8 +87,8 @@ async function cloudSave(){
  }catch(e){status('Salva no navegador · falha ao sincronizar');message('Você pode continuar decorando. '+e.message)}
  finally{saving=false}
 }
-function markDirty(){
- dirty=true;localSave();status('Alterações salvas no navegador · sincronizando…');
+function markDirty(userAction=true){
+ dirty=true;localSave();if(userAction)window.dispatchEvent(new CustomEvent("sm21:house-updated",{detail:{handle:account}}));status('Alterações salvas no navegador · sincronizando…');
  clearTimeout(saveTimer);saveTimer=setTimeout(cloudSave,1100);
 }
 function identify(){
@@ -250,6 +250,7 @@ function startLoop(){if(raf)return;last=0;raf=requestAnimationFrame(tick)}
 function stopLoop(){cancelAnimationFrame(raf);raf=0}
 const observed=new MutationObserver(()=>{if(root.closest('[hidden]'))stopLoop();else{identify();startLoop()}});observed.observe($('houseDlg'),{attributes:true,attributeFilter:['hidden']});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!root.closest('[hidden]'))startLoop();else stopLoop()});
+window.addEventListener('sm21:seeds-updated',renderInventory);
 window.addEventListener('storage',e=>{if(e.key==='sg_handle'){identify()}else if(e.key?.startsWith('sg_extras_v1_'))renderInventory()});
 $('sm21HouseCanvas').setAttribute('tabindex','0');
 identify();if(!root.closest('[hidden]'))startLoop();
