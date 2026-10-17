@@ -29,7 +29,7 @@ test('ten furniture sprites have 4 real, distinct animation frames',()=>{
  }
 });
 test('house has per-account persistence, no arbitrary item insertion and daily limits',()=>{
- for(const n of ['sam21_casa_','sg_extras_v1_','new Set()','allowed.has(p.id)','seen.has(x+',"'restDay'","state.restDay===today()",'localStorage.setItem(key()','getTrainingBonus'])assert.ok(house.includes(n),n);
+ for(const n of ['sam21_casa_','sg_extras_v1_','new Set()','allowed.has(p.id)','seen.has(x+',"restDay","state.restDay===today()",'localStorage.setItem(key()','getTrainingBonus'])assert.ok(house.includes(n),n);
  assert.ok(house.includes("if(!putWallet(w))return"));
 });
 test('defense includes actual towers, energy, damage, slow and revival logic',()=>{
