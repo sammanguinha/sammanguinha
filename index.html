@@ -1374,7 +1374,7 @@ dialog[open]{max-height:92vh;overflow:auto}
 </style>
 </head>
 <body>
-<div id="smUpdateLayer" role="presentation"><section id="smUpdatePanel" role="dialog" aria-modal="true" aria-labelledby="smUpdateTitle" tabindex="-1"><span class="sm-tag">🥭 NOTAS DE ATUALIZAÇÃO · V17</span><h2 id="smUpdateTitle">Novidades do Pomar!</h2><p>Bem-vindo de volta! Veja o que mudou na última versão do Sam Manguinha.</p><ul>
+<div id="smUpdateLayer" role="presentation"><section id="smUpdatePanel" role="dialog" aria-modal="true" aria-labelledby="smUpdateTitle" tabindex="-1"><span class="sm-tag">🥭 NOTAS DE ATUALIZAÇÃO · V17.1</span><h2 id="smUpdateTitle">Novidades do Pomar!</h2><p>Bem-vindo de volta! Veja o que mudou na última versão do Sam Manguinha.</p><ul>
 <li><strong>⚔️ Combates mais vivos</strong> — ataques, magia, dano, cura e defesa com animações.</li>
 <li><strong>🕷️ Nova Rainha das Aranhas</strong> — inimigo redesenhado e visual mais detalhado.</li>
 <li><strong>📱 Interface compacta</strong> — menus organizados para celular e computador.</li>
@@ -2749,15 +2749,15 @@ $("gForm").onsubmit=async e=>{
     $("gIn").focus();return;
   }
   const key=$("gKey").value.trim();if(key.length>=16)setTok(key);
-  me=h;LS.set("sg_handle",me);renderMe();$("gOk").disabled=true;$("gErr").textContent="";
+  const previousHandle=me;me=h;renderMe();$("gOk").disabled=true;$("gErr").textContent="";
   try{await claim()}
   catch(err){
     $("gOk").disabled=false;
-    if(err.message==="handle_taken"){me="";LS.set("sg_handle","");renderMe();$("gKeyWrap").hidden=false;$("gErr").textContent="Esse @ já tem dono. Cole a chave dele ou use outro @."}
-    else $("gErr").textContent="Não consegui entrar agora. Tente de novo.";
+    if(err.message==="handle_taken"){me=previousHandle;renderMe();$("gKeyWrap").hidden=false;$("gErr").textContent="Esse @ já tem dono. Cole a chave dele ou use outro @."}
+    else {me=previousHandle;renderMe();$("gErr").textContent="Não consegui entrar agora. Tente de novo.";}
     return;
   }
-  $("gOk").disabled=false;gateOn=false;$("gate").hidden=true;syncInert();
+  LS.set("sg_handle",me);$("gOk").disabled=false;gateOn=false;$("gate").hidden=true;syncInert();
   toast("Bem-vindo(a), @"+me+"! Colha as mangas do topo.",4500);
   say("Oi, @"+me+"! Eu sou o Manguito. Me clique para ouvir curiosidades.",7000);
   rpc("register_visit",{p_handle:me}).catch(()=>{});
@@ -4489,14 +4489,15 @@ load();update();requestAnimationFrame(render);requestAnimationFrame(movement);
 /* Início móvel acessível, sem interferir na lógica original da partida. */
 (()=>{const btn=document.getElementById('gMobileStart'),overlay=document.getElementById('gOv'),play=document.getElementById('gPlay');if(!btn||!overlay||!play)return;const sync=()=>{btn.hidden=overlay.hidden;btn.textContent=play.textContent.includes('novo')?'▶ Jogar novamente':'▶ Iniciar Defesa do Pomar'};btn.addEventListener('click',()=>play.click());new MutationObserver(sync).observe(overlay,{attributes:true,attributeFilter:['hidden']});new MutationObserver(sync).observe(play,{childList:true,subtree:true});sync()})();
 </script>
-<link rel="stylesheet" href="visual_v14.css"><link rel="stylesheet" href="melhorias_v16_5.css"><link rel="stylesheet" href="revisao_v17.css">
+<link rel="stylesheet" href="visual_v14.css"><link rel="stylesheet" href="melhorias_v16_5.css"><link rel="stylesheet" href="revisao_v17.css"><link rel="stylesheet" href="polimento_v17_1.css">
 <script src="rpg_epico_expansao.js"></script>
 <script src="musica_rpg_v14.js"></script>
 <script src="mundo_pomar.js"></script>
 <script src="interface_v14.js"></script>
 <script>
-(()=>{'use strict';const version='17.0.0';const key='sm_last_seen_update_version';const layer=document.getElementById('smUpdateLayer');const panel=document.getElementById('smUpdatePanel');const openBtn=document.getElementById('smUpdatesReopen');const closeBtn=document.getElementById('smUpdatesClose');const laterBtn=document.getElementById('smUpdatesLater');if(!layer||!panel||!openBtn||!closeBtn||!laterBtn)return;let priorFocus=null;const read=()=>{try{return localStorage.getItem(key)}catch(e){return null}};const save=()=>{try{localStorage.setItem(key,version)}catch(e){}};function show(){priorFocus=document.activeElement;layer.classList.add('sm-show');document.body.style.overflow='hidden';closeBtn.focus({preventScroll:true})}function hide(){save();layer.classList.remove('sm-show');document.body.style.overflow='';if(priorFocus&&priorFocus.isConnected&&typeof priorFocus.focus==='function')priorFocus.focus({preventScroll:true})}closeBtn.addEventListener('click',hide);laterBtn.addEventListener('click',hide);openBtn.addEventListener('click',show);layer.addEventListener('click',e=>{if(e.target===layer)hide()});document.addEventListener('keydown',e=>{if(!layer.classList.contains('sm-show'))return;if(e.key==='Escape'){e.preventDefault();hide()}else if(e.key==='Tab'){const items=[closeBtn,laterBtn];if(e.shiftKey&&document.activeElement===items[0]){e.preventDefault();items[1].focus()}else if(!e.shiftKey&&document.activeElement===items[1]){e.preventDefault();items[0].focus()}}});openBtn.classList.add('sm-ready');if(read()!==version)requestAnimationFrame(()=>requestAnimationFrame(show));})();
+(()=>{'use strict';const version='17.1.0';const key='sm_last_seen_update_version';const layer=document.getElementById('smUpdateLayer');const panel=document.getElementById('smUpdatePanel');const openBtn=document.getElementById('smUpdatesReopen');const closeBtn=document.getElementById('smUpdatesClose');const laterBtn=document.getElementById('smUpdatesLater');if(!layer||!panel||!openBtn||!closeBtn||!laterBtn)return;let priorFocus=null;const read=()=>{try{return localStorage.getItem(key)}catch(e){return null}};const save=()=>{try{localStorage.setItem(key,version)}catch(e){}};function show(){priorFocus=document.activeElement;layer.classList.add('sm-show');document.body.style.overflow='hidden';closeBtn.focus({preventScroll:true})}function hide(){save();layer.classList.remove('sm-show');document.body.style.overflow='';if(priorFocus&&priorFocus.isConnected&&typeof priorFocus.focus==='function')priorFocus.focus({preventScroll:true})}closeBtn.addEventListener('click',hide);laterBtn.addEventListener('click',hide);openBtn.addEventListener('click',show);layer.addEventListener('click',e=>{if(e.target===layer)hide()});document.addEventListener('keydown',e=>{if(!layer.classList.contains('sm-show'))return;if(e.key==='Escape'){e.preventDefault();hide()}else if(e.key==='Tab'){const items=[closeBtn,laterBtn];if(e.shiftKey&&document.activeElement===items[0]){e.preventDefault();items[1].focus()}else if(!e.shiftKey&&document.activeElement===items[1]){e.preventDefault();items[0].focus()}}});openBtn.classList.add('sm-ready');if(read()!==version)requestAnimationFrame(()=>requestAnimationFrame(show));})();
 </script>
 <script src="revisao_v17.js" defer></script>
+<script src="polimento_v17_1.js" defer></script>
 </body>
 </html>
