@@ -55,3 +55,23 @@ test('V21 possui histórico colapsável e CSS responsivo sem excluir versões an
  assert.ok(file('casa_pomar_v21.css').includes('@media(max-width:480px)'));
  assert.ok(file('estetica_v21.css').includes('@media(prefers-reduced-motion:reduce)'));
 });
+
+test('integração entre Vila RPG, Expedição, Casa offline-first e Jornada',()=>{
+ const world=file('mundo_pomar.js');
+ const house=file('casa_pomar_v21.js');
+ const quest=file('jornada_v21.js');
+ assert.ok(world.includes("pane('houseDlg')"),'player village house actually navigates into private home');
+ assert.ok(world.includes('Sua Casa dos Guardiões'),'village actor renamed');
+ assert.ok(house.includes('sm19_expedicao_'),'reward is based on actual expedition local save');
+ assert.ok(house.includes('exp?.finished===true'),'altar requires the finale');
+ assert.ok(house.includes('sm21_house_pending_'),'offline mutations tracked');
+ assert.ok(house.includes("localStorage.removeItem(pendingKey(h))"),'pending marker removed only after success');
+ assert.ok(house.includes('const existing=!!(result&&Array.isArray(result.placed))'),'empty layout can be intentionally synced');
+ assert.ok(file('sql/v21_casa_guardiões.sql').includes('return result; -- NULL'),'server distinguishes missing house from empty room');
+ for(const id of ['sm21Journey','sm21JourneyProgress','sm21JourneyDefense','sm21JourneyHouse','sm21JourneyClaim'])assert.ok(html.includes('id="'+id+'"'),id);
+ assert.ok(quest.includes("sm18:defense-ended"));
+ assert.ok(quest.includes("sm21:house-updated"));
+ assert.ok(quest.includes("sm21:seeds-updated"));
+ assert.ok(quest.includes('s.claimed=true'),'reward claimed once a day');
+ assert.ok(html.includes("jornada_v21.js?v=21"));
+});
