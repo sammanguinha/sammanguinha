@@ -52,3 +52,13 @@ test('patch notes group V20, V19, V18 and cloudflare-friendly source',()=>{
  for(const v of ['<b>V20</b>','<b>V19</b>','<b>V18</b>'])assert.ok(html.includes(v));
  assert.ok(fs.existsSync(path.join(__dirname,'..','wrangler.jsonc')),'original config retained for Worker deployments');
 });
+
+test('live admin moderation has protected RPC and interactive controls',()=>{
+ const sql=read('sql/v20_chat_admin.sql');
+ for(const item of ['admin_ok','sm_live_admin_list','sm_live_reports','revoke all on function'])assert.ok(sql.includes(item),item);
+ for(const item of ['sm20AdminChatRefresh','sm20AdminChatList','sm_live_admin_set','sm_live_admin_list'])assert.ok(html.includes(item),item);
+ assert.ok(html.includes('esc(m.body)'));
+});
+test('extra six dailies have genuine combat metrics and record persistence',()=>{
+ for(const item of ['id:"games"','id:"kills"','id:"waves"','id:"dashes"','id:"novas"','id:"combo"','v.stats.dashes+=','v.stats.novas+=','v.stats.combo=Math.max'])assert.ok(html.includes(item),item);
+});
