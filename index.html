@@ -3253,7 +3253,7 @@ function sm21DrawTowers(g,s,t){
 
 // V20: novas habilidades com recarga por partida. Não alteram a pontuação fora do motor de jogo.
 function sm20Dash(){if(!gs||sm17GamePaused||document.hidden||gs.dashCd>0)return;const d=(K.r?1:0)-(K.l?1:0);gs.x=Math.max(38,Math.min(GW-38,gs.x+(d||((gs.lastDir||1)))*Math.min(115,GW*.23)));gs.dashCd=7;gs.dashes=(gs.dashes||0)+1;gs.invuln=Math.max(gs.invuln,0.65);gs.dashFx=.45;orchardBurst(gs.x,GH-93,"#74e8fd",1.9,"IMPULSO");sfx(750,.10)}
-function sm20Nova(){if(!gs||sm17GamePaused||document.hidden||gs.novaCd>0||gs.ammo<3)return;const s=gs;s.ammo-=3;s.novas=(s.novas||0)+1;s.novaCd=13;s.novaFx=.65;const cy=GH-135,range=154;orchardBurst(s.x,cy,"#c1a4ff",3.1,"EXPLOSÃO!");s.pe.forEach(p=>{if(p.dead||Math.hypot(p.x-s.x,p.y-cy)>range)return;p.hp-=2;p.hit=.45;if(p.hp<=0){p.dead=1;s.kills++;s.energy=Math.min(12,s.energy+1);s.combo=(s.combo||0)+1;s.comboTimer=5;s.score+=10*Math.min(4,Math.floor(s.combo/5)+1)}});if(s.boss&&Math.hypot(s.boss.x-s.x,s.boss.y-cy)<range+45){s.boss.hp-=2;s.boss.hit=.5;if(s.boss.hp<=0){s.boss=null;s.bossDefeated=true;s.score+=s.hard?1500:180;toast("👑 Rei das Pragas derrotado!",3500)}}sfx(150,.24)}
+function sm20Nova(){if(!gs||sm17GamePaused||document.hidden||gs.novaCd>0||gs.ammo<3)return;const s=gs;s.ammo-=3;s.novas=(s.novas||0)+1;s.novaCd=13;s.novaFx=.65;const cy=GH-135,range=154;orchardBurst(s.x,cy,"#c1a4ff",3.1,"EXPLOSÃO!");s.pe.forEach(p=>{if(p.dead||Math.hypot(p.x-s.x,p.y-cy)>range)return;p.hp-=2;p.hit=.45;if(p.hp<=0){p.dead=1;s.kills++;s.energy=Math.min(12,s.energy+1);s.combo=(s.combo||0)+1;s.comboTimer=5;s.score+=10}});if(s.boss&&Math.hypot(s.boss.x-s.x,s.boss.y-cy)<range+45){s.boss.hp-=2;s.boss.hit=.5;if(s.boss.hp<=0){s.boss=null;s.bossDefeated=true;s.score+=s.hard?1500:180;toast("👑 Rei das Pragas derrotado!",3500)}}sfx(150,.24)}
 $("sm20Dash")?.addEventListener("click",sm20Dash);$("sm20Nova")?.addEventListener("click",sm20Nova);
 let sm17GamePaused=false;function sm17GamePause(on){sm17GamePaused=!!on;K.l=K.r=K.f=0;const b=document.getElementById("sm17PauseBtn"),info=document.getElementById("sm17DefenseStatus");if(b){b.disabled=!gs;b.textContent=sm17GamePaused?"▶ Retomar":"⏸ Pausar";b.setAttribute("aria-pressed",String(sm17GamePaused))}if(info)info.textContent=sm17GamePaused?"⏸ Pausado. Toque em Retomar para voltar.":"Defenda as árvores. Você pode pausar a qualquer momento.";const cover=document.getElementById("sm17PauseCover");if(cover)cover.hidden=!sm17GamePaused}
 let snd=LS.get("sg_snd")==="1";$("gSnd").checked=snd;$("gSnd").onchange=e=>{snd=e.target.checked;LS.set("sg_snd",snd?"1":"0")};
@@ -3310,6 +3310,13 @@ async function startGame(){
   sm21SelectedLane=0;sm21Lanes(gHard()?5:3);
   orchardFX.length=0;
   gs={energy:2,towers:[],intermission:2,missed:0,dashCd:0,novaCd:0,dashes:0,novas:0,dashFx:0,novaFx:0,combo:0,bestCombo:0,comboTimer:0,lastDir:1,mode:gDifficulty,kills:0,boss:null,bossDefeated:false,x:GW/2,ammo:gHard()?24:12,stun:0,hp:gHard()?5:3,trees:Array(gHard()?5:3).fill(true),treeHits:Array(gHard()?5:3).fill(0),hard:gHard(),score:0,wave:1,wt:0,t:0,sp:0,ft:0,reg:0,petId:orchardRead().pet,petCooldown:2,petFlash:0,playerMaxHp:gHard()?8:6,playerHp:gHard()?8:6,invuln:0,bossShots:[],sh:[],pe:[],it:[]};
+  // Housing provides perks in unranked training only.
+  if(gDifficulty!=='normal'){
+    const bonus=window.Sam21House?.getTrainingBonus?.()||{};
+    if(bonus.table)gs.ammo=Math.min(gs.ammo+3,gHard()?26:12);
+    if(bonus.fireplace)gs.shield=(gs.shield||0)+1;
+    if(bonus.bed)gs.playerHp=Math.min(gs.playerMaxHp,gs.playerHp+1);
+  }
   $("gOv").hidden=true;sm17GamePause(false);sm21StrategyUi();if(note)toast(note,5000);
   gLast=performance.now();cancelAnimationFrame(gRaf);gRaf=requestAnimationFrame(loop);
 }
@@ -3321,7 +3328,7 @@ function loop(t){
   drawG();gRaf=requestAnimationFrame(loop);
 }
 function stepG(dt){
-  const s=gs;orchardUpdateFX(dt);s.dashCd=Math.max(0,s.dashCd-dt);s.novaCd=Math.max(0,s.novaCd-dt);s.dashFx=Math.max(0,s.dashFx-dt);s.novaFx=Math.max(0,s.novaFx-dt);s.comboTimer=Math.max(0,s.comboTimer-dt);if(!s.comboTimer)s.combo=0;s.bestCombo=Math.max(s.bestCombo||0,s.combo||0);const dashButton=$("sm20Dash"),novaButton=$("sm20Nova");if(dashButton){dashButton.disabled=s.dashCd>0;$("sm20DashCd").textContent=s.dashCd>0?s.dashCd.toFixed(1)+"s":"Pronto"}if(novaButton){novaButton.disabled=s.novaCd>0||s.ammo<3;$("sm20NovaCd").textContent=s.novaCd>0?s.novaCd.toFixed(1)+"s":s.ammo<3?"3 mangas":"Pronto"}$("sm20Combo").textContent="Combo x"+(1+Math.min(3,Math.floor((s.combo||0)/5)));s.intermission=Math.max(0,(s.intermission||0)-dt);sm21TacticsTick(s,dt);sm21StrategyUi();s.t+=dt;if(!s.intermission)s.wt+=dt;s.ft-=dt;s.stun-=dt;s.reg+=dt;s.petCooldown-=dt;s.petFlash=Math.max(0,(s.petFlash||0)-dt);if(s.petEffect)s.petEffect.ttl=Math.max(0,s.petEffect.ttl-dt);s.invuln=Math.max(0,(s.invuln||0)-dt);
+  const s=gs;orchardUpdateFX(dt);s.dashCd=Math.max(0,s.dashCd-dt);s.novaCd=Math.max(0,s.novaCd-dt);s.dashFx=Math.max(0,s.dashFx-dt);s.novaFx=Math.max(0,s.novaFx-dt);s.comboTimer=Math.max(0,s.comboTimer-dt);if(!s.comboTimer)s.combo=0;s.bestCombo=Math.max(s.bestCombo||0,s.combo||0);const dashButton=$("sm20Dash"),novaButton=$("sm20Nova");if(dashButton){dashButton.disabled=s.dashCd>0;$("sm20DashCd").textContent=s.dashCd>0?s.dashCd.toFixed(1)+"s":"Pronto"}if(novaButton){novaButton.disabled=s.novaCd>0||s.ammo<3;$("sm20NovaCd").textContent=s.novaCd>0?s.novaCd.toFixed(1)+"s":s.ammo<3?"3 mangas":"Pronto"}$("sm20Combo").textContent="Combo x"+(1+Math.min(3,Math.floor((s.combo||0)/5)));s.intermission=Math.max(0,(s.intermission||0)-dt);sm21TacticsTick(s,dt);s.strategyUpdate=(s.strategyUpdate||0)-dt;if(s.strategyUpdate<=0){s.strategyUpdate=.2;sm21StrategyUi()}s.t+=dt;if(!s.intermission)s.wt+=dt;s.ft-=dt;s.stun-=dt;s.reg+=dt;s.petCooldown-=dt;s.petFlash=Math.max(0,(s.petFlash||0)-dt);if(s.petEffect)s.petEffect.ttl=Math.max(0,s.petEffect.ttl-dt);s.invuln=Math.max(0,(s.invuln||0)-dt);
   if(s.wt>= (s.hard?18:15)){
     if((s.mode==="hard"&&s.wave===10||s.mode==="normal"&&s.wave===5)&&!s.bossDefeated){s.wt=19.5;}
     else {s.score+=s.hard?100:50;sfx(880,.25);if(s.mode!=="infinite"&&s.wave>=(s.hard?10:5)){endG(true);return false}s.wave++;s.wt=0;s.energy=Math.min(12,s.energy+2);s.intermission=3.5;toast('🌙 Próxima onda! +2 energias. Planeje suas rotas.',2500)}
