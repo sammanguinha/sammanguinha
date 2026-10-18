@@ -213,6 +213,48 @@ function initV24Shop(){
  }
 }
 
+
+const V24_BIOMES={
+ vila:['#365c3d','#426a46','#2b5139','#b2ce87'],floresta:['#1b4335','#235441','#153d2e','#67ab74'],
+ ruinas:['#343748','#434557','#292c3e','#9990bf'],estufa:['#584632','#684d32','#453729','#ffad54'],
+ bosque:['#283b3b','#354444','#1b2d31','#86aaa4'],mina:['#262c40','#343c59','#1d2337','#8ca9ee'],
+ pantano:['#243f46','#2b4a4b','#182f39','#90c4b2'],observatorio:['#313451','#3b426a','#252741','#c5b2fb'],
+ coracao:['#523346','#61394d','#42293b','#e986ba'],planicie:['#4d6440','#66804c','#3f563b','#ffe19b'],
+ gruta:['#253d45','#2f5660','#183139','#74dbe6']
+};
+function v24Tile(px,py,x,y,h){
+ const colors=V24_BIOMES[st.map]||V24_BIOMES.vila;
+ const m=random(x,y,st.map.length*77);
+ rect(px,py,T,T,h>.7?colors[1]:h<.16?colors[2]:colors[0]);
+ if(['ruinas','mina','gruta','observatorio'].includes(st.map)){
+  if(m>.63){rect(px+3,py+8,12,2,colors[3]);rect(px+3,py+10,2,9,colors[2]);rect(px+23,py+19,5,2,colors[3])}
+  else if(m<.19){rect(px+10,py+23,3,5,colors[3]);rect(px+14,py+21,2,7,colors[3])}
+ }else if(['pantano','bosque'].includes(st.map)){
+  if(m>.54){rect(px+4,py+20,23,2,colors[2]);rect(px+8,py+22,13,3,colors[3])}
+  if(m<.22){rect(px+21,py+5,3,8,colors[3]);rect(px+17,py+12,2,5,colors[3])}
+ }else if(['estufa','coracao'].includes(st.map)){
+  if(m>.58){rect(px+7,py+18,17,2,colors[3]);rect(px+12,py+12,3,7,colors[3])}
+ }else if(m>.56){
+  rect(px+4,py+20,2,4,colors[3]);rect(px+6,py+17,2,3,colors[3]);rect(px+22,py+13,2,4,colors[3]);
+ }
+}
+function v24Decor(){
+ const b=V24_BIOMES[st.map]||V24_BIOMES.vila;ctx.save();
+ for(let i=0;i<22;i++){
+  const x=32+random(i,7,77)*704,y=22+random(i,13,37)*397,m=random(i,5,18);
+  ctx.globalAlpha=.4+m*.36;
+  if(['mina','gruta','observatorio'].includes(st.map)){
+   ctx.fillStyle=b[3];ctx.beginPath();ctx.moveTo(x,y-9-m*9);ctx.lineTo(x+4,y);ctx.lineTo(x-5,y);ctx.closePath();ctx.fill();
+  }else if(['pantano','bosque','coracao'].includes(st.map)){
+   ctx.strokeStyle=b[3];ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-3,y-9);ctx.lineTo(x+3,y-13);ctx.stroke();
+   ctx.fillStyle=b[3];ctx.fillRect(x-4,y-14,7,3);
+  }else if(['estufa','ruinas'].includes(st.map)){
+   ctx.fillStyle=b[3];ctx.fillRect(x-5,y-2,11,2);ctx.fillRect(x-2,y-6,3,5);
+  }else{ctx.fillStyle=b[3];ctx.fillRect(x,y-4,2,6);ctx.fillRect(x-3,y-1,8,2)}
+ }
+ ctx.restore();
+}
+
  const storageKey=()=>{const handle=(typeof window.me!=='undefined'&&window.me)||localStorage.getItem('sg_handle')||'visitante';return 'sam_rpg_hibrido_v12_'+String(handle).toLowerCase()};
  const blank=()=>({map:'vila',x:11.7,y:10.8,found:[],unlocked:false,relic:false,bonus:false,altarActive:false,ritualStep:0,seen:[],journal:['O Guardião Bento espera por você na vila.'],visits:0,epic:freshEpic()});
  let accountRpgKey=storageKey();let st=blank();try{let raw=JSON.parse(localStorage.getItem(storageKey())||'null');if(raw&&rooms[raw.map]&&Number.isFinite(raw.x)&&Number.isFinite(raw.y))st={...blank(),...raw,found:Array.isArray(raw.found)?raw.found:[],seen:Array.isArray(raw.seen)?raw.seen:[],journal:Array.isArray(raw.journal)?raw.journal:[]}}catch(e){}
@@ -738,8 +780,7 @@ function drawEpicActor(a,x,y,bob){
  function baseMap(){let rm=room();rect(0,0,W,H,rm.floor);
   for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){
    const px=x*T,py=y*T,h=random(x,y,st.map==='vila'?31:st.map==='floresta'?17:9);
-   if(st.map==='ruinas'){rect(px,py,T,T,h>.64?'#353746':h<.16?'#2b2e3c':'#343546');if(h>.87)rect(px+3,py+3,26,1,'#56536c');if(h<.15)rect(px+24,py+26,3,2,'#635a67')}
-   else{rect(px,py,T,T,h>.7?'#2d5135':h<.18?'#24462e':rm.floor);if(h>.82){rect(px+10,py+11,3,5,'#8dbb61');rect(px+17,py+17,2,4,'#b4c972')}else if(h<.12){rect(px+20,py+11,3,3,'#e5bd63');rect(px+22,py+11,3,4,'#fff1a7')}else if(h<.37){rect(px+4,py+24,3,2,'#36653f');rect(px+17,py+8,4,2,'#3a693b')}}
+   v24Tile(px,py,x,y,h);
   }
   if(st.map==='vila'){
    rect(11*T,0,2*T,H,'#74593b');rect(0,7*T,W,2*T,'#74593b');for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){if((x===11||x===12||y===7||y===8)&&random(x,y,44)>.45)rect(x*T+6,y*T+19,11,3,'#927954')}
@@ -816,7 +857,7 @@ function drawEpicActor(a,x,y,bob){
    return {z,cx:Math.max(halfW,Math.min(W-halfW,player.x*T)),cy:Math.max(halfH,Math.min(H-halfH,player.y*T))};
  }
  function render(){const cam=camera();ctx.save();ctx.translate(W/2,H/2);ctx.scale(cam.z,cam.z);ctx.translate(-cam.cx,-cam.cy);
-  baseMap();for(const b of room().blocks)drawBuilding(b);for(const p of room().props)drawTree(p.x,p.y,p.type==='dead');for(const a of room().actors)drawActor(a);guideDraw();drawPlayer();v23Atmosphere();
+  baseMap();v24Decor();for(const b of room().blocks)drawBuilding(b);for(const p of room().props)drawTree(p.x,p.y,p.type==='dead');for(const a of room().actors)drawActor(a);guideDraw();drawPlayer();v23Atmosphere();
   const a=nearest();if(a){ctx.save();ctx.textAlign='center';ctx.font='bold 13px sans-serif';let line='E · '+a.label;let width=Math.min(280,ctx.measureText(line).width+22);let px=Math.min(W-width/2-8,Math.max(width/2+8,a.x*T));let py=Math.max(64,a.y*T-39);rect(px-width/2,py-20,width,25,'#1e1428ee');ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=1;ctx.strokeRect(px-width/2,py-20,width,25);ctx.fillStyle='#ffebce';ctx.fillText(line,px,py-3);ctx.restore()}
   if(st.map==='ruinas'){ctx.fillStyle='#b8a3ff12';ctx.fillRect(0,0,W,H)}ctx.restore();
  }
