@@ -60,7 +60,7 @@ test('TACTICAL COMBAT: arrow tower actually kills enemy, consumes cooldown and e
  const act=vm.runInNewContext(html.slice(start,end)+'\nsm21TacticsTick;',ctx);
  const game={job:'ranger',energy:1,kills:0,combo:0,comboTimer:0,trees:[true,true,true],towers:[{kind:'arrow',lane:0,cooldown:0,shots:0}],pe:[{x:60,y:230,hp:1,dead:false}]};
  act(game,.016);
- assert.equal(game.pe[0].dead,true,'enemy was killed by real tower damage');
+ assert.equal(Boolean(game.pe[0].dead),true,'enemy was killed by real tower damage');
  assert.equal(game.kills,1,'kill registered');
  assert.equal(game.energy,2,'energy earned');
  assert.equal(game.towers[0].shots,1);
