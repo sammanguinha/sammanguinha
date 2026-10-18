@@ -52,3 +52,33 @@ test('version menu retained and Cloudflare config only remains in source',()=>{
  for(const n of ['<b>V21</b>','<b>V20</b>','<b>V19</b>','<b>V18</b>'])assert.ok(html.includes(n));
  assert.ok(fs.existsSync(path.join(root,'wrangler.jsonc')));
 });
+
+test('TACTICAL COMBAT: arrow tower actually kills enemy, consumes cooldown and earns battle energy',()=>{
+ const start=html.indexOf('function sm21TacticsTick(s,dt){'),end=html.indexOf('function sm21DrawTowers(g,s,t)',start);
+ assert.ok(start>0&&end>start);
+ const ctx={GW:360,GH:480,orchardBurst:()=>{},sm21Towers:{arrow:{cooldown:1.3,damage:1},frost:{cooldown:2.4,damage:1}}};
+ const act=vm.runInNewContext(html.slice(start,end)+'\nsm21TacticsTick;',ctx);
+ const game={job:'ranger',energy:1,kills:0,combo:0,comboTimer:0,trees:[true,true,true],towers:[{kind:'arrow',lane:0,cooldown:0,shots:0}],pe:[{x:60,y:230,hp:1,dead:false}]};
+ act(game,.016);
+ assert.equal(game.pe[0].dead,true,'enemy was killed by real tower damage');
+ assert.equal(game.kills,1,'kill registered');
+ assert.equal(game.energy,2,'energy earned');
+ assert.equal(game.towers[0].shots,1);
+ assert.ok(game.towers[0].cooldown>0,'cooldown prevents per-frame attacks');
+ act(game,.016);assert.equal(game.towers[0].shots,1,'no extra shot while cooling down');
+});
+test('TACTICAL COMBAT: frost turret damages and slows targets; mage job speeds cooldown',()=>{
+ const start=html.indexOf('function sm21TacticsTick(s,dt){'),end=html.indexOf('function sm21DrawTowers(g,s,t)',start);
+ const ctx={GW:360,GH:480,orchardBurst:()=>{},sm21Towers:{arrow:{cooldown:1.3,damage:1},frost:{cooldown:2.4,damage:1}}};
+ const act=vm.runInNewContext(html.slice(start,end)+'\nsm21TacticsTick;',ctx);
+ const game={job:'mage',energy:0,kills:0,combo:0,trees:[true,true,true],towers:[{kind:'frost',lane:1,cooldown:0,shots:0}],pe:[{x:180,y:220,hp:3,dead:false}]};
+ act(game,.016);assert.equal(game.pe[0].hp,2);assert.ok(game.pe[0].slow>=2.3);assert.ok(game.towers[0].cooldown<2.4,'mage improves frost reload');
+});
+test('TACTICAL COMBAT: revive tree restores survival but spends earned energy',()=>{
+ const start=html.indexOf('function sm21Build(id){'),end=html.indexOf('$("sm21Lanes")?.addEventListener',start);
+ assert.ok(start>0&&end>start);
+ const sim=vm.runInNewContext('let gs={job:"guardian",energy:6,trees:[false,true,true],treeHits:[2,0,0],hp:2,towers:[]};let sm17GamePaused=false,sm21SelectedLane=0;'+html.slice(start,end)+'\nsm21Build("heal");gs;',{
+ document:{hidden:false},GW:360,GH:480,sm21Towers:{arrow:{cost:3},frost:{cost:4}},orchardBurst:()=>{},toast:()=>{},sm21StrategyUi:()=>{}
+ });
+ assert.equal(sim.trees[0],true);assert.equal(sim.hp,3);assert.equal(sim.energy,2,'guardian revival 4-energy discount');assert.equal(sim.treeHits[0],0);
+});
