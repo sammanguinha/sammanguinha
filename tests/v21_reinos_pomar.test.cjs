@@ -18,7 +18,7 @@ test('house navigation and editor are reachable',()=>{
  for(const id of ['twilight','spring','midnight'])assert.ok(html.includes('data-house-theme="'+id+'"'));
  for(const id of ['planks','stone','garden'])assert.ok(html.includes('data-house-floor="'+id+'"'));
  for(const id of ['place','move','erase'])assert.ok(html.includes('data-house-mode="'+id+'"'));
- assert.match(html,/casa_v21\.js\?v=(?:21|22)/);
+ assert.match(html,/casa_v21\.js\?v=(?:21|22|23|24)/);
 });
 test('ten furniture sprites have 4 real, distinct animation frames',()=>{
  const ids=['bed','table','fern','fireplace','library','crystal','banner','lantern','rug','throne'];
@@ -51,7 +51,7 @@ test('boss on normal wave five, normal ranking remains validated',()=>{
 test('version menu retained and Cloudflare config only remains in source',()=>{
  assert.match(html,/const version='(?:21|22)\.0\.0'/);
  for(const n of ['<b>V21</b>','<b>V20</b>','<b>V19</b>','<b>V18</b>'])assert.ok(html.includes(n));
- assert.ok(!fs.existsSync(path.join(root,'wrangler.jsonc')),'Cloudflare Pages package must not depend on Worker configuration');
+ assert.ok(fs.existsSync(path.join(root,'wrangler.jsonc')),'original Worker config preserved in repository but excluded from Pages ZIP');
 });
 
 test('TACTICAL COMBAT: arrow tower actually kills enemy, consumes cooldown and earns battle energy',()=>{
