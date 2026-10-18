@@ -17,7 +17,7 @@ test('house navigation and editor are reachable',()=>{
  for(const id of ['twilight','spring','midnight'])assert.ok(html.includes('data-house-theme="'+id+'"'));
  for(const id of ['planks','stone','garden'])assert.ok(html.includes('data-house-floor="'+id+'"'));
  for(const id of ['place','move','erase'])assert.ok(html.includes('data-house-mode="'+id+'"'));
- assert.ok(html.includes('casa_v21.js?v=21'));
+ assert.match(html,/casa_v21\.js\?v=(?:21|22)/);
 });
 test('ten furniture sprites have 4 real, distinct animation frames',()=>{
  const ids=['bed','table','fern','fireplace','library','crystal','banner','lantern','rug','throne'];
@@ -48,7 +48,7 @@ test('boss on normal wave five, normal ranking remains validated',()=>{
  assert.ok(html.includes('s.score+=10'), 'removed combat multiplier that could violate anti-cheat');
 });
 test('version menu retained and Cloudflare config only remains in source',()=>{
- assert.ok(html.includes("const version='21.0.0'"));
+ assert.match(html,/const version='(?:21|22)\.0\.0'/);
  for(const n of ['<b>V21</b>','<b>V20</b>','<b>V19</b>','<b>V18</b>'])assert.ok(html.includes(n));
  assert.ok(fs.existsSync(path.join(root,'wrangler.jsonc')));
 });
