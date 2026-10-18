@@ -1,6 +1,7 @@
+const {sourceView}=require('./v25_source_view.cjs');
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const root=path.join(__dirname,'..'),read=file=>fs.readFileSync(path.join(root,file),'utf8');
-const html=read('index.html'),world=read('mundo_pomar.js'),css=read('renascimento_v23.css'),prefs=read('renascimento_v23.js');
+const html=sourceView(read('index.html'),read),world=read('mundo_pomar.js'),css=read('renascimento_v23.css'),prefs=read('renascimento_v23.js');
 test('all inline and V23 scripts parse',()=>{
  const scripts=[...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(m=>m[1]).filter(Boolean);
  assert.ok(scripts.length>4);scripts.forEach((source,i)=>assert.doesNotThrow(()=>new vm.Script(source,{filename:'inline-'+i})));

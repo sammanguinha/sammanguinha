@@ -1,3 +1,4 @@
+const {sourceView}=require('./v25_source_view.cjs');
 const test=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
@@ -5,7 +6,7 @@ const vm=require('node:vm');
 const path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
-const html=read('index.html'),house=read('casa_v21.js');
+const html=sourceView(read('index.html'),read),house=read('casa_v21.js');
 test('JavaScript inline and game scripts compile',()=>{
  const scripts=[...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(m=>m[1]).filter(Boolean);
  assert.ok(scripts.length>=6);

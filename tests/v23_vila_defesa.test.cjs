@@ -1,3 +1,4 @@
+const {sourceView}=require('./v25_source_view.cjs');
 const test=require('node:test');
 const assert=require('node:assert/strict');
 const vm=require('node:vm');
@@ -5,7 +6,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const root=path.join(__dirname,'..');
 const read=name=>fs.readFileSync(path.join(root,name),'utf8');
-const html=read('index.html'),world=read('mundo_pomar.js');
+const html=sourceView(read('index.html'),read),world=read('mundo_pomar.js');
 function defenseTick(){
  const start=html.indexOf('function sm21TacticsTick(s,dt){');
  const end=html.indexOf('function sm21DrawTowers(g,s,t)',start);

@@ -1,8 +1,9 @@
+const {sourceView}=require('./v25_source_view.cjs');
 const test=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const read=p=>fs.readFileSync(path.join(__dirname,'..',p),'utf8');
-const html=read('index.html'),cloud=read('casa_sync_v22.js'),housing=read('casa_v21.js'),sql=read('sql/v22_home_sync.sql');
+const html=sourceView(read('index.html'),read),cloud=read('casa_sync_v22.js'),housing=read('casa_v21.js'),sql=read('sql/v22_home_sync.sql');
 test('V22 JavaScript and all inline scripts parse',()=>{
  const inline=[...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(m=>m[1]).filter(Boolean);
  for(const [i,s] of inline.entries())assert.doesNotThrow(()=>new vm.Script(s,{filename:'inline '+i}));

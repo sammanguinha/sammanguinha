@@ -1,10 +1,11 @@
+const {sourceView}=require('./v25_source_view.cjs');
 const test=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
 const path=require('node:path');
 const read=f=>fs.readFileSync(path.join(__dirname,'..',f),'utf8');
-const html=read('index.html');
+const html=sourceView(read('index.html'),read);
 test('inline scripts compile without syntax errors',()=>{
  const scripts=[...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(m=>m[1]).filter(Boolean);
  assert.ok(scripts.length>=5);
