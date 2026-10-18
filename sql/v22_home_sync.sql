@@ -52,9 +52,9 @@ begin
  end if;
  if p_state->>'theme' not in ('twilight','spring','midnight')
    or p_state->>'floor' not in ('planks','stone','garden') then raise exception 'house_invalid_theme'; end if;
- if jsonb_typeof(p_state->'items') <> 'array'
+ if coalesce(jsonb_typeof(p_state->'items'),'null') <> 'array'
     or jsonb_array_length(p_state->'items') > 54 then raise exception 'house_invalid_items'; end if;
- if jsonb_typeof(p_state->'inventory') <> 'object' then raise exception 'house_invalid_inventory'; end if;
+ if coalesce(jsonb_typeof(p_state->'inventory'),'null') <> 'object' then raise exception 'house_invalid_inventory'; end if;
  for pair in select key,value from jsonb_each(p_state->'inventory')
  loop
   if not pair.key=any(allowed) or jsonb_typeof(pair.value)<>'number' then
@@ -84,6 +84,13 @@ begin
   if (placed_counts->>item_id)::int > (max_counts->>item_id)::int then
     raise exception 'house_furniture_limit';
   end if;
+ end loop;
+ for pair in select key,value from jsonb_each(p_state->'inventory')
+ loop
+   if (pair.value#>>'{}')::integer+coalesce((placed_counts->>pair.key)::integer,0)
+        >(max_counts->>pair.key)::integer then
+     raise exception 'house_furniture_limit';
+   end if;
  end loop;
  if p_state->>'restDay' is not null and p_state->>'restDay' !~ '^([0-9]{4}-[0-9]{2}-[0-9]{2}|)$' then
    raise exception 'house_invalid_rest_day';
