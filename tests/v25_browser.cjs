@@ -61,7 +61,9 @@ const server=http.createServer((req,res)=>{
    assert.ok(vitals.maxHp>=vitals.hp&&vitals.maxMp>=vitals.mp,'calculated RPG resource caps are available');
    await page.locator('#rpgDlg [data-v27-action="rpg:inventory"]').click();
    assert.equal(await page.locator('#rpgDlg .r12-aside').isVisible(),true,'inventory opens inside immersive viewport');
-   await page.locator('#rpgDlg [data-v27-action="rpg:inventory"]').click();
+   // On mobile, the inventory intentionally covers the quick toolbar. Close it using the visible top menu control.
+   await page.locator('#rpgDlg .sm-immersive-menu').click();
+   assert.equal(await page.locator('#rpgDlg .r12-aside').isVisible(),false,'inventory can close without exposing blocked controls');
    await page.locator('#rpgDlg [data-v27-action="rpg:shop"]').click();
    assert.ok(await page.locator('#v24Shop').isVisible(),'quick shop opens inside the fullscreen game');
    await page.locator('#v24ShopClose').click();
