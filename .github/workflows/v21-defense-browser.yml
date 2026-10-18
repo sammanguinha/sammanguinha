@@ -1,0 +1,21 @@
+name: V21 - Defesa real simulada (sem deploy)
+on:
+  push:
+    branches: [dev/v21-reinos-do-pomar]
+    paths:
+      - 'tests/v21_defense_browser.cjs'
+      - 'index.html'
+      - '.github/workflows/v21-defense-browser.yml'
+  workflow_dispatch:
+jobs:
+  batalha:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright@1.56.1
+      - run: npx playwright install chromium --with-deps
+      - run: node tests/v21_defense_browser.cjs
