@@ -22,7 +22,7 @@ const modes=['home','rpgDlg','gameDlg','profDlg','houseDlg','eventDlg','diary','
    page.on('pageerror',e=>errors.push(e.message));
    page.on('response',r=>{if(r.url().startsWith('http://127.0.0.1:4192/')&&r.status()>=400)missing.push(r.url())});
    await page.route('https://cdn.jsdelivr.net/**',r=>r.fulfill({status:200,contentType:'text/javascript',body:'// offline Supabase CDN'}));
-   await page.route('https://rygeemrxyjknhxxlewdb.supabase.co/**',r=>r.fulfill({status:200,contentType:'application/json',body:'null'}));
+   await page.route('https://rygeemrxyjknhxxlewdb.supabase.co/**',r=>r.fulfill({status:200,contentType:'application/json',body:/ranking_full|ranking_v/.test(r.request().url())?'[]':'null'}));
    await page.addInitScript(()=>{
     localStorage.setItem('sm_last_seen_update_version','24.0.0');
     localStorage.setItem('sg_handle','v28visual');
