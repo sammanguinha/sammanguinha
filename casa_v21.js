@@ -48,11 +48,11 @@ function count(id){return state.items.filter(x=>x.id===id).length}
 function owned(id){return count(id)+(state.inventory[id]||0)}
 function bonus(){return{bed:count('bed')>0,table:count('table')>0,fireplace:count('fireplace')>0}}
 window.Sam21House=Object.freeze({
- getTrainingBonus:()=>{if(key()!==lastKey)return{bed:false,table:false,fireplace:false};return bonus()},
+ getTrainingBonus:()=>{if(key()!==lastKey){state=read();lastKey=key()}return bonus()},
  getLayout:()=>JSON.parse(JSON.stringify(read())),
  getAccountKey:()=>key(),
  applyCloudLayout:(value)=>{
-  if(key()!==lastKey)return false; // never apply stale data to a different player
+  if(key()!==lastKey){state=read();lastKey=key()} // refresh the active player even when the house panel was hidden
   if(!value||typeof value!=='object'||Array.isArray(value))return false;
   const normalized=normalize(value);
   if(!Array.isArray(value.items)||!value.inventory||typeof value.inventory!=='object')return false;
