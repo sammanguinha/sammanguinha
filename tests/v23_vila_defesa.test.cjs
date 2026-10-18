@@ -62,6 +62,6 @@ test('Live village actions connect quests, atmosphere and board to world engine'
 test('World-first navigation preserves house sync, chat and combat',()=>{
  for(const filename of ['casa_sync_v22.js','pomar_ao_vivo_v20.js','mundo_pomar.js'])assert.ok(fs.existsSync(path.join(root,filename)));
  for(const id of ['sm22HomeSync','sm20Live'])assert.ok(html.includes('id="'+id+'"'));
- assert.ok(html.includes("const version='23.0.0'"));
+ assert.ok(html.includes("const version='24.0.0'"));
  for(const room of ['rpgDlg','houseDlg','gameDlg'])assert.ok(html.includes('data-go="'+room+'"'));
 });
