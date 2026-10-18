@@ -22,7 +22,13 @@ const server=http.createServer((req,res)=>{
    page.on('response',r=>{if(r.url().startsWith('http://127.0.0.1:4186/')&&r.status()>=400)missing.push(r.status()+' '+r.url())});
    await page.route('https://cdn.jsdelivr.net/**',r=>r.fulfill({status:200,contentType:'text/javascript',body:'// mocked Supabase CDN'}));
    await page.route('https://rygeemrxyjknhxxlewdb.supabase.co/**',r=>r.fulfill({status:200,contentType:'application/json',body:'null'}));
-   await page.addInitScript(()=>{localStorage.setItem('sm_last_seen_update_version','24.0.0')});
+   await page.addInitScript(()=>{
+     localStorage.setItem('sm_last_seen_update_version','24.0.0');
+     localStorage.setItem('sg_handle','v25test');
+     localStorage.setItem('sg_tok','abcdefghijklmnopqrstuvxyz123456789');
+     localStorage.setItem('sam_rpg_hibrido_v12_v25test',JSON.stringify({map:'vila',x:11.7,y:10.8,found:[],seen:[],journal:[],epic:{class:'guardiao',seenIntro:true,gold:250,potions:3,items:['semente_guardia'],equipped:['semente_guardia']}}));
+     localStorage.setItem('sg_extras_v1_v25test',JSON.stringify({seeds:0,owned:[],pet:'',best:0,day:'',claimed:[],stats:{}}));
+   });
    await page.goto('http://127.0.0.1:4186/index.html',{waitUntil:'domcontentloaded',timeout:45000});
    await page.waitForFunction(()=>typeof window.showPane==='function'&&!!window.SamHybridRPG?.getState,{timeout:30000});
    const summary=await page.evaluate(()=>({
