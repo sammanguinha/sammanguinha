@@ -12,9 +12,9 @@ function applySettings(){
  el.classList.toggle('v23-high-contrast',pref.contrast);
  el.classList.toggle('v23-reduce-motion',pref.motion);
  el.classList.toggle('v23-large-text',pref.text);
- root.querySelectorAll('[data-v23-setting]').forEach(button=>button.setAttribute('aria-pressed',String(!!pref[button.dataset.v23Setting])));
+ document.querySelectorAll('#v23DisplaySettings [data-v23-setting]').forEach(button=>button.setAttribute('aria-pressed',String(!!pref[button.dataset.v23Setting])));
 }
-root.querySelectorAll('[data-v23-setting]').forEach(button=>button.addEventListener('click',()=>{
+document.querySelectorAll('#v23DisplaySettings [data-v23-setting]').forEach(button=>button.addEventListener('click',()=>{
  const key=button.dataset.v23Setting;if(!allowed.includes(key))return;
  pref[key]=!pref[key];
  applySettings();
