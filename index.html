@@ -2105,7 +2105,9 @@ dialog[open]{max-height:92vh;overflow:auto}
         </div>
       </div>
     </div>
-    <section class="sm21-tactics" aria-label="Estratégia de defesa"><div class="sm21-tactics-head"><h3>🛡️ Conselho de Batalha</h3><p id="sm21TacticalStatus" role="status" aria-live="polite">Comece uma partida para construir defesas. Energia ganha eliminando pragas.</p><strong id="sm21Energy">✦ 0 energias</strong></div><div id="sm21Lanes" class="sm21-lanes" role="group" aria-label="Escolher rota de defesa"><button type="button" data-sm21-lane="0" aria-pressed="true">🌳 Rota 1</button><button type="button" data-sm21-lane="1" aria-pressed="false">🌳 Rota 2</button><button type="button" data-sm21-lane="2" aria-pressed="false">🌳 Rota 3</button></div><div class="sm21-tower-buttons"><button type="button" data-sm21-build="arrow" disabled><b>🏹 Torre de Mangas</b><span>3 energia · dano automático na rota</span></button><button type="button" data-sm21-build="frost" disabled><b>❄️ Runa de Gelo</b><span>4 energia · lentidão e dano na rota</span></button><button type="button" data-sm21-build="heal" disabled><b>🌿 Restauração</b><span>5 energia · recupera uma árvore destruída</span></button></div><div class="sm22-upgrade-tools"><button id="sm22Upgrade" type="button" disabled>⬆ Melhorar torre · 3 energia</button><button id="sm22Priority" type="button" disabled>🎯 Alvo: mais próximo</button><span id="sm22LaneDetail" aria-live="polite">Selecione uma rota para gerenciar sua torre.</span></div><div class="sm21-tactical-help">Estratégia: cada rota aceita uma torre. Inimigos derrotados abastecem energia; escolha onde investir. Use <b>1–5</b> para trocar de rota, <b>R</b> para restaurar. Pausa automática entre ondas.</div></section><div class="sm20-defense-hint"><strong>⚡ Habilidades especiais</strong><span>Q: Impulso evasivo · E: Explosão astral · Combo aumenta seus pontos. No celular, use os novos botões.</span></div><div class="gctl" style="display:flex;gap:12px;justify-content:center;margin:16px 0">
+    <section class="sm21-tactics" aria-label="Estratégia de defesa"><div class="sm21-tactics-head"><h3>🛡️ Conselho de Batalha</h3><p id="sm21TacticalStatus" role="status" aria-live="polite">Comece uma partida para construir defesas. Energia ganha eliminando pragas.</p><strong id="sm21Energy">✦ 0 energias</strong></div><div id="sm21Lanes" class="sm21-lanes" role="group" aria-label="Escolher rota de defesa"><button type="button" data-sm21-lane="0" aria-pressed="true">🌳 Rota 1</button><button type="button" data-sm21-lane="1" aria-pressed="false">🌳 Rota 2</button><button type="button" data-sm21-lane="2" aria-pressed="false">🌳 Rota 3</button></div><div class="sm21-tower-buttons"><button type="button" data-sm21-build="arrow" disabled><b>🏹 Torre de Mangas</b><span>3 energia · dano automático na rota</span></button><button type="button" data-sm21-build="frost" disabled><b>❄️ Runa de Gelo</b><span>4 energia · lentidão e dano na rota</span></button>
+<button type="button" data-sm21-build="solar" disabled><b>☀️ Totem Solar</b><span>6 energia · dano em área; útil contra grupos</span></button>
+<button type="button" data-sm21-build="root" disabled><b>🌿 Torre Raiz</b><span>5 energia · aprisiona pragas da rota por alguns segundos</span></button><button type="button" data-sm21-build="heal" disabled><b>🌿 Restauração</b><span>5 energia · recupera uma árvore destruída</span></button></div><div class="sm22-upgrade-tools"><button id="sm22Upgrade" type="button" disabled>⬆ Melhorar torre · 3 energia</button><button id="sm22Priority" type="button" disabled>🎯 Alvo: mais próximo</button><span id="sm22LaneDetail" aria-live="polite">Selecione uma rota para gerenciar sua torre.</span></div><div class="sm21-tactical-help">Estratégia: cada rota aceita uma torre. Runa de Gelo retarda, Totem Solar atinge grupos e Torre Raiz prende. Mire na Curandeira antes que ela regenere outras pragas. Inimigos derrotados abastecem energia. Use <b>1–5</b> para trocar de rota, <b>R</b> para restaurar. Pausa automática entre ondas.</div></section><div class="sm20-defense-hint"><strong>⚡ Habilidades especiais</strong><span>Q: Impulso evasivo · E: Explosão astral · Combo aumenta seus pontos. No celular, use os novos botões.</span></div><div class="gctl" style="display:flex;gap:12px;justify-content:center;margin:16px 0">
       <button type="button" class="btn-gothic alt" id="gL" style="padding:12px 24px">◀ Esquerda</button>
       <button type="button" class="btn-gothic" id="gF" style="padding:12px 28px">🥭 Atirar</button>
       <button type="button" class="btn-gothic alt" id="gR" style="padding:12px 24px">Direita ▶</button>
@@ -3232,22 +3234,30 @@ $("sm21Jobs")?.addEventListener('click',e=>{const b=e.target.closest('[data-sm21
  sm21JobsSync();toast('Ofício selecionado: '+b.querySelector('b').textContent);});
 sm21JobsSync();
 
-const sm21Towers={arrow:{cost:3,cooldown:1.3,damage:1},frost:{cost:4,cooldown:2.4,damage:1}};
+const sm21Towers={
+ arrow:{name:'Torre de Mangas',cost:3,cooldown:1.3,damage:1},
+ frost:{name:'Runa de Gelo',cost:4,cooldown:2.4,damage:1},
+ solar:{name:'Totem Solar',cost:6,cooldown:3.0,damage:1},
+ root:{name:'Torre Raiz',cost:5,cooldown:2.9,damage:1}
+};
 const sm22RunnerSprite=new Image();sm22RunnerSprite.src='sprites/corredor_ambar_v22.svg';
-const sm21TowerSprites={};for(const type of ['arrow','frost']){const img=new Image();img.src='sprites/torre_'+(type==='arrow'?'arco':'gelo')+'_v21.svg';sm21TowerSprites[type]=img}
+const sm23HealerSprite=new Image();sm23HealerSprite.src='sprites/v23_curandeira.svg';
+const sm21TowerSprites={};for(const type of ['arrow','frost','solar','root']){const img=new Image();
+ img.src=['solar','root'].includes(type)?'sprites/v23_torre_'+(type==='solar'?'solar':'raiz')+'.svg':'sprites/torre_'+(type==='arrow'?'arco':'gelo')+'_v21.svg';
+ sm21TowerSprites[type]=img}
 function sm21Lanes(n){const out=$("sm21Lanes");if(!out)return;out.innerHTML=Array.from({length:n},(_,i)=>'<button type="button" data-sm21-lane="'+i+'" aria-pressed="'+(i===sm21SelectedLane)+'">🌳 Rota '+(i+1)+'</button>').join('')}
 function sm21StrategyUi(){
  const energy=$("sm21Energy"),status=$("sm21TacticalStatus");if(!energy||!status)return;
  const s=gs;energy.textContent='✦ '+(s?s.energy:0)+' energia';const lane=sm21SelectedLane;
  const tower=s?.towers?.find(t=>t.lane===lane);
  const alive=s?.trees?.[lane];
- status.textContent=!s?'Comece uma partida para construir defesas.':(s.intermission>0?'⏳ Preparação: '+s.intermission.toFixed(1)+'s · ':'Onda '+s.wave+' · ')+(tower?'Torre '+(tower.kind==='arrow'?'de Mangas':'de Gelo')+' nível '+(tower.level||1)+' na rota '+(lane+1):'Rota '+(lane+1)+(alive?' livre':' destruída'))+' · '+s.kills+' abates';
+ status.textContent=!s?'Comece uma partida para construir defesas.':(s.intermission>0?'⏳ Preparação: '+s.intermission.toFixed(1)+'s · ':'Onda '+s.wave+' · ')+(tower?'Torre '+(sm21Towers[tower.kind]?.name||tower.kind)+' nível '+(tower.level||1)+' na rota '+(lane+1):'Rota '+(lane+1)+(alive?' livre':' destruída'))+' · '+s.kills+' abates';
  $("sm21Lanes")?.querySelectorAll('[data-sm21-lane]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.sm21Lane===lane)));
  document.querySelectorAll('[data-sm21-build]').forEach(b=>{const id=b.dataset.sm21Build;const can=s&&!sm17GamePaused&&!document.hidden&&s.energy>=(id==='heal'?(s.job==='guardian'?4:5):sm21Towers[id]?.cost||99)&&(id==='heal'?!s.trees[lane]:s.trees[lane]&&!tower);b.disabled=!can});
  const upgrade=$("sm22Upgrade"),priority=$("sm22Priority"),detail=$("sm22LaneDetail");
  const lvl=tower?.level||1,cost=lvl===1?3:5;
  if(upgrade){upgrade.disabled=!s||sm17GamePaused||!tower||lvl>=3||s.energy<cost;upgrade.textContent=lvl>=3?'✨ Torre no nível máximo':'⬆ Melhorar para nível '+(lvl+1)+' · '+cost+' energia'}
- if(priority){priority.disabled=!s||sm17GamePaused||!tower;priority.textContent='🎯 Alvo: '+(tower?.priority==='strongest'?'mais resistente':'mais próximo')}
+ if(priority){priority.disabled=!s||sm17GamePaused||!tower;priority.textContent='🎯 Alvo: '+(tower?.priority==='support'?'curandeiras':tower?.priority==='strongest'?'mais resistente':'mais próximo')}
  if(detail)detail.textContent=tower?'Rota '+(lane+1)+' · nível '+lvl+'/3 · '+tower.shots+' disparos':'Escolha ou construa uma torre para melhorá-la.';
 }
 function sm21Build(id){
@@ -3278,7 +3288,7 @@ function sm22UpgradeTower(){
 }
 function sm22Priority(){
  const t=gs?.towers?.find(x=>x.lane===sm21SelectedLane);if(!t||sm17GamePaused)return;
- t.priority=t.priority==='strongest'?'danger':'strongest';sm21StrategyUi();
+ t.priority=t.priority==='danger'?'strongest':t.priority==='strongest'?'support':'danger';sm21StrategyUi();
 }
 $("sm22Upgrade")?.addEventListener('click',sm22UpgradeTower);
 $("sm22Priority")?.addEventListener('click',sm22Priority);
@@ -3288,18 +3298,27 @@ addEventListener('keydown',e=>{if(!gs||sm17GamePaused||e.repeat||e.target.closes
 });
 function sm21TacticsTick(s,dt){
  s.towers.forEach(t=>{
+  // Uma torre sem sua árvore não pode continuar defendendo outra rota.
+  if(!s.trees[t.lane])return;
   t.cooldown-=dt;if(t.cooldown>0)return;
   const cx=GW*(t.lane+.5)/s.trees.length;
   const candidates=s.pe.filter(p=>!p.dead&&Math.abs(p.x-cx)<(GW/s.trees.length)*.48&&p.y>70&&p.y<GH-115);
-  candidates.sort(t.priority==='strongest'?(a,b)=>b.hp-a.hp||b.y-a.y:(a,b)=>b.y-a.y);
+  if(t.priority==='support')candidates.sort((a,b)=>(b.kind==='healer')-(a.kind==='healer')||b.y-a.y);
+  else candidates.sort(t.priority==='strongest'?(a,b)=>b.hp-a.hp||b.y-a.y:(a,b)=>b.y-a.y);
   const target=candidates[0];if(!target)return;
-  const level=Math.min(3,Math.max(1,t.level||1));
-  t.cooldown=sm21Towers[t.kind].cooldown*(s.job==='mage'&&t.kind==='frost'?.76:1)*(1-(level-1)*.18);t.shots++;
+  const level=Math.min(3,Math.max(1,t.level||1)),def=sm21Towers[t.kind];if(!def)return;
+  t.cooldown=def.cooldown*(s.job==='mage'&&t.kind==='frost'?.76:1)*(1-(level-1)*.18);t.shots++;
   const x=target.x,y=target.y;
-  const damage=sm21Towers[t.kind].damage+(level>=3?1:0);
+  const damage=def.damage+(level>=3?1:0);
   target.hp-=damage;target.hit=.32;
   if(t.kind==='frost'){target.slow=Math.max(target.slow||0,2.3+(level-1)*.55);orchardBurst(x,y,'#8feeff',.7,'GELO -'+damage)}
-  else orchardBurst(x,y,'#ffe0a0',.55,'🏹 -'+damage);
+  else if(t.kind==='root'){target.rooted=Math.max(target.rooted||0,1.8+(level-1)*.65);orchardBurst(x,y,'#a4e9a4',.8,'ENRAIZADO')}
+  else if(t.kind==='solar'){orchardBurst(x,y,'#ffdb89',1.35,'SOLAR -'+damage);
+    // Dano em área: outro inimigo só é atingido se estiver realmente ao alcance da explosão.
+    for(const q of candidates)if(q!==target&&!q.dead&&Math.hypot(q.x-x,q.y-y)<78){
+      q.hp-=damage;q.hit=.33;if(q.hp<=0){q.dead=1;s.kills++;s.energy=Math.min(12,s.energy+1);s.combo++;s.comboTimer=5}
+    }
+  }else orchardBurst(x,y,'#ffe0a0',.55,'🏹 -'+damage);
   if(target.hp<=0){target.dead=1;s.kills++;s.energy=Math.min(12,s.energy+1);s.combo++;s.comboTimer=5}
  });
 }
@@ -3307,8 +3326,8 @@ function sm21DrawTowers(g,s,t){
  (s.towers||[]).forEach(tower=>{
   const x=GW*(tower.lane+.5)/s.trees.length,y=GH-149,im=sm21TowerSprites[tower.kind];
   g.save();g.fillStyle='#050c1bb9';g.beginPath();g.ellipse(x,y+23,24,7,0,0,Math.PI*2);g.fill();
-  if(im?.complete&&im.naturalWidth){g.imageSmoothingEnabled=false;g.drawImage(im,Math.floor((t*2.8+tower.lane)%4)*48,0,48,48,x-28,y-31,56,56)}
-  else {g.fillStyle=tower.kind==='frost'?'#90ddff':'#dfb87e';g.fillRect(x-12,y-23,24,38)}
+  if(im?.complete&&im.naturalWidth){g.imageSmoothingEnabled=false;g.drawImage(im,(document.documentElement.classList.contains('sm165-lowfx')||matchMedia('(prefers-reduced-motion: reduce)').matches?0:Math.floor((t*2.8+tower.lane)%4))*48,0,48,48,x-28,y-31,56,56)}
+  else {g.fillStyle=tower.kind==='frost'?'#90ddff':tower.kind==='solar'?'#f5cf80':tower.kind==='root'?'#83c995':'#dfb87e';g.fillRect(x-12,y-23,24,38)}
   const level=tower.level||1;g.textAlign='center';g.font='bold 11px sans-serif';g.fillStyle='#170e28';g.fillText('Lv'+level,x+1,y-33);g.fillStyle=level>=3?'#ffe3a5':'#c2f5ff';g.fillText('Lv'+level,x,y-34);
   g.restore();
  });
@@ -3410,10 +3429,12 @@ function stepG(dt){
     s.sp=s.hard?Math.max(.42,.98-s.wave*.047)/.7:Math.max(.6,1.5-s.wave*.15);const x=38+Math.random()*(GW-76),r=Math.random();
     if(r<.182)s.it.push({x,y:-10,vy:65,k:"m"});
     else if(r<.182+.045+s.wave*.009)s.it.push({x,y:-10,vy:90,k:"r"});
-    else{const beetle=s.hard?(Math.random()<Math.min(.64,.25+s.wave*.038)):(s.wave>=3&&Math.random()<.3);const runner=!beetle&&s.wave>=3&&Math.random()<.26;
- const spore=!beetle&&!runner&&s.wave>=2&&Math.random()<.18;
- const hp=beetle?2:1;
- s.pe.push({x,y:-10,originX:x,phase:Math.random()*6.28,vy:(s.hard?49+s.wave*9:34+s.wave*9)*(runner?1.65:spore?.85:1),hp,kind:beetle?'beetle':runner?'runner':spore?'spore':'larva'})}
+    else{const healer=s.wave>=4&&Math.random()<.13;
+ const beetle=!healer&&(s.hard?(Math.random()<Math.min(.64,.25+s.wave*.038)):(s.wave>=3&&Math.random()<.3));
+ const runner=!healer&&!beetle&&s.wave>=3&&Math.random()<.26;
+ const spore=!healer&&!beetle&&!runner&&s.wave>=2&&Math.random()<.18;
+ const hp=healer?3:beetle?2:1;
+ s.pe.push({x,y:-10,originX:x,phase:Math.random()*6.28,healCd:2.4,vy:(s.hard?49+s.wave*9:34+s.wave*9)*(healer?.74:runner?1.65:spore?.85:1),hp,maxHp:hp,kind:healer?'healer':beetle?'beetle':runner?'runner':spore?'spore':'larva'})}
   }
   // Mascotes com poderes reais; todos funcionam apenas quando equipados.
   if(s.petId&&s.petCooldown<=0){
@@ -3427,15 +3448,30 @@ function stepG(dt){
     }
    }
   s.sh.forEach(b=>{b.y+=b.vy*dt;b.trail=(b.trail||0)+dt;if(b.trail>.055){b.trail=0;orchardFX.push({x:b.x+(Math.random()-.5)*8,y:b.y+9,vx:(Math.random()-.5)*18,vy:30,life:.18,max:.18,c:"#ffc45e",size:3})}});s.sh=s.sh.filter(b=>b.y>-10);
-  s.pe.forEach(p=>{p.slow=Math.max(0,(p.slow||0)-dt);p.y+=p.vy*dt*(p.slow>0?.38:1);if(p.kind==="spore")p.x=Math.max(30,Math.min(GW-30,(p.originX||p.x)+Math.sin(s.t*2.7+p.phase)*27));p.hit=Math.max(0,(p.hit||0)-dt)});s.it.forEach(i=>i.y+=i.vy*dt);
+  s.pe.forEach(p=>{
+   p.slow=Math.max(0,(p.slow||0)-dt);p.rooted=Math.max(0,(p.rooted||0)-dt);
+   p.y+=p.vy*dt*(p.rooted>0?0:p.slow>0?.38:1);
+   if(p.kind==="spore")p.x=Math.max(30,Math.min(GW-30,(p.originX||p.x)+Math.sin(s.t*2.7+p.phase)*27));
+   if(p.kind==="healer"&&!p.dead&&p.y>60){p.healCd=(p.healCd||2.4)-dt;
+     if(p.healCd<=0){p.healCd=3.4;const allies=s.pe.filter(q=>q!==p&&!q.dead&&q.hp<(q.maxHp||q.hp)&&Math.hypot(p.x-q.x,p.y-q.y)<125);
+       allies.sort((a,b)=>a.hp-b.hp);const q=allies[0];if(q){q.hp=Math.min(q.maxHp||q.hp,q.hp+1);orchardBurst(q.x,q.y,'#9affba',.6,'+1 CURA');}
+     }
+   }
+   p.hit=Math.max(0,(p.hit||0)-dt)
+ });s.it.forEach(i=>i.y+=i.vy*dt);
   s.bossShots.forEach(b=>{b.x+=b.vx*dt;b.y+=b.vy*dt});
   s.bossShots=s.bossShots.filter(b=>{if(Math.hypot(b.x-s.x,b.y-(GH-90))<b.r+19){orchardHurtPlayer(s,2,b.x,b.y,"REI DAS PRAGAS");return false}return b.y<GH+25&&b.x>-25&&b.x<GW+25});
   s.pe.forEach(p=>{if(!p.dead&&Math.hypot(p.x-s.x,p.y-(GH-90))<(p.kind==="beetle"?39:34)){orchardHurtPlayer(s,p.kind==="beetle"?2:1,p.x,p.y,p.kind==="beetle"?"BESOURO":"LARVA");p.dead=true}});
   for(const b of s.sh)for(const p of s.pe)if(!b.d&&!p.dead&&near(b,p,p.kind==="beetle"?37:32)){b.d=1;p.hit=.2;p.y-=5;orchardBurst(p.x,p.y,p.kind==="beetle"?"#b9ff79":"#ffcf73",1.35,"-1");if(--p.hp<=0){p.dead=1;s.kills++;s.energy=Math.min(12,s.energy+1);s.score+=s.hard?20:10;sfx(330,.08)}}
   if(s.boss)for(const b of s.sh)if(!b.d&&Math.abs(b.x-s.boss.x)<53&&Math.abs(b.y-s.boss.y)<42){b.d=1;s.boss.hp--;s.boss.hit=.28;orchardBurst(b.x,b.y,"#e0a5ff",1.5,"-1");s.score+=30;sfx(490,.07);if(s.boss.hp<=0){orchardBurst(s.boss.x,s.boss.y,"#ffdd83",4,"REI DERROTADO!");s.boss=null;s.bossDefeated=true;s.score+=s.hard?1500:180;toast("👑 Rei das Pragas derrotado!",4500);break}}
   s.sh=s.sh.filter(b=>!b.d);
-  s.pe=s.pe.filter(p=>{if(p.dead)return false;if(p.y>GH-60){const alive=s.trees.map((ok,i)=>ok?i:-1).filter(i=>i>=0);if(alive.length){const idx=Math.min(alive.length-1,Math.floor(p.x/GW*alive.length));const target=alive[idx];if((s.shield||0)>0){s.shield--;orchardBurst(GW*(target+.5)/s.trees.length,GH-72,"#ffcf70",.9,"DEFESA!")}
-      else if(!s.hard||p.kind==="beetle"||(s.treeHits[target]=(s.treeHits[target]||0)+1)>=2){s.trees[target]=false;s.hp=s.trees.filter(Boolean).length}} sfx(120,.25);return false}return true});
+  s.pe=s.pe.filter(p=>{if(p.dead)return false;if(p.y>GH-60){const alive=s.trees.map((ok,i)=>ok?i:-1).filter(i=>i>=0);if(alive.length){
+      // Índice físico da rota é fixo, mesmo depois de uma árvore cair.
+      const originalLane=Math.max(0,Math.min(s.trees.length-1,Math.floor(p.x/GW*s.trees.length)));
+      const target=alive.reduce((best,i)=>Math.abs(i-originalLane)<Math.abs(best-originalLane)?i:best,alive[0]);if((s.shield||0)>0){s.shield--;orchardBurst(GW*(target+.5)/s.trees.length,GH-72,"#ffcf70",.9,"DEFESA!")}
+      else if(!s.hard||p.kind==="beetle"||(s.treeHits[target]=(s.treeHits[target]||0)+1)>=2){s.trees[target]=false;s.hp=s.trees.filter(Boolean).length;
+        s.towers=s.towers.filter(t=>t.lane!==target);
+        orchardBurst(GW*(target+.5)/s.trees.length,GH-104,'#f8a6a6',1.1,'ÁRVORE PERDIDA');}} sfx(120,.25);return false}return true});
   const me2={x:s.x,y:GH-90};
   s.it=s.it.filter(i=>{if(near(i,me2,s.petId==="firefly"?72:40)){if(i.k==="m"){s.playerHp=Math.min(s.playerMaxHp,s.playerHp+2);s.ammo=Math.min(s.hard?26:12,s.ammo+4);s.score+=s.hard?15:8;orchardBurst(i.x,i.y,"#a5ff91",.85,"+2 VIDA");sfx(990,.08)}else{orchardHurtPlayer(s,1,i.x,i.y,"PEDRA");s.stun=.45;sfx(100,.3)}return false}return i.y<GH});
   if(s.hp<=0||s.playerHp<=0){endG(false);return false}
@@ -3493,7 +3529,10 @@ function drawG(){
     const bob=Math.sin(t*8+p.x*.07)*2;
     g.save();g.fillStyle='#06150c88';g.beginPath();g.ellipse(p.x,p.y+sz*.40,sz*.35,4,0,0,Math.PI*2);g.fill();
     if(p.hit>0){g.shadowColor='#fff5bb';g.shadowBlur=12;g.globalAlpha=.76+Math.sin(t*64)*.2}
-    if(p.kind==='runner'&&sm22RunnerSprite.complete&&sm22RunnerSprite.naturalWidth){
+    if(p.kind==='healer'&&sm23HealerSprite.complete&&sm23HealerSprite.naturalWidth){
+      g.imageSmoothingEnabled=false;
+      g.drawImage(sm23HealerSprite,(lowFX?0:Math.floor(t*3+p.phase)%4)*48,0,48,48,p.x-sz/2,p.y+bob-sz/2,sz,sz);
+    }else if(p.kind==='runner'&&sm22RunnerSprite.complete&&sm22RunnerSprite.naturalWidth){
       g.imageSmoothingEnabled=false;g.drawImage(sm22RunnerSprite,(lowFX?0:Math.floor(t*9+p.phase)%4)*48,0,48,48,p.x-sz/2,p.y+bob-sz/2,sz,sz);
     }else if(!v11Draw(g,beetle?'besouro':p.kind==='spore'?'esporo_v20':'larva_pequena',p.x,p.y+bob,sz,sz)){
       const fallback=spr(beetle?'beetle':'pest');g.drawImage(fallback,p.x-20,p.y+bob-20,40,40)
