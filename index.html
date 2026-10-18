@@ -3494,7 +3494,7 @@ function drawG(){
     g.save();g.fillStyle='#06150c88';g.beginPath();g.ellipse(p.x,p.y+sz*.40,sz*.35,4,0,0,Math.PI*2);g.fill();
     if(p.hit>0){g.shadowColor='#fff5bb';g.shadowBlur=12;g.globalAlpha=.76+Math.sin(t*64)*.2}
     if(p.kind==='runner'&&sm22RunnerSprite.complete&&sm22RunnerSprite.naturalWidth){
-      g.imageSmoothingEnabled=false;g.drawImage(sm22RunnerSprite,(Math.floor(t*9+p.phase)%4)*48,0,48,48,p.x-sz/2,p.y+bob-sz/2,sz,sz);
+      g.imageSmoothingEnabled=false;g.drawImage(sm22RunnerSprite,(lowFX?0:Math.floor(t*9+p.phase)%4)*48,0,48,48,p.x-sz/2,p.y+bob-sz/2,sz,sz);
     }else if(!v11Draw(g,beetle?'besouro':p.kind==='spore'?'esporo_v20':'larva_pequena',p.x,p.y+bob,sz,sz)){
       const fallback=spr(beetle?'beetle':'pest');g.drawImage(fallback,p.x-20,p.y+bob-20,40,40)
     }
