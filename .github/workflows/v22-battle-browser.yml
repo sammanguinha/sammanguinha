@@ -1,0 +1,21 @@
+name: V22 - Batalha e upgrades reais (sem deploy)
+on:
+  push:
+    branches: [dev/v22-fundacao-reinos]
+    paths:
+      - 'index.html'
+      - 'tests/v22_battle_browser.cjs'
+      - '.github/workflows/v22-battle-browser.yml'
+  workflow_dispatch:
+jobs:
+  battle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright@1.56.1
+      - run: npx playwright install chromium --with-deps
+      - run: node tests/v22_battle_browser.cjs
