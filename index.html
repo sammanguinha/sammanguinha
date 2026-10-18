@@ -3366,7 +3366,7 @@ function sm21DrawTowers(g,s,t){
  (s.towers||[]).forEach(tower=>{
   const x=GW*(tower.lane+.5)/s.trees.length,y=GH-149,im=sm21TowerSprites[tower.kind];
   g.save();g.fillStyle='#050c1bb9';g.beginPath();g.ellipse(x,y+23,24,7,0,0,Math.PI*2);g.fill();
-  if(im?.complete&&im.naturalWidth){g.imageSmoothingEnabled=false;g.drawImage(im,(document.documentElement.classList.contains('sm165-lowfx')||matchMedia('(prefers-reduced-motion: reduce)').matches?0:Math.floor((t*2.8+tower.lane)%4))*48,0,48,48,x-28,y-31,56,56)}
+  if(im?.complete&&im.naturalWidth){g.imageSmoothingEnabled=false;g.drawImage(im,(document.documentElement.classList.contains('sm165-lowfx')||document.documentElement.classList.contains('v23-reduce-motion')||matchMedia('(prefers-reduced-motion: reduce)').matches?0:Math.floor((t*2.8+tower.lane)%4))*48,0,48,48,x-28,y-31,56,56)}
   else {g.fillStyle=tower.kind==='frost'?'#90ddff':tower.kind==='solar'?'#f5cf80':tower.kind==='root'?'#83c995':'#dfb87e';g.fillRect(x-12,y-23,24,38)}
   const level=tower.level||1;g.textAlign='center';g.font='bold 11px sans-serif';g.fillStyle='#170e28';g.fillText('Lv'+level,x+1,y-33);g.fillStyle=level>=3?'#ffe3a5':'#c2f5ff';g.fillText('Lv'+level,x,y-34);
   g.restore();
@@ -3538,7 +3538,7 @@ function drawG(){
   const t=s.t||0;
   v11Backdrop(g,t,GW,GH);
   // Camadas de atmosferas: nuvens suaves, pétalas e vaga-lumes em paralaxe.
-  g.save();const lowFX=document.documentElement.classList.contains("sm165-lowfx")||matchMedia("(prefers-reduced-motion: reduce)").matches;for(let i=0;i<(lowFX?6:24);i++){const x=((i*97.7+t*(9+i%3*6))%(GW+45))-20,y=90+(i*79)%(GH-150);g.globalAlpha=.12+.14*Math.sin(t*1.1+i)*Math.sin(t*1.1+i);g.fillStyle=i%3===0?"#f8b8ce":i%3===1?"#deec9f":"#85dcd9";g.fillRect(x,y,2+(i%3),2+(i%3))}g.restore();
+  g.save();const lowFX=document.documentElement.classList.contains("sm165-lowfx")||matchMedia("(prefers-reduced-motion: reduce)").matches||document.documentElement.classList.contains('v23-reduce-motion');for(let i=0;i<(lowFX?6:24);i++){const x=((i*97.7+t*(9+i%3*6))%(GW+45))-20,y=90+(i*79)%(GH-150);g.globalAlpha=.12+.14*Math.sin(t*1.1+i)*Math.sin(t*1.1+i);g.fillStyle=i%3===0?"#f8b8ce":i%3===1?"#deec9f":"#85dcd9";g.fillRect(x,y,2+(i%3),2+(i%3))}g.restore();
   g.textAlign='center';g.textBaseline='middle';g.imageSmoothingEnabled=false;
   // Bottom-anchored trees: roots never run below the canvas, unlike V10.
   Array.from({length:s.trees.length},(_,i)=>GW*(i+.5)/s.trees.length).forEach((x,i)=>{
