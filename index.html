@@ -3446,12 +3446,15 @@ async function startGame(){
   $("gOv").hidden=true;sm17GamePause(false);sm21StrategyUi();if(note)toast(note,5000);
   gLast=performance.now();cancelAnimationFrame(gRaf);gRaf=requestAnimationFrame(loop);
 }
+let v23LastBattlePaint=0;
 function loop(t){
   if(!gs)return;
   if(sm17GamePaused || document.hidden){gLast=t;gRaf=requestAnimationFrame(loop);return}
   const dt=Math.min(.05,(t-gLast)/1000);gLast=t;
   if(!stepG(dt))return;
-  drawG();gRaf=requestAnimationFrame(loop);
+  const eco=document.documentElement.classList.contains('sm165-lowfx')||document.documentElement.classList.contains('v23-reduce-motion')||matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!eco||t-v23LastBattlePaint>=33){drawG();v23LastBattlePaint=t}
+  gRaf=requestAnimationFrame(loop);
 }
 function stepG(dt){
   const s=gs;orchardUpdateFX(dt);s.dashCd=Math.max(0,s.dashCd-dt);s.novaCd=Math.max(0,s.novaCd-dt);s.dashFx=Math.max(0,s.dashFx-dt);s.novaFx=Math.max(0,s.novaFx-dt);s.comboTimer=Math.max(0,s.comboTimer-dt);if(!s.comboTimer)s.combo=0;s.bestCombo=Math.max(s.bestCombo||0,s.combo||0);const dashButton=$("sm20Dash"),novaButton=$("sm20Nova");if(dashButton){dashButton.disabled=s.dashCd>0;$("sm20DashCd").textContent=s.dashCd>0?s.dashCd.toFixed(1)+"s":"Pronto"}if(novaButton){novaButton.disabled=s.novaCd>0||s.ammo<3;$("sm20NovaCd").textContent=s.novaCd>0?s.novaCd.toFixed(1)+"s":s.ammo<3?"3 mangas":"Pronto"}$("sm20Combo").textContent="Combo x"+(1+Math.min(3,Math.floor((s.combo||0)/5)));s.intermission=Math.max(0,(s.intermission||0)-dt);sm21TacticsTick(s,dt);s.strategyUpdate=(s.strategyUpdate||0)-dt;if(s.strategyUpdate<=0){s.strategyUpdate=.2;sm21StrategyUi()}s.t+=dt;if(!s.intermission)s.wt+=dt;s.ft-=dt;s.stun-=dt;s.reg+=dt;s.petCooldown-=dt;s.petFlash=Math.max(0,(s.petFlash||0)-dt);if(s.petEffect)s.petEffect.ttl=Math.max(0,s.petEffect.ttl-dt);s.invuln=Math.max(0,(s.invuln||0)-dt);
