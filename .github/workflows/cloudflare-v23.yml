@@ -1,0 +1,46 @@
+name: Pacote Cloudflare Pages V23
+on:
+  push:
+    branches: [dev/v23-renascimento-do-pomar]
+    paths:
+      - 'index.html'
+      - '*.js'
+      - '*.css'
+      - 'sprites/**'
+      - 'audio/**'
+      - 'halloween_art/**'
+      - 'tests/v23_renascimento.test.cjs'
+      - 'tests/v22_defense.test.cjs'
+      - '.github/workflows/cloudflare-v23.yml'
+  workflow_dispatch:
+jobs:
+  gerar-zip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Testes de combate e scripts antes da entrega
+        run: node --test tests/v23_renascimento.test.cjs tests/v22_defense.test.cjs
+      - name: Preparar site estatico completo
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          find . -maxdepth 1 -type f \( -iname '*.html' -o -iname '*.css' -o -iname '*.js' -o -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' -o -iname '*.gif' -o -iname '*.svg' -o -iname '*.ico' -o -iname '*.mp3' -o -iname '*.ogg' -o -iname '*.wav' -o -iname '*.woff*' -o -name '_redirects' -o -name '_headers' \) -exec cp -t dist/ {} +
+          for dir in sprites audio halloween_art; do
+            if [ -d "$dir" ]; then cp -a "$dir" dist/; fi
+          done
+          for item in index.html mundo_pomar.js renascimento_v23.css renascimento_v23.js casa_v21.js casa_sync_v22.js pomar_ao_vivo_v20.js sprites/v23_mira.svg sprites/v23_torre_solar.svg sprites/v23_torre_raiz.svg sprites/v23_curandeira.svg; do
+            if [ ! -f "dist/$item" ]; then echo "Arquivo obrigatório ausente: $item"; exit 1; fi
+          done
+          if find dist -iname 'wrangler*' | grep -q .; then echo 'Arquivo Wrangler encontrado no pacote estático'; exit 1; fi
+          cd dist
+          zip -qr ../Sam-Manguinha-V23-Cloudflare-Pages.zip .
+          unzip -t ../Sam-Manguinha-V23-Cloudflare-Pages.zip | tail -1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V23-Cloudflare-Pages
+          path: Sam-Manguinha-V23-Cloudflare-Pages.zip
+          retention-days: 30
