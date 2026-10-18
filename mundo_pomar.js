@@ -87,6 +87,132 @@ rooms.floresta.actors.push(
 );
 rooms.ruinas.actors.push({id:'toEstufa',x:20.5,y:11,type:'door',epic:'gate',min:1,target:'estufa',tx:2.8,ty:7,label:'Estufa das Brasas'});
 
+
+/* V24 · Empório, cosméticos equipáveis e consumíveis úteis.
+   Moedas aqui são progressão LOCAL RPG: ranking e mangas oficiais intocados. */
+Object.assign(EPIC_ARTIFACTS,{
+ anel_orvalho:{name:'Anel do Orvalho',rarity:'Comum',element:'water',desc:'+10 HP máximo. Brilho azul no personagem.',effect:'bloom'},
+ broche_solar:{name:'Broche Solar',rarity:'Raro',element:'light',desc:'+12% de dano mágico.',effect:'focus'},
+ capa_brisa:{name:'Capa da Brisa',rarity:'Raro',element:'nature',desc:'Mais fôlego para correr.',effect:'swift'},
+ bracelete_casca:{name:'Bracelete da Casca',rarity:'Raro',element:'earth',desc:'Reduz dano recebido em 2.',effect:'ward'},
+ amuleto_luar:{name:'Amuleto do Luar',rarity:'Épico',element:'light',desc:'+2 MP no início do combate.',effect:'moonrise'}
+});
+const V24_SHOP=Object.freeze([
+ {id:'pocao',type:'Poções',name:'Poção de Vida',icon:'🧪',price:18,desc:'Recupera HP e remove veneno em combate.'},
+ {id:'tonico_mana',type:'Poções',name:'Tônico Lunar',icon:'🌙',price:22,desc:'Recupera 6 MP em combate ou fora dele.'},
+ {id:'antidoto',type:'Poções',name:'Antídoto Floral',icon:'🌿',price:12,desc:'Remove veneno no combate.'},
+ {id:'elixir_velocidade',type:'Poções',name:'Elixir de Passos',icon:'💨',price:25,desc:'Corrida reforçada durante 90 segundos.'},
+ {id:'bomba_esporos',type:'Combate',name:'Bomba de Esporos',icon:'🍄',price:34,desc:'20 de dano e cegueira temporária no alvo.'},
+ {id:'escudo_folha',type:'Combate',name:'Escudo de Folha',icon:'🛡️',price:28,desc:'Defende um turno e restaura 1 MP.'},
+ {id:'anel_orvalho',type:'Acessórios',name:'Anel do Orvalho',icon:'💍',price:85,desc:'+10 HP máximo.'},
+ {id:'broche_solar',type:'Acessórios',name:'Broche Solar',icon:'☀️',price:125,desc:'Magia reforçada.'},
+ {id:'capa_brisa',type:'Acessórios',name:'Capa da Brisa',icon:'🧣',price:110,desc:'Mais fôlego para correr.'},
+ {id:'bracelete_casca',type:'Acessórios',name:'Bracelete da Casca',icon:'🪵',price:120,desc:'Proteção aprimorada.'},
+ {id:'amuleto_luar',type:'Acessórios',name:'Amuleto do Luar',icon:'🌜',price:145,desc:'Energia extra ao iniciar batalhas.'}
+]);
+function v24Bag(){
+ const e=epic();
+ if(!e.v24||typeof e.v24!=='object')e.v24={};
+ if(!e.v24.bag||typeof e.v24.bag!=='object')e.v24.bag={};
+ if(!Number.isFinite(e.v24.stamina))e.v24.stamina=100;
+ if(!Number.isFinite(e.v24.hasteUntil))e.v24.hasteUntil=0;
+ return e.v24;
+}
+function v24Count(id){return Math.max(0,Math.floor(Number(v24Bag().bag[id])||0))}
+function v24Take(id){const n=v24Count(id);if(!n)return false;v24Bag().bag[id]=n-1;save();return true}
+function v24Buy(id){
+ const it=V24_SHOP.find(item=>item.id===id),e=epic();if(!it)return;
+ const accessory=!!EPIC_ARTIFACTS[id];
+ if(accessory&&e.items.includes(id))return notify('Este acessório já está no seu Relicário.');
+ if(!Number.isFinite(e.gold)||e.gold<it.price)return notify('Moedas insuficientes. Explore e vença batalhas.');
+ // O estado do jogador e suas moedas são gravados juntos no save da campanha.
+ const prev=JSON.stringify(e);
+ e.gold-=it.price;
+ if(accessory)e.items.push(id);
+ else if(id==='pocao')e.potions=(Number(e.potions)||0)+1;
+ else v24Bag().bag[id]=v24Count(id)+1;
+ try{
+  st.x=player.x;st.y=player.y;localStorage.setItem(storageKey(),JSON.stringify(st));
+ }catch(err){st.epic=JSON.parse(prev);notify('Não foi possível salvar a compra: nenhum item ou moeda foi alterado.');renderV24Shop();return}
+ recomputeHealth();update();renderV24Shop();
+ notify('Adquirido: '+it.name+(accessory?' · equipe no Relicário!':'!'));
+}
+function v24UseOutside(id){
+ const e=epic();if(!v24Count(id))return notify('Você não tem esse item.');
+ if(id==='tonico_mana'){
+  if(e.mp>=maxMana())return notify('MP já está cheio.');
+  v24Take(id);e.mp=Math.min(maxMana(),e.mp+6);
+ }else if(id==='elixir_velocidade'){
+  v24Take(id);v24Bag().hasteUntil=Date.now()+90000;v24Bag().stamina=100;
+ }else return notify('Esse item funciona durante o combate.');
+ save();update();renderV24Shop();notify('Item utilizado.');
+}
+let v24ShopFocus=null;
+function openV24Shop(){
+ const modal=document.getElementById('v24Shop');if(!modal||!modal.hidden)return;
+ v24ShopFocus=document.activeElement;keys.run=keys.up=keys.down=keys.left=keys.right=false;
+ dialogOpen=true;renderV24Shop();modal.hidden=false;
+ modal.querySelector('#v24ShopClose')?.focus({preventScroll:true});
+}
+function closeV24Shop(){
+ const modal=document.getElementById('v24Shop');if(!modal||modal.hidden)return;
+ modal.hidden=true;dialogOpen=false;update();save();
+ v24ShopFocus?.focus?.({preventScroll:true});v24ShopFocus=null;
+}
+function renderV24Shop(){
+ const holder=document.getElementById('v24ShopItems');if(!holder)return;
+ const e=epic();document.getElementById('v24ShopGold').textContent='🪙 '+Math.max(0,Math.floor(e.gold||0))+' moedas RPG';
+ holder.replaceChildren();
+ for(const kind of ['Poções','Combate','Acessórios']){
+  const sec=document.createElement('section');sec.className='v24-shop-group';
+  const title=document.createElement('h3');title.textContent=kind;sec.append(title);
+  const grid=document.createElement('div');grid.className='v24-shop-grid';
+  for(const it of V24_SHOP.filter(q=>q.type===kind)){
+   const owned=!!EPIC_ARTIFACTS[it.id]&&e.items.includes(it.id);
+   const count=it.id==='pocao'?e.potions:v24Count(it.id);
+   const card=document.createElement('article');card.className='v24-shop-item';
+   const name=document.createElement('strong');name.textContent=it.icon+' '+it.name;
+   const desc=document.createElement('p');desc.textContent=it.desc;
+   const amount=document.createElement('small');amount.textContent=owned?'✓ Adquirido':EPIC_ARTIFACTS[it.id]?'Acessório permanente':'Na bolsa: '+count;
+   const btn=document.createElement('button');btn.type='button';
+   btn.textContent=owned?'✓ Comprado':'🪙 '+it.price+' · Comprar';
+   btn.disabled=owned||e.gold<it.price;btn.onclick=()=>v24Buy(it.id);
+   card.append(name,desc,amount,btn);
+   if(!EPIC_ARTIFACTS[it.id]&&['tonico_mana','elixir_velocidade'].includes(it.id)&&count>0){
+    const use=document.createElement('button');use.type='button';use.className='v24-secondary';
+    use.textContent='Usar na exploração';use.onclick=()=>v24UseOutside(it.id);card.append(use);
+   }grid.append(card);
+  }sec.append(grid);holder.append(sec);
+ }
+}
+function initV24Shop(){
+ const root=document.getElementById('rpgDlg');if(!root||document.getElementById('v24Shop'))return;
+ const modal=document.createElement('div');modal.id='v24Shop';modal.className='v24-modal';modal.hidden=true;
+ modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');
+ modal.setAttribute('aria-label','Loja RPG Empório da Vila');
+ modal.innerHTML='<div class="v24-shop-panel"><header><div><small>VILA DA MANGUEIRA · COMÉRCIO RPG</small><h2>🏡 Empório da Vila</h2><p>Poções, itens de combate e acessórios equipáveis.</p></div><div><b id="v24ShopGold"></b><button id="v24ShopClose" type="button">✕ Fechar</button></div></header><p class="v24-shop-note">Moedas locais da aventura; não são mangas oficiais ou recursos de ranking. Acessórios podem ser equipados no Relicário.</p><div id="v24ShopItems"></div></div>';
+ root.append(modal);modal.querySelector('#v24ShopClose').onclick=closeV24Shop;
+ modal.addEventListener('click',ev=>{if(ev.target===modal)closeV24Shop()});
+ modal.addEventListener('keydown',ev=>{
+  if(ev.key==='Escape'){ev.preventDefault();closeV24Shop()}
+  if(ev.key==='Tab'){
+   const btns=[...modal.querySelectorAll('button:not(:disabled)')],first=btns[0],last=btns[btns.length-1];
+   if(ev.shiftKey&&document.activeElement===first){ev.preventDefault();last?.focus()}
+   else if(!ev.shiftKey&&document.activeElement===last){ev.preventDefault();first?.focus()}
+  }
+ });
+ const main=root.querySelector('.r12-main');
+ if(main){
+  const bar=document.createElement('div');bar.className='v24-sprint-bar';
+  bar.innerHTML='<label for="v24SprintMeter">⚡ Fôlego <span id="v24SprintText">100 fôlego</span></label><progress id="v24SprintMeter" max="100" value="100"></progress><button id="v24RunTouch" type="button" aria-pressed="false">💨 Segure para correr</button><button id="v24ShopShortcut" type="button">🛍️ Empório RPG</button><small>Shift + movimento no PC · segure Correr no celular</small>';
+  main.append(bar);
+  const run=bar.querySelector('#v24RunTouch');
+  run.addEventListener('pointerdown',ev=>{ev.preventDefault();keys.run=true;run.setAttribute('aria-pressed','true');run.setPointerCapture?.(ev.pointerId)});
+  for(const type of ['pointerup','pointercancel','lostpointercapture'])run.addEventListener(type,()=>{keys.run=false;run.setAttribute('aria-pressed','false')});
+  bar.querySelector('#v24ShopShortcut').onclick=openV24Shop;
+ }
+}
+
  const storageKey=()=>{const handle=(typeof window.me!=='undefined'&&window.me)||localStorage.getItem('sg_handle')||'visitante';return 'sam_rpg_hibrido_v12_'+String(handle).toLowerCase()};
  const blank=()=>({map:'vila',x:11.7,y:10.8,found:[],unlocked:false,relic:false,bonus:false,altarActive:false,ritualStep:0,seen:[],journal:['O Guardião Bento espera por você na vila.'],visits:0,epic:freshEpic()});
  let accountRpgKey=storageKey();let st=blank();try{let raw=JSON.parse(localStorage.getItem(storageKey())||'null');if(raw&&rooms[raw.map]&&Number.isFinite(raw.x)&&Number.isFinite(raw.y))st={...blank(),...raw,found:Array.isArray(raw.found)?raw.found:[],seen:Array.isArray(raw.seen)?raw.seen:[],journal:Array.isArray(raw.journal)?raw.journal:[]}}catch(e){}
