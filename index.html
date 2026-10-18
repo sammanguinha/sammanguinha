@@ -2134,7 +2134,7 @@ dialog[open]{max-height:92vh;overflow:auto}
         </div>
       </div>
     </div>
-    <section class="sm21-tactics" aria-label="Estratégia de defesa"><div class="sm21-tactics-head"><h3>🛡️ Conselho de Batalha</h3><p id="sm21TacticalStatus" role="status" aria-live="polite">Comece uma partida para construir defesas. Energia ganha eliminando pragas.</p><strong id="sm21Energy">✦ 0 energias</strong></div><div id="sm21Lanes" class="sm21-lanes" role="group" aria-label="Escolher rota de defesa"><button type="button" data-sm21-lane="0" aria-pressed="true">🌳 Rota 1</button><button type="button" data-sm21-lane="1" aria-pressed="false">🌳 Rota 2</button><button type="button" data-sm21-lane="2" aria-pressed="false">🌳 Rota 3</button></div><div class="sm21-tower-buttons"><button type="button" data-sm21-build="arrow" disabled><b>🏹 Torre de Mangas</b><span>3 energia · dano automático na rota</span></button><button type="button" data-sm21-build="frost" disabled><b>❄️ Runa de Gelo</b><span>4 energia · lentidão e dano na rota</span></button><button type="button" data-sm21-build="heal" disabled><b>🌿 Restauração</b><span>5 energia · recupera uma árvore destruída</span></button></div><div class="sm22-upgrade-tools"><button id="sm22Upgrade" type="button" disabled>⬆ Melhorar torre · 3 energia</button><button id="sm22Priority" type="button" disabled>🎯 Alvo: mais próximo</button><span id="sm22LaneDetail" aria-live="polite">Selecione uma rota para gerenciar sua torre.</span></div><div class="sm21-tactical-help">Estratégia: cada rota aceita uma torre. Inimigos derrotados abastecem energia; escolha onde investir. Use <b>1–5</b> para trocar de rota, <b>R</b> para restaurar. Pausa automática entre ondas.</div></section><div class="sm20-defense-hint"><strong>⚡ Habilidades especiais</strong><span>Q: Impulso evasivo · E: Explosão astral · Combo aumenta seus pontos. No celular, use os novos botões.</span></div><div class="gctl" style="display:flex;gap:12px;justify-content:center;margin:16px 0">
+    <section class="sm21-tactics" aria-label="Estratégia de defesa"><div class="sm21-tactics-head"><h3>🛡️ Conselho de Batalha</h3><p id="sm21TacticalStatus" role="status" aria-live="polite">Comece uma partida para construir defesas. Energia ganha eliminando pragas.</p><strong id="sm21Energy">✦ 0 energias</strong></div><div id="sm21Lanes" class="sm21-lanes" role="group" aria-label="Escolher rota de defesa"><button type="button" data-sm21-lane="0" aria-pressed="true">🌳 Rota 1</button><button type="button" data-sm21-lane="1" aria-pressed="false">🌳 Rota 2</button><button type="button" data-sm21-lane="2" aria-pressed="false">🌳 Rota 3</button></div><div class="sm21-tower-buttons"><button type="button" data-sm21-build="arrow" disabled><b>🏹 Torre de Mangas</b><span>3 energia · dano automático na rota</span></button><button type="button" data-sm21-build="frost" disabled><b>❄️ Runa de Gelo</b><span>4 energia · lentidão e dano na rota</span></button><button type="button" data-sm21-build="root" disabled><b>🌿 Raiz Guardiã</b><span>5 energia · prende os inimigos da rota</span></button><button type="button" data-sm21-build="solar" disabled><b>☀️ Totem Solar</b><span>6 energia · dano em área entre rotas</span></button><button type="button" data-sm21-build="heal" disabled><b>🌿 Restauração</b><span>5 energia · recupera uma árvore destruída</span></button></div><div class="sm22-upgrade-tools"><button id="sm22Upgrade" type="button" disabled>⬆ Melhorar torre · 3 energia</button><button id="sm22Priority" type="button" disabled>🎯 Alvo: mais próximo</button><span id="sm22LaneDetail" aria-live="polite">Selecione uma rota para gerenciar sua torre.</span></div><div class="sm21-tactical-help">Estratégia: cada rota aceita uma torre. Inimigos derrotados abastecem energia; escolha onde investir. Use <b>1–5</b> para trocar de rota, <b>R</b> para restaurar. Pausa automática entre ondas.</div></section><div class="sm20-defense-hint"><strong>⚡ Habilidades especiais</strong><span>Q: Impulso evasivo · E: Explosão astral · Combo aumenta seus pontos. No celular, use os novos botões.</span></div><div class="gctl" style="display:flex;gap:12px;justify-content:center;margin:16px 0">
       <button type="button" class="btn-gothic alt" id="gL" style="padding:12px 24px">◀ Esquerda</button>
       <button type="button" class="btn-gothic" id="gF" style="padding:12px 28px">🥭 Atirar</button>
       <button type="button" class="btn-gothic alt" id="gR" style="padding:12px 24px">Direita ▶</button>
@@ -3261,16 +3261,16 @@ $("sm21Jobs")?.addEventListener('click',e=>{const b=e.target.closest('[data-sm21
  sm21JobsSync();toast('Ofício selecionado: '+b.querySelector('b').textContent);});
 sm21JobsSync();
 
-const sm21Towers={arrow:{cost:3,cooldown:1.3,damage:1},frost:{cost:4,cooldown:2.4,damage:1}};
+const sm21Towers={arrow:{cost:3,cooldown:1.3,damage:1,name:'Torre de Mangas'},frost:{cost:4,cooldown:2.4,damage:1,name:'Runa de Gelo'},root:{cost:5,cooldown:3.0,damage:0,name:'Raiz Guardiã'},solar:{cost:6,cooldown:3.1,damage:1,name:'Totem Solar'}};
 const sm22RunnerSprite=new Image();sm22RunnerSprite.src='sprites/corredor_ambar_v22.svg';
-const sm21TowerSprites={};for(const type of ['arrow','frost']){const img=new Image();img.src='sprites/torre_'+(type==='arrow'?'arco':'gelo')+'_v21.svg';sm21TowerSprites[type]=img}
+const sm21TowerSprites={};for(const type of ['arrow','frost','root','solar']){const img=new Image();img.src=(type==='root'||type==='solar')?'sprites/torre_'+(type==='root'?'raiz':'solar')+'_v23.svg':'sprites/torre_'+(type==='arrow'?'arco':'gelo')+'_v21.svg';sm21TowerSprites[type]=img}
 function sm21Lanes(n){const out=$("sm21Lanes");if(!out)return;out.innerHTML=Array.from({length:n},(_,i)=>'<button type="button" data-sm21-lane="'+i+'" aria-pressed="'+(i===sm21SelectedLane)+'">🌳 Rota '+(i+1)+'</button>').join('')}
 function sm21StrategyUi(){
  const energy=$("sm21Energy"),status=$("sm21TacticalStatus");if(!energy||!status)return;
  const s=gs;energy.textContent='✦ '+(s?s.energy:0)+' energia';const lane=sm21SelectedLane;
  const tower=s?.towers?.find(t=>t.lane===lane);
  const alive=s?.trees?.[lane];
- status.textContent=!s?'Comece uma partida para construir defesas.':(s.intermission>0?'⏳ Preparação: '+s.intermission.toFixed(1)+'s · ':'Onda '+s.wave+' · ')+(tower?'Torre '+(tower.kind==='arrow'?'de Mangas':'de Gelo')+' nível '+(tower.level||1)+' na rota '+(lane+1):'Rota '+(lane+1)+(alive?' livre':' destruída'))+' · '+s.kills+' abates';
+ status.textContent=!s?'Comece uma partida para construir defesas.':(s.intermission>0?'⏳ Preparação: '+s.intermission.toFixed(1)+'s · ':'Onda '+s.wave+' · ')+(tower?'Torre '+((sm21Towers[tower.kind]?.name||'Desconhecida'))+' nível '+(tower.level||1)+' na rota '+(lane+1):'Rota '+(lane+1)+(alive?' livre':' destruída'))+' · '+s.kills+' abates';
  $("sm21Lanes")?.querySelectorAll('[data-sm21-lane]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.sm21Lane===lane)));
  document.querySelectorAll('[data-sm21-build]').forEach(b=>{const id=b.dataset.sm21Build;const can=s&&!sm17GamePaused&&!document.hidden&&s.energy>=(id==='heal'?(s.job==='guardian'?4:5):sm21Towers[id]?.cost||99)&&(id==='heal'?!s.trees[lane]:s.trees[lane]&&!tower);b.disabled=!can});
  const upgrade=$("sm22Upgrade"),priority=$("sm22Priority"),detail=$("sm22LaneDetail");
@@ -3288,7 +3288,7 @@ function sm21Build(id){
   orchardBurst(GW*(lane+.5)/s.trees.length,GH-95,'#abff9c',2,'REVIVEU!');toast('🌳 Árvore da rota '+(lane+1)+' restaurada!');
  }else{
   if(!def||!s.trees[lane]||s.towers.some(t=>t.lane===lane)){toast('Essa rota precisa estar viva e sem torre.');return}
-  s.energy-=cost;s.towers.push({kind:id,lane,cooldown:.5,shots:0,level:1,priority:'danger'});orchardBurst(GW*(lane+.5)/s.trees.length,GH-165,id==='frost'?'#b6f8ff':'#ffdf8f',1.5,'TORRE!');
+  s.energy-=cost;s.towers.push({kind:id,lane,cooldown:.5,shots:0,level:1,priority:'danger'});orchardBurst(GW*(lane+.5)/s.trees.length,GH-165,({frost:'#b6f8ff',root:'#b3efa5',solar:'#ffe6aa',arrow:'#ffdf8f'}[id]||'#ffdf8f'),1.5,'TORRE!');
  }
  sm21StrategyUi();
 }
@@ -3325,18 +3325,31 @@ function sm21TacticsTick(s,dt){
   const level=Math.min(3,Math.max(1,t.level||1));
   t.cooldown=sm21Towers[t.kind].cooldown*(s.job==='mage'&&t.kind==='frost'?.76:1)*(1-(level-1)*.18);t.shots++;
   const x=target.x,y=target.y;
-  const damage=sm21Towers[t.kind].damage+(level>=3?1:0);
-  target.hp-=damage;target.hit=.32;
-  if(t.kind==='frost'){target.slow=Math.max(target.slow||0,2.3+(level-1)*.55);orchardBurst(x,y,'#8feeff',.7,'GELO -'+damage)}
-  else orchardBurst(x,y,'#ffe0a0',.55,'🏹 -'+damage);
-  if(target.hp<=0){target.dead=1;s.kills++;s.energy=Math.min(12,s.energy+1);s.combo++;s.comboTimer=5}
+  const damage=sm21Towers[t.kind].damage+(level>=3&&t.kind!=='root'?1:0);
+  // Efeitos têm consequência no motor: Solar acerta um pequeno grupo; Raiz para o avanço.
+  const victims=t.kind==='solar'
+    ?s.pe.filter(p=>!p.dead&&p.y>70&&p.y<GH-115&&Math.hypot(p.x-x,p.y-y)<(level===3?110:82)).slice(0,5)
+    :[target];
+  for(const enemy of victims){
+    if(enemy.dead)continue;
+    if(t.kind==='root'){
+      enemy.rooted=Math.max(enemy.rooted||0,1.4+(level-1)*.55);
+      if(level===3)enemy.hp-=.5;
+    }else{
+      enemy.hp-=damage;enemy.hit=.32;
+      if(t.kind==='frost')enemy.slow=Math.max(enemy.slow||0,2.3+(level-1)*.55);
+    }
+    if(enemy.hp<=0){enemy.dead=1;s.kills++;s.energy=Math.min(12,s.energy+1);s.combo++;s.comboTimer=5}
+  }
+  orchardBurst(x,y,({root:'#a4efa1',solar:'#ffd181',frost:'#8feeff',arrow:'#ffe0a0'}[t.kind]),.8,
+    t.kind==='root'?'RAÍZES!':t.kind==='solar'?'SOLAR!':t.kind==='frost'?'GELO -'+damage:'🏹 -'+damage);
  });
 }
 function sm21DrawTowers(g,s,t){
  (s.towers||[]).forEach(tower=>{
   const x=GW*(tower.lane+.5)/s.trees.length,y=GH-149,im=sm21TowerSprites[tower.kind];
   g.save();g.fillStyle='#050c1bb9';g.beginPath();g.ellipse(x,y+23,24,7,0,0,Math.PI*2);g.fill();
-  if(im?.complete&&im.naturalWidth){g.imageSmoothingEnabled=false;g.drawImage(im,Math.floor((t*2.8+tower.lane)%4)*48,0,48,48,x-28,y-31,56,56)}
+  if(im?.complete&&im.naturalWidth){g.imageSmoothingEnabled=false;const still=matchMedia("(prefers-reduced-motion: reduce)").matches||document.documentElement.classList.contains("sm165-lowfx");g.drawImage(im,(still?0:Math.floor((t*2.8+tower.lane)%4))*48,0,48,48,x-28,y-31,56,56)}
   else {g.fillStyle=tower.kind==='frost'?'#90ddff':'#dfb87e';g.fillRect(x-12,y-23,24,38)}
   const level=tower.level||1;g.textAlign='center';g.font='bold 11px sans-serif';g.fillStyle='#170e28';g.fillText('Lv'+level,x+1,y-33);g.fillStyle=level>=3?'#ffe3a5':'#c2f5ff';g.fillText('Lv'+level,x,y-34);
   g.restore();
@@ -3456,7 +3469,7 @@ function stepG(dt){
     }
    }
   s.sh.forEach(b=>{b.y+=b.vy*dt;b.trail=(b.trail||0)+dt;if(b.trail>.055){b.trail=0;orchardFX.push({x:b.x+(Math.random()-.5)*8,y:b.y+9,vx:(Math.random()-.5)*18,vy:30,life:.18,max:.18,c:"#ffc45e",size:3})}});s.sh=s.sh.filter(b=>b.y>-10);
-  s.pe.forEach(p=>{p.slow=Math.max(0,(p.slow||0)-dt);p.y+=p.vy*dt*(p.slow>0?.38:1);if(p.kind==="spore")p.x=Math.max(30,Math.min(GW-30,(p.originX||p.x)+Math.sin(s.t*2.7+p.phase)*27));p.hit=Math.max(0,(p.hit||0)-dt)});s.it.forEach(i=>i.y+=i.vy*dt);
+  s.pe.forEach(p=>{p.slow=Math.max(0,(p.slow||0)-dt);p.rooted=Math.max(0,(p.rooted||0)-dt);p.y+=p.vy*dt*(p.rooted>0?0:p.slow>0?.38:1);if(p.kind==="spore")p.x=Math.max(30,Math.min(GW-30,(p.originX||p.x)+Math.sin(s.t*2.7+p.phase)*27));p.hit=Math.max(0,(p.hit||0)-dt)});s.it.forEach(i=>i.y+=i.vy*dt);
   s.bossShots.forEach(b=>{b.x+=b.vx*dt;b.y+=b.vy*dt});
   s.bossShots=s.bossShots.filter(b=>{if(Math.hypot(b.x-s.x,b.y-(GH-90))<b.r+19){orchardHurtPlayer(s,2,b.x,b.y,"REI DAS PRAGAS");return false}return b.y<GH+25&&b.x>-25&&b.x<GW+25});
   s.pe.forEach(p=>{if(!p.dead&&Math.hypot(p.x-s.x,p.y-(GH-90))<(p.kind==="beetle"?39:34)){orchardHurtPlayer(s,p.kind==="beetle"?2:1,p.x,p.y,p.kind==="beetle"?"BESOURO":"LARVA");p.dead=true}});
