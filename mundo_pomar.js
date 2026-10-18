@@ -255,13 +255,38 @@ function v24Decor(){
  ctx.restore();
 }
 
+
+/* V24 · Ramificações opcionais da aventura, preservando os nove mapas originais. */
+Object.assign(rooms,{
+ planicie:{name:'Campina dos Ventos',subtitle:'Relva dourada, pedras antigas e brisa constante',floor:'#4d6440',dirt:'#807957',night:false,
+ blocks:[{x:3,y:3,w:3,h:2,type:'rocks'},{x:18,y:9,w:3,h:2,type:'rocks'}],
+ props:[{x:5,y:8,type:'tree'},{x:20,y:4,type:'tree'}],
+ actors:[{id:'toForestFromMeadow',x:1.4,y:7,type:'passage',epic:'gate',target:'floresta',tx:18,ty:11,label:'Voltar à Trilha'},
+ {id:'v24MeadowHerb',x:12,y:4,type:'seed',epic:'resource',label:'Erva do Vento'},
+ {id:'v24MeadowHerb2',x:19,y:11,type:'seed',epic:'resource',label:'Erva Solar'},
+ {id:'v24MeadowWolf',x:13,y:9,type:'npc',epic:'enemy',label:'Lobo dos Ventos'}]},
+ gruta:{name:'Gruta do Eco Azul',subtitle:'Cristais luminosos e ecos sob a terra',floor:'#253d45',dirt:'#395665',night:true,
+ blocks:[{x:4,y:2,w:3,h:3,type:'rocks'},{x:17,y:9,w:4,h:3,type:'rocks'}],
+ props:[{x:7,y:10,type:'dead'},{x:19,y:3,type:'dead'}],
+ actors:[{id:'toMineFromGrotto',x:1.4,y:7,type:'passage',epic:'gate',target:'mina',tx:19,ty:10,label:'Voltar às Minas'},
+ {id:'v24CrystalA',x:10,y:3,type:'seed',epic:'resource',label:'Cristal Ecoante'},
+ {id:'v24CrystalB',x:17,y:5,type:'seed',epic:'resource',label:'Fragmento Azul'},
+ {id:'v24GrottoWisp',x:12,y:9,type:'npc',epic:'enemy',label:'Vulto de Cristal'}]}
+});
+rooms.floresta.actors.push({id:'toMeadow',x:20.4,y:11.8,type:'passage',epic:'gate',target:'planicie',tx:2.5,ty:7,label:'Campina dos Ventos'});
+rooms.mina.actors.push({id:'toGrotto',x:20.8,y:10.7,type:'door',epic:'gate',min:3,target:'gruta',tx:2.5,ty:7,label:'Gruta do Eco Azul'});
+Object.assign(EPIC_ENEMIES,{
+ lobo_vento:{name:'Lobo dos Ventos',element:'nature',hp:44,atk:8,def:2,xp:68,gold:32,weak:'fire',sprite:'lobo_vento_v24',intro:'Um guardião da campina corre em círculos. A marca do vento revela quando ele vai atacar.'},
+ vulto_eco:{name:'Vulto de Cristal',element:'storm',hp:90,atk:13,def:4,xp:130,gold:58,weak:'earth',sprite:'vulto_eco_v24',intro:'Os cristais escutam seus passos. O vulto reúne a luz em um único ponto.'}
+});
+
  const storageKey=()=>{const handle=(typeof window.me!=='undefined'&&window.me)||localStorage.getItem('sg_handle')||'visitante';return 'sam_rpg_hibrido_v12_'+String(handle).toLowerCase()};
  const blank=()=>({map:'vila',x:11.7,y:10.8,found:[],unlocked:false,relic:false,bonus:false,altarActive:false,ritualStep:0,seen:[],journal:['O Guardião Bento espera por você na vila.'],visits:0,epic:freshEpic()});
  let accountRpgKey=storageKey();let st=blank();try{let raw=JSON.parse(localStorage.getItem(storageKey())||'null');if(raw&&rooms[raw.map]&&Number.isFinite(raw.x)&&Number.isFinite(raw.y))st={...blank(),...raw,found:Array.isArray(raw.found)?raw.found:[],seen:Array.isArray(raw.seen)?raw.seen:[],journal:Array.isArray(raw.journal)?raw.journal:[]}}catch(e){}
  st.epic={...freshEpic(),...(st.epic||{}),stats:{...freshEpic().stats,...(st.epic?.stats||{})},flags:{...(st.epic?.flags||{})},items:Array.isArray(st.epic?.items)?st.epic.items:['semente_guardia'],equipped:Array.isArray(st.epic?.equipped)?st.epic.equipped:['semente_guardia'],defeated:Array.isArray(st.epic?.defeated)?st.epic.defeated:[]};
  const v23Sprites=Object.fromEntries(['bento','livia','eldra','maira','amalia','tito'].map(name=>{const im=new Image();im.src='sprites/npc_'+name+'_v23.svg';return [name,im]}));
  const v23Trees=Object.fromEntries(['arvore_lunar','arvore_corrompida'].map(name=>{const im=new Image();im.src='sprites/'+name+'_v23.svg';return [name,im]}));
- const imgCache=new Map();const sprite=name=>{if(!imgCache.has(name)){const i=new Image();i.src='sprites/'+name+(name==='aranha_rainha_v14'?'.svg':'.png');imgCache.set(name,i)}return imgCache.get(name)};
+ const imgCache=new Map();const sprite=name=>{if(!imgCache.has(name)){const i=new Image();i.src='sprites/'+name+((name==='aranha_rainha_v14'||name.endsWith('_v24'))?'.svg':'.png');imgCache.set(name,i)}return imgCache.get(name)};
  const player={x:st.x,y:st.y,vx:0,vy:0};let nextSave=0,last=0,clock=0,visible=false,touchDest=null,dialogOpen=false,lastTip='';
  const room=()=>rooms[st.map];
 
@@ -482,13 +507,14 @@ function epicActorVisible(a){if(!a.epic)return true;
  return true;
 }
 const epicMonsters={
- larva:'larva',spider:'rainha',crystalBoss:'besouro',collector:'espectro',moonGuardian:'sentinela',finalKing:'rei'
+ larva:'larva',spider:'rainha',crystalBoss:'besouro',collector:'espectro',moonGuardian:'sentinela',finalKing:'rei',v24MeadowWolf:'lobo_vento',v24GrottoWisp:'vulto_eco'
 };
 function epicInteract(a){if(!a||!a.epic)return false;
  const e=epic(),f=e.flags;
  if(a.epic==='gate'){epicMapPortal(a.id,a.target,a.tx,a.ty,a.min||0);return true}
  if(a.epic==='enemy'){startCombat(epicMonsters[a.id],a.id);return true}
  if(a.epic==='resource'){
+   if(a.id.startsWith('v24')){if(eflag(a.id))return true;setFlag(a.id);const reward=a.id.includes('Crystal')?20:12;e.gold+=reward;save();update();notify('Coletado: '+a.label+' · +'+reward+' moedas RPG.');return true}
   if(a.id==='dew'||a.id==='glass'){setFlag(a.id);log(a.id==='dew'?'Você recolheu o Orvalho Solar; uma memória de Maíra aqueceu sua mão.':'Você encontrou um Vidro-Lua intacto, pulsando sob o brilho das folhas.');say('Achado',a.id==='dew'?'O Orvalho Solar foi guardado na bolsa. Ele resiste ao calor que consumiu a estufa.':'O fragmento de vidro preserva uma imagem antiga: Eldra sorrindo diante de uma muda.');return true}
   if(a.id.startsWith('stone')){setFlag(a.id);const stories={stoneRoot:'“A raiz protege o primeiro nome que a chuva esqueceu.”',stoneLeaf:'“A folha escuta aquilo que o vento não ousa contar.”',stoneDew:'“O orvalho registra a promessa quando chega a manhã.”'};say('Pedra do Juramento',stories[a.id]);return true}
   if(a.id.startsWith('gem')){setFlag(a.id);const c={gemBlue:'azul, frio como a chuva',gemAmber:'âmbar, quente como o amanhecer',gemWhite:'branco como uma promessa'}[a.id];say('Cristal recuperado','O cristal '+c+' reverbera no seu inventário.');return true}
@@ -643,7 +669,7 @@ function endCombat(win,ran){if(!epicCombat)return;window.SamMusic?.scene(['bosqu
 function createCombat(){let modal=$('r13Combat');if(!modal){modal=document.createElement('div');modal.id='r13Combat';modal.className='r13-combat';modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');modal.setAttribute('aria-label','Combate por turno');document.getElementById('rpgDlg').append(modal)}modal.hidden=false}
 function renderCombat(){const c=epicCombat;if(!c)return;const e=epic(),m=EPIC_ENEMIES[c.key],info=EPIC_CHAPTERS[e.chapter];const escape=escapeHtml;const prevAction=document.activeElement?.closest?.('[data-r13action]')?.dataset.r13action||'';const weak=Object.keys(EPIC_ADV).find(key=>EPIC_ADV[key]===c.element)||m.weak;
  const phaseText=m.phases?' · '+m.phases[c.phase].title:'';
- $('r13Combat').innerHTML='<div class="r13-battle-card"><header><small>⚔️ COMBATE RPG '+phaseText+'</small><h2>'+escape(m.name)+'</h2><p>Elemento: '+EPIC_ELEMENTS[c.element]+' · Fraqueza atual: '+EPIC_ELEMENTS[weak]+'</p></header><div class="r13-battle-field"><div class="r13-enemy-figure"><img src="sprites/'+m.sprite+(m.sprite==='aranha_rainha_v14'?'.svg':'.png')+'" alt="'+escape(m.name)+'"><span>Inimigo · '+Math.max(0,c.hp)+' / '+c.maxHp+' HP</span><div class="r13-bar enemy"><i style="width:'+Math.min(100,Math.max(0,100*c.hp/c.maxHp))+'%"></i></div></div><div class="r13-battle-vs">⚔</div><div class="r13-player-figure"><canvas id="r13Fighter" width="72" height="90"></canvas><span>'+escape(classInfo().name)+' · Nv. '+e.level+'</span><div class="r13-bar"><i style="width:'+Math.round(e.hp/maxHealth()*100)+'%"></i></div><span>❤ '+e.hp+'/'+maxHealth()+' · ✦ '+e.mp+'/'+maxMana()+' MP</span></div></div><p class="r13-weak">'+escape(c.enemyIntent)+' · '+(c.status==='poison'?'☠ Envenenado · ':'')+(c.enemyStatus==='burn'?'🔥 Inimigo queimando · ':'')+(c.enemyStatus==='blind'?'✨ Inimigo cego':'')+'</p><div class="r13-combat-controls"><button data-r13action="attack">⚔ ATACAR</button><button data-r13action="skill">✦ '+escape(classInfo().skill)+' ('+(3-(hasEffect('mana')?1:0))+' MP)</button><button data-r13action="guard">🛡 DEFENDER (+2 MP)</button><button data-r13action="artifact">◆ ARTEFATO '+(c.artUsed?'(usado)':'')+'</button><button data-r13action="potion">🧪 POÇÃO ('+e.potions+')</button><button data-r13action="tonico_mana">🌙 MP ('+v24Count('tonico_mana')+')</button><button data-r13action="antidoto">🌿 ANTÍDOTO ('+v24Count('antidoto')+')</button><button data-r13action="bomba_esporos">🍄 BOMBA ('+v24Count('bomba_esporos')+')</button><button data-r13action="escudo_folha">🍃 ESCUDO ('+v24Count('escudo_folha')+')</button><button data-r13action="run">↩ RECUAR</button></div><div class="r13-combat-log" role="log" aria-live="polite" aria-label="Histórico do combate">'+c.logs.slice(0,5).map(x=>'<p>'+escape(x)+'</p>').join('')+'</div></div>';
+ $('r13Combat').innerHTML='<div class="r13-battle-card"><header><small>⚔️ COMBATE RPG '+phaseText+'</small><h2>'+escape(m.name)+'</h2><p>Elemento: '+EPIC_ELEMENTS[c.element]+' · Fraqueza atual: '+EPIC_ELEMENTS[weak]+'</p></header><div class="r13-battle-field"><div class="r13-enemy-figure"><img src="sprites/'+m.sprite+((m.sprite==='aranha_rainha_v14'||m.sprite.endsWith('_v24'))?'.svg':'.png')+'" alt="'+escape(m.name)+'"><span>Inimigo · '+Math.max(0,c.hp)+' / '+c.maxHp+' HP</span><div class="r13-bar enemy"><i style="width:'+Math.min(100,Math.max(0,100*c.hp/c.maxHp))+'%"></i></div></div><div class="r13-battle-vs">⚔</div><div class="r13-player-figure"><canvas id="r13Fighter" width="72" height="90"></canvas><span>'+escape(classInfo().name)+' · Nv. '+e.level+'</span><div class="r13-bar"><i style="width:'+Math.round(e.hp/maxHealth()*100)+'%"></i></div><span>❤ '+e.hp+'/'+maxHealth()+' · ✦ '+e.mp+'/'+maxMana()+' MP</span></div></div><p class="r13-weak">'+escape(c.enemyIntent)+' · '+(c.status==='poison'?'☠ Envenenado · ':'')+(c.enemyStatus==='burn'?'🔥 Inimigo queimando · ':'')+(c.enemyStatus==='blind'?'✨ Inimigo cego':'')+'</p><div class="r13-combat-controls"><button data-r13action="attack">⚔ ATACAR</button><button data-r13action="skill">✦ '+escape(classInfo().skill)+' ('+(3-(hasEffect('mana')?1:0))+' MP)</button><button data-r13action="guard">🛡 DEFENDER (+2 MP)</button><button data-r13action="artifact">◆ ARTEFATO '+(c.artUsed?'(usado)':'')+'</button><button data-r13action="potion">🧪 POÇÃO ('+e.potions+')</button><button data-r13action="tonico_mana">🌙 MP ('+v24Count('tonico_mana')+')</button><button data-r13action="antidoto">🌿 ANTÍDOTO ('+v24Count('antidoto')+')</button><button data-r13action="bomba_esporos">🍄 BOMBA ('+v24Count('bomba_esporos')+')</button><button data-r13action="escudo_folha">🍃 ESCUDO ('+v24Count('escudo_folha')+')</button><button data-r13action="run">↩ RECUAR</button></div><div class="r13-combat-log" role="log" aria-live="polite" aria-label="Histórico do combate">'+c.logs.slice(0,5).map(x=>'<p>'+escape(x)+'</p>').join('')+'</div></div>';
  $('r13Combat').querySelectorAll('[data-r13action]').forEach(b=>b.addEventListener('click',()=>doCombatAction(b.dataset.r13action)));
  renderAvatarToCanvas($('r13Fighter'),72,90,true);if(c.lock)$('r13Combat').querySelectorAll('[data-r13action]').forEach(b=>b.disabled=true);if(prevAction&&!c.lock)$('r13Combat').querySelector('[data-r13action="'+prevAction+'"]')?.focus({preventScroll:true})
 }
