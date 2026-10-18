@@ -10,7 +10,7 @@
   vila:{name:'Vila da Mangueira',subtitle:'O início de toda colheita',floor:'#294d35',dirt:'#756043',night:false,
    blocks:[{x:2,y:2,w:5,h:3,type:'loja'},{x:17,y:2,w:5,h:3,type:'casa'},{x:2,y:9,w:4,h:3,type:'defesa'},{x:18,y:9,w:4,h:3,type:'portal'}],
    props:[{x:7,y:3,type:'tree'},{x:16,y:11,type:'tree'},{x:7,y:10,type:'tree'}],
-   actors:[{id:'guarda',x:11.5,y:8.4,type:'npc',label:'Guardião Bento'},{id:'livia',x:17,y:7,type:'npc',label:'Lívia'},{id:'loja',x:4.5,y:5.6,type:'shop',label:'Loja dos Mascotes'},{id:'defesa',x:4.0,y:8.1,type:'defense',label:'Arena de Defesa'},{id:'halloween',x:20,y:8.15,type:'halloween',label:'Pomar das Sombras'},{id:'forest',x:12,y:1.25,type:'passage',label:'Trilha Encantada'},{id:'profile',x:19,y:5.5,type:'profile',label:'Sua cabana'}]},
+   actors:[{id:'guarda',x:11.5,y:8.4,type:'npc',label:'Guardião Bento'},{id:'livia',x:17,y:7,type:'npc',label:'Lívia'},{id:'loja',x:4.5,y:5.6,type:'shop',label:'Loja dos Mascotes'},{id:'defesa',x:4.0,y:8.1,type:'defense',label:'Arena de Defesa'},{id:'halloween',x:20,y:8.15,type:'halloween',label:'Pomar das Sombras'},{id:'forest',x:12,y:1.25,type:'passage',label:'Trilha Encantada'},{id:'profile',x:19,y:5.5,type:'profile',label:'Seu Refúgio'},{id:'praca',x:13.7,y:5.6,type:'social',label:'Praça Ao Vivo'}]},
   floresta:{name:'Trilha Encantada',subtitle:'As sementes seguem a luz',floor:'#24442e',dirt:'#5c5434',night:false,
    blocks:[{x:2,y:2,w:3,h:2,type:'rocks'},{x:17,y:2,w:3,h:2,type:'rocks'},{x:8,y:9,w:3,h:2,type:'rocks'}],
    props:[{x:4,y:7,type:'tree'},{x:6,y:11,type:'tree'},{x:10,y:2,type:'tree'},{x:15,y:10,type:'tree'},{x:20,y:11,type:'tree'},{x:12,y:7,type:'tree'}],
@@ -90,9 +90,44 @@ rooms.ruinas.actors.push({id:'toEstufa',x:20.5,y:11,type:'door',epic:'gate',min:
  const blank=()=>({map:'vila',x:11.7,y:10.8,found:[],unlocked:false,relic:false,bonus:false,altarActive:false,ritualStep:0,seen:[],journal:['O Guardião Bento espera por você na vila.'],visits:0,epic:freshEpic()});
  let accountRpgKey=storageKey();let st=blank();try{let raw=JSON.parse(localStorage.getItem(storageKey())||'null');if(raw&&rooms[raw.map]&&Number.isFinite(raw.x)&&Number.isFinite(raw.y))st={...blank(),...raw,found:Array.isArray(raw.found)?raw.found:[],seen:Array.isArray(raw.seen)?raw.seen:[],journal:Array.isArray(raw.journal)?raw.journal:[]}}catch(e){}
  st.epic={...freshEpic(),...(st.epic||{}),stats:{...freshEpic().stats,...(st.epic?.stats||{})},flags:{...(st.epic?.flags||{})},items:Array.isArray(st.epic?.items)?st.epic.items:['semente_guardia'],equipped:Array.isArray(st.epic?.equipped)?st.epic.equipped:['semente_guardia'],defeated:Array.isArray(st.epic?.defeated)?st.epic.defeated:[]};
+ const v23Sprites=Object.fromEntries(['bento','livia','eldra','maira'].map(name=>{const im=new Image();im.src='sprites/npc_'+name+'_v23.svg';return [name,im]}));
  const imgCache=new Map();const sprite=name=>{if(!imgCache.has(name)){const i=new Image();i.src='sprites/'+name+(name==='aranha_rainha_v14'?'.svg':'.png');imgCache.set(name,i)}return imgCache.get(name)};
  const player={x:st.x,y:st.y,vx:0,vy:0};let nextSave=0,last=0,clock=0,visible=false,touchDest=null,dialogOpen=false,lastTip='';
  const room=()=>rooms[st.map];
+ // V23 · guia de destinos ancorado nas posições reais dos atores. Não teleporta nem altera missões.
+ const guide={
+  guardiao:{label:'Guardião Bento',map:'vila',id:'guarda'},
+  casa:{label:'Seu Refúgio',map:'vila',id:'profile'},
+  defesa:{label:'Arena de Defesa',map:'vila',id:'defesa'},
+  praca:{label:'Praça Ao Vivo',map:'vila',id:'praca'},
+  floresta:{label:'Trilha Encantada',map:'vila',id:'forest'}
+ };
+ let guideKey='guardiao';
+ function guideTarget(){const item=guide[guideKey];return item?{...item,actor:rooms[item.map]?.actors.find(a=>a.id===item.id)}:null}
+ function guideUI(){
+  const el=$('r23GuideText'),target=guideTarget();
+  if(!el||!target)return;
+  const reach=target.map===st.map&&target.actor;
+  const steps=reach?Math.round(Math.hypot(player.x-target.actor.x,player.y-target.actor.y)*T):null;
+  el.textContent=reach?'Destino: '+target.label+' · '+steps+' px de distância':'Destino: '+target.label+' · retorne à Vila da Mangueira';
+  document.querySelectorAll('[data-r23-guide]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.r23Guide===guideKey)));
+ }
+ function guideDraw(){
+  const target=guideTarget();if(!target||target.map!==st.map||!target.actor)return;
+  const {x,y}=target.actor,px=x*T,py=y*T;
+  ctx.save();ctx.strokeStyle='#ffe6a1';ctx.lineWidth=2;
+  ctx.setLineDash([6,4]);ctx.globalAlpha=.52;
+  ctx.beginPath();ctx.arc(px,py-8,23+Math.sin(clock*2)*3,0,Math.PI*2);ctx.stroke();
+  ctx.setLineDash([]);ctx.globalAlpha=1;
+  ctx.fillStyle='#fff1bd';ctx.font='bold 14px sans-serif';ctx.textAlign='center';
+  ctx.fillText('◆',px,py-43+Math.sin(clock*3)*3);
+  ctx.restore()
+ }
+ $('r23GuideList')?.addEventListener('click',e=>{
+   const b=e.target.closest('[data-r23-guide]');if(!b||!guide[b.dataset.r23Guide])return;
+   guideKey=b.dataset.r23Guide;guideUI()
+ });
+
  function save(){st.x=player.x;st.y=player.y;try{localStorage.setItem(storageKey(),JSON.stringify(st))}catch(e){}}
  function notify(msg){const tip=$('r12Tip');if(tip)tip.textContent=msg;if(typeof window.toast==='function')window.toast(msg,3500)}
  function log(msg){if(!st.journal.includes(msg)){st.journal.unshift(msg);st.journal=st.journal.slice(0,14)}update();save()}
@@ -416,7 +451,14 @@ function drawEpicEnemy(a,x,y,bob){const type=epicMonsters[a.id];const m=EPIC_ENE
 function drawEpicActor(a,x,y,bob){if(a.epic==='enemy')drawEpicEnemy(a,x,y,bob);
  else if(a.epic==='resource'){ctx.save();ctx.fillStyle=a.id.startsWith('echo')?'#bbb0fd':'#f8d477';ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=17;ctx.beginPath();ctx.arc(x,y-7+bob,9,0,Math.PI*2);ctx.fill();ctx.restore()}
  else if(a.epic==='gate'){ctx.save();ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=4;ctx.shadowColor='#c5a5fc';ctx.shadowBlur=12;ctx.beginPath();ctx.ellipse(x,y-7,19,12,0,0,Math.PI*2);ctx.stroke();ctx.restore()}
- else if(a.epic==='npc'){drawCharacter(x,y-6+bob,'#687a9e','#e3ba96',false)}
+ else if(a.epic==='npc'){
+  const im=a.id==='maira'?v23Sprites.maira:null;
+  if(im?.complete&&im.naturalWidth){
+    ctx.imageSmoothingEnabled=false;
+    const frame=matchMedia('(prefers-reduced-motion: reduce)').matches?0:Math.floor(clock*3)%4;
+    ctx.drawImage(im,frame*48,0,48,48,x-23,y-38+bob,46,46)
+  }else drawCharacter(x,y-6+bob,'#687a9e','#e3ba96',false)
+ }
  else if(a.epic==='altar'){ctx.save();ctx.fillStyle='#72586d';ctx.fillRect(x-15,y-6,30,20);ctx.fillStyle='#cba88c';ctx.fillRect(x-12,y-13,24,9);ctx.fillStyle='#fde0a9';ctx.font='bold 23px serif';ctx.fillText('✧',x,y-21);ctx.restore()}
 }
 
@@ -440,7 +482,8 @@ function drawEpicActor(a,x,y,bob){if(a.epic==='enemy')drawEpicEnemy(a,x,y,bob);
   if(a.id==='halloween'){toHalloween();return}
   if(a.id==='defesa'){pane('gameDlg');return}
   if(a.id==='loja'){toShop();return}
-  if(a.id==='profile'){pane('profDlg');return}
+  if(a.id==='profile'){pane('houseDlg');return}
+  if(a.id==='praca'){pane('murDlg');return}
  }
  function nearest(){let best=null,d=Infinity;for(const a of room().actors){if(!actorVisible(a))continue;let dist=Math.hypot(player.x-a.x,player.y-a.y);if(dist<d){d=dist;best=a}}return d<1.9?best:null}
  function action(){if(!visible||dialogOpen)return;interact(nearest())}
@@ -486,9 +529,9 @@ function drawEpicActor(a,x,y,bob){if(a.epic==='enemy')drawEpicEnemy(a,x,y,bob);
   rect(x+14,y-2,w-28,8,'#271e31');rect(x+20,y+4,w-40,3,'#ab8c67');
   ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.fillStyle='#ffdfae';ctx.fillText(b.type==='loja'?'MASCOTES':b.type==='defesa'?'DEFESA':b.type==='portal'?'HALLOWEEN':'CABANA',x+w/2,y+25)
  }
- function actorColor(type){return ({seed:'#ffe27d',npc:'#baceff',shop:'#f9c58a',defense:'#ffa783',halloween:'#dda8ff',profile:'#b3d5ff',passage:'#a5e6a9',door:'#d8cf9b',altar:'#ffe0a3',relic:'#ffe7af'})[type]||'#ffffff'}
+ function actorColor(type){return ({seed:'#ffe27d',npc:'#baceff',shop:'#f9c58a',defense:'#ffa783',halloween:'#dda8ff',profile:'#b3d5ff',social:'#a8f1be',passage:'#a5e6a9',door:'#d8cf9b',altar:'#ffe0a3',relic:'#ffe7af'})[type]||'#ffffff'}
  function drawActor(a){if(!actorVisible(a))return;const x=a.x*T,y=a.y*T,bob=Math.sin(clock*3+a.x)*2;ctx.save();if(a.epic){drawEpicActor(a,x,y,bob);ctx.restore();return;}
-  if(['passage','door','halloween','defense','shop','profile'].includes(a.type)){
+  if(['passage','door','halloween','defense','shop','profile','social'].includes(a.type)){
    const alpha=.47+Math.sin(clock*3+a.x)*.27;ctx.globalAlpha=alpha;ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(x,y-4,19,10,0,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;
    if(a.type==='passage'){rect(x-8,y-32,16,14,'#a5e6a9');rect(x-5,y-36,10,6,'#f3e3a3')}
    if(a.type==='door')drawGlyph(x,y,'❖','#e8cca0');
@@ -496,11 +539,24 @@ function drawEpicActor(a,x,y,bob){if(a.epic==='enemy')drawEpicEnemy(a,x,y,bob);
    if(a.type==='shop')drawGlyph(x,y,'◆','#ffcd6f');
    if(a.type==='defense')drawGlyph(x,y,'⚔','#ffc28a');
    if(a.type==='profile')drawGlyph(x,y,'⌂','#bedefc');
+   if(a.type==='social')drawGlyph(x,y,'♧','#b6f5cc');
   }
   if(a.type==='seed'){const colors={seedA:'#f5b945',seedB:'#8cceff',seedC:'#d9a7ff'};const col=colors[a.id];ctx.shadowColor=col;ctx.shadowBlur=14;rect(x-7,y-11+bob,14,17,col);rect(x-3,y-15+bob,6,5,'#fff6ce');ctx.shadowBlur=0;drawGlyph(x,y-24+bob,'✦',col)}
   if(a.type==='altar'){rect(x-25,y-5,50,17,'#443d51');rect(x-21,y-12,42,9,'#927b6c');for(let k=0;k<3;k++){ctx.fillStyle=st.unlocked?'#ffcd7a':'#282234';ctx.beginPath();ctx.arc(x+(k-1)*15,y-13,5,0,Math.PI*2);ctx.fill()}drawGlyph(x,y-37,'✧',st.unlocked?'#ffdc93':'#9285a0')}
   if(a.type==='relic'){drawGlyph(x,y-7+bob,'✦',st.relic?'#ffe9aa':'#e8cb8f')}
-  if(a.type==='npc'){rect(x-10,y+13,20,5,'#1e2535');if(a.id==='firefly'){pixelSprite('vagalume_idle',x,y+bob-3,43,43)}else if(a.id==='livia'){drawCharacter(x,y-7+bob,'#9d61c4','#f9d4b2',true)}else if(a.id==='espirito'){drawCharacter(x,y-8+bob,'#b3dcf8','#e0f8ff',true)}else{drawCharacter(x,y-7+bob,'#a6aa5e','#e6bd88',false)}}
+  if(a.type==='npc'){
+   rect(x-10,y+13,20,5,'#1e2535');
+   const characterId=({guarda:'bento',livia:'livia',espirito:'eldra'})[a.id];
+   const im=characterId&&v23Sprites[characterId];
+   if(im&&im.complete&&im.naturalWidth){
+      ctx.imageSmoothingEnabled=false;
+      const frame=matchMedia('(prefers-reduced-motion: reduce)').matches?0:Math.floor(clock*3+a.x)%4;
+      ctx.drawImage(im,frame*48,0,48,48,x-23,y-39+bob,46,46);
+   }else if(a.id==='firefly'){pixelSprite('vagalume_idle',x,y+bob-3,43,43)}
+   else if(a.id==='livia'){drawCharacter(x,y-7+bob,'#9d61c4','#f9d4b2',true)}
+   else if(a.id==='espirito'){drawCharacter(x,y-8+bob,'#b3dcf8','#e0f8ff',true)}
+   else{drawCharacter(x,y-7+bob,'#a6aa5e','#e6bd88',false)}
+  }
   ctx.restore()}
  function drawCharacter(x,y,coat,face,witch){rect(x-9,y-7,18,24,coat);rect(x-7,y-28,14,20,face);rect(x-8,y+16,6,6,'#41374a');rect(x+3,y+16,6,6,'#41374a');rect(x-3,y-20,3,3,'#302437');rect(x+4,y-20,3,3,'#302437');if(witch){rect(x-18,y-33,36,6,'#37233d');rect(x-8,y-49,16,17,'#4d315d')}else{rect(x-9,y-30,18,7,'#635039')}}
  function drawGlyph(x,y,symbol,color){ctx.fillStyle=color;ctx.font='bold 24px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(symbol,x,y)}
@@ -510,7 +566,7 @@ function drawEpicActor(a,x,y,bob){if(a.epic==='enemy')drawEpicEnemy(a,x,y,bob);
    return {z,cx:Math.max(halfW,Math.min(W-halfW,player.x*T)),cy:Math.max(halfH,Math.min(H-halfH,player.y*T))};
  }
  function render(){const cam=camera();ctx.save();ctx.translate(W/2,H/2);ctx.scale(cam.z,cam.z);ctx.translate(-cam.cx,-cam.cy);
-  baseMap();for(const b of room().blocks)drawBuilding(b);for(const p of room().props)drawTree(p.x,p.y,p.type==='dead');for(const a of room().actors)drawActor(a);drawPlayer();
+  baseMap();for(const b of room().blocks)drawBuilding(b);for(const p of room().props)drawTree(p.x,p.y,p.type==='dead');for(const a of room().actors)drawActor(a);guideDraw();drawPlayer();
   const a=nearest();if(a){ctx.save();ctx.textAlign='center';ctx.font='bold 13px sans-serif';let line='E · '+a.label;let width=Math.min(280,ctx.measureText(line).width+22);let px=Math.min(W-width/2-8,Math.max(width/2+8,a.x*T));let py=Math.max(64,a.y*T-39);rect(px-width/2,py-20,width,25,'#1e1428ee');ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=1;ctx.strokeRect(px-width/2,py-20,width,25);ctx.fillStyle='#ffebce';ctx.fillText(line,px,py-3);ctx.restore()}
   if(st.map==='ruinas'){ctx.fillStyle='#b8a3ff12';ctx.fillRect(0,0,W,H)}ctx.restore();
  }
@@ -524,7 +580,7 @@ function drawEpicActor(a,x,y,bob){if(a.epic==='enemy')drawEpicEnemy(a,x,y,bob);
     }else{player.vx=player.vy=0}
     if(time>nextSave){nextSave=time+900;save()}
    }
-   render();let a=nearest(),tip=a?'Pressione E ou INVESTIGAR para '+a.label+'.':'WASD/setas ou toque no mapa. Interaja com portais, NPCs e chefões. Aventure-se pela campanha.';
+   render();guideUI();let a=nearest(),tip=a?'Pressione E ou INVESTIGAR para '+a.label+'.':'WASD/setas ou toque no mapa. Interaja com portais, NPCs e chefões. Aventure-se pela campanha.';
    if(tip!==lastTip){lastTip=tip;$('r12Tip').textContent=tip}
   }
   requestAnimationFrame(tick)
