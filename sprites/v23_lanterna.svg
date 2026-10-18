@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="48" viewBox="0 0 160 48" shape-rendering="crispEdges"><g transform="translate(0 0)">
+ <path d="M19 44V22" stroke="#534050" stroke-width="5"/>
+ <rect x="13" y="11" width="14" height="15" fill="#705b61"/>
+ <rect x="15" y="13" width="10" height="10" fill="#ffc97b"/>
+ <path d="M12 13l8-10 8 10" fill="#a88769" stroke="#54485b" stroke-width="2"/>
+ <rect x="11" y="27" width="18" height="4" fill="#99836c"/>
+ <rect x="18" y="31" width="3" height="13" fill="#60515c"/>
+ </g><g transform="translate(40 0)">
+ <path d="M19 44V22" stroke="#534050" stroke-width="5"/>
+ <rect x="13" y="11" width="14" height="15" fill="#705b61"/>
+ <rect x="15" y="13" width="10" height="10" fill="#ffeab1"/>
+ <path d="M12 13l8-10 8 10" fill="#a88769" stroke="#54485b" stroke-width="2"/>
+ <rect x="11" y="27" width="18" height="4" fill="#99836c"/>
+ <rect x="18" y="31" width="3" height="13" fill="#60515c"/>
+ </g><g transform="translate(80 0)">
+ <path d="M19 44V22" stroke="#534050" stroke-width="5"/>
+ <rect x="13" y="11" width="14" height="15" fill="#705b61"/>
+ <rect x="15" y="13" width="10" height="10" fill="#ffdc95"/>
+ <path d="M12 13l8-10 8 10" fill="#a88769" stroke="#54485b" stroke-width="2"/>
+ <rect x="11" y="27" width="18" height="4" fill="#99836c"/>
+ <rect x="18" y="31" width="3" height="13" fill="#60515c"/>
+ </g><g transform="translate(120 0)">
+ <path d="M19 44V22" stroke="#534050" stroke-width="5"/>
+ <rect x="13" y="11" width="14" height="15" fill="#705b61"/>
+ <rect x="15" y="13" width="10" height="10" fill="#ffdf9d"/>
+ <path d="M12 13l8-10 8 10" fill="#a88769" stroke="#54485b" stroke-width="2"/>
+ <rect x="11" y="27" width="18" height="4" fill="#99836c"/>
+ <rect x="18" y="31" width="3" height="13" fill="#60515c"/>
+ </g></svg>

@@ -1,0 +1,17 @@
+name: V23 - Renascimento - Testes de motor e UI
+on:
+  push:
+    branches: [dev/v23-renascimento-do-pomar]
+  pull_request:
+    branches: [dev/v22-fundacao-reinos]
+  workflow_dispatch:
+jobs:
+  static-and-engine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar mecanicas, scripts e recursos V23
+        run: node --test tests/v23_renascimento.test.cjs

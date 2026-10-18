@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="48" viewBox="0 0 192 48" shape-rendering="crispEdges"><g transform="translate(0 0)">
+ <rect x="8" y="39" width="32" height="5" fill="#2b3341"/>
+ <path d="M11 28Q7 18 18 13L24 7L30 13Q42 16 37 30L32 41H16z" fill="#598e81" stroke="#364a65" stroke-width="2"/>
+ <path d="M19 17h10v8H19z" fill="#d4f7d2"/><rect x="20" y="20" width="3" height="3" fill="#294b55"/><rect x="26" y="20" width="3" height="3" fill="#294b55"/>
+ <path d="M15 9L9 3M33 9l6-6" stroke="#a7dfa9" stroke-width="3"/>
+ <path d="M23 3h3m-2-3v6" stroke="#fff9c6" stroke-width="2"/>
+ <rect x="7" y="30" width="4" height="3" fill="#bedfab"/>
+ <rect x="36" y="33" width="4" height="3" fill="#bedfab"/>
+ </g><g transform="translate(48 0)">
+ <rect x="8" y="38" width="32" height="5" fill="#2b3341"/>
+ <path d="M11 28Q7 18 18 13L24 7L30 13Q42 16 37 30L32 41H16z" fill="#598e81" stroke="#364a65" stroke-width="2"/>
+ <path d="M19 17h10v8H19z" fill="#d4f7d2"/><rect x="20" y="20" width="3" height="3" fill="#294b55"/><rect x="26" y="20" width="3" height="3" fill="#294b55"/>
+ <path d="M15 9L9 3M33 9l6-6" stroke="#a7dfa9" stroke-width="3"/>
+ <path d="M23 1h3m-2-3v6" stroke="#fff9c6" stroke-width="2"/>
+ <rect x="8" y="30" width="4" height="3" fill="#bedfab"/>
+ <rect x="35" y="33" width="4" height="3" fill="#bedfab"/>
+ </g><g transform="translate(96 0)">
+ <rect x="8" y="39" width="32" height="5" fill="#2b3341"/>
+ <path d="M11 28Q7 18 18 13L24 7L30 13Q42 16 37 30L32 41H16z" fill="#598e81" stroke="#364a65" stroke-width="2"/>
+ <path d="M19 17h10v8H19z" fill="#d4f7d2"/><rect x="20" y="20" width="3" height="3" fill="#294b55"/><rect x="26" y="20" width="3" height="3" fill="#294b55"/>
+ <path d="M15 9L9 3M33 9l6-6" stroke="#a7dfa9" stroke-width="3"/>
+ <path d="M23 3h3m-2-3v6" stroke="#fff9c6" stroke-width="2"/>
+ <rect x="9" y="30" width="4" height="3" fill="#bedfab"/>
+ <rect x="34" y="33" width="4" height="3" fill="#bedfab"/>
+ </g><g transform="translate(144 0)">
+ <rect x="8" y="38" width="32" height="5" fill="#2b3341"/>
+ <path d="M11 28Q7 18 18 13L24 7L30 13Q42 16 37 30L32 41H16z" fill="#598e81" stroke="#364a65" stroke-width="2"/>
+ <path d="M19 17h10v8H19z" fill="#d4f7d2"/><rect x="20" y="20" width="3" height="3" fill="#294b55"/><rect x="26" y="20" width="3" height="3" fill="#294b55"/>
+ <path d="M15 9L9 3M33 9l6-6" stroke="#a7dfa9" stroke-width="3"/>
+ <path d="M23 1h3m-2-3v6" stroke="#fff9c6" stroke-width="2"/>
+ <rect x="10" y="30" width="4" height="3" fill="#bedfab"/>
+ <rect x="33" y="33" width="4" height="3" fill="#bedfab"/>
+ </g></svg>
