@@ -41,6 +41,15 @@ const walk=async(page,keys,duration)=>{
    assert.ok(await page.evaluate(()=>document.documentElement.classList.contains('v23-large-text')));
    await page.locator('.v23-hub-actions [data-go="rpgDlg"]').click();
    await page.waitForFunction(()=>!document.querySelector('#rpgDlg').hidden,{timeout:10000});
+   // First-time players must select a class and read the intro before exploring.
+   if(await page.locator('#r13ClassSelect').isVisible()){
+     await page.locator('[data-r13class]').first().click();
+     for(let i=0;i<14;i++){
+       if(!(await page.locator('#r12Bubble').isVisible()))break;
+       await page.locator('#r12TalkNext').click();
+     }
+   }
+
    const init=await page.evaluate(()=>window.Sam23World.snapshot());
    assert.equal(init.map,'vila');assert.equal(init.mission.started,false);
    await page.waitForTimeout(250);
