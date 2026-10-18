@@ -1,0 +1,62 @@
+name: V24 - Mundo Vivo · Testes e Pacote (sem deploy)
+on:
+  push:
+    branches: [dev/v24-mundo-vivo-loja-rpg]
+    paths:
+      - 'index.html'
+      - 'mundo_pomar.js'
+      - 'mundo_v24.css'
+      - 'sprites/**'
+      - 'tests/**'
+      - '.github/workflows/v24-mundo-vivo.yml'
+  pull_request:
+    branches: [dev/v23-renascimento-integrado]
+  workflow_dispatch:
+jobs:
+  logica:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Testar integridade V24 e regressao V23/V22
+        run: node --test tests/v24_world_shop.test.cjs tests/v23_vila_defesa.test.cjs tests/v23_renascimento.test.cjs tests/v22_defense.test.cjs tests/v22_fundacao.test.cjs
+  navegador:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar navegador para testes desktop e mobile
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Testar loja, corrida, sprites e biomas no navegador
+        run: node tests/v24_browser.cjs
+  pacote:
+    needs: [logica, navegador]
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Empacotar apenas arquivos do jogo, sem publicar
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          find . -maxdepth 1 -type f \( -iname '*.html' -o -iname '*.css' -o -iname '*.js' -o -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' -o -iname '*.gif' -o -iname '*.svg' -o -iname '*.ico' -o -iname '*.mp3' -o -iname '*.ogg' -o -iname '*.wav' -o -iname '*.woff*' -o -name '_redirects' -o -name '_headers' \) -exec cp -t dist/ {} +
+          for d in sprites audio halloween_art; do if [ -d "$d" ]; then cp -a "$d" dist/; fi; done
+          for f in index.html mundo_pomar.js mundo_v24.css renascimento_v23.js casa_sync_v22.js pomar_ao_vivo_v20.js sprites/torre_solar_v24.svg sprites/praga_corredor_v24.svg sprites/lobo_vento_v24.svg; do test -f "dist/$f"; done
+          ! find dist -iname 'wrangler*' | grep -q .
+          cd dist
+          zip -qr ../Sam-Manguinha-V24-Mundo-Vivo-Cloudflare-Pages.zip .
+          unzip -t ../Sam-Manguinha-V24-Mundo-Vivo-Cloudflare-Pages.zip | tail -1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V24-Mundo-Vivo-Cloudflare-Pages
+          path: Sam-Manguinha-V24-Mundo-Vivo-Cloudflare-Pages.zip
+          retention-days: 30
