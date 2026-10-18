@@ -80,7 +80,9 @@ const server=http.createServer((req,res)=>{
    assert.equal(await page.locator('#gameDlg [data-v27-action="defense:pulse"]').isDisabled(),true,'pulse cannot be used without an active eligible game');
    await page.locator('#gameDlg [data-v27-action="defense:tactics"]').click();
    assert.equal(await page.locator('#gameDlg .sm21-tactics').isVisible(),true,'tower controls open over defense arena');
-   await page.locator('#gameDlg [data-v27-action="defense:tactics"]').click();
+   // As in the RPG, the overlay intentionally covers the quick bar on narrow screens.
+   await page.locator('#gameDlg .sm-immersive-menu').click();
+   assert.equal(await page.locator('#gameDlg .sm21-tactics').isVisible(),false,'tower drawer closes through visible menu');
    if(process.env.SM_SCREENSHOTS){const dir=path.resolve(process.env.SM_SCREENSHOTS);fs.mkdirSync(dir,{recursive:true});await page.screenshot({path:path.join(dir,mode+'-defesa.png')})}
    await page.locator('#gameDlg .sm-fullscreen-toggle').click();
    assert.deepEqual(missing,[],'local resources all fetched');
