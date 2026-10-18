@@ -16,6 +16,7 @@ try{
   localStorage.setItem('sm_last_seen_update_version','23.0.0');
   localStorage.setItem('sg_handle','v23tester');
   localStorage.setItem('sg_tok','abcdefghijklmnopqrstuvwxyz123456');
+  localStorage.setItem('sam_rpg_hibrido_v12_v23tester',JSON.stringify({map:'vila',x:11.7,y:10.8,found:[],seen:[],journal:[],epic:{class:'guardiao',seenIntro:true}}));
  });
  await page.goto('http://127.0.0.1:4173/index.html',{waitUntil:'domcontentloaded',timeout:45000});
  await page.waitForFunction(()=>typeof window.showPane==='function'&&document.getElementById('r23GuideList')&&document.getElementById('r23SettingsToggle'),{timeout:30000});
