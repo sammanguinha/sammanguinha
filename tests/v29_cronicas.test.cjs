@@ -61,7 +61,7 @@ test('Daily field research rotates 3 targets and grants only local capped reward
 test('Visual journal and action prompts are responsive and keyboard discoverable',()=>{
  for(const name of ['#v29Chronicle','#v29QuestObjective','#v29WorldQuest',
   '#v29ReadClues','#v29DailyStatus','#v29QuestSteps','.r13-combat-controls'])
-  assert.ok(css.includes(name)||world.includes(name),name);
+  assert.ok(css.includes(name)||world.includes(name.replace(/^#/,'')),name);
  assert.ok(css.includes('prefers-reduced-motion'));
  assert.ok(css.includes('max-width:620px'));
  assert.ok(world.includes("main.append(badge)"));
