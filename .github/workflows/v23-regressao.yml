@@ -1,0 +1,16 @@
+name: V23 - Regressao e integracao do mundo
+on:
+  push:
+    branches: [dev/v23-renascimento-integrado]
+  pull_request:
+    branches: [dev/v22-fundacao-reinos]
+  workflow_dispatch:
+jobs:
+  teste:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/v23_renascimento.test.cjs tests/v22_fundacao.test.cjs tests/v22_defense.test.cjs
