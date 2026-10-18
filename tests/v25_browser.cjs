@@ -30,7 +30,7 @@ const server=http.createServer((req,res)=>{
      localStorage.setItem('sg_extras_v1_v25test',JSON.stringify({seeds:0,owned:[],pet:'',best:0,day:'',claimed:[],stats:{}}));
    });
    await page.goto('http://127.0.0.1:4186/index.html',{waitUntil:'domcontentloaded',timeout:45000});
-   await page.waitForFunction(()=>typeof window.showPane==='function'&&!!window.SamHybridRPG?.getState,{timeout:30000});
+   await page.waitForFunction(()=>typeof window.showPane==='function'&&!!window.SamHybridRPG?.getState&&!!window.SamGameV27?.getSnapshot&&!!window.SamGameShellV27?.setTheme,{timeout:30000});
    const summary=await page.evaluate(()=>({
     base:!!document.querySelector('link[href="css/base.css?v=26"],link[href="css/game-v26.bundle.css?v=26"]')&&getComputedStyle(document.documentElement).getPropertyValue('--bg-deep').trim().length>0,
     scripts:!!document.querySelector('script[src="js/core/app.js?v=26"],script[src="js/game-v26.bundle.js?v=26"]'),
@@ -40,20 +40,59 @@ const server=http.createServer((req,res)=>{
    assert.ok(summary.base,'main stylesheet should load');
    assert.ok(summary.scripts,'main controller should be linked');
    assert.ok(summary.world&&summary.defense,'RPG + defense elements retained');
+   assert.ok(await page.locator('link[href="visual_v27.css?v=27"]').count(),'V27 stylesheet must be linked');
+   assert.equal(await page.evaluate(()=>window.SamGameShellV27.getTheme()),'aurora');
+   await page.evaluate(()=>window.showPane('rpgDlg'));
+   const themeSwitch=page.locator('#rpgDlg .v27-theme-button');
+   assert.equal((await themeSwitch.textContent()).trim(),'🌙 Eclipse');
+   await themeSwitch.click();
+   assert.equal(await page.evaluate(()=>document.documentElement.dataset.v27Theme),'eclipse');
+   assert.equal(await page.evaluate(()=>localStorage.getItem('sam_v27_visual_theme')),'eclipse');
+   await themeSwitch.click();
+   assert.equal(await page.evaluate(()=>document.documentElement.dataset.v27Theme),'aurora');
    await page.evaluate(()=>window.showPane('rpgDlg'));
    assert.ok(await page.locator('#r12Canvas').isVisible());
    assert.ok(await page.locator('#rpgDlg .sm-fullscreen-toggle').isVisible());
    await page.locator('#rpgDlg .sm-fullscreen-toggle').click();
    assert.ok(await page.locator('#r12Action').isVisible(),'action button must overlay viewport');
+   assert.ok(await page.locator('#v27RpgHud').isVisible(),'RPG HUD visible during immersive gameplay');
+   if(mode==='mobile'){
+     const rect=await page.locator('#r12Canvas').boundingBox();
+     const ratio=rect.width/rect.height;
+     assert.ok(Math.abs(ratio-(768/448))<0.1,'mobile RPG art must retain its native aspect ratio; got '+ratio.toFixed(3));
+   }
+   assert.ok(await page.locator('#rpgDlg .v27-rpg-actionbar').isVisible(),'RPG app actionbar visible');
+   const vitals=await page.evaluate(()=>window.SamGameV27.getSnapshot().rpg);
+   assert.ok(vitals.maxHp>=vitals.hp&&vitals.maxMp>=vitals.mp,'calculated RPG resource caps are available');
+   await page.locator('#rpgDlg [data-v27-action="rpg:inventory"]').click();
+   assert.equal(await page.locator('#rpgDlg .r12-aside').isVisible(),true,'inventory opens inside immersive viewport');
+   // On mobile, the inventory intentionally covers the quick toolbar. Close it using the visible top menu control.
+   await page.locator('#rpgDlg .sm-immersive-menu').click();
+   assert.equal(await page.locator('#rpgDlg .r12-aside').isVisible(),false,'inventory can close without exposing blocked controls');
+   await page.locator('#rpgDlg [data-v27-action="rpg:shop"]').click();
+   assert.ok(await page.locator('#v24Shop').isVisible(),'quick shop opens inside the fullscreen game');
+   await page.locator('#v24ShopClose').click();
+   if(process.env.SM_SCREENSHOTS){const dir=path.resolve(process.env.SM_SCREENSHOTS);fs.mkdirSync(dir,{recursive:true});await page.screenshot({path:path.join(dir,mode+'-rpg.png')})}
    assert.ok(await page.locator('#rpgDlg').evaluate(el=>el.classList.contains('sm-immersive')));
    await page.locator('#rpgDlg .sm-fullscreen-toggle').click();
    assert.ok(!(await page.locator('#rpgDlg').evaluate(el=>el.classList.contains('sm-immersive'))));
    await page.evaluate(()=>window.showPane('gameDlg'));
    assert.ok(await page.locator('#gCv').isVisible(),'defense canvas should remain usable');
    assert.ok(await page.locator('#gameDlg .sm-fullscreen-toggle').isVisible(),'defense immersive button visible');
+   await page.locator('#gameDlg .sm-fullscreen-toggle').click();
+   assert.ok(await page.locator('#v27DefenseHud').isVisible(),'defense HUD visible inside game');
+   assert.ok(await page.locator('#gameDlg .v27-defense-actionbar').isVisible(),'defense quick actions visible');
+   assert.equal(await page.locator('#gameDlg [data-v27-action="defense:pulse"]').isDisabled(),true,'pulse cannot be used without an active eligible game');
+   await page.locator('#gameDlg [data-v27-action="defense:tactics"]').click();
+   assert.equal(await page.locator('#gameDlg .sm21-tactics').isVisible(),true,'tower controls open over defense arena');
+   // As in the RPG, the overlay intentionally covers the quick bar on narrow screens.
+   await page.locator('#gameDlg .sm-immersive-menu').click();
+   assert.equal(await page.locator('#gameDlg .sm21-tactics').isVisible(),false,'tower drawer closes through visible menu');
+   if(process.env.SM_SCREENSHOTS){const dir=path.resolve(process.env.SM_SCREENSHOTS);fs.mkdirSync(dir,{recursive:true});await page.screenshot({path:path.join(dir,mode+'-defesa.png')})}
+   await page.locator('#gameDlg .sm-fullscreen-toggle').click();
    assert.deepEqual(missing,[],'local resources all fetched');
    assert.deepEqual(errors,[],'no browser JavaScript errors');
-   console.log(mode+' V25 PASS: modular CSS+JS, RPG, defense, immersive UI, no 404/JS errors');
+   console.log(mode+' V27 PASS: modular CSS+JS, RPG, defense, immersive UI, no 404/JS errors');
    await page.close();
   }
  }finally{await browser.close();server.close()}

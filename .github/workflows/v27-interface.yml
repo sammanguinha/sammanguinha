@@ -1,0 +1,90 @@
+name: V27 · Interface Viva · Visuais, motores e pacote (sem deploy)
+on:
+  push:
+    branches: [dev/v27-interface-viva]
+    paths:
+      - 'index.html'
+      - 'visual_v27.css'
+      - 'mundo_pomar.js'
+      - 'js/**'
+      - 'tests/**'
+      - 'scripts/**'
+      - 'MELHORIAS_V27.md'
+      - '.github/workflows/v27-interface.yml'
+  pull_request:
+    branches: [dev/v26-motores-modulares]
+  workflow_dispatch:
+jobs:
+  logica:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Testar bridge, UI e regressões de gameplay V20-V26
+        run: |
+          node --test tests/v27_bridge_ui.test.cjs tests/v26_modules.test.cjs tests/v25_architecture.test.cjs tests/v24_fullscreen.test.cjs tests/v24_world_shop.test.cjs tests/v23_vila_defesa.test.cjs tests/v23_renascimento.test.cjs tests/v22_defense.test.cjs tests/v22_fundacao.test.cjs tests/v21_reinos_pomar.test.cjs tests/v20_pomar_vivo.test.cjs
+      - name: Montar bundle e validar arquivos
+        run: |
+          node scripts/build-v26.cjs
+          node --test tests/v26_bundle.test.cjs
+          test -f dist/visual_v27.css
+          test -f dist/js/core/runtime-bridge-v27.js
+          test -f dist/js/ui/game-shell-v27.js
+          grep -q 'visual_v27.css?v=27' dist/index.html
+          grep -q 'js/ui/game-shell-v27.js?v=27' dist/index.html
+          grep -q 'js/core/runtime-bridge-v27.js?v=27' dist/index.html
+  navegador:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar Playwright Chromium
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Verificar novo visual e funcionalidade desktop/mobile (fonte)
+        run: SM_SCREENSHOTS=visual-samples/origem node tests/v25_browser.cjs
+      - name: Testar loja e corrida V24
+        run: node tests/v24_browser.cjs
+      - name: Verificar versão de produção (ZIP Cloudflare)
+        run: |
+          node scripts/build-v26.cjs
+          SM_GAME_ROOT=dist SM_SCREENSHOTS=visual-samples/producao node tests/v25_browser.cjs
+      - name: Guardar capturas de revisão visual
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: V27-Revisao-Visual
+          path: visual-samples/
+          retention-days: 14
+          if-no-files-found: ignore
+  pacote:
+    needs: [logica, navegador]
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Compilar e empacotar o jogo sem publicar
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/build-v26.cjs
+          node --test tests/v26_bundle.test.cjs
+          for f in dist/visual_v27.css dist/js/core/runtime-bridge-v27.js dist/js/ui/game-shell-v27.js; do test -s "$f"; done
+          cd dist
+          zip -qr ../Sam-Manguinha-V27-Interface-Viva-Cloudflare-Pages.zip .
+          unzip -t ../Sam-Manguinha-V27-Interface-Viva-Cloudflare-Pages.zip | tail -1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V27-Interface-Viva-Cloudflare-Pages
+          path: Sam-Manguinha-V27-Interface-Viva-Cloudflare-Pages.zip
+          retention-days: 30
