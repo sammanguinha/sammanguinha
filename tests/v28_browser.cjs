@@ -11,7 +11,7 @@ const server=http.createServer((req,res)=>{
  if(file===root)file=path.join(root,'index.html');
  fs.readFile(file,(e,b)=>{if(e)return res.writeHead(404).end();res.setHeader('Content-Type',mime[path.extname(file)]||'application/octet-stream');res.end(b)});
 });
-const modes=['home','rpgDlg','gameDlg','profDlg','houseDlg','eventDlg','diary','rankDlg','murDlg','questDlg','galDlg','secDlg','curDlg'];
+const modes=['home','sm18Expedition','rpgDlg','gameDlg','profDlg','houseDlg','eventDlg','diary','sm18Expedition','rankDlg','murDlg','questDlg','galDlg','secDlg','curDlg'];
 (async()=>{
  await new Promise(resolve=>server.listen(4192,'127.0.0.1',resolve));
  const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
@@ -36,7 +36,7 @@ const modes=['home','rpgDlg','gameDlg','profDlg','houseDlg','eventDlg','diary','
     const notes=document.getElementById('smUpdateLayer');if(notes)notes.hidden=true;
    });
    const base=await page.evaluate(()=>({
-     styles:['foundation','pages','responsive'].map(x=>({
+     styles:['foundation','pages','responsive','live-extensions'].map(x=>({
        href:'css/v28-'+x+'.css?v=28',
        exists:!!document.querySelector('link[href="css/v28-'+x+'.css?v=28"]'),
        applied:Array.from(document.styleSheets).some(sheet=>sheet.href?.includes('v28-'+x+'.css')&&sheet.cssRules.length>0)
@@ -51,7 +51,10 @@ const modes=['home','rpgDlg','gameDlg','profDlg','houseDlg','eventDlg','diary','
    assert.ok(base.portals>=8,'portal destinations preserved');
    const visualResults=[];
    for(const id of modes){
-    await page.evaluate(mode=>window.showPane(mode),id);
+    if(id==='sm18Expedition'){
+     await page.evaluate(()=>window.showPane('home'));
+     await page.locator('#sm18HubPlay').click();
+    }else await page.evaluate(mode=>window.showPane(mode),id);
     await page.waitForTimeout(110);
     const target=id==='diary'?'#diary':id==='home'?'#home':'#'+id;
     assert.ok(await page.locator(target).isVisible(),'section '+id+' visible on '+device);

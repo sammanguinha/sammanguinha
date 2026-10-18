@@ -28,10 +28,11 @@ jobs:
         run: |
           node scripts/build-v26.cjs
           node --test tests/v26_bundle.test.cjs
-          for f in dist/css/v28-foundation.css dist/css/v28-pages.css dist/css/v28-responsive.css; do test -s "$f"; done
+          for f in dist/css/v28-foundation.css dist/css/v28-pages.css dist/css/v28-responsive.css dist/css/v28-live-extensions.css; do test -s "$f"; done
           grep -q 'css/v28-foundation.css?v=28' dist/index.html
           grep -q 'css/v28-pages.css?v=28' dist/index.html
           grep -q 'css/v28-responsive.css?v=28' dist/index.html
+          grep -q 'css/v28-live-extensions.css?v=28' dist/index.html
   navegador:
     runs-on: ubuntu-latest
     timeout-minutes: 25
@@ -44,7 +45,7 @@ jobs:
         run: |
           npm install --no-save playwright@1.58.2
           npx playwright install --with-deps chromium
-      - name: Testar visual das 13 telas no computador, tablet e celular
+      - name: Testar visual das 14 telas no computador, tablet e celular
         run: SM_V28_SHOTS=visual-review/fonte node tests/v28_browser.cjs
       - name: Testar novamente gameplay, loja e HUD imersivo
         run: |
@@ -77,7 +78,7 @@ jobs:
           set -euo pipefail
           node scripts/build-v26.cjs
           node --test tests/v26_bundle.test.cjs
-          for f in dist/css/v28-foundation.css dist/css/v28-pages.css dist/css/v28-responsive.css dist/visual_v27.css dist/js/game-v26.bundle.js dist/js/ui/game-shell-v27.js; do test -s "$f"; done
+          for f in dist/css/v28-foundation.css dist/css/v28-pages.css dist/css/v28-responsive.css dist/css/v28-live-extensions.css dist/visual_v27.css dist/js/game-v26.bundle.js dist/js/ui/game-shell-v27.js; do test -s "$f"; done
           cd dist
           zip -qr ../Sam-Manguinha-V28-Reforma-Visual-Cloudflare-Pages.zip .
           unzip -t ../Sam-Manguinha-V28-Reforma-Visual-Cloudflare-Pages.zip | tail -1

@@ -2,9 +2,9 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const html=read('index.html'),styles=[
- 'css/v28-foundation.css','css/v28-pages.css','css/v28-responsive.css'
+ 'css/v28-foundation.css','css/v28-pages.css','css/v28-responsive.css','css/v28-live-extensions.css'
 ];
-test('V28 loads three ordered CSS layers AFTER V27 without removing the existing game engines',()=>{
+test('V28 loads four ordered CSS layers AFTER V27 without removing the existing game engines',()=>{
  let prev=html.indexOf('visual_v27.css?v=27');
  assert.ok(prev>=0);
  for(const file of styles){
@@ -22,13 +22,13 @@ test('V28 loads three ordered CSS layers AFTER V27 without removing the existing
 });
 test('V28 redesign covers every major section, not just the RPG canvas',()=>{
  const css=styles.map(read).join('\n');
- for(const id of ['#hero','#home','#rpgDlg','#gameDlg','#houseDlg','#profDlg','#eventDlg',
+ for(const id of ['#sm18Expedition','#hero','#home','#rpgDlg','#gameDlg','#houseDlg','#profDlg','#eventDlg',
   '#diary','#murDlg','#rankDlg','#questDlg','#galDlg','#secDlg','#curDlg']){
   assert.ok(css.includes(id),'V28 section missing: '+id);
  }
  for(const feature of ['.portal-card','.r12-frame','.sm21-tower-buttons','.r12-card',
  '.sm21-house-sidebar','.wardrobe-tab','.region-node','.sm17-social','.podium',
- '.sm17-code-console','#gGal','#facts','dialog','nav#areas']){
+ '.sm17-code-console','#gGal','#facts','dialog','nav#areas','.sm18-hub','.r14-more-menu','.r14-music-pop']){
   assert.ok(css.includes(feature),'style component missing: '+feature);
  }
 });
