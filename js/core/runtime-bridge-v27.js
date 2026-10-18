@@ -20,14 +20,18 @@
        const data=window.SamHybridRPG?.getState?.();
        if(data){
          const e=data.epic||{},extra=e.v24||{};
-         const hpMax=Math.max(1,num(e.maxHp,Math.max(1,num(e.hp,1))));
+         const vitals=window.SamHybridRPG?.getVitals?.()||{};
+         const hpMax=Math.max(1,num(vitals.maxHp,Math.max(1,num(e.hp,1))));
          record.rpg=Object.freeze({
            region:String(data.map||'vila').slice(0,80),
            gold:Math.max(0,Math.floor(num(e.gold))),
            level:Math.max(1,Math.floor(num(e.level,1))),
-           hp:Math.max(0,Math.floor(num(e.hp,0))),
-           mp:Math.max(0,Math.floor(num(e.mp,0))),
-           stamina:clamp(extra.stamina??100,0,140),
+           hp:Math.max(0,Math.floor(num(vitals.hp??e.hp,0))),
+           maxHp:hpMax,
+           mp:Math.max(0,Math.floor(num(vitals.mp??e.mp,0))),
+           maxMp:Math.max(1,Math.floor(num(vitals.maxMp,20))),
+           stamina:clamp(vitals.stamina??extra.stamina??100,0,140),
+           maxStamina:Math.max(100,Math.floor(num(vitals.maxStamina,100))),
            potions:Math.max(0,Math.floor(num(e.potions))),
            seeds:Array.isArray(data.found)?data.found.length:0,
            classId:String(e.class||'guardiao').slice(0,40)
@@ -62,7 +66,7 @@
    const mode=gameMode();
    const pane=document.getElementById(mode);
    const immersive=!!pane?.classList.contains('sm-immersive');
-   if(id==='rpg:shop'&&mode==='rpgDlg')return !!window.SamHybridRPG?.openShop?.();
+   if(id==='rpg:shop'&&mode==='rpgDlg'&&window.SamHybridRPG?.openShop){window.SamHybridRPG.openShop();return true}
    if(id==='rpg:inventory'&&mode==='rpgDlg'&&immersive){
      const menu=pane.querySelector('.sm-immersive-menu');
      if(!menu)return false;
