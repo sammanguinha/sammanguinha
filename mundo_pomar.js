@@ -304,6 +304,19 @@ Object.assign(rooms,{
 });
 rooms.floresta.actors.push({id:'toMeadow',x:20.4,y:11.8,type:'passage',epic:'gate',target:'planicie',tx:2.5,ty:7,label:'Campina dos Ventos'});
 rooms.mina.actors.push({id:'toGrotto',x:20.8,y:10.7,type:'door',epic:'gate',min:3,target:'gruta',tx:2.5,ty:7,label:'Gruta do Eco Azul'});
+ // V29: the extra story shares the current RPG save; no account migration.
+ const v29Data=window.SamV29Data;
+ if(v29Data){
+  for(const [key,actors] of Object.entries(v29Data.actors))
+   if(rooms[key])rooms[key].actors.push(...actors.map(actor=>({...actor})));
+  Object.assign(EPIC_ENEMIES,v29Data.enemies);
+  Object.assign(EPIC_ARTIFACTS,{
+   broche_aurora:{name:'Broche da Badalada',rarity:'Raro',element:'light',
+    desc:'Com este broche equipado, MP máximo +3 e habilidades +8% de dano.',
+    effect:'resonance'}
+  });
+ }
+
 Object.assign(EPIC_ENEMIES,{
  lobo_vento:{name:'Lobo dos Ventos',element:'nature',hp:44,atk:8,def:2,xp:68,gold:32,weak:'fire',sprite:'lobo_vento_v24',intro:'Um guardião da campina corre em círculos. A marca do vento revela quando ele vai atacar.'},
  vulto_eco:{name:'Vulto de Cristal',element:'storm',hp:90,atk:13,def:4,xp:130,gold:58,weak:'earth',sprite:'vulto_eco_v24',intro:'Os cristais escutam seus passos. O vulto reúne a luz em um único ponto.'}
@@ -466,7 +479,7 @@ Object.assign(EPIC_ENEMIES,{
   $('r12Quests').innerHTML=lines.map(([x,done])=>'<div class="r12-quest-row '+(done?'done':'')+'">'+(done?'✓ ':'◇ ')+x+'</div>').join('');
   $('r12Inventory').innerHTML='<span class="r12-tag">🌱 '+n+'/3 sementes</span><span class="r12-tag '+(st.relic?'':'dim')+'">✦ Relíquia</span>';
   $('r12Journal').innerHTML=st.journal.map(e=>'<div>'+escapeHtml(e)+'</div>').join('');
-  $('r12Region').textContent=room().subtitle;renderEpicUI();
+  $('r12Region').textContent=room().subtitle;renderEpicUI();v29RenderUI();
  }
  function escapeHtml(str){return String(str).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
  function say(who,msg,onNext=null,actionText='Continuar'){
@@ -513,7 +526,7 @@ function ownItem(id){if(!EPIC_ARTIFACTS[id])return;if(!epic().items.includes(id)
 function hasEffect(effect){return epic().equipped.some(id=>EPIC_ARTIFACTS[id]?.effect===effect)}
 function classInfo(){return EPIC_CLASSES[epic().class]||EPIC_CLASSES.guardiao}
 function maxHealth(){return classInfo().hp+(epic().level-1)*4+epic().stats.vig*3+(hasEffect('vigor')?12:0)+(hasEffect('royal')?20:0)+(hasEffect('bloom')?10:0)}
-function maxMana(){return classInfo().mp+epic().stats.int+Math.floor(epic().level/2)}
+function maxMana(){return classInfo().mp+epic().stats.int+Math.floor(epic().level/2)+(hasEffect('resonance')?3:0)}
 function recomputeHealth(){epic().hp=Math.min(Math.max(1,epic().hp),maxHealth());epic().mp=Math.min(Math.max(0,epic().mp),maxMana())}
 function xpNeed(){return 60+epic().level*47}
 function giveXP(amount){const e=epic();e.xp+=amount;while(e.xp>=xpNeed()&&e.level<30){e.xp-=xpNeed();e.level++;e.points+=2;e.hp=maxHealth();e.mp=maxMana();notify('Novo nível '+e.level+'! +2 pontos para distribuir.')}save();update()}
@@ -537,8 +550,277 @@ function epicActorVisible(a){if(!a.epic)return true;
  return true;
 }
 const epicMonsters={
- larva:'larva',spider:'rainha',crystalBoss:'besouro',collector:'espectro',moonGuardian:'sentinela',finalKing:'rei',v24MeadowWolf:'lobo_vento',v24GrottoWisp:'vulto_eco'
+ larva:'larva',spider:'rainha',crystalBoss:'besouro',collector:'espectro',moonGuardian:'sentinela',finalKing:'rei',v24MeadowWolf:'lobo_vento',v24GrottoWisp:'vulto_eco',v29Mariposa:'v29_silencio',v29Sentinela:'v29_sentinela'
 };
+/* V29 · CRÔNICAS VIVAS — trilha narrativa jogável, pistas e recompensas únicas.
+   Salva tudo no mesmo epic.v29; rankings, Supabase e a campanha principal não mudam. */
+function v29State(){
+ const e=epic();
+ if(!e.v29||typeof e.v29!=='object'||Array.isArray(e.v29))e.v29={};
+ const q=e.v29;
+ if(!Array.isArray(q.clues))q.clues=[];
+ if(!Array.isArray(q.finds))q.finds=[];
+ if(!Array.isArray(q.dialogues))q.dialogues=[];
+ if(!Array.isArray(q.notes))q.notes=[];
+ if(!Number.isInteger(q.step)||q.step<0||q.step>3)q.step=0;
+ q.failures=Math.max(0,Math.floor(Number(q.failures)||0));
+ return q;
+}
+function v29Objective(){
+ const q=v29State();
+ if(!q.started)return 'Encontre Íris, a cartógrafa, na Vila da Mangueira.';
+ if(q.clues.length<3)return 'Investigue o relógio na Vila, a casca na Floresta e a biruta na Campina ('+q.clues.length+'/3).';
+ if(!q.chime)return 'Afine o carrilhão no leste da Trilha Encantada usando suas três pistas.';
+ if(!q.wisp)return 'Investigue e enfrente a Mariposa do Silêncio na Floresta.';
+ if(!q.scout)return 'Encontre Caio na Campina e descubra por que a sentinela levou o sino.';
+ if(!q.guardian)return 'Enfrente a Sentinela da Badalada na Campina. Observe seus ataques antes de agir.';
+ if(!q.ending)return 'Volte à Copa da Primeira Mangueira, ao norte da Trilha, e decida o destino do sino.';
+ return 'Crônica concluída. Descubra as nove memórias escondidas nos mapas ('+q.finds.length+'/9).';
+}
+function v29ActorVisible(a){
+ const q=v29State();
+ if(a.v29==='find')return !q.finds.includes(a.id);
+ if(a.v29==='dailySpot'){const d=v29Daily();return !!q.started&&!!d.started&&d.task===v29Data.fieldTasks.findIndex(t=>t.id===a.id)}
+ if(a.v29==='enemy'){
+  if(a.id==='v29Mariposa')return !!q.chime&&!q.wisp&&!epic().defeated.includes(a.id);
+  return !!q.scout&&!q.guardian&&!epic().defeated.includes(a.id);
+ }
+ if(a.v29==='ending')return !!q.guardian;
+ if(a.v29==='puzzle')return !!q.started;
+ return true;
+}
+function v29Memory(id){
+ const q=v29State(),data=v29Data?.discoveries[id];
+ if(!data)return false;
+ if(q.finds.includes(id)){
+  say('Registro do Pomar',data.text);return true;
+ }
+ q.finds.push(id);
+ if(q.notes.length<16)q.notes.unshift(data.chapter+' · '+data.title);
+ const e=epic();e.gold+=6;giveXP(10);
+ log('Descoberta: '+data.title+' · +10 XP e +6 moedas RPG.');
+ if(q.finds.length===Object.keys(v29Data.discoveries).length&&!q.collectionReward){
+  q.collectionReward=true;e.gold+=45;giveXP(80);
+  log('Coleção completa: as nove memórias do Pomar foram preservadas. Bônus de +80 XP e +45 moedas!');
+ }
+ say('Descoberta de cenário · '+data.title,data.text+'\n\nO registro entrou no Livro da Crônica. +10 XP e +6 moedas RPG'+(q.collectionReward&&q.finds.length===9?' · Coleção completa!':'')+'.');
+ save();update();return true;
+}
+function v29Clue(id){
+ const q=v29State(),c=v29Data?.clues[id];if(!c)return false;
+ if(!q.started){
+  say(c.who,c.text+' Procure Íris na Vila para começar a investigação da badalada.');return true;
+ }
+ if(q.clues.includes(id)){say(c.who,c.text+' Esta pista já está anotada no seu diário.');return true}
+ q.clues.push(id);q.notes.unshift('Pista '+q.clues.length+'/3: '+c.name);
+ log('Pista musical encontrada: '+c.name+'.');
+ say(c.who,c.text+'\n\nPista registrada ('+q.clues.length+'/3).');
+ save();update();return true;
+}
+function v29ShowClues(){
+ const q=v29State();
+ const texts=q.clues.map(id=>v29Data.clues[id]?.text).filter(Boolean);
+ say('Caderno de Íris',
+  texts.length?texts.join('\n\n')+'\n\nPense na ordem dos acontecimentos, não na ordem em que encontrou os objetos.':
+  'Sua investigação ainda não tem pistas. O relógio, a casca da árvore e a biruta guardam uma informação cada.');
+}
+function v29Puzzle(){
+ const q=v29State(),seq=v29Data.chime.symbols;
+ if(!q.started){say('Carrilhão Silencioso','Os sinos não respondem. Encontre Íris na Vila para começar a investigação.');return}
+ if(q.clues.length<3){
+  say('Carrilhão das Três Vozes','Há três encaixes e apenas '+q.clues.length+' pista(s) anotada(s). Investigue o relógio, a casca e a biruta antes de tentar.');return;
+ }
+ if(q.chime){say('Carrilhão Restaurado','A melodia atravessa o vento e as raízes. Ela aponta para um vulto na parte sul da Floresta.');return}
+ const step=q.step;
+ const explain=step===0?'Primeira nota: onde nasceu o chamado?':step===1?'Segunda nota: quem guardou o som?':'Terceira nota: quem respondeu ao chamado?';
+ choiceBox('🎼 Carrilhão · '+(step+1)+'/3',
+  explain+'\n\n'+v29Data.chime.clue+'\nErros: '+q.failures,
+  [...['LUZ','RAIZ','SOPRO'].map(key=>[key,()=>{
+   if(key!==seq[step]){
+    q.step=0;q.failures++;save();update();
+    say('Carrilhão desafinado','Uma nota ressoa fora de ordem e o carrilhão silencia. Sua investigação não foi perdida. Leia as pistas antes de tentar de novo.',()=>v29Puzzle(),'Tentar novamente');
+    return;
+   }
+   q.step=step+1;save();update();
+   if(q.step>=3){
+    q.step=3;q.chime=true;
+    log('O carrilhão despertou. Sopro, Raiz e Luz revelaram a Mariposa do Silêncio.');
+    goStory([['Carrilhão das Três Vozes','O último toque traz de volta uma canção infantil e aponta para a mata ao sul.'],['Íris, na lembrança','Agora você consegue ouvir o que roubou a badalada. Procure o som no silêncio da Floresta.']]);
+    return;
+   }
+   say('Carrilhão · nota correta','A nota foi ouvida. O som percorre as raízes e espera a próxima escolha.',()=>v29Puzzle(),'Escolher próxima nota');
+  }]),['📖 Relêr as pistas',()=>v29ShowClues()],['Deixar o carrilhão',()=>{}]]);
+}
+function v29StoryChoice(){
+ const q=v29State();if(!q.guardian)return;
+ if(q.ending){say('Copa da Primeira Mangueira',q.ending==='vila'
+  ?'Sua decisão permanece: a badalada une os habitantes na Vila.'
+  :'Sua decisão permanece: o Bosque guia viajantes com sua melodia.');return}
+ goStory(v29Data.story.final,()=>choiceBox('A Última Badalada',
+  'O sino foi recuperado. Onde a melodia poderá cuidar melhor de quem vive no Pomar?',
+  [['Devolver a badalada à Vila',()=>v29Ending('vila')],
+   ['Confiar o sino às raízes do Bosque',()=>v29Ending('bosque')],
+   ['Preciso pensar mais',()=>say('Eco da Mangueira','A decisão é sua. Volte à Copa quando estiver pronto.')]]));
+}
+function v29Ending(kind){
+ const q=v29State();if(q.ending)return;
+ q.ending=kind;
+ const e=epic();e.gold+=75;
+ ownItem('broche_aurora');
+ giveXP(140);save();update();
+ log(kind==='vila'?'A badalada voltou para todos na Vila.':'A badalada passou a orientar viajantes pela Floresta.');
+ goStory(v29Data.story[kind==='vila'?'share':'shelter'],()=>{
+  say('Nova conquista · A Última Badalada','Você completou a Crônica da Badalada! +140 XP, +75 moedas RPG e o Broche da Badalada. Há nove histórias de cenário para colecionar.');
+ });
+}
+function v29CombatWon(key){
+ const q=v29State();
+ if(key==='v29_silencio'&&!q.wisp){
+  q.wisp=true;log('A Mariposa libertou a melodia. Agora Caio precisa ouvir o que você encontrou.');
+  goStory(v29Data.story.afterWisp);
+ }else if(key==='v29_sentinela'&&!q.guardian){
+  q.guardian=true;
+  log('A Sentinela reconheceu a música do sino. A Copa da Primeira Mangueira aguarda a decisão final.');
+  goStory([['Sentinela da Badalada','Eu protegia o sino da palavra que exclui. Não deixarei que calem os pequenos outra vez.'],
+   ['Caio, em lembrança','A Copa, ao norte da Floresta, sabe por que o sino foi criado. Encontre a árvore e escute sua escolha.']]);
+ }
+ save();update();
+}
+/* An optional once-per-day local field assignment. Official leaderboards unaffected. */
+function v29Daily(){
+ const q=v29State(),today=v23Day();
+ if(!q.daily||q.daily.day!==today){
+  const dayNumber=Number(String(today).replace(/\D/g,'').slice(-2))||1;
+  q.daily={day:today,task:dayNumber%v29Data.fieldTasks.length,
+   started:false,observed:false,claimed:false};
+ }
+ return q.daily;
+}
+function v29DailyBoard(){
+ const q=v29State();if(!q.started){
+  say('Diário de Campo','Íris organiza pequenas pesquisas pelo Pomar. Comece A Última Badalada com ela antes de usar o diário.');return;
+ }
+ const d=v29Daily(),task=v29Data.fieldTasks[d.task];
+ if(d.claimed){
+  say('Diário de Campo','Pesquisa registrada! Você recebeu a recompensa de hoje. Amanhã haverá uma nova expedição.');return;
+ }
+ if(!d.started){
+  d.started=true;save();
+  say('Diário de Campo · Pesquisa de Hoje','Destino: '+task.map+'.\n'+task.text+'\n\nInvestigue a marca brilhante da região e volte ao quadro na Vila.');
+  return;
+ }
+ if(!d.observed){
+  say('Diário de Campo','Pesquisa em andamento. Vá até '+task.map+' e investigue a marca. Volte para receber a recompensa.');return;
+ }
+ d.claimed=true;epic().gold+=18;giveXP(30);
+ log('Diário de Campo: pesquisa de '+task.map+' concluída! +30 XP e +18 moedas RPG.');
+ say('Diário de Campo','Observação registrada e enviada para Íris! +30 XP e +18 moedas RPG. A tarefa foi concluída por hoje.');
+ save();update();
+}
+function v29DailySpot(a){
+ const d=v29Daily(),task=v29Data.fieldTasks[d.task];
+ if(!d.started||a.id!==task.id){
+  say('Observação do Pomar','Uma marca de pesquisa antiga. O Diário de Campo da Vila informa a rota do dia.');return;
+ }
+ if(d.observed){
+  say('Observação do Pomar','O registro de hoje já foi feito. Volte ao Diário de Campo na Vila.');return;
+ }
+ d.observed=true;log('Pesquisa do dia: a observação em '+task.map+' foi concluída.');
+ say('Caderno de Campo',task.text+'\n\nVocê anotou os detalhes. Volte à Vila e entregue o registro no Diário de Campo.');
+ save();update();
+}
+function v29Interact(a){
+ const q=v29State();if(!v29Data)return false;
+ if(a.v29==='dailyBoard'){v29DailyBoard();return true}
+ if(a.v29==='dailySpot'){v29DailySpot(a);return true}
+ if(a.v29==='clue')return v29Clue(a.id);
+ if(a.v29==='find')return v29Memory(a.id);
+ if(a.v29==='puzzle'){v29Puzzle();return true}
+ if(a.v29==='ending'){v29StoryChoice();return true}
+ if(a.v29==='enemy'){
+  if(a.id==='v29Mariposa'&&!q.chime){say('Vulto Silencioso','O carrilhão ainda não revelou o caminho.');return true}
+  if(a.id==='v29Sentinela'&&!q.scout){say('Sentinela','Caio pode explicar por que esta guardiã se esconde.');return true}
+  startCombat(epicMonsters[a.id],a.id);return true;
+ }
+ if(a.id==='v29Iris'){
+  if(!q.started){
+   goStory(v29Data.story.intro,()=>{
+    q.started=true;q.notes.unshift('Íris pediu ajuda para recuperar a última badalada.');
+    log('Uma nova Crônica começou: A Última Badalada. Investigue relógio, casca e biruta.');
+   });return true;
+  }
+  const mood=q.ending==='vila'?'A Vila voltou a celebrar em conjunto.':q.ending==='bosque'?'Desenhei no mapa o novo caminho musical.':'É bom ver alguém que ouve com tanta atenção.';
+  choiceBox('Íris, Cartógrafa',
+   mood+'\n\n'+v29Objective(),
+   [['Relembrar pistas',()=>v29ShowClues()],
+    ['Perguntar sobre a Crônica',()=>say('Íris','Explore a Vila, a Trilha e a Campina. Pistas e histórias de cenário serão registradas no seu livro.')],
+    ['Até logo',()=>{}]]);return true;
+ }
+ if(a.id==='v29Mara'){
+  if(!q.started){say('Mara, Jardineira','A Floresta silenciou e eu não entendo por quê. Íris investiga a badalada perdida na Vila.');return true}
+  if(!q.dialogues.includes('mara')){
+   q.dialogues.push('mara');goStory(v29Data.story.mara);return true;
+  }
+  say('Mara, Jardineira',q.chime?'Você ouviu a melodia! Procure a Mariposa ao sul, perto da trilha.':
+   'A partitura nasce no sopro, percorre a raiz e alcança a luz. Guarde o que cada objeto contou.');return true;
+ }
+ if(a.id==='v29Caio'){
+  if(!q.started){say('Caio, Aprendiz','Íris precisa da sua ajuda na Vila. O relógio da Praça não toca há dias.');return true}
+  if(!q.wisp){say('Caio, Aprendiz','Ouvi passos na Campina, mas a névoa não me deixa ver. Afine o carrilhão e liberte primeiro a Mariposa na Floresta.');return true}
+  if(!q.scout){
+   q.scout=true;log('Caio revelou que a Sentinela da Badalada protege o sino na Campina.');
+   goStory(v29Data.story.caio);return true;
+  }
+  say('Caio, Aprendiz',q.guardian?'Você atravessou a tempestade! A Copa ao norte da Floresta espera sua decisão.':
+   'A Sentinela guarda o sino perto do centro da Campina. Quando reunir nuvens para o golpe forte, use DEFENDER.');return true;
+ }
+ return false;
+}
+function v29SetupUI(){
+ if($('v29Chronicle'))return;
+ const aside=host.querySelector('.r12-aside');
+ if(!aside)return;
+ const card=document.createElement('section');card.id='v29Chronicle';card.className='r12-card v29-chronicle';
+ card.setAttribute('aria-label','Nova crônica de exploração');
+ card.innerHTML='<div class="v29-eyebrow">NOVA AVENTURA · V29</div><h3>🔔 A Última Badalada</h3>'+
+ '<p id="v29QuestObjective"></p><div class="v29-progress-track" role="progressbar" aria-label="Progresso da Crônica" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0"><i id="v29QuestBar"></i></div>'+
+ '<p id="v29QuestMeta"></p><div id="v29QuestSteps"></div><div id="v29QuestClues" class="v29-clues"></div>'+
+ '<button type="button" id="v29ReadClues">📖 Ver pistas no diário</button>'+
+ '<p id="v29DailyStatus" class="v29-daily"></p><p class="v29-caption">Pistas, combates e descobertas salvam no seu RPG. Sem alterar o ranking.</p>';
+ aside.prepend(card);
+ $('v29ReadClues').addEventListener('click',v29ShowClues);
+ const main=host.querySelector('.r12-main');
+ if(main){
+  const badge=document.createElement('button');badge.id='v29WorldQuest';badge.type='button';
+  badge.className='v29-world-quest';badge.textContent='🔔 A Última Badalada · ver missão';
+  badge.addEventListener('click',()=>{
+   const menu=host.querySelector('.sm-immersive-menu');
+   if(host.classList.contains('sm-immersive')&&!host.classList.contains('sm-immersive-panel-open'))menu?.click();
+   card.scrollIntoView({block:'nearest',behavior:'auto'});
+  });
+  main.append(badge);
+ }
+}
+function v29RenderUI(){
+ const card=$('v29Chronicle');if(!card)return;
+ const q=v29State();
+ let done=[!!q.started,q.clues.length===3,!!q.chime,!!q.wisp,!!q.scout,!!q.guardian,!!q.ending];
+ const n=done.filter(Boolean).length;
+ $('v29QuestObjective').textContent=v29Objective();
+ $('v29QuestMeta').textContent='Progresso '+n+'/7 · '+q.clues.length+'/3 pistas · '+q.finds.length+'/9 descobertas'+(q.failures?' · '+q.failures+' tentativas incorretas':'');
+ $('v29QuestBar').style.width=Math.round(100*n/7)+'%';
+ card.querySelector('[role="progressbar"]').setAttribute('aria-valuenow',String(n));
+ const labels=['Converse com Íris','Reúna três pistas do cenário','Afine o Carrilhão','Liberte a Mariposa','Ouça Caio','Enfrente a Sentinela','Decida o destino do sino'];
+ $('v29QuestSteps').innerHTML=labels.map((label,i)=>'<div class="r12-quest-row '+(done[i]?'done':'')+'">'+(done[i]?'✓ ':'◇ ')+label+'</div>').join('');
+ const clues=$('v29QuestClues');
+ clues.innerHTML=q.clues.map(id=>'<div>✧ '+escapeHtml(v29Data.clues[id]?.name||id)+'</div>').join('')||
+  '<small>O caderno aguarda a primeira pista.</small>';
+ const daily=v29Daily(),task=v29Data.fieldTasks[daily.task];
+ $('v29DailyStatus').textContent=q.started?('📚 Diário de Campo: '+(daily.claimed?'pesquisa concluída hoje':!daily.started?'nova pesquisa disponível na Vila':daily.observed?'volte à Vila para entregar':'investigue '+task.map)):('📚 Diário de Campo: disponível após conversar com Íris');
+ const badge=$('v29WorldQuest');
+ if(badge)badge.textContent=q.ending?'🔔 Crônica concluída · '+q.finds.length+'/9 memórias':
+  '🔔 '+(q.started?'Crônica: '+n+'/7 etapas · abrir diário':'Nova crônica: fale com Íris');
+}
 function epicInteract(a){if(!a||!a.epic)return false;
  const e=epic(),f=e.flags;
  if(a.epic==='gate'){epicMapPortal(a.id,a.target,a.tx,a.ty,a.min||0);return true}
@@ -598,11 +880,20 @@ function finishEpilogue(){const e=epic();e.chapter=7;ownItem('coroa_semente');co
  reconciliar:[['Narrador','Você oferece ao Rei a lembrança que ele nunca teve: uma criança dividindo com ele a última manga.'],['Rei das Pragas','Eu... eu também tinha fome. Era possível sentar à mesa sem precisar tomar a de ninguém?'],['Eldra','Até a maldição pode aprender a terminar. Você não apagou a dor; deu a ela um nome e um lugar no mundo.'],['Epílogo','A primeira mangueira cresceu mais uma vez. Onde havia um trono de pragas, surgiu uma mesa. E naquela mesa havia sempre um fruto a mais.']]};
  addStory('ending:'+e.ending,'Final conquistado: '+({libertar:'O Pomar Compartilhado',selar:'O Guardião Silencioso',reconciliar:'A Mesa para Todos'}[e.ending])+'!');giveXP(550);goStory(endings[e.ending],()=>{update();notify('Campanha concluída! Explore as histórias e missões secundárias.')});save()}
 let epicCombat=null;let epicCombatBusy=false;let epicSoundLast=0;
+function v29CombatTell(c){
+ if(c.key==='v29_sentinela')return c.turn%3===0
+  ?'⚠ A Sentinela concentra nuvens nas patas: próximo ataque CARREGADO. DEFENDA ou ANALISE para resistir.'
+  :'A Sentinela circula e testa sua defesa. Natureza abre fissuras na armadura.';
+ if(c.key==='v29_silencio')return c.turn%4===0
+  ?'⚠ A Mariposa recolhe as asas: o próximo eco causará mais dano. Proteja-se.'
+  :'A Mariposa perde o brilho diante da Luz. Estude a fraqueza antes de usar magia.';
+ return '';
+}
 function startCombat(monster,actor){if(epicCombat||!EPIC_ENEMIES[monster])return;if(!epic().class){showEpicClasses();return}
- const m=EPIC_ENEMIES[monster];const basePhase=m.phases?m.phases[0]:{hp:m.hp,element:m.element,title:''};epicCombat={key:monster,actor,name:m.name,hp:basePhase.hp,maxHp:basePhase.hp,phase:0,element:basePhase.element,playerGuard:false,turn:1,status:'',enemyStatus:'',logs:[m.intro],enemyIntent:'O inimigo prepara seu primeiro golpe.',lock:false};
+ const m=EPIC_ENEMIES[monster];const basePhase=m.phases?m.phases[0]:{hp:m.hp,element:m.element,title:''};epicCombat={key:monster,actor,name:m.name,hp:basePhase.hp,maxHp:basePhase.hp,phase:0,element:basePhase.element,playerGuard:false,turn:1,status:'',enemyStatus:'',logs:[m.intro],enemyIntent:'O inimigo prepara seu primeiro golpe.',lock:false};epicCombat.enemyIntent=v29CombatTell(epicCombat)||epicCombat.enemyIntent;
  window.SamMusic?.scene(monster==='rei'?'boss':'battle');const e=epic();e.mp=Math.min(e.mp+1,maxMana());if(hasEffect('vigor'))e.hp=Math.min(e.hp+2,maxHealth());if(hasEffect('moonrise'))e.mp=Math.min(maxMana(),e.mp+2);dialogOpen=true;createCombat();renderCombat();save();}
 function damageMult(atk,def){if(atk===def)return .76;if(EPIC_ADV[atk]===def)return 1.55;if(EPIC_ADV[def]===atk)return .65;return 1}
-function damageToEnemy(element,magic=false){const e=epic(),m=EPIC_ENEMIES[epicCombat.key];const attr=magic?e.stats.int:e.stats.for;const coeff=magic?1.7:1.4;const base=Math.max(2,Math.floor(8+e.level*2.0+attr*coeff-m.def));let mult=damageMult(element,epicCombat.element);if(m.weak===element)mult=Math.max(mult,1.65);if(hasEffect('attack'))mult+=(3/base);if(hasEffect('spell')&&magic)mult*=1.3;if(hasEffect('focus')&&magic)mult*=1.12;if(hasEffect('royal')&&epicCombat.key==='rei')mult*=1.15;if(hasEffect('halloween')&&epicCombat.element==='shadow')mult*=1.15;const variation=.88+Math.random()*.26;const crit=Math.random()<Math.min(.36,.035+epic().stats.agi*.011+(epic().class==='rastreador'?.10:0));return {value:Math.max(1,Math.floor(base*mult*variation*(crit?1.55:1))),mult,crit}}
+function damageToEnemy(element,magic=false){const e=epic(),m=EPIC_ENEMIES[epicCombat.key];const attr=magic?e.stats.int:e.stats.for;const coeff=magic?1.7:1.4;const base=Math.max(2,Math.floor(8+e.level*2.0+attr*coeff-m.def));let mult=damageMult(element,epicCombat.element);if(m.weak===element)mult=Math.max(mult,1.65);if(hasEffect('attack'))mult+=(3/base);if(hasEffect('spell')&&magic)mult*=1.3;if(hasEffect('resonance')&&magic)mult*=1.08;if(hasEffect('focus')&&magic)mult*=1.12;if(hasEffect('royal')&&epicCombat.key==='rei')mult*=1.15;if(hasEffect('halloween')&&epicCombat.element==='shadow')mult*=1.15;if(epicCombat.focus)mult*=1.35;const variation=.88+Math.random()*.26;const crit=Math.random()<Math.min(.36,.035+epic().stats.agi*.011+(epic().class==='rastreador'?.10:0));return {value:Math.max(1,Math.floor(base*mult*variation*(crit?1.55:1))),mult,crit}}
 function battleMessage(s){epicCombat.logs.unshift(s);epicCombat.logs=epicCombat.logs.slice(0,8)}
 function resolveCombatAction(type){const c=epicCombat;if(!c||c.lock)return;const e=epic(),cls=classInfo(),enemy=EPIC_ENEMIES[c.key];let d;
  if(type==='run'){if(c.key==='rei'||['rainha','besouro','espectro','sentinela'].includes(c.key)){battleMessage('Este guardião não permite fuga.');renderCombat();return}endCombat(false,true);return}
@@ -612,6 +903,7 @@ function resolveCombatAction(type){const c=epicCombat;if(!c||c.lock)return;const
   else if(type==='bomba_esporos'){if(!v24Count(type)){battleMessage('Sem bombas!');renderCombat();return}v24Take(type);c.hp-=20;c.enemyStatus='blind';c.enemyStatusDuration=2;battleMessage('Bomba de Esporos: 20 de dano e cegueira!')}
   else if(type==='escudo_folha'){if(!v24Count(type)){battleMessage('Sem escudo de folha!');renderCombat();return}v24Take(type);c.playerGuard=true;e.mp=Math.min(maxMana(),e.mp+1);battleMessage('O Escudo de Folha protege este turno.')}
   else if(type==='guard'){c.playerGuard=true;e.mp=Math.min(maxMana(),e.mp+2);battleMessage('Você ergue a guarda e recupera 2 de energia.')}
+  else if(type==='study'){if(c.focus){battleMessage('Você já analisou este inimigo. Use um golpe para aproveitar a abertura.');renderCombat();return}c.focus=1;c.playerGuard=true;e.mp=Math.min(maxMana(),e.mp+1);battleMessage('Observação: +1 MP, guarda ativa e +35% no seu próximo ataque.');}
  else if(type==='skill'){
   const cost=3-(hasEffect('mana')?1:0);if(e.mp<cost){battleMessage('Energia insuficiente. Use DEFENDER para recuperar MP.');renderCombat();return}
   e.mp-=cost;const element=cls.element;d=damageToEnemy(element,true);c.hp-=d.value;let msg=cls.skill+' causou '+d.value+' de dano'+(d.crit?' — CRÍTICO!':'')+(d.mult>1.2?' — fraqueza explorada!':'')+'.';if(e.class==='guardiao'){c.playerGuard=true;msg+=' Raízes protegem você.'}if(e.class==='rastreador'&&Math.random()<.65){c.enemyStatus='burn';c.enemyStatusDuration=4;msg+=' Queimadura aplicada!'}if(e.class==='arcanista'&&c.element==='shadow'){c.enemyStatus='blind';c.enemyStatusDuration=2;msg+=' A luz enfraqueceu o inimigo!'}battleMessage(msg)
@@ -622,7 +914,8 @@ function resolveCombatAction(type){const c=epicCombat;if(!c||c.lock)return;const
   const heal=items.some(x=>['regen','vigor','defense'].includes(x.effect));if(heal){e.hp=Math.min(maxHealth(),e.hp+22);e.mp=Math.min(maxMana(),e.mp+3);battleMessage('Ressonância: +22 HP e +3 MP.')}else{d=damageToEnemy(items[0].element,true);c.hp-=d.value+8;battleMessage('O artefato '+items[0].name+' liberou '+(d.value+8)+' de dano!')}
  }
  else {d=damageToEnemy(cls.element,false);c.hp-=d.value;battleMessage('Você atacou: '+d.value+' de dano'+(d.crit?' CRÍTICO!':'.')+(d.mult>1.25?' Elemento eficaz!':''));if(hasEffect('burn')&&Math.random()<.28){c.enemyStatus='burn';c.enemyStatusDuration=4;battleMessage('A Brasa do Vidro queimou o inimigo!')}}
- if(c.hp<=0){advanceBattlePhase();renderCombat();save();return}
+ if(['attack','skill','artifact'].includes(type))c.focus=0;
+  if(c.hp<=0){advanceBattlePhase();renderCombat();save();return}
  c.lock=true;renderCombat();save();queueEnemyAction(c);
 }
 function delayBattle(ms){return new Promise(r=>setTimeout(r,ms))}
@@ -647,13 +940,14 @@ function battleVisualEffect(target,kind,element){
 async function doCombatAction(type){
  const c=epicCombat;if(!c||c.lock)return;
  const e=epic(),valid=type==='run'?(c.key!=='rei'&&!['rainha','besouro','espectro','sentinela'].includes(c.key))
-  :type==='skill'?e.mp>=(3-(hasEffect('mana')?1:0))
+  :type==='study'?!c.focus
+   :type==='skill'?e.mp>=(3-(hasEffect('mana')?1:0))
   :type==='artifact'?!c.artUsed&&e.equipped.some(id=>EPIC_ARTIFACTS[id])
   :type==='potion'?e.potions>0&&(e.hp<maxHealth()||c.status==='poison'):type==='tonico_mana'?v24Count(type)>0&&e.mp<maxMana():type==='antidoto'?v24Count(type)>0&&c.status==='poison':['bomba_esporos','escudo_folha'].includes(type)?v24Count(type)>0:true;
  if(!valid){resolveCombatAction(type);return}
  c.lock=true;for(const b of $('r13Combat').querySelectorAll('[data-r13action]'))b.disabled=true;
  const attack=type==='attack'||type==='skill'||type==='artifact'||type==='bomba_esporos';
- const scene=type==='skill'?'magic':type==='artifact'?'artifact':['potion','tonico_mana','antidoto'].includes(type)?'heal':['guard','escudo_folha'].includes(type)?'guard':type==='bomba_esporos'?'magic':type==='attack'?'attack':'';
+ const scene=type==='skill'?'magic':type==='artifact'?'artifact':['potion','tonico_mana','antidoto'].includes(type)?'heal':['guard','study','escudo_folha'].includes(type)?'guard':type==='bomba_esporos'?'magic':type==='attack'?'attack':'';
  try {
   if(scene){battleVisualEffect('hero',scene,classInfo().element);window.SamMusic?.effect(type==='skill'||type==='artifact'?'magic':type==='guard'?'guard':type==='potion'?'heal':'hit')}
   if(attack){await delayBattle(type==='skill'||type==='artifact'?310:230);if(epicCombat!==c)return;battleVisualEffect('enemy','receive',classInfo().element);window.SamMusic?.effect('hit')}
@@ -675,19 +969,22 @@ function enemyTurn(){const c=epicCombat,e=epic(),enemy=EPIC_ENEMIES[c.key];if(!c
  const dodge=Math.min(.19,epic().stats.agi*.009);const miss=(c.enemyStatus==='blind'&&Math.random()<.55)||Math.random()<dodge;
  if(miss){battleMessage(c.enemyStatus==='blind'?'A luz cegou o inimigo! Ele errou o golpe.':'Sua Agilidade permitiu esquivar do ataque!')}else{
   const coeff=c.key==='rei'?(1+c.phase*.16):1;
-  const raw=enemy.atk*coeff+Math.floor(c.turn/3)+Math.random()*5;
+  const v29Charged=(c.key==='v29_sentinela'&&c.turn%3===0)||(c.key==='v29_silencio'&&c.turn%4===0);
+   const raw=(enemy.atk*coeff+Math.floor(c.turn/3)+Math.random()*5)*(v29Charged?1.7:1);
+   if(v29Charged)battleMessage('⚠ Golpe carregado! DEFENDER reduz bastante o impacto.');
   let dmg=Math.max(1,Math.floor(raw-epic().stats.vig*.9-(hasEffect('defense')?3:0)-(hasEffect('harvest')?2:0)-(hasEffect('ward')?2:0)));
   const incoming=damageMult(c.element,classInfo().element);dmg=Math.max(1,Math.floor(dmg*(incoming>1.3?1.13:incoming<.9?.86:1)));if(c.playerGuard)dmg=Math.max(1,Math.floor(dmg*.38));if(c.key==='rei'&&c.phase===1&&epic().class==='guardiao')dmg=Math.floor(dmg*.88);
   e.hp=Math.max(0,e.hp-dmg);battleMessage(enemy.name+' causou '+dmg+' de dano'+(c.playerGuard?' (bloqueado parcialmente)':'')+'.');
   if(!c.playerGuard&&Math.random()<.16&&c.key!=='sentinela'){c.status='poison';battleMessage('Você foi envenenado!')}
  }
  if(c.status==='poison'){e.hp=Math.max(0,e.hp-4);battleMessage('Veneno: -4 HP. Poções e antídotos removem esse estado.')}else if(hasEffect('regen'))e.hp=Math.min(maxHealth(),e.hp+3);
- if(c.enemyStatusDuration>0){c.enemyStatusDuration--;if(c.enemyStatusDuration===0)c.enemyStatus='';}c.turn++;c.playerGuard=false;c.enemyIntent= c.turn%3===0?'O inimigo prepara um ataque mais feroz.':'O inimigo observa seus movimentos.';
+ if(c.enemyStatusDuration>0){c.enemyStatusDuration--;if(c.enemyStatusDuration===0)c.enemyStatus='';}c.turn++;c.playerGuard=false;c.enemyIntent=v29CombatTell(c)||(c.turn%3===0?'O inimigo prepara um ataque mais feroz.':'O inimigo observa seus movimentos.');
  if(e.hp<=0){e.losses++;e.hp=Math.max(1,Math.floor(maxHealth()*.55));e.mp=maxMana();e.gold=Math.max(0,e.gold-12);const target=c.key;endCombat(false,false);say('Derrota e recomeço','Você despertou protegido pelas raízes. Perdeu 12 moedas, mas manteve todas as pistas e missões. Reforce atributos ou equipe artefatos antes de enfrentar '+EPIC_ENEMIES[target].name+' novamente.');}
 }
 function advanceBattlePhase(){const c=epicCombat,m=EPIC_ENEMIES[c.key];if(m.phases&&c.phase<m.phases.length-1){c.phase++;const phase=m.phases[c.phase];c.hp=phase.hp;c.maxHp=phase.hp;c.element=phase.element;c.status='';c.enemyStatus='';epic().mp=Math.min(maxMana(),epic().mp+3);epic().hp=Math.min(maxHealth(),epic().hp+26);battleMessage(phase.title+'! O Rei mudou de elemento. Você recuperou 26 HP e 3 MP.');window.SamMusic?.effect('magic');return}
  const key=c.key,actor=c.actor;
  endCombat(true,false);const e=epic();if(!e.defeated.includes(actor))e.defeated.push(actor);const enemy=EPIC_ENEMIES[key];e.wins++;v23DailyMark('victory');e.gold+=enemy.gold;e.potions+=1;giveXP(enemy.xp);notify('Vitória! +'+enemy.xp+' XP e '+enemy.gold+' moedas.');
+  if(key==='v29_silencio'||key==='v29_sentinela')v29CombatWon(key);
  if(key==='larva'){log('A Larva da Ferrugem caiu. A fornalha agora pode ser purificada.');}
  if(key==='rainha'){ownItem('espinho_soberano');goStory([['Rainha das Aranhas','As crianças... ainda lembram de nosso juramento?'],['Eldra','A rainha era guardiã daquelas promessas. A maldição prendeu seu amor numa teia de ódio.'],['Narrador','Com a coroa de espinhos desfeita, uma passagem se abre para as Minas do Prisma Partido.']],()=>advanceEpicChapter(3))}
  if(key==='besouro'){ownItem('prisma_eco');goStory([['Dário','Ouço as minas cantando outra vez. O brilho volta a revelar o caminho das antigas águas.'],['Narrador','O Prisma do Eco se uniu ao seu inventário. A trilha do pântano se abriu.']],()=>advanceEpicChapter(4))}
@@ -699,7 +996,7 @@ function endCombat(win,ran){if(!epicCombat)return;window.SamMusic?.scene(['bosqu
 function createCombat(){let modal=$('r13Combat');if(!modal){modal=document.createElement('div');modal.id='r13Combat';modal.className='r13-combat';modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');modal.setAttribute('aria-label','Combate por turno');document.getElementById('rpgDlg').append(modal)}modal.hidden=false}
 function renderCombat(){const c=epicCombat;if(!c)return;const e=epic(),m=EPIC_ENEMIES[c.key],info=EPIC_CHAPTERS[e.chapter];const escape=escapeHtml;const prevAction=document.activeElement?.closest?.('[data-r13action]')?.dataset.r13action||'';const weak=Object.keys(EPIC_ADV).find(key=>EPIC_ADV[key]===c.element)||m.weak;
  const phaseText=m.phases?' · '+m.phases[c.phase].title:'';
- $('r13Combat').innerHTML='<div class="r13-battle-card"><header><small>⚔️ COMBATE RPG '+phaseText+'</small><h2>'+escape(m.name)+'</h2><p>Elemento: '+EPIC_ELEMENTS[c.element]+' · Fraqueza atual: '+EPIC_ELEMENTS[weak]+'</p></header><div class="r13-battle-field"><div class="r13-enemy-figure"><img src="sprites/'+m.sprite+((m.sprite==='aranha_rainha_v14'||m.sprite.endsWith('_v24'))?'.svg':'.png')+'" alt="'+escape(m.name)+'"><span>Inimigo · '+Math.max(0,c.hp)+' / '+c.maxHp+' HP</span><div class="r13-bar enemy"><i style="width:'+Math.min(100,Math.max(0,100*c.hp/c.maxHp))+'%"></i></div></div><div class="r13-battle-vs">⚔</div><div class="r13-player-figure"><canvas id="r13Fighter" width="72" height="90"></canvas><span>'+escape(classInfo().name)+' · Nv. '+e.level+'</span><div class="r13-bar"><i style="width:'+Math.round(e.hp/maxHealth()*100)+'%"></i></div><span>❤ '+e.hp+'/'+maxHealth()+' · ✦ '+e.mp+'/'+maxMana()+' MP</span></div></div><p class="r13-weak">'+escape(c.enemyIntent)+' · '+(c.status==='poison'?'☠ Envenenado · ':'')+(c.enemyStatus==='burn'?'🔥 Inimigo queimando · ':'')+(c.enemyStatus==='blind'?'✨ Inimigo cego':'')+'</p><div class="r13-combat-controls"><button data-r13action="attack">⚔ ATACAR</button><button data-r13action="skill">✦ '+escape(classInfo().skill)+' ('+(3-(hasEffect('mana')?1:0))+' MP)</button><button data-r13action="guard">🛡 DEFENDER (+2 MP)</button><button data-r13action="artifact">◆ ARTEFATO '+(c.artUsed?'(usado)':'')+'</button><button data-r13action="potion">🧪 POÇÃO ('+e.potions+')</button><button data-r13action="tonico_mana">🌙 MP ('+v24Count('tonico_mana')+')</button><button data-r13action="antidoto">🌿 ANTÍDOTO ('+v24Count('antidoto')+')</button><button data-r13action="bomba_esporos">🍄 BOMBA ('+v24Count('bomba_esporos')+')</button><button data-r13action="escudo_folha">🍃 ESCUDO ('+v24Count('escudo_folha')+')</button><button data-r13action="run">↩ RECUAR</button></div><div class="r13-combat-log" role="log" aria-live="polite" aria-label="Histórico do combate">'+c.logs.slice(0,5).map(x=>'<p>'+escape(x)+'</p>').join('')+'</div></div>';
+ $('r13Combat').innerHTML='<div class="r13-battle-card"><header><small>⚔️ COMBATE RPG '+phaseText+'</small><h2>'+escape(m.name)+'</h2><p>Elemento: '+EPIC_ELEMENTS[c.element]+' · Fraqueza atual: '+EPIC_ELEMENTS[weak]+'</p></header><div class="r13-battle-field"><div class="r13-enemy-figure"><img src="sprites/'+m.sprite+((m.sprite==='aranha_rainha_v14'||m.sprite.endsWith('_v24'))?'.svg':'.png')+'" alt="'+escape(m.name)+'"><span>Inimigo · '+Math.max(0,c.hp)+' / '+c.maxHp+' HP</span><div class="r13-bar enemy"><i style="width:'+Math.min(100,Math.max(0,100*c.hp/c.maxHp))+'%"></i></div></div><div class="r13-battle-vs">⚔</div><div class="r13-player-figure"><canvas id="r13Fighter" width="72" height="90"></canvas><span>'+escape(classInfo().name)+' · Nv. '+e.level+'</span><div class="r13-bar"><i style="width:'+Math.round(e.hp/maxHealth()*100)+'%"></i></div><span>❤ '+e.hp+'/'+maxHealth()+' · ✦ '+e.mp+'/'+maxMana()+' MP</span></div></div><p class="r13-weak">'+escape(c.enemyIntent)+(c.focus?' · ✨ Bônus de observação (+35%)':'')+' · '+(c.status==='poison'?'☠ Envenenado · ':'')+(c.enemyStatus==='burn'?'🔥 Inimigo queimando · ':'')+(c.enemyStatus==='blind'?'✨ Inimigo cego':'')+'</p><div class="r13-combat-controls"><button data-r13action="attack">⚔ ATACAR</button><button data-r13action="skill">✦ '+escape(classInfo().skill)+' ('+(3-(hasEffect('mana')?1:0))+' MP)</button><button data-r13action="guard">🛡 DEFENDER (+2 MP)</button><button data-r13action="study">🔎 ANALISAR (+35% dano)</button><button data-r13action="artifact">◆ ARTEFATO '+(c.artUsed?'(usado)':'')+'</button><button data-r13action="potion">🧪 POÇÃO ('+e.potions+')</button><button data-r13action="tonico_mana">🌙 MP ('+v24Count('tonico_mana')+')</button><button data-r13action="antidoto">🌿 ANTÍDOTO ('+v24Count('antidoto')+')</button><button data-r13action="bomba_esporos">🍄 BOMBA ('+v24Count('bomba_esporos')+')</button><button data-r13action="escudo_folha">🍃 ESCUDO ('+v24Count('escudo_folha')+')</button><button data-r13action="run">↩ RECUAR</button></div><div class="r13-combat-log" role="log" aria-live="polite" aria-label="Histórico do combate">'+c.logs.slice(0,5).map(x=>'<p>'+escape(x)+'</p>').join('')+'</div></div>';
  $('r13Combat').querySelectorAll('[data-r13action]').forEach(b=>b.addEventListener('click',()=>doCombatAction(b.dataset.r13action)));
  renderAvatarToCanvas($('r13Fighter'),72,90,true);if(c.lock)$('r13Combat').querySelectorAll('[data-r13action]').forEach(b=>b.disabled=true);if(prevAction&&!c.lock)$('r13Combat').querySelector('[data-r13action="'+prevAction+'"]')?.focus({preventScroll:true})
 }
@@ -739,6 +1036,7 @@ function setupEpicUI(){const box=document.createElement('section');box.className
  const hud=document.querySelector('.r12-head small');if(hud)hud.textContent='RPG · A Crônica da Primeira Mangueira';
  const p=document.querySelector('.r12-head p');if(p)p.textContent='Explore, enfrente os chefes e descubra o destino da primeira mangueira.';
  const reset=$('r12Reset');if(reset)reset.textContent='Reiniciar aventura';
+  v29SetupUI();
  const objective=document.querySelector('.r12-aside>.r12-card:not(.r13-story-card):not(.r13-stat-card):not(.r13-artifacts-card) h3');if(objective)objective.innerHTML='📜 Prólogo das Sementes';
  renderEpicUI();
 }
@@ -778,6 +1076,79 @@ function drawEpicAvatar(x,y){refreshEpicAvatar();const moving=Math.abs(player.vx
  if(moving){const foot=Math.sin(clock*cadence)*(keys.run?6:4);ctx.fillStyle='#44332e';ctx.fillRect(-10,19+foot,7,5);ctx.fillRect(4,19-foot,7,5)}
  if(epicVisual.equipped?.companion){ctx.shadowColor=epicVisual.equipped.companion.includes('owl')?'#b5a2ff':'#f8f39b';ctx.shadowBlur=10;ctx.fillStyle=epicVisual.equipped.companion.includes('owl')?'#ac99ff':'#e8ed73';ctx.beginPath();ctx.arc(23,-24+Math.sin(clock*7)*3,3.5,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0}
  ctx.restore();}
+
+/* V29: scene objects are painted in Canvas and react to the same interaction button. */
+function v29DrawActor(a,x,y,bob){
+ ctx.save();const glow=.65+Math.sin(clock*2.3+a.x)*.2;
+ const hue=a.v29==='find'?'#8eddd2':a.v29==='clue'?'#f3cf88':'#dfbaf9';
+ ctx.globalAlpha=.65;ctx.fillStyle='#091b27';ctx.beginPath();ctx.ellipse(x,y+16,17,5,0,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+ if(a.v29==='enemy'){
+  drawEpicEnemy(a,x,y,bob);ctx.strokeStyle='#e7b7f4';ctx.lineWidth=1.5;ctx.setLineDash([4,5]);
+  ctx.beginPath();ctx.ellipse(x,y-8,24+Math.sin(clock*2)*2,13,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+ }else if(a.v29==='npc'){
+  const tint=a.id==='v29Iris'?'#579aad':a.id==='v29Mara'?'#6e9b64':'#d39c62';
+  const scarf=a.id==='v29Iris'?'#efbd83':a.id==='v29Mara'?'#b5d29f':'#e6d49d';
+  drawCharacter(x,y-6+bob,tint,'#ecc4a1',a.id==='v29Iris');
+  rect(x-10,y-7+bob,20,5,scarf);rect(x+5,y-20+bob,3,3,'#f8f0cf');
+  if(a.id==='v29Iris'){rect(x+11,y-11+bob,12,16,'#e0c69e');rect(x+13,y-8+bob,8,2,'#70614e')}
+  if(a.id==='v29Mara')drawGlyph(x+16,y-25+bob,'❀','#b1e1b2');
+  if(a.id==='v29Caio')rect(x-11,y-30+bob,22,6,'#66523c');
+ }else{
+  ctx.shadowColor=hue;ctx.shadowBlur=9+glow*10;
+  if(a.id==='v29Relogio'){
+   rect(x-19,y-18,38,33,'#554638');rect(x-15,y-17,30,27,'#e0c492');
+   ctx.fillStyle='#2c3c45';ctx.beginPath();ctx.arc(x,y-4,10,0,Math.PI*2);ctx.fill();
+   ctx.strokeStyle='#f4dbb1';ctx.lineWidth=2;ctx.beginPath();
+   ctx.moveTo(x,y-4);ctx.lineTo(x,y-11);ctx.moveTo(x,y-4);ctx.lineTo(x+7,y-2);ctx.stroke();
+  }else if(a.id==='v29Casca'){
+   rect(x-13,y-22,27,45,'#5a412d');rect(x-8,y-19,17,40,'#a58d59');
+   drawGlyph(x,y-6,'♮','#f9df98');
+  }else if(a.id==='v29Biruta'){
+   rect(x-2,y-28,4,48,'#a0a29c');
+   ctx.fillStyle='#ecc487';ctx.beginPath();ctx.moveTo(x+1,y-26);
+   ctx.lineTo(x+25+Math.sin(clock*2)*4,y-17);ctx.lineTo(x+1,y-8);ctx.fill();
+  }else if(a.id==='v29Carrilhao'){
+   rect(x-24,y-23,48,5,'#907958');rect(x-19,y-20,4,39,'#645346');rect(x+16,y-20,4,39,'#645346');
+   for(let i=0;i<3;i++){const yy=y-9+Math.sin(clock*2+i)*2;
+    rect(x-15+i*12,yy,9,19,'#e8c691');rect(x-12+i*12,yy+3,3,11,'#fff2c9')}
+   drawGlyph(x,y-33,'♫','#fff2c6');
+  }else if(a.id==='v29Copa'){
+   rect(x-17,y-10,34,24,'#61472d');ctx.fillStyle='#528c65';
+   ctx.beginPath();ctx.arc(x,y-29,27,0,Math.PI*2);ctx.fill();
+   ctx.fillStyle='#91c987';ctx.beginPath();ctx.arc(x-11,y-35,13,0,Math.PI*2);ctx.fill();
+   drawGlyph(x,y-45,'♪','#fff2cc');
+  }else if(a.v29==='dailyBoard'){
+   rect(x-19,y-18,38,32,'#5f4a35');rect(x-15,y-15,30,25,'#dac58d');
+   rect(x-11,y-10,23,2,'#5e6a4d');rect(x-11,y-4,16,2,'#5e6a4d');
+   drawGlyph(x+14,y-25,'✎','#f5dbac');
+  }else if(a.v29==='dailySpot'){
+   rect(x-12,y-10+bob,24,21,'#d6c994');rect(x-8,y-5+bob,16,12,'#46676b');
+   drawGlyph(x,y-18+bob,'⌕','#d5ffe5');
+  }else if(a.v29==='find'){
+   rect(x-13,y-11+bob,26,23,'#d2c5a3');rect(x-10,y-8+bob,20,17,'#334b56');
+   rect(x-7,y-5+bob,14,2,'#f7daa3');rect(x-7,y+bob,9,2,'#89cfc2');
+   drawGlyph(x+10,y-17+bob,'✦','#abf1d0');
+  }else drawGlyph(x,y-9+bob,'◇',hue);
+  ctx.shadowBlur=0;ctx.strokeStyle=hue;ctx.lineWidth=1;ctx.globalAlpha=.65+Math.sin(clock*2)*.17;
+  ctx.beginPath();ctx.ellipse(x,y+14,16,6,0,0,Math.PI*2);ctx.stroke();
+ }
+ ctx.restore();
+}
+function v29Decor(){
+ const motes={vila:'#ffe0a0',floresta:'#99dfb3',planicie:'#eac98a',ruinas:'#bfb6ec',
+  estufa:'#ebc88e',bosque:'#c6b2dd',mina:'#99cbe2',pantano:'#add8db',observatorio:'#d2bdff'};
+ const c=motes[st.map];if(!c)return;
+ const still=matchMedia('(prefers-reduced-motion: reduce)').matches||
+  document.documentElement.classList.contains('sm165-lowfx');
+ ctx.save();ctx.globalAlpha=.3;
+ for(let i=0;i<24;i++){
+  const tileX=1+Math.floor(random(i,st.map.length,23)*(COLS-2));
+  const tileY=1+Math.floor(random(i,st.map.length,61)*(ROWS-2));
+  const offset=still?0:Math.sin(clock*1.2+i*2.4)*2;
+  ctx.fillStyle=c;ctx.fillRect(tileX*T+4,tileY*T+8+offset,2+(i%3),2+(i%2));
+ }
+ ctx.restore();
+}
 function drawEpicEnemy(a,x,y,bob){const type=epicMonsters[a.id];const m=EPIC_ENEMIES[type];if(!m)return;ctx.save();ctx.fillStyle='#160d2ba4';ctx.beginPath();ctx.ellipse(x,y+17,20,6,0,0,Math.PI*2);ctx.fill();ctx.shadowColor= m.element==='shadow'?'#d485fc':m.element==='nature'?'#79db6f':'#e3d683';ctx.shadowBlur=8+Math.sin(clock*3)*3;pixelSprite(m.sprite,x,y-16+bob,70,65);ctx.restore()}
 function drawEpicActor(a,x,y,bob){
  const newNPC=({maira:'maira',oldAmalia:'amalia',alchemist:'tito'})[a.id];
@@ -799,9 +1170,10 @@ function drawEpicActor(a,x,y,bob){
  else if(a.epic==='altar'){ctx.save();ctx.fillStyle='#72586d';ctx.fillRect(x-15,y-6,30,20);ctx.fillStyle='#cba88c';ctx.fillRect(x-12,y-13,24,9);ctx.fillStyle='#fde0a9';ctx.font='bold 23px serif';ctx.fillText('✧',x,y-21);ctx.restore()}
 }
 
- function actorVisible(a){if(a.epic)return epicActorVisible(a);if(a.type==='seed'&&st.found.includes(a.id))return false;if(a.id==='reliquia'&&!st.unlocked)return false;return true}
+ function actorVisible(a){if(a.v29)return v29ActorVisible(a);if(a.epic)return epicActorVisible(a);if(a.type==='seed'&&st.found.includes(a.id))return false;if(a.id==='reliquia'&&!st.unlocked)return false;return true}
  function interact(a){
-  if(a?.epic){epicInteract(a);return;}
+  if(a?.v29){v29Interact(a);return;}
+   if(a?.epic){epicInteract(a);return;}
   if(!a){say('Pomar','Não há nada para investigar aqui. Aproxime-se de um brilho, personagem ou construção.');return}
   if(a.id==='guildBoard'){v23DailyRender();say('Quadro de Contratos','Os pedidos da Vila são renovados diariamente. Complete tarefas na aventura e resgate sementes locais no quadro abaixo do mapa. São recompensas locais, não entram no ranking oficial.');return}
   if(a.id==='guarda'){const first=!st.seen.includes('guarda');st.seen.push('guarda');v23DailyMark('bento');save();say('Guardião Bento',first?'Sam! O pomar está perdendo sua luz. Três Sementes Ancestrais foram levadas para a floresta. Encontre-as e o Santuário das Raízes voltará a despertar.':'Se precisar de ajuda, caminhe pela passagem ao norte. Quando recuperar as três sementes, procure o portão a leste da floresta.',()=>{if(first)log('Bento pediu que eu reunisse três sementes escondidas na floresta.')});return}
@@ -876,7 +1248,7 @@ function drawEpicActor(a,x,y,bob){
   ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.fillStyle='#ffdfae';ctx.fillText(b.type==='loja'?'MASCOTES':b.type==='defesa'?'DEFESA':b.type==='portal'?'HALLOWEEN':'CABANA',x+w/2,y+25)
  }
  function actorColor(type){return ({seed:'#ffe27d',npc:'#baceff',shop:'#f9c58a',defense:'#ffa783',halloween:'#dda8ff',profile:'#b3d5ff',social:'#a8f1be',passage:'#a5e6a9',door:'#d8cf9b',altar:'#ffe0a3',relic:'#ffe7af'})[type]||'#ffffff'}
- function drawActor(a){if(!actorVisible(a))return;const x=a.x*T,y=a.y*T,bob=Math.sin(clock*3+a.x)*2;ctx.save();if(a.epic){drawEpicActor(a,x,y,bob);ctx.restore();return;}
+ function drawActor(a){if(!actorVisible(a))return;const x=a.x*T,y=a.y*T,bob=Math.sin(clock*3+a.x)*2;ctx.save();if(a.v29){v29DrawActor(a,x,y,bob);ctx.restore();return}if(a.epic){drawEpicActor(a,x,y,bob);ctx.restore();return;}
   if(['passage','door','halloween','defense','shop','profile','social','board'].includes(a.type)){
    const alpha=.47+Math.sin(clock*3+a.x)*.27;ctx.globalAlpha=alpha;ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(x,y-4,19,10,0,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;
    if(a.type==='passage'){rect(x-8,y-32,16,14,'#a5e6a9');rect(x-5,y-36,10,6,'#f3e3a3')}
@@ -915,7 +1287,7 @@ function drawEpicActor(a,x,y,bob){
    return {z,cx:Math.max(halfW,Math.min(W-halfW,player.x*T)),cy:Math.max(halfH,Math.min(H-halfH,player.y*T))};
  }
  function render(){const cam=camera();ctx.save();ctx.translate(W/2,H/2);ctx.scale(cam.z,cam.z);ctx.translate(-cam.cx,-cam.cy);
-  baseMap();v24Decor();for(const b of room().blocks)drawBuilding(b);for(const p of room().props)drawTree(p.x,p.y,p.type==='dead');for(const a of room().actors)drawActor(a);guideDraw();drawPlayer();v23Atmosphere();
+  baseMap();v24Decor();v29Decor();for(const b of room().blocks)drawBuilding(b);for(const p of room().props)drawTree(p.x,p.y,p.type==='dead');for(const a of room().actors)drawActor(a);guideDraw();drawPlayer();v23Atmosphere();
   const a=nearest();if(a){ctx.save();ctx.textAlign='center';ctx.font='bold 13px sans-serif';let line='E · '+a.label;let width=Math.min(280,ctx.measureText(line).width+22);let px=Math.min(W-width/2-8,Math.max(width/2+8,a.x*T));let py=Math.max(64,a.y*T-39);rect(px-width/2,py-20,width,25,'#1e1428ee');ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=1;ctx.strokeRect(px-width/2,py-20,width,25);ctx.fillStyle='#ffebce';ctx.fillText(line,px,py-3);ctx.restore()}
   if(st.map==='ruinas'){ctx.fillStyle='#b8a3ff12';ctx.fillRect(0,0,W,H)}ctx.restore();
  }
