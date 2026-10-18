@@ -37,7 +37,9 @@ function normalize(raw){
  return{version:1,theme:['twilight','spring','midnight'].includes(v.theme)?v.theme:'twilight',floor:['planks','stone','garden'].includes(v.floor)?v.floor:'planks',items,inventory,restDay:String(v.restDay||'').slice(0,12),visits:Math.max(0,Number(v.visits)||0)};
 }
 function read(){try{return normalize(JSON.parse(localStorage.getItem(key())||'null'))}catch(_){return fresh()}}
-function save(){try{localStorage.setItem(key(),JSON.stringify(state))}catch(_){announce('Não foi possível salvar: armazenamento indisponível.','error');return false}return true}
+function save(opts={}){try{localStorage.setItem(key(),JSON.stringify(state))}catch(_){announce('Não foi possível salvar: armazenamento indisponível.','error');return false}
+ if(!opts.fromCloud)window.dispatchEvent(new CustomEvent('sam21:home-local-change',{detail:{account:key()}}));
+ return true}
 function getWallet(){try{const v=JSON.parse(localStorage.getItem(orchardKey())||'null');return v&&typeof v==='object'?v:{seeds:0,owned:[],pet:'',best:0,day:'',claimed:[],stats:{}}}catch(_){return{seeds:0,owned:[],pet:'',best:0,day:'',claimed:[],stats:{}}}}
 function putWallet(v){try{localStorage.setItem(orchardKey(),JSON.stringify(v));return true}catch(_){announce('Não foi possível registrar sementes.','error');return false}}
 let state=read(),selected='fern',mode='place',lastKey=key(),animation=0,frame=0,paused=false,lastHover=null,sceneVisibility=true;
@@ -45,7 +47,21 @@ function announce(msg,kind='ok'){$('sm21HouseNotice').textContent=msg;$('sm21Hou
 function count(id){return state.items.filter(x=>x.id===id).length}
 function owned(id){return count(id)+(state.inventory[id]||0)}
 function bonus(){return{bed:count('bed')>0,table:count('table')>0,fireplace:count('fireplace')>0}}
-window.Sam21House=Object.freeze({getTrainingBonus:()=>{if(key()!==lastKey)return{bed:false,table:false,fireplace:false};return bonus()},getLayout:()=>JSON.parse(JSON.stringify(read()))});
+window.Sam21House=Object.freeze({
+ getTrainingBonus:()=>{if(key()!==lastKey){state=read();lastKey=key()}return bonus()},
+ getLayout:()=>JSON.parse(JSON.stringify(read())),
+ getAccountKey:()=>key(),
+ applyCloudLayout:(value)=>{
+  if(key()!==lastKey){state=read();lastKey=key()} // refresh the active player even when the house panel was hidden
+  if(!value||typeof value!=='object'||Array.isArray(value))return false;
+  const normalized=normalize(value);
+  if(!Array.isArray(value.items)||!value.inventory||typeof value.inventory!=='object')return false;
+  state=normalized;
+  if(!save({fromCloud:true}))return false;
+  render();announce('☁️ Decoração da nuvem carregada. Seu refúgio foi atualizado.');
+  return true;
+ }
+});
 const sprite={};
 for(const item of catalog){const image=new Image();image.src='sprites/casa_'+item.id+'_v21.svg';sprite[item.id]=image}
 const themes={

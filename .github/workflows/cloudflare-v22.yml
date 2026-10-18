@@ -1,0 +1,49 @@
+name: Pacote Cloudflare Pages V22
+on:
+  push:
+    branches: [dev/v22-fundacao-reinos]
+    paths:
+      - 'index.html'
+      - '*.js'
+      - '*.css'
+      - 'sprites/**'
+      - 'audio/**'
+      - 'halloween_art/**'
+      - 'tests/v22_fundacao.test.cjs'
+      - 'tests/v22_defense.test.cjs'
+      - 'tests/v21_reinos_pomar.test.cjs'
+      - '.github/workflows/cloudflare-v22.yml'
+  workflow_dispatch:
+jobs:
+  cloudflare-zip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Testar mecanicas, regressao e nuvem
+        run: node --test tests/v21_reinos_pomar.test.cjs tests/v22_fundacao.test.cjs tests/v22_defense.test.cjs
+      - name: Separar arquivos publicos sem Wrangler
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          find . -maxdepth 1 -type f \( -iname '*.html' -o -iname '*.css' -o -iname '*.js' -o -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' -o -iname '*.gif' -o -iname '*.svg' -o -iname '*.ico' -o -iname '*.mp3' -o -iname '*.ogg' -o -iname '*.wav' -o -iname '*.woff*' -o -name '_redirects' -o -name '_headers' \) -exec cp -t dist/ {} +
+          for d in sprites audio halloween_art; do
+            if [ -d "$d" ]; then cp -a "$d" dist/; fi
+          done
+          test -f dist/index.html
+          test -f dist/casa_v21.js
+          test -f dist/casa_sync_v22.js
+          test -f dist/pomar_ao_vivo_v20.js
+          test -f dist/sprites/corredor_ambar_v22.svg
+          if find dist -iname 'wrangler*' | grep -q .; then echo 'ERRO: Wrangler no pacote'; exit 1; fi
+          cd dist
+          zip -qr ../Sam-Manguinha-V22-Cloudflare-Pages.zip .
+          unzip -t ../Sam-Manguinha-V22-Cloudflare-Pages.zip | tail -1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V22-Cloudflare-Pages
+          path: Sam-Manguinha-V22-Cloudflare-Pages.zip
+          retention-days: 30

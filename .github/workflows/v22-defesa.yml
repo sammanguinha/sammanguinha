@@ -1,0 +1,19 @@
+name: V22 - Testes de Estratégia (sem deploy)
+on:
+  push:
+    branches: [dev/v22-fundacao-reinos]
+    paths:
+      - 'index.html'
+      - 'sprites/corredor_ambar_v22.svg'
+      - 'tests/v22_defense.test.cjs'
+      - '.github/workflows/v22-defesa.yml'
+  workflow_dispatch:
+jobs:
+  mecanicas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/v22_defense.test.cjs tests/v21_reinos_pomar.test.cjs
