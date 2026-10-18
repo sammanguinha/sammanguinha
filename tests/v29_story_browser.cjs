@@ -37,7 +37,13 @@ const server=http.createServer((req,res)=>{
    const go=room=>page.evaluate(room=>window.SamHybridRPG.gotoRoom(room),room);
    const interact=id=>page.evaluate(id=>window.SamHybridRPG.interactById(id),id);
    const next=async(n=1)=>{for(let i=0;i<n;i++)await page.locator('#r12TalkNext:visible').click({timeout:9000})};
-   assert.ok(await page.locator('#v29Chronicle').isVisible(),'living chronicle panel exists');
+   const chronicle=await page.evaluate(()=>{
+    const pane=document.getElementById('rpgDlg'),el=document.getElementById('v29Chronicle');
+    const chain=[];let cur=el;
+    while(cur&&chain.length<6){const style=getComputedStyle(cur);chain.push({id:cur.id,class:cur.className,display:style.display,visibility:style.visibility,rect:cur.getBoundingClientRect().toJSON()});cur=cur.parentElement}
+    return {exists:!!el,mode:pane?.hidden,immersive:pane?.classList.contains('sm-immersive'),chain};
+   });
+   assert.ok(await page.locator('#v29Chronicle').isVisible(),'living chronicle panel exists: '+JSON.stringify(chronicle));
    assert.ok((await page.locator('#v29QuestObjective').innerText()).includes('Íris'));
    await interact('v29Sentinela');
    assert.equal(await page.locator('#r13Combat').count(),0,'boss cannot be reached before scouting');
