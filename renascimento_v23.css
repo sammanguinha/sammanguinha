@@ -15,8 +15,8 @@ body{background:radial-gradient(ellipse at 20% 0%,#173d3b 0,transparent 32%),rad
 .r23-guide-actions button{min-height:43px;background:#202b3e;border:1px solid #b29aca;border-radius:9px;padding:9px 11px;color:#f8f1dc;font-size:.8rem;font-weight:750;cursor:pointer;transition:background .15s,transform .15s}
 .r23-guide-actions button[aria-pressed=true]{color:#241a2b;background:linear-gradient(120deg,#ffe7af,#d2b8ea);border-color:#fff5d1;box-shadow:0 4px 13px #08091455}
 .r23-guide-actions button:hover:not([aria-pressed=true]){background:#3f445e;transform:translateY(-1px)}
-.r23-settings-toggle{position:fixed;right:14px;bottom:15px;z-index:90;min-width:44px;min-height:44px;border-radius:15px;border:1px solid #e6ce9d;background:#242d45;box-shadow:0 5px 24px #000b;color:#fcebc4;padding:9px 14px;font-weight:800;cursor:pointer}
-.r23-settings-panel{position:fixed;bottom:70px;right:14px;z-index:91;width:min(330px,calc(100vw - 28px));max-height:70vh;overflow-y:auto;background:linear-gradient(160deg,#202941,#111b2b);border:2px solid #e0c38e;border-radius:15px;padding:17px;box-shadow:0 15px 45px #000a;color:#f1e6d6}
+.r23-settings-toggle{position:fixed;right:14px;bottom:77px;z-index:90;min-width:44px;min-height:44px;border-radius:15px;border:1px solid #e6ce9d;background:#242d45;box-shadow:0 5px 24px #000b;color:#fcebc4;padding:9px 14px;font-weight:800;cursor:pointer}
+.r23-settings-panel{position:fixed;bottom:132px;right:14px;z-index:91;width:min(330px,calc(100vw - 28px));max-height:70vh;overflow-y:auto;background:linear-gradient(160deg,#202941,#111b2b);border:2px solid #e0c38e;border-radius:15px;padding:17px;box-shadow:0 15px 45px #000a;color:#f1e6d6}
 .r23-settings-panel[hidden]{display:none!important}
 .r23-settings-panel h3{font-size:1.18rem;margin:0 0 5px;color:#ffe4a5}
 .r23-settings-panel p{font-size:.78rem;color:#cfcede}
@@ -29,6 +29,6 @@ body{background:radial-gradient(ellipse at 20% 0%,#173d3b 0,transparent 32%),rad
 .r23-high-contrast .r23-guide-actions button:not([aria-pressed=true]){background:#111b2b;color:#fff;border-color:#fff}
 .r23-high-contrast .r23-settings-panel{background:#0a1122}
 @media(max-width:800px){.r23-travel-guide{grid-template-columns:1fr}.r23-guide-actions{justify-content:flex-start}.r23-guide-actions button{flex:1 1 125px}}
-@media(max-width:540px){.r23-travel-guide{padding:12px}.r23-guide-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.r23-guide-actions button{padding:8px 6px}.r23-settings-toggle{right:8px;bottom:8px}.r23-settings-panel{right:8px;bottom:61px}.r12-hud span{font-size:.69rem!important;padding:4px 7px!important}}
+@media(max-width:540px){.r23-travel-guide{padding:12px}.r23-guide-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.r23-guide-actions button{padding:8px 6px}.r23-settings-toggle{right:8px;bottom:78px}.r23-settings-panel{right:8px;bottom:131px}.r12-hud span{font-size:.69rem!important;padding:4px 7px!important}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.r23-guide-actions button{transition:none!important;transform:none!important}}
 .sm165-lowfx .r23-guide-actions button{transition:none}
