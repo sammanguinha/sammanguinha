@@ -5,12 +5,12 @@
  const ctx=cv.getContext('2d',{alpha:false});
  const W=768,H=448,T=32,COLS=24,ROWS=14;
  const $=id=>document.getElementById(id);
- const keys={up:false,down:false,left:false,right:false};
+ const keys={up:false,down:false,left:false,right:false,run:false};
  const rooms={
   vila:{name:'Vila da Mangueira',subtitle:'O início de toda colheita',floor:'#294d35',dirt:'#756043',night:false,
    blocks:[{x:2,y:2,w:5,h:3,type:'loja'},{x:17,y:2,w:5,h:3,type:'casa'},{x:2,y:9,w:4,h:3,type:'defesa'},{x:18,y:9,w:4,h:3,type:'portal'}],
    props:[{x:7,y:3,type:'tree'},{x:16,y:11,type:'tree'},{x:7,y:10,type:'tree'}],
-   actors:[{id:'guarda',x:11.5,y:8.4,type:'npc',label:'Guardião Bento'},{id:'livia',x:17,y:7,type:'npc',label:'Lívia'},{id:'loja',x:4.5,y:5.6,type:'shop',label:'Loja dos Mascotes'},{id:'defesa',x:4.0,y:8.1,type:'defense',label:'Arena de Defesa'},{id:'halloween',x:20,y:8.15,type:'halloween',label:'Pomar das Sombras'},{id:'forest',x:12,y:1.25,type:'passage',label:'Trilha Encantada'},{id:'profile',x:19,y:5.5,type:'profile',label:'Seu Refúgio'},{id:'praca',x:13.7,y:5.6,type:'social',label:'Praça Ao Vivo'}]},
+   actors:[{id:'guarda',x:11.5,y:8.4,type:'npc',label:'Guardião Bento'},{id:'livia',x:17,y:7,type:'npc',label:'Lívia'},{id:'loja',x:4.5,y:5.6,type:'shop',label:'Empório da Vila · RPG'},{id:'defesa',x:4.0,y:8.1,type:'defense',label:'Arena de Defesa'},{id:'halloween',x:20,y:8.15,type:'halloween',label:'Pomar das Sombras'},{id:'forest',x:12,y:1.25,type:'passage',label:'Trilha Encantada'},{id:'profile',x:19,y:5.5,type:'profile',label:'Seu Refúgio'},{id:'praca',x:13.7,y:5.6,type:'social',label:'Praça Ao Vivo'}]},
   floresta:{name:'Trilha Encantada',subtitle:'As sementes seguem a luz',floor:'#24442e',dirt:'#5c5434',night:false,
    blocks:[{x:2,y:2,w:3,h:2,type:'rocks'},{x:17,y:2,w:3,h:2,type:'rocks'},{x:8,y:9,w:3,h:2,type:'rocks'}],
    props:[{x:4,y:7,type:'tree'},{x:6,y:11,type:'tree'},{x:10,y:2,type:'tree'},{x:15,y:10,type:'tree'},{x:20,y:11,type:'tree'},{x:12,y:7,type:'tree'}],
@@ -277,7 +277,7 @@ rooms.ruinas.actors.push({id:'toEstufa',x:20.5,y:11,type:'door',epic:'gate',min:
  }
  function warp(dest,x,y){if(!rooms[dest])return;if(dest==='floresta')v23DailyMark('forest');window.SamMusic?.scene(dest==='bosque'||dest==='coracao'?'shadows':'explore');st.map=dest;player.x=x;player.y=y;touchDest=null;save();update();notify('Você entrou em '+room().name+'.')}
  function pane(dest){save();window.SamMusic?.scene(dest==='eventDlg'?'shadows':'explore');if(typeof window.showPane==='function')window.showPane(dest)}
- function toShop(){pane('gameDlg');setTimeout(()=>document.querySelector('#orchardExtras [data-extras-tab="shop"]')?.click(),100);}
+ function toShop(){openV24Shop()}
  function toPets(){pane('gameDlg');setTimeout(()=>document.querySelector('#orchardExtras [data-extras-tab="pets"]')?.click(),100);}
  function toHalloween(){pane('eventDlg');setTimeout(()=>document.getElementById('h8World')?.scrollIntoView({behavior:'smooth',block:'start'}),250)}
  const labels={seedA:'O brilho amarelo aquece a palma da sua mão.',seedB:'A semente azul pulsa em silêncio, como um pequeno luar.',seedC:'A semente roxa murmura palavras de uma árvore esquecida.'};
@@ -289,7 +289,7 @@ function setFlag(id){epic().flags[id]=true;save();update()}
 function ownItem(id){if(!EPIC_ARTIFACTS[id])return;if(!epic().items.includes(id)){epic().items.push(id);log('Artefato encontrado: '+EPIC_ARTIFACTS[id].name)}save();update()}
 function hasEffect(effect){return epic().equipped.some(id=>EPIC_ARTIFACTS[id]?.effect===effect)}
 function classInfo(){return EPIC_CLASSES[epic().class]||EPIC_CLASSES.guardiao}
-function maxHealth(){return classInfo().hp+(epic().level-1)*4+epic().stats.vig*3+(hasEffect('vigor')?12:0)+(hasEffect('royal')?20:0)}
+function maxHealth(){return classInfo().hp+(epic().level-1)*4+epic().stats.vig*3+(hasEffect('vigor')?12:0)+(hasEffect('royal')?20:0)+(hasEffect('bloom')?10:0)}
 function maxMana(){return classInfo().mp+epic().stats.int+Math.floor(epic().level/2)}
 function recomputeHealth(){epic().hp=Math.min(Math.max(1,epic().hp),maxHealth());epic().mp=Math.min(Math.max(0,epic().mp),maxMana())}
 function xpNeed(){return 60+epic().level*47}
@@ -376,9 +376,9 @@ function finishEpilogue(){const e=epic();e.chapter=7;ownItem('coroa_semente');co
 let epicCombat=null;let epicCombatBusy=false;let epicSoundLast=0;
 function startCombat(monster,actor){if(epicCombat||!EPIC_ENEMIES[monster])return;if(!epic().class){showEpicClasses();return}
  const m=EPIC_ENEMIES[monster];const basePhase=m.phases?m.phases[0]:{hp:m.hp,element:m.element,title:''};epicCombat={key:monster,actor,name:m.name,hp:basePhase.hp,maxHp:basePhase.hp,phase:0,element:basePhase.element,playerGuard:false,turn:1,status:'',enemyStatus:'',logs:[m.intro],enemyIntent:'O inimigo prepara seu primeiro golpe.',lock:false};
- window.SamMusic?.scene(monster==='rei'?'boss':'battle');const e=epic();e.mp=Math.min(e.mp+1,maxMana());if(hasEffect('vigor'))e.hp=Math.min(e.hp+2,maxHealth());dialogOpen=true;createCombat();renderCombat();save();}
+ window.SamMusic?.scene(monster==='rei'?'boss':'battle');const e=epic();e.mp=Math.min(e.mp+1,maxMana());if(hasEffect('vigor'))e.hp=Math.min(e.hp+2,maxHealth());if(hasEffect('moonrise'))e.mp=Math.min(maxMana(),e.mp+2);dialogOpen=true;createCombat();renderCombat();save();}
 function damageMult(atk,def){if(atk===def)return .76;if(EPIC_ADV[atk]===def)return 1.55;if(EPIC_ADV[def]===atk)return .65;return 1}
-function damageToEnemy(element,magic=false){const e=epic(),m=EPIC_ENEMIES[epicCombat.key];const attr=magic?e.stats.int:e.stats.for;const coeff=magic?1.7:1.4;const base=Math.max(2,Math.floor(8+e.level*2.0+attr*coeff-m.def));let mult=damageMult(element,epicCombat.element);if(m.weak===element)mult=Math.max(mult,1.65);if(hasEffect('attack'))mult+=(3/base);if(hasEffect('spell')&&magic)mult*=1.3;if(hasEffect('royal')&&epicCombat.key==='rei')mult*=1.15;if(hasEffect('halloween')&&epicCombat.element==='shadow')mult*=1.15;const variation=.88+Math.random()*.26;const crit=Math.random()<Math.min(.36,.035+epic().stats.agi*.011+(epic().class==='rastreador'?.10:0));return {value:Math.max(1,Math.floor(base*mult*variation*(crit?1.55:1))),mult,crit}}
+function damageToEnemy(element,magic=false){const e=epic(),m=EPIC_ENEMIES[epicCombat.key];const attr=magic?e.stats.int:e.stats.for;const coeff=magic?1.7:1.4;const base=Math.max(2,Math.floor(8+e.level*2.0+attr*coeff-m.def));let mult=damageMult(element,epicCombat.element);if(m.weak===element)mult=Math.max(mult,1.65);if(hasEffect('attack'))mult+=(3/base);if(hasEffect('spell')&&magic)mult*=1.3;if(hasEffect('focus')&&magic)mult*=1.12;if(hasEffect('royal')&&epicCombat.key==='rei')mult*=1.15;if(hasEffect('halloween')&&epicCombat.element==='shadow')mult*=1.15;const variation=.88+Math.random()*.26;const crit=Math.random()<Math.min(.36,.035+epic().stats.agi*.011+(epic().class==='rastreador'?.10:0));return {value:Math.max(1,Math.floor(base*mult*variation*(crit?1.55:1))),mult,crit}}
 function battleMessage(s){epicCombat.logs.unshift(s);epicCombat.logs=epicCombat.logs.slice(0,8)}
 function resolveCombatAction(type){const c=epicCombat;if(!c||c.lock)return;const e=epic(),cls=classInfo(),enemy=EPIC_ENEMIES[c.key];let d;
  if(type==='run'){if(c.key==='rei'||['rainha','besouro','espectro','sentinela'].includes(c.key)){battleMessage('Este guardião não permite fuga.');renderCombat();return}endCombat(false,true);return}
@@ -448,7 +448,7 @@ function enemyTurn(){const c=epicCombat,e=epic(),enemy=EPIC_ENEMIES[c.key];if(!c
  if(miss){battleMessage(c.enemyStatus==='blind'?'A luz cegou o inimigo! Ele errou o golpe.':'Sua Agilidade permitiu esquivar do ataque!')}else{
   const coeff=c.key==='rei'?(1+c.phase*.16):1;
   const raw=enemy.atk*coeff+Math.floor(c.turn/3)+Math.random()*5;
-  let dmg=Math.max(1,Math.floor(raw-epic().stats.vig*.9-(hasEffect('defense')?3:0)-(hasEffect('harvest')?2:0)));
+  let dmg=Math.max(1,Math.floor(raw-epic().stats.vig*.9-(hasEffect('defense')?3:0)-(hasEffect('harvest')?2:0)-(hasEffect('ward')?2:0)));
   const incoming=damageMult(c.element,classInfo().element);dmg=Math.max(1,Math.floor(dmg*(incoming>1.3?1.13:incoming<.9?.86:1)));if(c.playerGuard)dmg=Math.max(1,Math.floor(dmg*.38));if(c.key==='rei'&&c.phase===1&&epic().class==='guardiao')dmg=Math.floor(dmg*.88);
   e.hp=Math.max(0,e.hp-dmg);battleMessage(enemy.name+' causou '+dmg+' de dano'+(c.playerGuard?' (bloqueado parcialmente)':'')+'.');
   if(!c.playerGuard&&Math.random()<.16&&c.key!=='sentinela'){c.status='poison';battleMessage('Você foi envenenado!')}
@@ -521,11 +521,11 @@ function visualData(){let custom={};try{const handle=(localStorage.getItem('sg_h
  // Cor do guarda-roupa é a fonte principal para a aparência, chapéu oficial do perfil prevalece.
  if(Number.isInteger(custom.fruit))av.c=custom.fruit;
  const eq=custom.equipped||{};return {av,face:custom.face||'warm',equipped:eq,classId:epic().class};}
-function refreshEpicAvatar(){const v=visualData(),sig=JSON.stringify(v);if(sig===epicAvatarSig)return;epicAvatarSig=sig;epicVisual=v;
+function refreshEpicAvatar(){const v=visualData(),sig=JSON.stringify([v,epic().equipped.filter(id=>['anel_orvalho','broche_solar','capa_brisa','bracelete_casca','amuleto_luar'].includes(id))]);if(sig===epicAvatarSig)return;epicAvatarSig=sig;epicVisual=v;
  const canvas=document.createElement('canvas');canvas.width=24;canvas.height=34;const g=canvas.getContext('2d');g.imageSmoothingEnabled=false;
  const eq=v.equipped||{},c=v.av.c;
  // Capa atrás da manga: as peças escolhidas no guarda-roupa aparecem no mundo.
- if(eq.cape){g.fillStyle=eq.cape.includes('leaf')?'#5d973f':eq.cape.includes('dawn')?'#c67b33':eq.cape.includes('aurora')?'#398e99':eq.cape.includes('night')?'#27294f':'#5d417b';g.fillRect(4,8,16,22);g.fillRect(2,23,20,6);g.fillStyle='#292236';g.fillRect(2,29,4,2);g.fillRect(18,29,4,2)}
+ if(eq.cape||hasEffect('swift')){g.fillStyle=(eq.cape||'leaf').includes('leaf')?'#5d973f':(eq.cape||'leaf').includes('dawn')?'#c67b33':(eq.cape||'leaf').includes('aurora')?'#398e99':(eq.cape||'leaf').includes('night')?'#27294f':'#5d417b';g.fillRect(4,8,16,22);g.fillRect(2,23,20,6);g.fillStyle='#292236';g.fillRect(2,29,4,2);g.fillRect(18,29,4,2)}
  const tmp=document.createElement('canvas');tmp.width=16;tmp.height=20;try{if(typeof drawAv==='function')drawAv(tmp,{c:Math.max(0,Math.min(7,Number(c)||0)),h:v.av.h||'none'});else{let gg=tmp.getContext('2d');gg.fillStyle='#f2b632';gg.fillRect(3,3,10,15)}}catch(ex){}
  g.drawImage(tmp,4,4,16,22);
  if(eq.body){g.fillStyle=eq.body.includes('prism')?'#657fc2':eq.body.includes('amber')?'#b87d40':'#6b4c37';g.fillRect(7,19,10,4);g.fillStyle='#cdad74';g.fillRect(9,20,6,1)}
@@ -535,7 +535,8 @@ function refreshEpicAvatar(){const v=visualData(),sig=JSON.stringify(v);if(sig==
  if(eq.head && !['none','sprout-pin',v.av.h].includes(eq.head)){g.fillStyle=eq.head.includes('witch')||eq.head.includes('mushroom')?'#634a84':eq.head.includes('crown')||eq.head.includes('circlet')?'#ffc756':eq.head.includes('storm')?'#8bd9eb':'#3d4764';g.fillRect(7,2,10,4);g.fillRect(4,5,16,2)}
  if(eq.hand){g.fillStyle=eq.hand.includes('staff')?'#76dbec':eq.hand.includes('torch')?'#ffb862':'#e0c47c';g.fillRect(21,13,2,15);g.fillRect(19,13,6,3)}
  if(v.classId==='arcanista'){g.fillStyle='#87d4f2';g.fillRect(20,11,2,5)}else if(v.classId==='rastreador'){g.fillStyle='#f39b55';g.fillRect(20,12,2,6)}else if(v.classId==='guardiao'){g.fillStyle='#7fc96c';g.fillRect(20,14,2,5)}
- epicAvatarCanvas=canvas;
+ if(hasEffect('bloom')){g.fillStyle='#8be6dc';g.fillRect(17,10,4,4)}if(hasEffect('focus')){g.fillStyle='#ffd166';g.fillRect(4,13,5,5)}if(hasEffect('ward')){g.fillStyle='#b9ccae';g.fillRect(3,20,4,7)}if(hasEffect('moonrise')){g.fillStyle='#b5a2fa';g.fillRect(11,2,4,3)}
+  epicAvatarCanvas=canvas;
 }
 function renderAvatarToCanvas(target,w,h,inBattle=false){if(!target)return;refreshEpicAvatar();const g=target.getContext('2d');g.clearRect(0,0,w,h);g.imageSmoothingEnabled=false;if(!epicAvatarCanvas)return;
  const ratio=Math.min(w/24,h/34)*.91,szW=24*ratio,szH=34*ratio;g.drawImage(epicAvatarCanvas,(w-szW)/2,(h-szH)/2,szW,szH)}
@@ -694,10 +695,11 @@ function drawEpicActor(a,x,y,bob){
    v23NpcRoutine();if(Math.floor(clock)%3===0&&Math.floor((clock-dt))%3!==0)v23DailyRender();
    if(!dialogOpen){let dx=(keys.right?1:0)-(keys.left?1:0),dy=(keys.down?1:0)-(keys.up?1:0);
     if(touchDest){const a=touchDest;dx=a.x-player.x;dy=a.y-player.y;if(Math.hypot(dx,dy)<.3){touchDest=null;dx=dy=0}}
-    const m=Math.hypot(dx,dy);if(m>0){dx/=m;dy/=m;const step=3.45*dt;player.vx=dx;player.vy=dy;
+    const m=Math.hypot(dx,dy);if(m>0){dx/=m;dy/=m;const bag=v24Bag(),boost=Date.now()<bag.hasteUntil,run=keys.run&&bag.stamina>1,step=(run?(boost?6.4:5.4):3.45)*dt;if(run)bag.stamina=Math.max(0,bag.stamina-(boost?8:24)*dt);else bag.stamina=Math.min(hasEffect('swift')?140:100,bag.stamina+18*dt);player.vx=dx;player.vy=dy;
       if(!collide(player.x+dx*step,player.y))player.x+=dx*step;
       if(!collide(player.x,player.y+dy*step))player.y+=dy*step;
-    }else{player.vx=player.vy=0}
+    }else{player.vx=player.vy=0;const bag=v24Bag();bag.stamina=Math.min(hasEffect('swift')?140:100,bag.stamina+22*dt)}
+     const meter=document.getElementById('v24SprintMeter');if(meter){meter.max=hasEffect('swift')?140:100;meter.value=v24Bag().stamina;document.getElementById('v24SprintText').textContent=Math.round(v24Bag().stamina)+' fôlego'}
     if(time>nextSave){nextSave=time+900;save()}
    }
    render();guideUI();let a=nearest(),tip=a?'Pressione E ou INVESTIGAR para '+a.label+'.':'WASD/setas ou toque no mapa. Interaja com portais, NPCs e chefões. Aventure-se pela campanha.';
@@ -709,9 +711,10 @@ function drawEpicActor(a,x,y,bob){
   const controlKeys={ArrowUp:'up',w:'up',W:'up',ArrowDown:'down',s:'down',S:'down',ArrowLeft:'left',a:'left',A:'left',ArrowRight:'right',d:'right',D:'right'};
   document.addEventListener('keydown',e=>{if(!visible||dialogOpen)return;const t=e.target;if(t&&(/INPUT|TEXTAREA|SELECT/.test(t.tagName)||t.isContentEditable))return;
    const k=controlKeys[e.key];if(k){keys[k]=true;e.preventDefault()}
-   if(e.key==='e'||e.key==='E'||e.key===' '){e.preventDefault();if(!e.repeat)action()}
+   if(e.key==='Shift'){keys.run=true;e.preventDefault()}
+    if(e.key==='e'||e.key==='E'||e.key===' '){e.preventDefault();if(!e.repeat)action()}
   });
-  document.addEventListener('keyup',e=>{const k=controlKeys[e.key];if(k)keys[k]=false});window.addEventListener('blur',()=>Object.keys(keys).forEach(k=>keys[k]=false));
+  document.addEventListener('keyup',e=>{const k=controlKeys[e.key];if(k)keys[k]=false;if(e.key==='Shift')keys.run=false});window.addEventListener('blur',()=>Object.keys(keys).forEach(k=>keys[k]=false));
   document.querySelectorAll('[data-r12move]').forEach(b=>{let name=b.dataset.r12move;
    b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture?.(e.pointerId);keys[name]=true;b.classList.add('pressed');touchDest=null});
    for(const type of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(type,()=>{keys[name]=false;b.classList.remove('pressed')});
@@ -729,7 +732,7 @@ function drawEpicActor(a,x,y,bob){
  if(typeof prevShow==='function')window.showPane=function(id){let result=prevShow.apply(this,arguments);const was=visible;visible=id==='rpgDlg';if(visible){if(storageKey()!==accountRpgKey){accountRpgKey=storageKey();const newData=JSON.parse(localStorage.getItem(accountRpgKey)||'null');st={...blank(),...(newData||{})};st.epic={...freshEpic(),...(st.epic||{}),stats:{...freshEpic().stats,...(st.epic?.stats||{})},flags:{...(st.epic?.flags||{})}};if(!rooms[st.map])st.map='vila';player.x=Number.isFinite(st.x)?st.x:11.7;player.y=Number.isFinite(st.y)?st.y:10.8;epicAvatarSig=''}syncEpicCrossModes();update();if(!epic().class)showEpicClasses();last=performance.now();if(!was){save();requestAnimationFrame(()=>cv.focus({preventScroll:true}))}}
    else if(was){save();Object.keys(keys).forEach(k=>keys[k]=false);touchDest=null}return result};
  const targetVisible=()=>!host.hidden;
- setupEpicUI();if(st.relic&&epic().chapter===0)advanceEpicChapter(1);bind();visible=targetVisible();update();if(visible&&!epic().class)showEpicClasses();requestAnimationFrame(tick);
+ setupEpicUI();initV24Shop();if(st.relic&&epic().chapter===0)advanceEpicChapter(1);bind();visible=targetVisible();update();if(visible&&!epic().class)showEpicClasses();requestAnimationFrame(tick);
  if(!st.seen.includes('welcome')){st.seen.push('welcome');save();}
- window.SamHybridRPG={interactById:(id)=>{const a=room().actors.find(a=>a.id===id);if(a)interact(a)},startBattle:(key)=>startCombat(key,Object.entries(epicMonsters).find(([a,b])=>b===key)?.[0]||key),chooseClass:(id)=>{document.querySelector('[data-r13class="'+id+'"]')?.click()},getState:()=>JSON.parse(JSON.stringify(st)),gotoRoom:(name)=>{if(rooms[name]){st.map=name;player.x=11;player.y=8;update();save()}},onDefenseResult:(won)=>epicDefenseReward(won),open:()=>window.showPane?.('rpgDlg')};
+ window.SamHybridRPG={openShop:openV24Shop,getShopCatalog:()=>V24_SHOP.map(x=>({...x})),interactById:(id)=>{const a=room().actors.find(a=>a.id===id);if(a)interact(a)},startBattle:(key)=>startCombat(key,Object.entries(epicMonsters).find(([a,b])=>b===key)?.[0]||key),chooseClass:(id)=>{document.querySelector('[data-r13class="'+id+'"]')?.click()},getState:()=>JSON.parse(JSON.stringify(st)),gotoRoom:(name)=>{if(rooms[name]){st.map=name;player.x=11;player.y=8;update();save()}},onDefenseResult:(won)=>epicDefenseReward(won),open:()=>window.showPane?.('rpgDlg')};
 })();
