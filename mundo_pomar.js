@@ -286,6 +286,7 @@ Object.assign(EPIC_ENEMIES,{
  st.epic={...freshEpic(),...(st.epic||{}),stats:{...freshEpic().stats,...(st.epic?.stats||{})},flags:{...(st.epic?.flags||{})},items:Array.isArray(st.epic?.items)?st.epic.items:['semente_guardia'],equipped:Array.isArray(st.epic?.equipped)?st.epic.equipped:['semente_guardia'],defeated:Array.isArray(st.epic?.defeated)?st.epic.defeated:[]};
  const v23Sprites=Object.fromEntries(['bento','livia','eldra','maira','amalia','tito'].map(name=>{const im=new Image();im.src='sprites/npc_'+name+'_v23.svg';return [name,im]}));
  const v23Trees=Object.fromEntries(['arvore_lunar','arvore_corrompida'].map(name=>{const im=new Image();im.src='sprites/'+name+'_v23.svg';return [name,im]}));
+ const v24Trees=Object.fromEntries(['arvore_saudavel','arvore_danificada','arvore_destruida'].map(name=>{const im=new Image();im.src='sprites/'+name+'_v24.svg';return [name,im]}));
  const imgCache=new Map();const sprite=name=>{if(!imgCache.has(name)){const i=new Image();i.src='sprites/'+name+((name==='aranha_rainha_v14'||name.endsWith('_v24'))?'.svg':'.png');imgCache.set(name,i)}return imgCache.get(name)};
  const player={x:st.x,y:st.y,vx:0,vy:0};let nextSave=0,last=0,clock=0,visible=false,touchDest=null,dialogOpen=false,lastTip='';
  const room=()=>rooms[st.map];
@@ -822,12 +823,12 @@ function drawEpicActor(a,x,y,bob){
  }
  function drawSign(x,y,msg){rect(x-65,y-15,130,27,'#3f2c25');rect(x-63,y-13,126,23,'#9a6a3c');rect(x-57,y-8,115,14,'#473425');ctx.fillStyle='#ffe5a5';ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.fillText(msg,x,y+1)}
  function drawTree(x,y,dead=false,scale=1){
-  const im=v23Trees[dead?'arvore_corrompida':'arvore_lunar'];
+  const im=v24Trees[dead?'arvore_destruida':(['ruinas','bosque','pantano','coracao'].includes(st.map)?'arvore_danificada':'arvore_saudavel')];
   if(im.complete&&im.naturalWidth){
    const still=matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.classList.contains('sm165-lowfx');
    const frame=still?0:Math.floor(clock*1.8+x)%4;
    ctx.save();ctx.imageSmoothingEnabled=false;
-   ctx.drawImage(im,frame*64,0,64,64,x*T-31*scale,y*T-29*scale,62*scale,62*scale);
+   ctx.drawImage(im,frame*48,0,48,48,x*T-31*scale,y*T-29*scale,62*scale,62*scale);
    ctx.restore();return;
   }
   ctx.save();ctx.translate(x*T,y*T);ctx.scale(scale,scale);const sway=Math.sin(clock*1.5+x)*1.2;
