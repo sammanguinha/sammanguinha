@@ -13,4 +13,4 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test tests/v23_renascimento.test.cjs tests/v22_fundacao.test.cjs tests/v22_defense.test.cjs
+      - run: node --test tests/v23_renascimento.test.cjs tests/v23_vila_defesa.test.cjs tests/v22_fundacao.test.cjs tests/v22_defense.test.cjs
