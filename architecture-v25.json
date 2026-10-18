@@ -1,10 +1,38 @@
 {
-  "release": "V25.0",
-  "description": "Separation of legacy styles and synchronous classic scripts, preserving evaluation order.",
+  "release": "V26.0",
+  "description": "V26.0: 9 scripts clássicos para sistemas de jogo + 8 folhas base CSS temáticas; preservada ordenação.",
   "styles": [
     {
       "file": "css/base.css",
-      "bytes": 68135
+      "bytes": 6385
+    },
+    {
+      "file": "css/home-scene.css",
+      "bytes": 7089
+    },
+    {
+      "file": "css/layout-panels.css",
+      "bytes": 4299
+    },
+    {
+      "file": "css/wardrobe-stage.css",
+      "bytes": 8621
+    },
+    {
+      "file": "css/world-map.css",
+      "bytes": 8110
+    },
+    {
+      "file": "css/community-ui.css",
+      "bytes": 6089
+    },
+    {
+      "file": "css/legacy-compat.css",
+      "bytes": 14382
+    },
+    {
+      "file": "css/premium-cards.css",
+      "bytes": 13160
     },
     {
       "file": "css/ranking.css",
@@ -54,7 +82,39 @@
   "scripts": [
     {
       "file": "js/core/app.js",
-      "bytes": 120393
+      "bytes": 7794
+    },
+    {
+      "file": "js/core/profile-community.js",
+      "bytes": 21593
+    },
+    {
+      "file": "js/ui/ranking-home.js",
+      "bytes": 3787
+    },
+    {
+      "file": "js/core/account-secrets.js",
+      "bytes": 13779
+    },
+    {
+      "file": "js/services/community-data.js",
+      "bytes": 6716
+    },
+    {
+      "file": "js/services/gallery.js",
+      "bytes": 6383
+    },
+    {
+      "file": "js/games/defense-engine.js",
+      "bytes": 42481
+    },
+    {
+      "file": "js/games/defense-animation.js",
+      "bytes": 10053
+    },
+    {
+      "file": "js/core/progression.js",
+      "bytes": 7807
     },
     {
       "file": "js/games/halloween-wardrobe.js",
@@ -80,6 +140,8 @@
   "notes": [
     "Script tags intentionally omit defer to retain the original exact execution order. Do not convert to ES modules without evaluating global lexical bindings.",
     "CSS asset URLs should be relative to css/; extracted CSS currently has no relative url().",
-    "Stage 1 only: markup and some style attributes remain in index.html."
+    "Stage 1 only: markup and some style attributes remain in index.html.",
+    "Os nove blocos devem manter sua ordem de carregamento clássica (sem defer nem type=module).",
+    "css/base.css foi separado em oito folhas na ordem original; os seletores e especificidades permanecem idênticos."
   ]
 }

@@ -1,0 +1,28 @@
+{
+  "phase": "V26",
+  "originalControllerGitBlob": "ef52fcb36fc17a41fa8d11681f95b14504a3c22d",
+  "originalStylesGitBlob": "f32aeee357c6dab74c1f5757d58955ad2c1a42b3",
+  "controllerSections": [
+    "js/core/app.js",
+    "js/core/profile-community.js",
+    "js/ui/ranking-home.js",
+    "js/core/account-secrets.js",
+    "js/services/community-data.js",
+    "js/services/gallery.js",
+    "js/games/defense-engine.js",
+    "js/games/defense-animation.js",
+    "js/core/progression.js"
+  ],
+  "styleSections": [
+    "css/base.css",
+    "css/home-scene.css",
+    "css/layout-panels.css",
+    "css/wardrobe-stage.css",
+    "css/world-map.css",
+    "css/community-ui.css",
+    "css/legacy-compat.css",
+    "css/premium-cards.css"
+  ],
+  "expectedStyleCount": 19,
+  "expectedScriptCount": 14
+}

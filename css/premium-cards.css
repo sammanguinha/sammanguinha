@@ -1,0 +1,69 @@
+/* Pixel Art Premium — Loja, Missões, Mascotes e Defesa */
+#orchardExtras{position:relative;overflow:hidden;border:3px solid #8e5837!important;border-radius:14px!important;background:linear-gradient(145deg,#251326 0%,#120d1d 65%,#1a261b 100%)!important;box-shadow:inset 0 0 0 3px #382039,0 12px 30px #0007!important}
+#orchardExtras h3{text-shadow:2px 3px #180b17}
+#orchardExtras [data-extras-tab]{border:2px solid #9d6237;border-radius:7px;box-shadow:inset 0 -4px #28101b,0 3px #0008;transition:transform .12s}
+#orchardExtras [data-extras-tab][aria-pressed=true]{background:#78402e;color:#fff0bf;transform:translateY(2px);box-shadow:inset 0 2px #27121a}
+.orchard-hero{height:130px;border:2px solid #815038;border-radius:9px;background:#120d1b center 47% / cover no-repeat;position:relative;overflow:hidden;margin:10px 0 15px;image-rendering:pixelated}
+.orchard-hero:after{content:'';position:absolute;inset:40% 0 0;background:linear-gradient(transparent,#110d18f5)}
+.orchard-hero strong{position:absolute;bottom:12px;left:14px;z-index:1;color:#ffd48c;font-size:1.05rem;text-shadow:2px 3px #180b16}
+.orchard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.orchard-card{border:2px solid #70462e;border-radius:10px;background:linear-gradient(160deg,#2b1a32,#160e21);padding:12px;text-align:center;box-shadow:inset 0 0 0 2px #3d2741,0 4px 10px #0006;min-width:0}
+.orchard-card img{width:88px;height:88px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 5px 7px #000a)}
+.orchard-card b{display:block;color:#ffd695;margin:6px 0}
+.orchard-card .sm{display:block;min-height:25px}
+.orchard-card button{margin-top:9px;width:100%;min-height:38px}
+.orchard-card.selected{border-color:#e5b34b;box-shadow:0 0 14px #a2693266}
+.orchard-mission{display:flex;gap:12px;align-items:center;padding:12px;margin-bottom:10px;background:linear-gradient(100deg,#5b3828,#382438);border:2px solid #9c6b42;border-radius:9px}
+.orchard-mission img{width:55px;height:55px;object-fit:contain;image-rendering:pixelated}
+.orchard-mission .mission-info{flex:1;min-width:0}
+.orchard-progress{height:10px;background:#170e1a;border:1px solid #bc8054;border-radius:6px;overflow:hidden;margin-top:6px}
+.orchard-progress>span{display:block;height:100%;background:linear-gradient(90deg,#5dba65,#c8ec68)}
+.orchard-mission button{min-width:100px}
+#gCv{image-rendering:pixelated;border:3px solid #8a573c;border-radius:8px;box-shadow:0 0 0 3px #1b1120,0 9px 25px #0009}
+@media(max-width:520px){.orchard-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.orchard-card{padding:8px}.orchard-card img{width:70px;height:70px}.orchard-mission{flex-wrap:wrap}.orchard-mission button{width:100%}}
+
+/* Pomar premium v2 — vitrines amplas, arte sem cortes e mobile */
+#orchardExtras{background:linear-gradient(145deg,#25152b,#100d1b 65%,#21151c);border:3px ridge #9d623b;box-shadow:inset 0 0 0 3px #422a35,0 12px 28px #0008;padding:clamp(12px,3vw,24px)!important}
+#orchardExtras h3{letter-spacing:.04em;text-shadow:2px 3px #090610}
+.orchard-hero{height:clamp(190px,32vw,300px)!important;background-size:contain!important;background-position:center center!important;background-repeat:no-repeat!important;background-color:#120c19!important;border:3px solid #a76a3e!important;border-radius:14px!important;box-shadow:inset 0 0 20px #000b,0 6px 18px #0008}
+.orchard-hero:after{background:linear-gradient(transparent 58%,#120b1ee8)!important;pointer-events:none}
+.orchard-hero strong{font-size:clamp(1rem,2.8vw,1.45rem)!important;text-shadow:2px 3px #090610,0 0 15px #f5a34866!important}
+.orchard-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,195px),1fr))!important;gap:16px!important}
+.orchard-card{position:relative;padding:15px!important;border:3px solid #966039!important;border-radius:14px!important;background:linear-gradient(160deg,#3a243c,#1c142a 68%,#141020)!important;box-shadow:inset 0 0 0 2px #4e3450,0 7px 0 #100c13,0 11px 22px #0009!important;transition:transform .18s ease,border-color .18s ease}
+.orchard-card:hover{transform:translateY(-3px);border-color:#dba35d!important}
+.orchard-card img{display:block;width:min(100%,152px)!important;height:142px!important;object-fit:contain!important;margin:4px auto 10px!important;image-rendering:pixelated;filter:drop-shadow(0 7px 8px #000b);animation:orchardFloat 2.6s ease-in-out infinite}
+.orchard-card:nth-child(2) img{animation-delay:-.7s}.orchard-card:nth-child(3) img{animation-delay:-1.3s}.orchard-card:nth-child(4) img{animation-delay:-1.9s}
+.orchard-card b{font-size:1rem!important}.orchard-card .sm{line-height:1.45}
+.orchard-mission{background:linear-gradient(100deg,#4a2e29,#2b1c29)!important;border:2px solid #b47a49!important;border-radius:11px!important;box-shadow:inset 0 0 0 2px #65442c,0 4px 9px #0006}
+.orchard-mission img{width:58px!important;height:58px!important;object-fit:contain!important;image-rendering:pixelated}
+@keyframes orchardFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@media(max-width:520px){.orchard-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}.orchard-card{padding:9px!important}.orchard-card img{height:100px!important;width:100%!important}.orchard-card button{font-size:.75rem;padding:8px 4px!important}.orchard-hero{height:190px!important}}
+@media(prefers-reduced-motion:reduce){.orchard-card img{animation:none}.orchard-card{transition:none}}
+
+/* V4: vitrine com arte integral e margens generosas */
+#orchardExtras .orchard-card{overflow:visible!important;min-width:0;display:flex;flex-direction:column;align-items:center;gap:9px;padding:18px 14px!important;background:linear-gradient(145deg,#3b2344,#1a192c)!important;border:3px solid #986b49!important;box-shadow:inset 0 0 0 3px #24172a,0 8px 18px #0b0811!important}
+#orchardExtras .orchard-card img{display:block!important;width:112px!important;height:112px!important;max-width:100%!important;object-fit:contain!important;object-position:center!important;image-rendering:pixelated;padding:8px!important;box-sizing:border-box!important;overflow:visible!important;filter:drop-shadow(0 6px 6px #100c1d)}
+#orchardExtras .orchard-grid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr))!important;gap:18px!important;padding:14px 4px!important;overflow:visible!important}
+#orchardExtras .orchard-card b{text-align:center;color:#ffe0a1}
+#orchardExtras .orchard-power{color:#e3c2ff!important;font-weight:700;text-align:center;min-height:36px}
+#orchardExtras .orchard-hero{min-height:125px;background-size:cover!important;background-position:center!important;border:3px solid #aa7951;border-radius:12px}
+#orchardExtras .orchard-mission{overflow:visible!important}
+
+/* Expansão Halloween: aventura em pixel art construída em CSS, sem sprites recortados */
+.ha-shell{margin:26px auto 34px;padding:20px;border:3px solid #7b4b38;border-radius:16px;background:linear-gradient(150deg,#21172e,#121725 55%,#231a24);color:#f8ead4;box-shadow:0 10px 35px #0008,inset 0 0 0 2px #c98a5360;font-family:inherit}
+.ha-heading{display:flex;align-items:center;gap:16px;margin-bottom:20px}.ha-heading h2{color:#ffcc7b;font-size:clamp(1.35rem,3vw,2.2rem);margin:4px 0}.ha-heading small,.ha-story-top small{color:#e6a65e;letter-spacing:2px;font-weight:800}.ha-heading p{color:#d4c7dc;margin:4px 0}.ha-moon{font-size:3.4rem;color:#ffd685;text-shadow:0 0 18px #e7a04a}
+.ha-progress{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:.82rem;margin-bottom:16px;color:#f4d3a2}.ha-track{height:11px;background:#110d18;border:1px solid #8a634e;border-radius:8px;flex:1;min-width:100px;overflow:hidden}.ha-track>div{height:100%;width:0;background:linear-gradient(90deg,#b766e9,#ffb55e);transition:width .3s}
+.ha-layout{display:grid;grid-template-columns:minmax(140px,190px) minmax(0,1fr) minmax(170px,220px);gap:14px;align-items:start}.ha-chapters,.ha-side,.ha-story{background:#1b1827;border:2px solid #594052;border-radius:12px;padding:12px}.ha-chapters{display:grid;gap:8px}.ha-chapter{width:100%;background:#2c2438;color:#f1dfcf;border:1px solid #66506d;border-radius:8px;padding:10px;text-align:left;cursor:pointer;font:inherit;font-size:.85rem}.ha-chapter small{display:block;color:#c8b4c7}.ha-chapter.active{border-color:#ffbf69;background:#45304b}.ha-chapter:disabled{opacity:.45;cursor:not-allowed}.ha-chapter.done{border-color:#7fc49a}
+.ha-stage{position:relative;height:235px;border:3px solid #73523f;overflow:hidden;background:linear-gradient(#171b39 0%,#463053 58%,#312938 59%,#17282b 100%);border-radius:10px}.ha-stage:before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 23px,#ffffff08 24px 25px);pointer-events:none}.ha-art{position:absolute;inset:0;display:flex;justify-content:center;align-items:center;gap:8px;filter:drop-shadow(0 10px 0 #0005)}.ha-object{position:relative;display:flex;align-items:center;justify-content:center;font-size:clamp(2rem,4vw,3.7rem);width:25%;height:50%;max-width:110px;background:linear-gradient(#7b4e4e,#352638);border:3px solid #c18d60;box-shadow:inset -7px -7px #160e1c80,5px 6px #0007;image-rendering:pixelated;cursor:pointer;color:#fff}.ha-object:hover,.ha-object:focus-visible{transform:translateY(-5px);border-color:#ffdd8c;outline:2px solid #ffdd8c}.ha-object:disabled{opacity:.55;cursor:default}.ha-stage-caption{position:absolute;bottom:0;left:0;right:0;text-align:center;padding:7px;background:#0b0b16c9;color:#ffe2a4;font-size:.8rem}
+.ha-story{margin-top:12px}.ha-story-top{display:flex;justify-content:space-between;gap:8px;font-size:.75rem}.ha-story h3{color:#ffcc7b;margin:10px 0}.ha-story p{line-height:1.65;color:#eadbe2}.ha-story blockquote{border-left:3px solid #b57ba5;margin:10px 0;padding:10px;background:#2b2238;color:#e4d4ed;font-style:italic}.ha-interaction{display:grid;gap:10px;margin:14px 0}.ha-interaction label{font-weight:700}.ha-interaction input{width:100%;padding:12px;background:#100f1d;color:#fff;border:1px solid #9c729a;border-radius:7px;font-size:1rem}.ha-choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:8px}.ha-btn,.ha-choice{background:#49324d;border:2px solid #b47d6b;color:#fff3de;border-radius:8px;padding:10px 12px;font:inherit;font-weight:700;cursor:pointer;min-height:42px}.ha-btn:hover,.ha-choice:hover{background:#654369;border-color:#f9c77c}.ha-quiet{background:#2d273d}.ha-actions{display:flex;gap:8px;flex-wrap:wrap}.ha-feedback{min-height:25px;color:#ffd88b;font-size:.9rem}.ha-side h3{color:#ffd69b;margin:8px 0 12px;font-size:1rem}.ha-inventory{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}.ha-item{border:1px solid #8e725a;border-radius:7px;background:#31273c;padding:7px;font-size:.8rem}.ha-notes{display:grid;gap:8px;max-height:250px;overflow:auto}.ha-note{font-size:.8rem;border-left:2px solid #b9845c;padding:6px;color:#ddd0dd}.ha-reward{margin:18px 0;padding:10px;border:1px solid #c79c5a;background:#3a2935;border-radius:9px;font-size:.85rem}.ha-reward p{margin:8px 0 0;color:#e7d9df}.ha-side #haRestart{width:100%;font-size:.78rem}
+@media(max-width:1050px){.ha-layout{grid-template-columns:160px minmax(0,1fr)}.ha-side{grid-column:1/-1}.ha-inventory{margin-bottom:12px}}@media(max-width:650px){.ha-shell{padding:12px}.ha-layout{display:flex;flex-direction:column}.ha-chapters{width:100%;display:flex;overflow-x:auto}.ha-chapter{min-width:145px}.ha-main,.ha-side{width:100%}.ha-stage{height:200px}.ha-heading{align-items:flex-start}.ha-moon{font-size:2.3rem}.ha-object{font-size:2.7rem}}
+
+/* V11: vitrine real — arte inteira e centralizada pelo canal alfa, não pela borda do arquivo. */
+#orchardExtras .orchard-grid .orchard-card{overflow:visible!important;min-width:0;isolation:isolate}
+#orchardExtras .orchard-card .pet-stage{display:flex;align-items:center;justify-content:center;width:100%;max-width:234px;height:172px;position:relative;margin:2px auto 8px;border:1px solid #72524d;border-radius:16px;background:radial-gradient(ellipse at 50% 65%,#53345c90,#1b1425 73%);box-shadow:inset 0 0 24px #101019,0 4px 13px #0006;overflow:hidden}
+#orchardExtras .orchard-card .pet-stage:after{content:"";position:absolute;bottom:10px;left:18%;width:64%;height:14px;border-radius:50%;background:#08080b60;filter:blur(8px);pointer-events:none}
+#orchardExtras .orchard-card .pet-stage canvas{display:block;max-width:100%;height:100%;object-fit:contain;image-rendering:pixelated;position:relative;z-index:2}
+#orchardExtras .orchard-card button{margin-top:auto!important}
+#gCv{display:block!important;width:100%!important;height:auto!important;max-width:540px!important;margin:0 auto!important;image-rendering:pixelated}
+@media(max-width:560px){#orchardExtras .orchard-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#orchardExtras .orchard-card{padding:8px!important}#orchardExtras .orchard-card .pet-stage{height:124px!important;border-radius:10px}#orchardExtras .orchard-card .pet-stage canvas{width:100%!important;height:auto!important;max-height:118px!important}#gCv{max-width:100%!important}}
+@media(prefers-reduced-motion:reduce){#orchardExtras .orchard-card .pet-stage canvas{animation:none!important}}

@@ -2,7 +2,7 @@
 const {chromium}=require('playwright');
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),http=require('node:http'),path=require('node:path');
-const root=path.resolve(__dirname,'..');
+const root=process.env.SM_GAME_ROOT?path.resolve(process.env.SM_GAME_ROOT):path.resolve(__dirname,'..');
 const mime={'.html':'text/html','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.ico':'image/x-icon','.mp3':'audio/mpeg'};
 const server=http.createServer((req,res)=>{
  const pathname=decodeURIComponent((req.url||'/').split('?')[0]);
@@ -32,8 +32,8 @@ const server=http.createServer((req,res)=>{
    await page.goto('http://127.0.0.1:4186/index.html',{waitUntil:'domcontentloaded',timeout:45000});
    await page.waitForFunction(()=>typeof window.showPane==='function'&&!!window.SamHybridRPG?.getState,{timeout:30000});
    const summary=await page.evaluate(()=>({
-    base:!!document.querySelector('link[href="css/base.css?v=25"]')&&getComputedStyle(document.documentElement).getPropertyValue('--bg-deep').trim().length>0,
-    scripts:!!document.querySelector('script[src="js/core/app.js?v=25"]'),
+    base:!!document.querySelector('link[href="css/base.css?v=26"],link[href="css/game-v26.bundle.css?v=26"]')&&getComputedStyle(document.documentElement).getPropertyValue('--bg-deep').trim().length>0,
+    scripts:!!document.querySelector('script[src="js/core/app.js?v=26"],script[src="js/game-v26.bundle.js?v=26"]'),
     world:!!document.querySelector('#r12Canvas'),
     defense:!!document.querySelector('#gCv')
    }));

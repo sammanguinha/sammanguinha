@@ -1,0 +1,196 @@
+/* =========================================================================
+   MAPA INTERATIVO DO POMAR (6 REGIÕES) & EXPLORAÇÃO (#eventDlg)
+   ========================================================================= */
+.orchard-map-container {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 20px; box-shadow: var(--shadow-lg);
+  margin-bottom: 24px; position: relative; overflow: hidden;
+}
+.map-header {
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 16px;
+  flex-wrap: wrap; gap: 10px;
+}
+.map-header h2 {
+  margin: 0; font-family: var(--font-gothic); font-size: 1.85rem; color: var(--amber);
+}
+.map-progress-pill {
+  font-family: var(--font-pixel); font-size: 0.95rem; color: var(--ink-bright);
+  background: var(--surface-card); border: 1px solid var(--border);
+  padding: 4px 14px; border-radius: 999px;
+}
+
+/* O Mapa Gráfico / Visual */
+.interactive-world-map {
+  position: relative; width: 100%; min-height: 380px; border-radius: 12px;
+  background: 
+    radial-gradient(circle at 50% 50%, #1c1429 0%, #0d0814 100%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0, rgba(255,255,255,0.01) 1px, transparent 0, transparent 24px);
+  border: 1px solid var(--border); overflow: hidden;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+  margin-bottom: 20px;
+}
+
+/* SVG das Trilhas e Linhas Místicas */
+.map-ley-lines {
+  position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;
+}
+.map-ley-line {
+  fill: none; stroke: var(--border-light); stroke-width: 3; stroke-dasharray: 6 6;
+  opacity: 0.5; transition: all 0.5s;
+}
+.map-ley-line.is-active {
+  stroke: var(--amber); opacity: 0.9; stroke-width: 3.5;
+  filter: drop-shadow(0 0 8px rgba(245, 166, 35, 0.7));
+  animation: dash 30s linear infinite;
+}
+@keyframes dash { to { stroke-dashoffset: -1000; } }
+
+/* Grid de Nós das Regiões */
+.map-nodes-layer {
+  position: absolute; inset: 0; display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  padding: 24px; gap: 16px;
+}
+@media (max-width: 680px) {
+  .interactive-world-map { min-height: 480px; }
+  .map-nodes-layer { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); }
+}
+
+.region-node {
+  all: unset; cursor: pointer; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  position: relative; z-index: 2; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 8px; border-radius: 12px;
+}
+.region-node:hover { transform: translateY(-4px) scale(1.05); }
+.region-node:focus-visible { outline: 2px solid var(--amber); }
+
+.node-icon-wrapper {
+  width: 58px; height: 58px; border-radius: 50%;
+  background: var(--surface-card); border: 2px solid var(--border);
+  display: grid; place-items: center; position: relative;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  transition: all 0.25s;
+}
+.node-icon-wrapper .node-icon { width: 30px; height: 30px; color: var(--muted); }
+.node-badge-status {
+  position: absolute; -top: 4px; right: -4px; width: 18px; height: 18px;
+  border-radius: 50%; background: #222; border: 1px solid #444;
+  display: grid; place-items: center; font-size: 0.65rem; color: #aaa;
+}
+
+.region-node.is-active .node-icon-wrapper {
+  border-color: var(--amber);
+  background: radial-gradient(circle, #382410 0%, var(--surface-card) 80%);
+  box-shadow: 0 0 20px rgba(245, 166, 35, 0.5), 0 0 6px var(--amber);
+}
+.region-node.is-active .node-icon { color: var(--amber); }
+
+.region-node.is-done .node-icon-wrapper {
+  border-color: var(--spectral);
+  box-shadow: 0 0 16px rgba(56, 239, 125, 0.35);
+}
+.region-node.is-done .node-icon { color: var(--spectral); }
+.region-node.is-done .node-badge-status { background: var(--spectral); color: #052410; border-color: #fff; }
+
+.region-node.is-locked { opacity: 0.45; cursor: not-allowed; }
+.region-node.is-locked .node-icon-wrapper { filter: grayscale(1); }
+
+.node-label {
+  margin-top: 8px; font-family: var(--font-title); font-size: 0.85rem;
+  font-weight: 700; color: var(--ink-bright);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+}
+.node-step { font-family: var(--font-pixel); font-size: 0.72rem; color: var(--amber); }
+
+/* Painel de Investigação da Região Ativa */
+.scene-investigation-card {
+  background: var(--surface-card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 22px; box-shadow: var(--shadow-md);
+  margin-bottom: 24px;
+}
+.scene-top-banner {
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 16px;
+  flex-wrap: wrap; gap: 8px;
+}
+.scene-region-title {
+  font-family: var(--font-gothic); font-size: 1.65rem; color: var(--amber); margin: 0;
+}
+.scene-chapter-tag { font-family: var(--font-ui); font-size: 0.78rem; color: var(--muted); }
+
+/* Diálogo com NPC */
+.npc-dialogue-box {
+  display: flex; gap: 16px; align-items: flex-start;
+  background: var(--surface); border: 1px solid var(--border-light);
+  border-left: 4px solid var(--amber); border-radius: 10px;
+  padding: 14px 18px; margin: 16px 0;
+}
+.npc-avatar-crest {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--surface-card); border: 1px solid var(--border);
+  display: grid; place-items: center; color: var(--amber); flex-shrink: 0;
+}
+.npc-copy b { display: block; color: var(--amber); font-size: 0.88rem; margin-bottom: 2px; }
+.npc-copy p { margin: 0; font-family: var(--font-hand); font-size: 1.15rem; color: var(--ink-bright); line-height: 1.35; }
+
+/* Enigmas & Interações */
+.puzzle-interaction-box {
+  background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px; margin: 16px 0;
+}
+.puzzle-interaction-box h4 {
+  margin: 0 0 10px; font-family: var(--font-title); font-size: 1.05rem; color: var(--amber);
+}
+.puzzle-interaction-box p { color: var(--ink); font-size: 0.88rem; line-height: 1.5; margin: 0 0 14px; }
+
+.rpg-choice-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px; margin-bottom: 14px;
+}
+.rpg-choice {
+  all: unset; cursor: pointer; padding: 12px 14px; border-radius: 8px;
+  background: var(--surface-card); border: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 4px; transition: all 0.2s;
+}
+.rpg-choice:hover { border-color: var(--amber); background: var(--surface-alt); }
+.rpg-choice b { color: var(--ink-bright); font-size: 0.9rem; }
+.rpg-choice small { color: var(--muted); font-size: 0.74rem; }
+
+.rpg-answer-row { display: flex; gap: 10px; margin-top: 10px; }
+.rpg-answer-row input {
+  flex: 1; min-width: 0; background: var(--surface-card);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px 14px; color: var(--ink-bright); font-family: var(--font-pixel);
+}
+.rpg-answer-row input:focus { border-color: var(--amber); }
+.rpg-action-btn {
+  all: unset; cursor: pointer; padding: 10px 20px; border-radius: 8px;
+  background: var(--amber); color: #1e1102; font-weight: 700; font-size: 0.88rem;
+  transition: all 0.2s;
+}
+.rpg-action-btn:hover { background: #ffb84d; }
+
+.rpg-hint-box {
+  margin-top: 14px; padding: 12px; border-radius: 8px;
+  background: rgba(157, 78, 221, 0.08); border: 1px dashed var(--witch-purple);
+  font-size: 0.82rem; color: var(--witch-glow);
+}
+
+/* Botão de Portal para o Guarda-Roupa Oficial */
+.event-wardrobe-portal {
+  background: linear-gradient(90deg, rgba(245, 166, 35, 0.12), rgba(157, 78, 221, 0.12));
+  border: 1px solid var(--amber); border-radius: 12px;
+  padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
+  margin-top: 20px; flex-wrap: wrap; gap: 12px;
+}
+.event-wardrobe-portal p { margin: 0; font-size: 0.88rem; color: var(--ink-bright); }
+.event-wardrobe-portal button {
+  all: unset; cursor: pointer; padding: 9px 18px; border-radius: 8px;
+  background: var(--amber); color: #1e1102; font-weight: 700; font-size: 0.85rem;
+  transition: all 0.2s;
+}
+.event-wardrobe-portal button:hover { background: #ffb84d; }
+
