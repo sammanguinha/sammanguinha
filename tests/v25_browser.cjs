@@ -32,8 +32,8 @@ const server=http.createServer((req,res)=>{
    await page.goto('http://127.0.0.1:4186/index.html',{waitUntil:'domcontentloaded',timeout:45000});
    await page.waitForFunction(()=>typeof window.showPane==='function'&&!!window.SamHybridRPG?.getState,{timeout:30000});
    const summary=await page.evaluate(()=>({
-    base:!!document.querySelector('link[href="css/base.css?v=25"]')&&getComputedStyle(document.documentElement).getPropertyValue('--bg-deep').trim().length>0,
-    scripts:!!document.querySelector('script[src="js/core/app.js?v=25"]'),
+    base:!!document.querySelector('link[href="css/base.css?v=26"]')&&getComputedStyle(document.documentElement).getPropertyValue('--bg-deep').trim().length>0,
+    scripts:!!document.querySelector('script[src="js/core/app.js?v=26"]'),
     world:!!document.querySelector('#r12Canvas'),
     defense:!!document.querySelector('#gCv')
    }));

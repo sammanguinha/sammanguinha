@@ -22,7 +22,7 @@ test('V26 scripts have unique stable order and compile separately',()=>{
  assert.ok(prev<html.indexOf('src="js/games/halloween-wardrobe.js?v=25"'));
 });
 test('V26 defense and Supabase contracts remain untouched',()=>{
- const defense=read('js/games/defense-engine.js');
+ const defense=read('js/games/defense-engine.js')+read('js/games/defense-animation.js');
  for(const k of ['function sm21TacticsTick(s,dt){','function sm21DrawTowers(g,s,t)','function sm21Build(id)','if(gDifficulty==="normal")gRun=await rpc("game_start"','function stopGame()'])assert.ok(defense.includes(k),k);
  assert.ok(read('js/core/app.js').includes('async function rpc(fn,body)'));
  assert.ok(read('js/services/gallery.js').includes('gallery'));
