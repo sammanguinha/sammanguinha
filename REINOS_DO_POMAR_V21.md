@@ -12,6 +12,7 @@ Branch `dev/v21-reinos-do-pomar`, derivada de `dev/v20-pomar-vivo`. Sem merge, s
 - Ao recolher todos os itens, os móveis ficam no inventário. O layout inicial inclui cama, mesa e samambaia.
 
 ## Defesa — mudança jogável, não cosmética
+- **Ofícios de batalha** (persistidos por @): Sentinela das Raízes começa com escudo, esquiva em 6 s e restaura por 4 energias; Patrulheiro da Colheita é mais ágil e dispara com recarga reduzida; Arcanista do Eclipse usa Explosão Astral em 9 s e reforça a Runa de Gelo. Seleção real no menu da Defesa, sem compra ou aleatoriedade.
 - Nova economia **energia de batalha**, começa com 2 e cresce com derrotas de inimigos e +2 entre ondas, até 12.
 - Escolha rota com botões ou teclas 1–5; cada rota suporta uma torre.
 - Torre de Mangas (3 energia): alvo automático de pragas em sua rota, ataca a cada 1,3 s.
