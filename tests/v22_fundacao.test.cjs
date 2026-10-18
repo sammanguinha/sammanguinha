@@ -14,7 +14,7 @@ test('V22 visible UI and versioned script are properly integrated',()=>{
   assert.ok(html.includes('id="'+id+'"'),id);
  assert.ok(html.includes('casa_v21.js?v=22'));
  assert.ok(html.includes('casa_sync_v22.js?v=22'));
- assert.match(html,/const version=\'(?:22|23)\\.0\\.0\'/);
+ assert.ok(html.includes("const version='23.0.0'") || html.includes("const version='22.0.0'"));
  for(const version of ['V22','V21','V20','V19','V18'])assert.ok(html.includes('<b>'+version+'</b>'),version);
 });
 test('Cloud homes remain account-scoped, revision-checked, and never replace unsaved local work silently',()=>{
