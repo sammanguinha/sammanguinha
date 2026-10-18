@@ -33,7 +33,7 @@ test('house has per-account persistence, no arbitrary item insertion and daily l
  assert.ok(house.includes("if(!putWallet(w))return"));
 });
 test('defense includes actual towers, energy, damage, slow and revival logic',()=>{
- for(const n of ['sm21TacticsTick(s,dt)','sm21Build(id)','s.towers.push({kind:id,lane','target.hp-=sm21Towers[t.kind].damage','target.slow=Math.max','s.trees[lane]=true','s.energy-=cost','s.energy=Math.min(12,s.energy+1)','sm21DrawTowers(g,s,t)','s.intermission=3.5'])assert.ok(html.includes(n),n);
+ for(const n of ['sm21TacticsTick(s,dt)','sm21Build(id)','s.towers.push({kind:id,lane','target.hp-=damage','target.slow=Math.max','s.trees[lane]=true','s.energy-=cost','s.energy=Math.min(12,s.energy+1)','sm21DrawTowers(g,s,t)','s.intermission=3.5'])assert.ok(html.includes(n),n);
  for(const n of ['sm21TacticalStatus','sm21Energy','sm21Lanes'])assert.ok(html.includes('id="'+n+'"'));
  for(const n of ['arrow','frost','heal'])assert.ok(html.includes('data-sm21-build="'+n+'"'));
  for(const n of ['arco','gelo'])assert.ok(read('sprites/torre_'+n+'_v21.svg').includes('width="192"'));
