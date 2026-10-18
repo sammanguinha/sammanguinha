@@ -2,7 +2,7 @@ name: Pacote Cloudflare Pages V21
 on:
   push:
     branches: [dev/v21-reinos-do-pomar]
-    paths: ['index.html','*.js','*.css','sprites/**','audio/**','halloween_art/**','.github/workflows/empacotar-cloudflare-v21.yml']
+    paths: ['index.html','*.js','*.css','sprites/**','audio/**','halloween_art/**','tests/v21_reinos_pomar.test.cjs','.github/workflows/empacotar-cloudflare-v21.yml']
   workflow_dispatch:
 jobs:
   zip-estatico:
