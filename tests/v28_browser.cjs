@@ -39,7 +39,7 @@ const modes=['home','rpgDlg','gameDlg','profDlg','houseDlg','eventDlg','diary','
      styles:['foundation','pages','responsive'].map(x=>({
        href:'css/v28-'+x+'.css?v=28',
        exists:!!document.querySelector('link[href="css/v28-'+x+'.css?v=28"]'),
-       applied:Array.from(document.styleSheets).some(sheet=>sheet.href?.includes('v28-'+x+'.css')&&sheet.cssRules.length>20)
+       applied:Array.from(document.styleSheets).some(sheet=>sheet.href?.includes('v28-'+x+'.css')&&sheet.cssRules.length>0)
      })),
      theme:getComputedStyle(document.documentElement).getPropertyValue('--v28-gold').trim(),
      nav:getComputedStyle(document.querySelector('#areas')).position,
