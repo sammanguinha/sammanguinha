@@ -3,7 +3,35 @@
  const host=document.getElementById('rpgDlg');
  const cv=document.getElementById('r12Canvas');if(!host||!cv)return;
  const ctx=cv.getContext('2d',{alpha:false});
- const W=768,H=448,T=32,COLS=24,ROWS=14;
+ let W=768,H=448;
+ const T=32,COLS=24,ROWS=14;
+ // The canvas uses its native 768 × 448 coordinates outside game mode.
+ // In immersive mode its drawing buffer matches the *screen aspect ratio*:
+ // no stretched sprites, no landscape letterboxing, and touch coordinates stay exact.
+ const RENDER_PIXEL_BUDGET=1400000;
+ let lastViewportSignature='768x448';
+ function syncGameViewport(){
+  const immersive=host.classList.contains('sm-immersive');
+  let width=768,height=448;
+  if(immersive){
+   const box=cv.parentElement.getBoundingClientRect();
+   if(box.width>40&&box.height>40){
+    const scale=Math.min(1,Math.sqrt(RENDER_PIXEL_BUDGET/(box.width*box.height)));
+    width=Math.max(250,Math.round(box.width*scale));
+    height=Math.max(250,Math.round(box.height*scale));
+   }
+  }
+  const signature=width+'x'+height;
+  if(lastViewportSignature===signature)return;
+  lastViewportSignature=signature;
+  W=width;H=height;cv.width=width;cv.height=height;
+  ctx.imageSmoothingEnabled=false;
+ }
+ const viewportObserver=new ResizeObserver(()=>syncGameViewport());
+ viewportObserver.observe(cv.parentElement);
+ new MutationObserver(()=>requestAnimationFrame(syncGameViewport)).observe(host,{attributes:true,attributeFilter:['class']});
+ window.addEventListener('resize',syncGameViewport,{passive:true});
+ document.addEventListener('fullscreenchange',()=>requestAnimationFrame(syncGameViewport));
  const $=id=>document.getElementById(id);
  const keys={up:false,down:false,left:false,right:false,run:false};
  const rooms={
@@ -880,7 +908,9 @@ function drawEpicActor(a,x,y,bob){
  function drawCharacter(x,y,coat,face,witch){rect(x-9,y-7,18,24,coat);rect(x-7,y-28,14,20,face);rect(x-8,y+16,6,6,'#41374a');rect(x+3,y+16,6,6,'#41374a');rect(x-3,y-20,3,3,'#302437');rect(x+4,y-20,3,3,'#302437');if(witch){rect(x-18,y-33,36,6,'#37233d');rect(x-8,y-49,16,17,'#4d315d')}else{rect(x-9,y-30,18,7,'#635039')}}
  function drawGlyph(x,y,symbol,color){ctx.fillStyle=color;ctx.font='bold 24px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(symbol,x,y)}
  function drawPlayer(){drawEpicAvatar(player.x*T,player.y*T)}
- function camera(){const z=window.innerWidth<=540?1.65:1;
+ function camera(){const z=host.classList.contains('sm-immersive')
+    ?Math.max(W/(COLS*T),H/(ROWS*T))*1.055
+    :(window.innerWidth<=540?1.65:1);
    const halfW=W/(2*z),halfH=H/(2*z);
    return {z,cx:Math.max(halfW,Math.min(W-halfW,player.x*T)),cy:Math.max(halfH,Math.min(H-halfH,player.y*T))};
  }

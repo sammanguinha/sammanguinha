@@ -76,13 +76,31 @@ body.sm-immersive-lock{overflow:hidden!important}
 `;document.head.append(css);
 function native(){return document.fullscreenElement}
 function on(pane){return pane&&current===pane&&pane.classList.contains('sm-immersive')}
-function sync(){for(const [id] of modes){const pane=document.getElementById(id),btn=pane?.querySelector('.sm-fullscreen-toggle');if(!btn)continue;const yes=on(pane);btn.textContent=yes?'⤢ Sair do modo jogo':'🎮 Modo jogo';btn.setAttribute('aria-pressed',String(yes));btn.setAttribute('aria-label',yes?'Sair do modo jogo':'Entrar no modo jogo')} }
+function sync(){for(const [id] of modes){const pane=document.getElementById(id),btn=pane?.querySelector('.sm-fullscreen-toggle');if(!btn)continue;const yes=on(pane);btn.textContent=id==='rpgDlg'?(yes?'✕ Sair do RPG':'🎮 Jogar em tela cheia'):(yes?'⤢ Sair do modo jogo':'🎮 Modo jogo');btn.setAttribute('aria-pressed',String(yes));btn.setAttribute('aria-label',yes?'Sair do modo jogo':'Entrar no modo jogo')} }
 function cleanup(){if(!current)return;const was=current;current=null;fallback=false;was.classList.remove('sm-immersive','sm-immersive-fallback','sm-immersive-panel-open');was.removeAttribute('data-sm-immersive');document.body.classList.remove('sm-immersive-lock');was.querySelector('.sm-immersive-menu')?.setAttribute('aria-expanded','false');sync()}
 async function leave(){if(!current)return;const old=current;cleanup();if(native()===old&&document.exitFullscreen){try{await document.exitFullscreen()}catch(e){console.warn('Falha ao sair de tela cheia:',e)}}}
-async function enter(pane){if(current&&current!==pane)await leave();if(on(pane))return leave();current=pane;pane.classList.add('sm-immersive');pane.dataset.smImmersive='true';document.body.classList.add('sm-immersive-lock');sync();if(pane.requestFullscreen){try{await pane.requestFullscreen();fallback=false;return}catch(e){console.info('Modo jogo sem tela cheia nativa:',e?.message)}}fallback=true;pane.classList.add('sm-immersive-fallback');}
+async function enter(pane){if(current&&current!==pane)await leave();if(on(pane))return leave();current=pane;fallback=true;pane.classList.add('sm-immersive','sm-immersive-fallback');pane.dataset.smImmersive='true';document.body.classList.add('sm-immersive-lock');sync();if(pane.requestFullscreen){try{await pane.requestFullscreen();if(current!==pane)return;fallback=false;pane.classList.remove('sm-immersive-fallback');return}catch(e){console.info('Modo jogo sem tela cheia nativa:',e?.message)}}}
 for(const [id,label] of modes){const pane=document.getElementById(id);if(!pane)continue;
  const old=pane.querySelector('.sm-fullscreen-toggle');if(old)old.remove();
  const btn=document.createElement('button');btn.type='button';btn.className='sm-fullscreen-toggle';btn.setAttribute('aria-label','Entrar no modo jogo '+label);btn.textContent='🎮 Modo jogo';pane.prepend(btn);btn.addEventListener('click',()=>{if(on(pane))leave();else enter(pane)});
+ if(id==='rpgDlg'){
+  // Two discoverable launchers, one in the header and one on the RPG map.
+  // The original top-layer button stays reserved for leaving fullscreen.
+  for(const [selector,cls,text] of [
+   ['.r12-head','sm-rpg-enter sm-rpg-head-enter','⛶ Jogar em tela cheia'],
+   ['.r12-frame','sm-rpg-enter sm-rpg-map-enter','▶ JOGAR EM TELA CHEIA']
+  ]){
+   const anchor=pane.querySelector(selector);
+   if(!anchor||anchor.querySelector('.sm-rpg-enter'))continue;
+   const launcher=document.createElement('button');
+   launcher.type='button';
+   launcher.className=cls;
+   launcher.textContent=text;
+   launcher.setAttribute('aria-label','Abrir o RPG em tela cheia com mapa e controles');
+   launcher.addEventListener('click',()=>enter(pane));
+   anchor.append(launcher);
+  }
+ }
  const menu=document.createElement('button');menu.type='button';menu.className='sm-immersive-menu';menu.setAttribute('aria-expanded','false');menu.textContent='☰ '+(id==='gameDlg'?'Torres':'Menu');menu.hidden=!['rpgDlg','gameDlg'].includes(id);pane.append(menu);
  menu.addEventListener('click',()=>{const isOpen=pane.classList.toggle('sm-immersive-panel-open');menu.setAttribute('aria-expanded',String(isOpen));menu.textContent=isOpen?'✕ Fechar':('☰ '+(id==='gameDlg'?'Torres':'Menu'))});
  const header=document.createElement('div');header.className='sm-immersive-header';header.innerHTML='<strong>'+label+'</strong><small>EXPEDIÇÃO · MODO JOGO</small>';pane.append(header);

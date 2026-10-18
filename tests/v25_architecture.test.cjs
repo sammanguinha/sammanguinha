@@ -41,7 +41,7 @@ test('Classic scripts retain execution order, do not use async/defer, and compil
 });
 test('All game modes, persistence and controls remain connected',()=>{
  for(const id of ['rpgDlg','gameDlg','houseDlg','profDlg','r12Canvas','gCv','sm21HouseCanvas'])assert.ok(html.includes('id="'+id+'"'));
- for(const f of ['mundo_pomar.js','mundo_v24.css?v=24','tela_cheia_v24.js?v=24.2','casa_sync_v22.js?v=22','renascimento_v23.js?v=23'])assert.ok(html.includes(f),f);
+ for(const f of ['mundo_pomar.js','mundo_v24.css?v=24','tela_cheia_v24.js?v=28.1','casa_sync_v22.js?v=22','renascimento_v23.js?v=23'])assert.ok(html.includes(f),f);
  assert.ok(read('js/games/defense-engine.js').includes('function sm21TacticsTick(s,dt){'));
  assert.ok(read('js/ui/update-notice.js').includes("const version='24.0.0'"));
 });

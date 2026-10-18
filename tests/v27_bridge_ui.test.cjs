@@ -11,7 +11,7 @@ test('V27 bridge and app shell are valid and linked after their dependencies',()
  assert.doesNotThrow(()=>new vm.Script(shell));
  for(const file of ['js/core/runtime-bridge-v27.js?v=27','js/ui/game-shell-v27.js?v=27','visual_v27.css?v=27'])assert.ok(html.includes(file));
  assert.ok(html.indexOf('js/core/progression.js?v=26')<html.indexOf('js/core/runtime-bridge-v27.js?v=27'));
- assert.ok(html.indexOf('tela_cheia_v24.js?v=24.2')<html.indexOf('js/ui/game-shell-v27.js?v=27'));
+ assert.ok(html.indexOf('tela_cheia_v24.js?v=28.1')<html.indexOf('js/ui/game-shell-v27.js?v=27'));
 });
 function boot(){
  let active='rpgDlg',shop=0,pulse=0,pauses=0,modeMenu=0,interval=null;
