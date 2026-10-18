@@ -43,6 +43,15 @@
  border-radius:0!important;overflow:hidden!important;
  background:#0c1e28!important;box-shadow:none!important;
 }
+/* Both browser top-layer and app-only fallback must be anchored to the
+   viewport, not to the previous scroll position of the page. */
+#rpgDlg.sm-immersive.sm-immersive-fallback[data-sm-immersive],
+#rpgDlg.sm-immersive:fullscreen[data-sm-immersive]{
+ position:fixed!important;top:0!important;right:0!important;bottom:0!important;left:0!important;
+ inset:0!important;margin:0!important;z-index:2147483640!important;
+ width:100vw!important;height:100dvh!important;
+}
+
 #rpgDlg.sm-immersive[data-sm-immersive] .r12-shell,
 #rpgDlg.sm-immersive[data-sm-immersive] .r12-columns,
 #rpgDlg.sm-immersive[data-sm-immersive] .r12-main,
