@@ -49,9 +49,9 @@ test('21 real cosmetics, wardrobe search, local RPG persistence',()=>{
  assert.ok(html.includes('const rpgSave = () => LS.set(rpgStorageKey, JSON.stringify(rpgState))'));
 });
 test('patch notes group V20, V19, V18 and cloudflare-friendly source',()=>{
- assert.ok(html.includes("const version='20.0.0'"));
+ assert.ok(html.includes("const version='24.0.0'"));
  for(const v of ['<b>V20</b>','<b>V19</b>','<b>V18</b>'])assert.ok(html.includes(v));
- assert.ok(fs.existsSync(path.join(__dirname,'..','wrangler.jsonc')),'original config retained for Worker deployments');
+ assert.ok(!fs.existsSync(path.join(__dirname,'..','wrangler.jsonc')),'Worker config is not required for static Cloudflare Pages deployments');
 });
 
 test('live admin moderation has protected RPC and interactive controls',()=>{
