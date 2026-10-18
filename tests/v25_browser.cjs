@@ -52,14 +52,35 @@ const server=http.createServer((req,res)=>{
    assert.equal(await page.evaluate(()=>document.documentElement.dataset.v27Theme),'aurora');
    await page.evaluate(()=>window.showPane('rpgDlg'));
    assert.ok(await page.locator('#r12Canvas').isVisible());
-   assert.ok(await page.locator('#rpgDlg .sm-fullscreen-toggle').isVisible());
-   await page.locator('#rpgDlg .sm-fullscreen-toggle').click();
+   assert.ok(await page.locator('#rpgDlg .sm-rpg-head-enter').count(),'visible fullscreen button is in the RPG heading');
+   assert.ok(await page.locator('#rpgDlg .sm-rpg-map-enter').isVisible(),'RPG map has a prominent fullscreen launcher');
+   assert.equal(await page.locator('#rpgDlg .sm-fullscreen-toggle').isVisible(),false,'exit-only control is hidden before play');
+   // Enter from the map itself as a real user would.
+   await page.locator('#rpgDlg .sm-rpg-map-enter').click();
+   await page.waitForFunction(()=>{
+     const c=document.getElementById('r12Canvas'),r=c?.getBoundingClientRect();
+     return !!(r&&Math.abs(c.width/c.height-r.width/r.height)<0.04);
+   },null,{timeout:8000});
+   const viewport=await page.evaluate(()=>{
+     const c=document.getElementById('r12Canvas');
+     const r=c.getBoundingClientRect();
+     const app=document.getElementById('rpgDlg').getBoundingClientRect();
+     return {x:r.x,y:r.y,w:r.width,h:r.height,bufferW:c.width,bufferH:c.height,
+       vw:innerWidth,vh:innerHeight,appW:app.width,appH:app.height,
+       mode:document.getElementById('rpgDlg').classList.contains('sm-immersive')};
+   });
+   assert.equal(viewport.mode,true,'native or fallback RPG play mode should open');
+   assert.ok(Math.abs(viewport.x)<3&&Math.abs(viewport.y)<3,
+     'gameplay canvas must start at screen origin: '+JSON.stringify(viewport));
+   assert.ok(viewport.w>=viewport.vw*.96&&viewport.h>=viewport.vh*.96,
+     'RPG world must fill the screen in both dimensions: '+JSON.stringify(viewport));
+   assert.ok(Math.abs(viewport.bufferW/viewport.bufferH-viewport.w/viewport.h)<.04,
+     'RPG render buffer follows viewport without distorting sprites');
    assert.ok(await page.locator('#r12Action').isVisible(),'action button must overlay viewport');
    assert.ok(await page.locator('#v27RpgHud').isVisible(),'RPG HUD visible during immersive gameplay');
    if(mode==='mobile'){
-     const rect=await page.locator('#r12Canvas').boundingBox();
-     const ratio=rect.width/rect.height;
-     assert.ok(Math.abs(ratio-(768/448))<0.1,'mobile RPG art must retain its native aspect ratio; got '+ratio.toFixed(3));
+     assert.ok(viewport.bufferH>viewport.bufferW,'mobile portrait game has a real portrait camera');
+     assert.ok(viewport.h>viewport.w,'map fills a vertical phone rather than a letterboxed horizontal rectangle');
    }
    assert.ok(await page.locator('#rpgDlg .v27-rpg-actionbar').isVisible(),'RPG app actionbar visible');
    const vitals=await page.evaluate(()=>window.SamGameV27.getSnapshot().rpg);
@@ -92,7 +113,7 @@ const server=http.createServer((req,res)=>{
    await page.locator('#gameDlg .sm-fullscreen-toggle').click();
    assert.deepEqual(missing,[],'local resources all fetched');
    assert.deepEqual(errors,[],'no browser JavaScript errors');
-   console.log(mode+' V27 PASS: modular CSS+JS, RPG, defense, immersive UI, no 404/JS errors');
+   console.log(mode+' V28.1 PASS: modular CSS+JS, RPG, defense, immersive UI, no 404/JS errors');
    await page.close();
   }
  }finally{await browser.close();server.close()}
