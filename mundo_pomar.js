@@ -304,6 +304,19 @@ Object.assign(rooms,{
 });
 rooms.floresta.actors.push({id:'toMeadow',x:20.4,y:11.8,type:'passage',epic:'gate',target:'planicie',tx:2.5,ty:7,label:'Campina dos Ventos'});
 rooms.mina.actors.push({id:'toGrotto',x:20.8,y:10.7,type:'door',epic:'gate',min:3,target:'gruta',tx:2.5,ty:7,label:'Gruta do Eco Azul'});
+ // V29: the extra story shares the current RPG save; no account migration.
+ const v29Data=window.SamV29Data;
+ if(v29Data){
+  for(const [key,actors] of Object.entries(v29Data.actors))
+   if(rooms[key])rooms[key].actors.push(...actors.map(actor=>({...actor})));
+  Object.assign(EPIC_ENEMIES,v29Data.enemies);
+  Object.assign(EPIC_ARTIFACTS,{
+   broche_aurora:{name:'Broche da Badalada',rarity:'Raro',element:'light',
+    desc:'Com este broche equipado, MP máximo +3 e habilidades +8% de dano.',
+    effect:'resonance'}
+  });
+ }
+
 Object.assign(EPIC_ENEMIES,{
  lobo_vento:{name:'Lobo dos Ventos',element:'nature',hp:44,atk:8,def:2,xp:68,gold:32,weak:'fire',sprite:'lobo_vento_v24',intro:'Um guardião da campina corre em círculos. A marca do vento revela quando ele vai atacar.'},
  vulto_eco:{name:'Vulto de Cristal',element:'storm',hp:90,atk:13,def:4,xp:130,gold:58,weak:'earth',sprite:'vulto_eco_v24',intro:'Os cristais escutam seus passos. O vulto reúne a luz em um único ponto.'}
@@ -466,7 +479,7 @@ Object.assign(EPIC_ENEMIES,{
   $('r12Quests').innerHTML=lines.map(([x,done])=>'<div class="r12-quest-row '+(done?'done':'')+'">'+(done?'✓ ':'◇ ')+x+'</div>').join('');
   $('r12Inventory').innerHTML='<span class="r12-tag">🌱 '+n+'/3 sementes</span><span class="r12-tag '+(st.relic?'':'dim')+'">✦ Relíquia</span>';
   $('r12Journal').innerHTML=st.journal.map(e=>'<div>'+escapeHtml(e)+'</div>').join('');
-  $('r12Region').textContent=room().subtitle;renderEpicUI();
+  $('r12Region').textContent=room().subtitle;renderEpicUI();v29RenderUI();
  }
  function escapeHtml(str){return String(str).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
  function say(who,msg,onNext=null,actionText='Continuar'){
@@ -513,7 +526,7 @@ function ownItem(id){if(!EPIC_ARTIFACTS[id])return;if(!epic().items.includes(id)
 function hasEffect(effect){return epic().equipped.some(id=>EPIC_ARTIFACTS[id]?.effect===effect)}
 function classInfo(){return EPIC_CLASSES[epic().class]||EPIC_CLASSES.guardiao}
 function maxHealth(){return classInfo().hp+(epic().level-1)*4+epic().stats.vig*3+(hasEffect('vigor')?12:0)+(hasEffect('royal')?20:0)+(hasEffect('bloom')?10:0)}
-function maxMana(){return classInfo().mp+epic().stats.int+Math.floor(epic().level/2)}
+function maxMana(){return classInfo().mp+epic().stats.int+Math.floor(epic().level/2)+(hasEffect('resonance')?3:0)}
 function recomputeHealth(){epic().hp=Math.min(Math.max(1,epic().hp),maxHealth());epic().mp=Math.min(Math.max(0,epic().mp),maxMana())}
 function xpNeed(){return 60+epic().level*47}
 function giveXP(amount){const e=epic();e.xp+=amount;while(e.xp>=xpNeed()&&e.level<30){e.xp-=xpNeed();e.level++;e.points+=2;e.hp=maxHealth();e.mp=maxMana();notify('Novo nível '+e.level+'! +2 pontos para distribuir.')}save();update()}
@@ -537,7 +550,7 @@ function epicActorVisible(a){if(!a.epic)return true;
  return true;
 }
 const epicMonsters={
- larva:'larva',spider:'rainha',crystalBoss:'besouro',collector:'espectro',moonGuardian:'sentinela',finalKing:'rei',v24MeadowWolf:'lobo_vento',v24GrottoWisp:'vulto_eco'
+ larva:'larva',spider:'rainha',crystalBoss:'besouro',collector:'espectro',moonGuardian:'sentinela',finalKing:'rei',v24MeadowWolf:'lobo_vento',v24GrottoWisp:'vulto_eco',v29Mariposa:'v29_silencio',v29Sentinela:'v29_sentinela'
 };
 function epicInteract(a){if(!a||!a.epic)return false;
  const e=epic(),f=e.flags;
@@ -602,7 +615,7 @@ function startCombat(monster,actor){if(epicCombat||!EPIC_ENEMIES[monster])return
  const m=EPIC_ENEMIES[monster];const basePhase=m.phases?m.phases[0]:{hp:m.hp,element:m.element,title:''};epicCombat={key:monster,actor,name:m.name,hp:basePhase.hp,maxHp:basePhase.hp,phase:0,element:basePhase.element,playerGuard:false,turn:1,status:'',enemyStatus:'',logs:[m.intro],enemyIntent:'O inimigo prepara seu primeiro golpe.',lock:false};
  window.SamMusic?.scene(monster==='rei'?'boss':'battle');const e=epic();e.mp=Math.min(e.mp+1,maxMana());if(hasEffect('vigor'))e.hp=Math.min(e.hp+2,maxHealth());if(hasEffect('moonrise'))e.mp=Math.min(maxMana(),e.mp+2);dialogOpen=true;createCombat();renderCombat();save();}
 function damageMult(atk,def){if(atk===def)return .76;if(EPIC_ADV[atk]===def)return 1.55;if(EPIC_ADV[def]===atk)return .65;return 1}
-function damageToEnemy(element,magic=false){const e=epic(),m=EPIC_ENEMIES[epicCombat.key];const attr=magic?e.stats.int:e.stats.for;const coeff=magic?1.7:1.4;const base=Math.max(2,Math.floor(8+e.level*2.0+attr*coeff-m.def));let mult=damageMult(element,epicCombat.element);if(m.weak===element)mult=Math.max(mult,1.65);if(hasEffect('attack'))mult+=(3/base);if(hasEffect('spell')&&magic)mult*=1.3;if(hasEffect('focus')&&magic)mult*=1.12;if(hasEffect('royal')&&epicCombat.key==='rei')mult*=1.15;if(hasEffect('halloween')&&epicCombat.element==='shadow')mult*=1.15;const variation=.88+Math.random()*.26;const crit=Math.random()<Math.min(.36,.035+epic().stats.agi*.011+(epic().class==='rastreador'?.10:0));return {value:Math.max(1,Math.floor(base*mult*variation*(crit?1.55:1))),mult,crit}}
+function damageToEnemy(element,magic=false){const e=epic(),m=EPIC_ENEMIES[epicCombat.key];const attr=magic?e.stats.int:e.stats.for;const coeff=magic?1.7:1.4;const base=Math.max(2,Math.floor(8+e.level*2.0+attr*coeff-m.def));let mult=damageMult(element,epicCombat.element);if(m.weak===element)mult=Math.max(mult,1.65);if(hasEffect('attack'))mult+=(3/base);if(hasEffect('spell')&&magic)mult*=1.3;if(hasEffect('resonance')&&magic)mult*=1.08;if(hasEffect('focus')&&magic)mult*=1.12;if(hasEffect('royal')&&epicCombat.key==='rei')mult*=1.15;if(hasEffect('halloween')&&epicCombat.element==='shadow')mult*=1.15;const variation=.88+Math.random()*.26;const crit=Math.random()<Math.min(.36,.035+epic().stats.agi*.011+(epic().class==='rastreador'?.10:0));return {value:Math.max(1,Math.floor(base*mult*variation*(crit?1.55:1))),mult,crit}}
 function battleMessage(s){epicCombat.logs.unshift(s);epicCombat.logs=epicCombat.logs.slice(0,8)}
 function resolveCombatAction(type){const c=epicCombat;if(!c||c.lock)return;const e=epic(),cls=classInfo(),enemy=EPIC_ENEMIES[c.key];let d;
  if(type==='run'){if(c.key==='rei'||['rainha','besouro','espectro','sentinela'].includes(c.key)){battleMessage('Este guardião não permite fuga.');renderCombat();return}endCombat(false,true);return}
@@ -739,6 +752,7 @@ function setupEpicUI(){const box=document.createElement('section');box.className
  const hud=document.querySelector('.r12-head small');if(hud)hud.textContent='RPG · A Crônica da Primeira Mangueira';
  const p=document.querySelector('.r12-head p');if(p)p.textContent='Explore, enfrente os chefes e descubra o destino da primeira mangueira.';
  const reset=$('r12Reset');if(reset)reset.textContent='Reiniciar aventura';
+  v29SetupUI();
  const objective=document.querySelector('.r12-aside>.r12-card:not(.r13-story-card):not(.r13-stat-card):not(.r13-artifacts-card) h3');if(objective)objective.innerHTML='📜 Prólogo das Sementes';
  renderEpicUI();
 }
@@ -799,9 +813,10 @@ function drawEpicActor(a,x,y,bob){
  else if(a.epic==='altar'){ctx.save();ctx.fillStyle='#72586d';ctx.fillRect(x-15,y-6,30,20);ctx.fillStyle='#cba88c';ctx.fillRect(x-12,y-13,24,9);ctx.fillStyle='#fde0a9';ctx.font='bold 23px serif';ctx.fillText('✧',x,y-21);ctx.restore()}
 }
 
- function actorVisible(a){if(a.epic)return epicActorVisible(a);if(a.type==='seed'&&st.found.includes(a.id))return false;if(a.id==='reliquia'&&!st.unlocked)return false;return true}
+ function actorVisible(a){if(a.v29)return v29ActorVisible(a);if(a.epic)return epicActorVisible(a);if(a.type==='seed'&&st.found.includes(a.id))return false;if(a.id==='reliquia'&&!st.unlocked)return false;return true}
  function interact(a){
-  if(a?.epic){epicInteract(a);return;}
+  if(a?.v29){v29Interact(a);return;}
+   if(a?.epic){epicInteract(a);return;}
   if(!a){say('Pomar','Não há nada para investigar aqui. Aproxime-se de um brilho, personagem ou construção.');return}
   if(a.id==='guildBoard'){v23DailyRender();say('Quadro de Contratos','Os pedidos da Vila são renovados diariamente. Complete tarefas na aventura e resgate sementes locais no quadro abaixo do mapa. São recompensas locais, não entram no ranking oficial.');return}
   if(a.id==='guarda'){const first=!st.seen.includes('guarda');st.seen.push('guarda');v23DailyMark('bento');save();say('Guardião Bento',first?'Sam! O pomar está perdendo sua luz. Três Sementes Ancestrais foram levadas para a floresta. Encontre-as e o Santuário das Raízes voltará a despertar.':'Se precisar de ajuda, caminhe pela passagem ao norte. Quando recuperar as três sementes, procure o portão a leste da floresta.',()=>{if(first)log('Bento pediu que eu reunisse três sementes escondidas na floresta.')});return}
@@ -876,7 +891,7 @@ function drawEpicActor(a,x,y,bob){
   ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.fillStyle='#ffdfae';ctx.fillText(b.type==='loja'?'MASCOTES':b.type==='defesa'?'DEFESA':b.type==='portal'?'HALLOWEEN':'CABANA',x+w/2,y+25)
  }
  function actorColor(type){return ({seed:'#ffe27d',npc:'#baceff',shop:'#f9c58a',defense:'#ffa783',halloween:'#dda8ff',profile:'#b3d5ff',social:'#a8f1be',passage:'#a5e6a9',door:'#d8cf9b',altar:'#ffe0a3',relic:'#ffe7af'})[type]||'#ffffff'}
- function drawActor(a){if(!actorVisible(a))return;const x=a.x*T,y=a.y*T,bob=Math.sin(clock*3+a.x)*2;ctx.save();if(a.epic){drawEpicActor(a,x,y,bob);ctx.restore();return;}
+ function drawActor(a){if(!actorVisible(a))return;const x=a.x*T,y=a.y*T,bob=Math.sin(clock*3+a.x)*2;ctx.save();if(a.v29){v29DrawActor(a,x,y,bob);ctx.restore();return}if(a.epic){drawEpicActor(a,x,y,bob);ctx.restore();return;}
   if(['passage','door','halloween','defense','shop','profile','social','board'].includes(a.type)){
    const alpha=.47+Math.sin(clock*3+a.x)*.27;ctx.globalAlpha=alpha;ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(x,y-4,19,10,0,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;
    if(a.type==='passage'){rect(x-8,y-32,16,14,'#a5e6a9');rect(x-5,y-36,10,6,'#f3e3a3')}
@@ -915,7 +930,7 @@ function drawEpicActor(a,x,y,bob){
    return {z,cx:Math.max(halfW,Math.min(W-halfW,player.x*T)),cy:Math.max(halfH,Math.min(H-halfH,player.y*T))};
  }
  function render(){const cam=camera();ctx.save();ctx.translate(W/2,H/2);ctx.scale(cam.z,cam.z);ctx.translate(-cam.cx,-cam.cy);
-  baseMap();v24Decor();for(const b of room().blocks)drawBuilding(b);for(const p of room().props)drawTree(p.x,p.y,p.type==='dead');for(const a of room().actors)drawActor(a);guideDraw();drawPlayer();v23Atmosphere();
+  baseMap();v24Decor();v29Decor();for(const b of room().blocks)drawBuilding(b);for(const p of room().props)drawTree(p.x,p.y,p.type==='dead');for(const a of room().actors)drawActor(a);guideDraw();drawPlayer();v23Atmosphere();
   const a=nearest();if(a){ctx.save();ctx.textAlign='center';ctx.font='bold 13px sans-serif';let line='E · '+a.label;let width=Math.min(280,ctx.measureText(line).width+22);let px=Math.min(W-width/2-8,Math.max(width/2+8,a.x*T));let py=Math.max(64,a.y*T-39);rect(px-width/2,py-20,width,25,'#1e1428ee');ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=1;ctx.strokeRect(px-width/2,py-20,width,25);ctx.fillStyle='#ffebce';ctx.fillText(line,px,py-3);ctx.restore()}
   if(st.map==='ruinas'){ctx.fillStyle='#b8a3ff12';ctx.fillRect(0,0,W,H)}ctx.restore();
  }
