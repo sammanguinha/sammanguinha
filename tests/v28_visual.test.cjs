@@ -2,7 +2,7 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const html=read('index.html'),styles=[
- 'css/v28-foundation.css','css/v28-pages.css','css/v28-responsive.css','css/v28-live-extensions.css'
+ 'css/v28-foundation.css','css/v28-pages.css','css/v28-responsive.css','css/v28-live-extensions.css','css/v28-rpg-fullscreen.css'
 ];
 test('V28 loads four ordered CSS layers AFTER V27 without removing the existing game engines',()=>{
  let prev=html.indexOf('visual_v27.css?v=27');
@@ -13,7 +13,7 @@ test('V28 loads four ordered CSS layers AFTER V27 without removing the existing 
   assert.ok(i>prev,'visual layer load order: '+file);prev=i;
   assert.ok(fs.statSync(path.join(root,file)).size>2200,'real stylesheet: '+file);
  }
- for(const src of ['mundo_pomar.js','tela_cheia_v24.js?v=24.2','js/game-v26.bundle.js','js/ui/game-shell-v27.js']){
+ for(const src of ['mundo_pomar.js','tela_cheia_v24.js?v=28.1','js/game-v26.bundle.js','js/ui/game-shell-v27.js']){
   // The V26 bundle is a production-only asset. Development source links remain modular.
   if(src==='js/game-v26.bundle.js')assert.ok(html.includes('js/core/app.js?v=26'));
   else assert.ok(html.includes(src));
