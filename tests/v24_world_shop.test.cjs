@@ -78,7 +78,7 @@ test('sprint drains and regenerates stamina, is keyboard and touch accessible',(
  assert.ok(world.includes('bag.stamina=Math.max(0,bag.stamina-'));
 });
 test('four-frame animated original sprites exist and are used by engines',()=>{
- for(const kind of ['arvore_saudavel','arvore_danificada','arvore_destruida','torre_arco','torre_gelo','torre_raiz','torre_solar','praga_larva','praga_besouro','praga_esporo','praga_corredor','rei_pragas']){
+ for(const kind of ['arvore_saudavel','arvore_danificada','arvore_destruida','torre_arco','torre_gelo','torre_raiz','torre_solar','praga_larva','praga_besouro','praga_esporo','praga_corredor','praga_curandeira','rei_pragas']){
   const svg=read('sprites/'+kind+'_v24.svg');
   assert.match(svg,/width="192" height="48"/);
   for(const offset of [0,48,96,144])assert.ok(svg.includes('translate('+offset+',0)'),kind+' frame '+offset);
@@ -103,4 +103,29 @@ test('grove pulse really roots enemies, spends energy, and cannot affect ranked 
  button.press();assert.equal(state.energy,4);assert.equal(enemy.rooted,2.2);assert.equal(bursts,1);
  button.press();assert.equal(state.energy,4,'cooldown prevents repeated purchase');
  state.mode='normal';state.groveCd=0;state.energy=10;button.press();assert.equal(state.energy,10,'ranked untouched');
+});
+
+
+test('spore healer restores injured enemies but obeys cooldown and health cap',()=>{
+ const start=html.indexOf('function sm24HealTick(s,dt){');
+ const end=html.indexOf('function sm21TacticsTick(s,dt){',start);
+ assert.ok(start>0&&end>start);
+ let visual=0;
+ const heal=vm.runInNewContext(html.slice(start,end)+'\nsm24HealTick;',{
+  orchardBurst:()=>visual++
+ });
+ const ally={x:125,y:200,hp:1,maxHp:3,dead:false,kind:'beetle'};
+ const priest={x:160,y:170,hp:3,maxHp:3,dead:false,kind:'healer',healCd:.1};
+ const state={pe:[ally,priest]};
+ heal(state,.2);assert.equal(ally.hp,2);
+ assert.equal(visual,1);
+ heal(state,.2);assert.equal(ally.hp,2,'cooldown respected');
+ priest.healCd=.1;heal(state,.2);assert.equal(ally.hp,3);
+ priest.healCd=.1;heal(state,.2);assert.equal(ally.hp,3,'never over-heals');
+});
+test('healers only spawn on hard/infinite, and towers can prioritize them',()=>{
+ assert.ok(html.includes("const healer=s.hard&&s.wave>=4"));
+ assert.ok(html.includes("t.priority==='healer'"));
+ assert.ok(html.includes("t.priority=t.priority==='strongest'?'healer'"));
+ assert.ok(html.includes("'praga_curandeira'"));
 });
