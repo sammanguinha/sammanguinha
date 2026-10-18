@@ -29,13 +29,23 @@ const server=http.createServer((req,res)=>{let file=path.resolve(root,'.'+decode
   s=await page.evaluate(()=>window.Sam21Defense.snapshot());
   assert.ok(s&&s.wave>=2,'next wave reached: '+JSON.stringify(s));
   assert.ok(s.energy>=3,'wave reward added energy: '+JSON.stringify(s));
-  await page.locator('[data-sm21-lane="0"]').click();
+  // Select a lane with an actual enemy in firing range (deterministic targeting, not RNG luck).
+  let lanes=[];
+  for(let i=0;i<6;i++){
+    s=await page.evaluate(()=>window.Sam21Defense.snapshot());
+    lanes=(s?.enemies||[]).filter(p=>p.y>80&&p.y<490).map(p=>Math.max(0,Math.min(4,Math.floor(p.x/108))));
+    if(lanes.length)break;
+    await page.clock.runFor(650);
+  }
+  assert.ok(lanes.length>0,'enemy actually spawned to test tower combat: '+JSON.stringify(s));
+  const lane=lanes[0];
+  await page.locator('[data-sm21-lane="'+lane+'"]').click();
   await page.locator('[data-sm21-build="arrow"]').click();
   s=await page.evaluate(()=>window.Sam21Defense.snapshot());
   assert.equal(s.towers.length,1,'tower actually placed in state');
-  assert.equal(s.towers[0].kind,'arrow');assert.equal(s.towers[0].lane,0);
+  assert.equal(s.towers[0].kind,'arrow');assert.equal(s.towers[0].lane,lane);
   const afterBuild=s.energy;assert.ok(afterBuild>=0&&afterBuild<6,'energy consumed');
-  await page.clock.runFor(15000);
+  await page.clock.runFor(1800);
   s=await page.evaluate(()=>window.Sam21Defense.snapshot());
   assert.ok(s&&s.towers[0]?.shots>0,'tower fired at a target: '+JSON.stringify(s));
   assert.equal(errs.length,0,'no runtime exceptions: '+errs.join('; '));
