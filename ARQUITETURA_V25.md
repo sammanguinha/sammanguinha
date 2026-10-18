@@ -29,3 +29,19 @@ A migração removeu os blocos `<style>` e scripts inline do `index.html`, mante
 - Criar testes por modo e verificar renderização mobile, imersiva e em produção.
 
 **Esta fase não promete ganho de FPS automático**: a vantagem é redução de acoplamento, manutenção, cache de assets e capacidade de evoluir sistemas com mais segurança.
+
+## Fase 2 / V26 — Motor em arquivos por responsabilidade
+
+O arquivo de ~120 KB `js/core/app.js` foi distribuído em **nove scripts clássicos**, na ordem original:
+
+- `js/core/app.js` — 7794 caracteres
+- `js/core/profile-community.js` — 21593 caracteres
+- `js/ui/ranking-home.js` — 3787 caracteres
+- `js/core/account-secrets.js` — 13779 caracteres
+- `js/services/community-data.js` — 6716 caracteres
+- `js/services/gallery.js` — 6383 caracteres
+- `js/games/defense-engine.js` — 42481 caracteres
+- `js/games/defense-animation.js` — 10053 caracteres
+- `js/core/progression.js` — 7807 caracteres
+
+As declarações `let` e `const` permanecem compartilhadas no *ambiente léxico global* dos scripts clássicos. Não foi aplicada minificação, bundling, módulos ES ou troca de contratos. Esta etapa permite manutenção e futura introdução de uma API de módulos explícita com segurança.

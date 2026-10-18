@@ -11,9 +11,9 @@ const html=read('index.html');
 const manifest=JSON.parse(read('architecture-v25.json'));
 const styles=[...html.matchAll(/<link\s+[^>]*href="(css\/[^"?]+)\?v=25"[^>]*>/gi)].map(m=>m[1]);
 const scripts=[...html.matchAll(/<script\s+src="(js\/[^"?]+)\?v=25"><\/script>/gi)].map(m=>m[1]);
-test('index.html has been physically split into 12 CSS assets and 6 classic JS files',()=>{
+test('index.html has been physically split into 12 CSS assets and 14 classic JS files',()=>{
  assert.equal(styles.length,12);
- assert.equal(scripts.length,6);
+ assert.equal(scripts.length,14);
  assert.deepEqual(styles,manifest.styles.map(x=>x.file));
  assert.deepEqual(scripts,manifest.scripts.map(x=>x.file));
  assert.equal([...html.matchAll(/<style(?:\s|>)/gi)].length,0,'no embedded style blocks');
@@ -29,7 +29,7 @@ test('all extracted assets exist, are non-empty and retain original contents',()
 });
 test('legacy global execution ordering and script semantics are preserved',()=>{
  for(const file of scripts) assert.doesNotThrow(()=>new vm.Script(read(file),{filename:file}));
- assert.ok(html.indexOf('src="js/core/app.js?v=25"')<html.indexOf('src="js/games/halloween-wardrobe.js?v=25"'));
+ assert.ok(html.indexOf('src="js/core/app.js?v=26"')<html.indexOf('src="js/games/halloween-wardrobe.js?v=25"'));
  assert.ok(html.indexOf('src="js/games/halloween-wardrobe.js?v=25"')<html.indexOf('src="rpg_epico_expansao.js"'));
  assert.ok(html.indexOf('src="js/ui/update-notice.js?v=25"')>html.indexOf('src="mundo_pomar.js"'));
  for(const match of html.matchAll(/<script\b([^>]*)src="(js\/[^"]+)"([^>]*)>/gi)){
@@ -41,7 +41,7 @@ test('RPG, defense, immersive controls and identity integrations are still refer
   assert.ok(html.includes('id="'+id+'"'),id);
  for(const file of ['mundo_pomar.js','mundo_v24.css?v=24','tela_cheia_v24.js?v=24.2','casa_sync_v22.js?v=22','renascimento_v23.js?v=23'])
   assert.ok(html.includes(file),file);
- assert.ok(read('js/core/app.js').includes('function sm21TacticsTick(s,dt){'));
+ assert.ok(read('js/games/defense-engine.js').includes('function sm21TacticsTick(s,dt){'))
  assert.ok(read('js/ui/update-notice.js').includes("const version='24.0.0'"));
 });
 test('reference URLs are local and all package file dependencies can be resolved',()=>{
