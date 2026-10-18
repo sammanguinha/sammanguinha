@@ -30,7 +30,6 @@ const cellClick=async(page,x,y)=>{
    await page.addInitScript(()=>{
     localStorage.setItem('sg_handle','teste_v21');
     localStorage.setItem('sg_tok','abcdefghijklmnopqrstuvwxyz123456');
-    localStorage.removeItem('sm_last_seen_update_version');
     // Testing does not require changing live server state.
    });
    await page.goto('http://127.0.0.1:4163/index.html',{waitUntil:'domcontentloaded',timeout:45000});
