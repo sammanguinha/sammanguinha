@@ -21,5 +21,5 @@
  toggle.addEventListener('click',()=>setOpen(panel.hidden));document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden)setOpen(false)});
  document.addEventListener('pointerdown',e=>{if(!panel.hidden&&!panel.contains(e.target)&&!toggle.contains(e.target))setOpen(false)});
  document.body.append(toggle,panel);
- skip.addEventListener('click',()=>{const game=document.getElementById('rpgDlg');if(game?.hidden){document.getElementById('rpgBtn')?.click()}requestAnimationFrame(()=>document.getElementById('r12Canvas')?.focus())});
+ skip.addEventListener('click',()=>{const game=document.getElementById('rpgDlg');if(game?.hidden){document.querySelector('[data-p="rpgDlg"]')?.click()}requestAnimationFrame(()=>document.getElementById('r12Canvas')?.focus())});
 })();
