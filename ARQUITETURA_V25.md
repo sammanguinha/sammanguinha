@@ -60,3 +60,14 @@ A antiga folha `css/base.css` (68 KB) foi separada sem alterar os seletores nem 
 - `css/premium-cards.css` — 13160 caracteres
 
 As folhas são carregadas na posição original do tema, antes das sobreposições V20–V25. A organização permite mudar os estilos de mapas, guarda-roupa e interface de forma localizada.
+
+## Fase 4 / V26 — Empacotamento otimizado e reproduzível
+
+A árvore do projeto permanece modular para manutenção. Para o navegador, `node scripts/build-v26.cjs` gera um `dist/` com uma folha CSS combinada (`css/game-v26.bundle.css`) e um script clássico combinado (`js/game-v26.bundle.js`). Ambos são concatenações EXATAS, com SHA do blob Git verificado contra os arquivos V25 originais: sem mudanças de gameplay e sem custo de várias requisições sequenciais.
+
+- **Código-fonte:** 19 folhas CSS, 14 scripts clássicos, separados por responsabilidade.
+- **Pacote estático:** concatenação dos oito estilos-base e nove blocos do motor em dois assets carregados com uma única tag cada.
+- **Segurança:** não inclui arquivos de teste, SQL, configurações privadas ou `wrangler.jsonc` no diretório `dist/`.
+- **Validação:** compara o hash Git do CSS e JS gerados, testa a versão de desenvolvimento e a versão compilada em Chromium desktop e mobile, e só então cria o ZIP para Cloudflare Pages.
+
+Não é uma migração para React, TypeScript ou módulos ES nesta fase, pois essas mudanças exigiriam reescrever contratos globais e aumentariam os riscos de quebrar o jogo.
