@@ -34,7 +34,7 @@ test('house has per-account persistence, no arbitrary item insertion and daily l
  assert.ok(house.includes("if(!putWallet(w))return"));
 });
 test('defense includes actual towers, energy, damage, slow and revival logic',()=>{
- for(const n of ['sm21TacticsTick(s,dt)','sm21Build(id)','s.towers.push({kind:id,lane','target.hp-=damage','target.slow=Math.max','s.trees[lane]=true','s.energy-=cost','s.energy=Math.min(12,s.energy+1)','sm21DrawTowers(g,s,t)','s.intermission=3.5'])assert.ok(html.includes(n),n);
+ for(const n of ['sm21TacticsTick(s,dt)','sm21Build(id)','s.towers.push({kind:id,lane','target.hp-=damage','enemy.slow=Math.max','s.trees[lane]=true','s.energy-=cost','s.energy=Math.min(12,s.energy+1)','sm21DrawTowers(g,s,t)','s.intermission=3.5'])assert.ok(html.includes(n),n);
  for(const n of ['sm21TacticalStatus','sm21Energy','sm21Lanes'])assert.ok(html.includes('id="'+n+'"'));
  for(const n of ['arrow','frost','heal'])assert.ok(html.includes('data-sm21-build="'+n+'"'));
  for(const n of ['arco','gelo'])assert.ok(read('sprites/torre_'+n+'_v21.svg').includes('width="192"'));
@@ -51,7 +51,7 @@ test('boss on normal wave five, normal ranking remains validated',()=>{
 test('version menu retained and Cloudflare config only remains in source',()=>{
  assert.match(html,/const version='(?:21|22)\.0\.0'/);
  for(const n of ['<b>V21</b>','<b>V20</b>','<b>V19</b>','<b>V18</b>'])assert.ok(html.includes(n));
- assert.ok(fs.existsSync(path.join(root,'wrangler.jsonc')));
+ assert.ok(!fs.existsSync(path.join(root,'wrangler.jsonc')),'Cloudflare Pages package must not depend on Worker configuration');
 });
 
 test('TACTICAL COMBAT: arrow tower actually kills enemy, consumes cooldown and earns battle energy',()=>{
