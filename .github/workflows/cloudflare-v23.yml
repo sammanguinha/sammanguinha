@@ -1,0 +1,50 @@
+name: Pacote Cloudflare Pages V23
+on:
+  push:
+    branches: [dev/v23-renascimento-integrado]
+    paths:
+      - 'index.html'
+      - '*.js'
+      - '*.css'
+      - 'sprites/**'
+      - 'audio/**'
+      - 'halloween_art/**'
+      - 'tests/v23_vila_defesa.test.cjs'
+      - '.github/workflows/cloudflare-v23.yml'
+  workflow_dispatch:
+jobs:
+  pacote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar JavaScript e mecanismos antes do pacote
+        run: node --test tests/v23_renascimento.test.cjs tests/v23_vila_defesa.test.cjs tests/v22_fundacao.test.cjs tests/v22_defense.test.cjs
+      - name: Empacotar apenas jogo publico
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          find . -maxdepth 1 -type f \( -iname '*.html' -o -iname '*.css' -o -iname '*.js' -o -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' -o -iname '*.gif' -o -iname '*.svg' -o -iname '*.ico' -o -iname '*.mp3' -o -iname '*.ogg' -o -iname '*.wav' -o -iname '*.woff*' -o -name '_redirects' -o -name '_headers' \) -exec cp -t dist/ {} +
+          for d in sprites audio halloween_art; do if [ -d "$d" ]; then cp -a "$d" dist/; fi; done
+          test -f dist/index.html
+          test -f dist/mundo_pomar.js
+          test -f dist/renascimento_v23.css
+          test -f dist/renascimento_v23.js
+          test -f dist/casa_sync_v22.js
+          test -f dist/pomar_ao_vivo_v20.js
+          test -f dist/sprites/torre_solar_v23.svg
+          test -f dist/sprites/torre_raiz_v23.svg
+          test -f dist/sprites/npc_amalia_v23.svg
+          if find dist -iname 'wrangler*' | grep -q .; then echo 'Erro: Wrangler no pacote estatico'; exit 1; fi
+          cd dist
+          zip -qr ../Sam-Manguinha-V23-Cloudflare-Pages.zip .
+          unzip -t ../Sam-Manguinha-V23-Cloudflare-Pages.zip | tail -1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V23-Cloudflare-Pages
+          path: Sam-Manguinha-V23-Cloudflare-Pages.zip
+          retention-days: 30

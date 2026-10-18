@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="48" viewBox="0 0 192 48" shape-rendering="crispEdges"><title>Tito, o Botânico — NPC com quatro quadros de animação</title><g transform="translate(0,0)">
+ <rect x="10" y="42" width="29" height="3" fill="#151929" opacity=".5"/>
+ <rect x="15" y="34" width="7" height="9" fill="#35334d"/>
+ <rect x="27" y="34" width="7" height="9" fill="#35334d"/>
+ <path d="M15 21L35 21L40 38L9 38z" fill="#558c81" stroke="#332743" stroke-width="2"/>
+ <rect x="18" y="8" width="15" height="18" fill="#e8bc96"/>
+ <path d="M17 15V5L22 2L32 4L36 12L33 15L31 8L19 11z" fill="#765b43"/>
+ <rect x="21" y="16" width="3" height="3" fill="#34304a"/><rect x="29" y="16" width="3" height="3" fill="#34304a"/>
+ <rect x="14" y="3" width="23" height="6" fill="#55885a"/><rect x="20" y="0" width="11" height="5" fill="#a1c98d"/><rect x="31" y="26" width="10" height="4" fill="#e2c67f"/>
+ <rect x="10" y="24" width="6" height="12" fill="#558c81"/><rect x="37" y="24" width="6" height="12" fill="#558c81"/>
+ </g><g transform="translate(48,-1)">
+ <rect x="10" y="42" width="29" height="3" fill="#151929" opacity=".5"/>
+ <rect x="15" y="36" width="7" height="9" fill="#35334d"/>
+ <rect x="27" y="32" width="7" height="9" fill="#35334d"/>
+ <path d="M15 21L35 21L40 38L9 38z" fill="#558c81" stroke="#332743" stroke-width="2"/>
+ <rect x="18" y="8" width="15" height="18" fill="#e8bc96"/>
+ <path d="M17 15V5L22 2L32 4L36 12L33 15L31 8L19 11z" fill="#765b43"/>
+ <rect x="21" y="16" width="3" height="3" fill="#34304a"/><rect x="29" y="16" width="3" height="3" fill="#34304a"/>
+ <rect x="14" y="3" width="23" height="6" fill="#55885a"/><rect x="20" y="0" width="11" height="5" fill="#a1c98d"/><rect x="31" y="26" width="10" height="4" fill="#e2c67f"/>
+ <rect x="11" y="24" width="6" height="12" fill="#558c81"/><rect x="36" y="24" width="6" height="12" fill="#558c81"/>
+ </g><g transform="translate(96,0)">
+ <rect x="10" y="42" width="29" height="3" fill="#151929" opacity=".5"/>
+ <rect x="15" y="34" width="7" height="9" fill="#35334d"/>
+ <rect x="27" y="34" width="7" height="9" fill="#35334d"/>
+ <path d="M15 21L35 21L40 38L9 38z" fill="#558c81" stroke="#332743" stroke-width="2"/>
+ <rect x="18" y="8" width="15" height="18" fill="#e8bc96"/>
+ <path d="M17 15V5L22 2L32 4L36 12L33 15L31 8L19 11z" fill="#765b43"/>
+ <rect x="21" y="16" width="3" height="3" fill="#34304a"/><rect x="29" y="16" width="3" height="3" fill="#34304a"/>
+ <rect x="14" y="3" width="23" height="6" fill="#55885a"/><rect x="20" y="0" width="11" height="5" fill="#a1c98d"/><rect x="31" y="26" width="10" height="4" fill="#e2c67f"/>
+ <rect x="10" y="24" width="6" height="12" fill="#558c81"/><rect x="37" y="24" width="6" height="12" fill="#558c81"/>
+ </g><g transform="translate(144,-1)">
+ <rect x="10" y="42" width="29" height="3" fill="#151929" opacity=".5"/>
+ <rect x="15" y="32" width="7" height="9" fill="#35334d"/>
+ <rect x="27" y="36" width="7" height="9" fill="#35334d"/>
+ <path d="M15 21L35 21L40 38L9 38z" fill="#558c81" stroke="#332743" stroke-width="2"/>
+ <rect x="18" y="8" width="15" height="18" fill="#e8bc96"/>
+ <path d="M17 15V5L22 2L32 4L36 12L33 15L31 8L19 11z" fill="#765b43"/>
+ <rect x="21" y="16" width="3" height="3" fill="#34304a"/><rect x="29" y="16" width="3" height="3" fill="#34304a"/>
+ <rect x="14" y="3" width="23" height="6" fill="#55885a"/><rect x="20" y="0" width="11" height="5" fill="#a1c98d"/><rect x="31" y="26" width="10" height="4" fill="#e2c67f"/>
+ <rect x="11" y="24" width="6" height="12" fill="#558c81"/><rect x="36" y="24" width="6" height="12" fill="#558c81"/>
+ </g></svg>
