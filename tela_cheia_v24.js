@@ -10,8 +10,8 @@ const css=document.createElement('style');css.id='smImmersiveStyles';css.textCon
 .sm-immersive.sm-immersive-fallback{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;max-width:none!important;max-height:none!important;z-index:2147483640!important;overflow:hidden!important;margin:0!important;padding:0!important;display:block!important}
 body.sm-immersive-lock{overflow:hidden!important}
 .sm-immersive .sm-fullscreen-toggle{position:absolute;right:max(12px,env(safe-area-inset-right));top:max(8px,env(safe-area-inset-top));margin:0;padding:10px 14px;z-index:120;background:#17283bea;box-shadow:0 3px 18px #0008}
-.sm-immersive .sm-immersive-menu{position:absolute;top:max(8px,env(safe-area-inset-top));right:170px;z-index:120;padding:10px 14px;border:1px solid #b7dcb0;border-radius:10px;background:#20384ded;color:white;font-weight:800;cursor:pointer}
-.sm-immersive .sm-immersive-header{position:absolute;z-index:100;top:max(9px,env(safe-area-inset-top));left:max(12px,env(safe-area-inset-left));padding:8px 13px;border:1px solid #527c7b;border-radius:9px;background:var(--sm-hud);max-width:calc(100vw - 340px);font-weight:800}
+.sm-immersive-menu,.sm-immersive-header{display:none}\n.sm-immersive .sm-immersive-menu{display:block;position:absolute;top:max(8px,env(safe-area-inset-top));right:170px;z-index:120;padding:10px 14px;border:1px solid #b7dcb0;border-radius:10px;background:#20384ded;color:white;font-weight:800;cursor:pointer}
+.sm-immersive .sm-immersive-header{display:block;position:absolute;z-index:100;top:max(9px,env(safe-area-inset-top));left:max(12px,env(safe-area-inset-left));padding:8px 13px;border:1px solid #527c7b;border-radius:9px;background:var(--sm-hud);max-width:calc(100vw - 340px);font-weight:800}
 .sm-immersive .sm-immersive-header small{display:block;font-weight:500;font-size:.73rem;color:#aed3c6}
 .sm-immersive .sm-immersive-close-menu{display:none}
 #rpgDlg.sm-immersive .r12-shell{position:absolute;inset:0!important;max-width:none!important;margin:0!important;padding:0!important;display:block!important}
