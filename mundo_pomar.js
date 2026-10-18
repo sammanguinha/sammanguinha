@@ -580,6 +580,7 @@ function v29Objective(){
 function v29ActorVisible(a){
  const q=v29State();
  if(a.v29==='find')return !q.finds.includes(a.id);
+ if(a.v29==='dailySpot'){const d=v29Daily();return !!q.started&&!!d.started&&d.task===v29Data.fieldTasks.findIndex(t=>t.id===a.id)}
  if(a.v29==='enemy'){
   if(a.id==='v29Mariposa')return !!q.chime&&!q.wisp&&!epic().defeated.includes(a.id);
   return !!q.scout&&!q.guardian&&!epic().defeated.includes(a.id);
@@ -685,8 +686,53 @@ function v29CombatWon(key){
  }
  save();update();
 }
+/* An optional once-per-day local field assignment. Official leaderboards unaffected. */
+function v29Daily(){
+ const q=v29State(),today=v23Day();
+ if(!q.daily||q.daily.day!==today){
+  const dayNumber=Number(String(today).replace(/\D/g,'').slice(-2))||1;
+  q.daily={day:today,task:dayNumber%v29Data.fieldTasks.length,
+   started:false,observed:false,claimed:false};
+ }
+ return q.daily;
+}
+function v29DailyBoard(){
+ const q=v29State();if(!q.started){
+  say('Diário de Campo','Íris organiza pequenas pesquisas pelo Pomar. Comece A Última Badalada com ela antes de usar o diário.');return;
+ }
+ const d=v29Daily(),task=v29Data.fieldTasks[d.task];
+ if(d.claimed){
+  say('Diário de Campo','Pesquisa registrada! Você recebeu a recompensa de hoje. Amanhã haverá uma nova expedição.');return;
+ }
+ if(!d.started){
+  d.started=true;save();
+  say('Diário de Campo · Pesquisa de Hoje','Destino: '+task.map+'.\n'+task.text+'\n\nInvestigue a marca brilhante da região e volte ao quadro na Vila.');
+  return;
+ }
+ if(!d.observed){
+  say('Diário de Campo','Pesquisa em andamento. Vá até '+task.map+' e investigue a marca. Volte para receber a recompensa.');return;
+ }
+ d.claimed=true;epic().gold+=18;giveXP(30);
+ log('Diário de Campo: pesquisa de '+task.map+' concluída! +30 XP e +18 moedas RPG.');
+ say('Diário de Campo','Observação registrada e enviada para Íris! +30 XP e +18 moedas RPG. A tarefa foi concluída por hoje.');
+ save();update();
+}
+function v29DailySpot(a){
+ const d=v29Daily(),task=v29Data.fieldTasks[d.task];
+ if(!d.started||a.id!==task.id){
+  say('Observação do Pomar','Uma marca de pesquisa antiga. O Diário de Campo da Vila informa a rota do dia.');return;
+ }
+ if(d.observed){
+  say('Observação do Pomar','O registro de hoje já foi feito. Volte ao Diário de Campo na Vila.');return;
+ }
+ d.observed=true;log('Pesquisa do dia: a observação em '+task.map+' foi concluída.');
+ say('Caderno de Campo',task.text+'\n\nVocê anotou os detalhes. Volte à Vila e entregue o registro no Diário de Campo.');
+ save();update();
+}
 function v29Interact(a){
  const q=v29State();if(!v29Data)return false;
+ if(a.v29==='dailyBoard'){v29DailyBoard();return true}
+ if(a.v29==='dailySpot'){v29DailySpot(a);return true}
  if(a.v29==='clue')return v29Clue(a.id);
  if(a.v29==='find')return v29Memory(a.id);
  if(a.v29==='puzzle'){v29Puzzle();return true}
@@ -740,7 +786,7 @@ function v29SetupUI(){
  '<p id="v29QuestObjective"></p><div class="v29-progress-track" role="progressbar" aria-label="Progresso da Crônica" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0"><i id="v29QuestBar"></i></div>'+
  '<p id="v29QuestMeta"></p><div id="v29QuestSteps"></div><div id="v29QuestClues" class="v29-clues"></div>'+
  '<button type="button" id="v29ReadClues">📖 Ver pistas no diário</button>'+
- '<p class="v29-caption">Pistas, combates e descobertas salvam no seu RPG. Sem alterar o ranking.</p>';
+ '<p id="v29DailyStatus" class="v29-daily"></p><p class="v29-caption">Pistas, combates e descobertas salvam no seu RPG. Sem alterar o ranking.</p>';
  aside.prepend(card);
  $('v29ReadClues').addEventListener('click',v29ShowClues);
  const main=host.querySelector('.r12-main');
@@ -769,6 +815,8 @@ function v29RenderUI(){
  const clues=$('v29QuestClues');
  clues.innerHTML=q.clues.map(id=>'<div>✧ '+escapeHtml(v29Data.clues[id]?.name||id)+'</div>').join('')||
   '<small>O caderno aguarda a primeira pista.</small>';
+ const daily=v29Daily(),task=v29Data.fieldTasks[daily.task];
+ $('v29DailyStatus').textContent=q.started?('📚 Diário de Campo: '+(daily.claimed?'pesquisa concluída hoje':!daily.started?'nova pesquisa disponível na Vila':daily.observed?'volte à Vila para entregar':'investigue '+task.map)):('📚 Diário de Campo: disponível após conversar com Íris');
  const badge=$('v29WorldQuest');
  if(badge)badge.textContent=q.ending?'🔔 Crônica concluída · '+q.finds.length+'/9 memórias':
   '🔔 '+(q.started?'Crônica: '+n+'/7 etapas · abrir diário':'Nova crônica: fale com Íris');
@@ -1069,6 +1117,13 @@ function v29DrawActor(a,x,y,bob){
    ctx.beginPath();ctx.arc(x,y-29,27,0,Math.PI*2);ctx.fill();
    ctx.fillStyle='#91c987';ctx.beginPath();ctx.arc(x-11,y-35,13,0,Math.PI*2);ctx.fill();
    drawGlyph(x,y-45,'♪','#fff2cc');
+  }else if(a.v29==='dailyBoard'){
+   rect(x-19,y-18,38,32,'#5f4a35');rect(x-15,y-15,30,25,'#dac58d');
+   rect(x-11,y-10,23,2,'#5e6a4d');rect(x-11,y-4,16,2,'#5e6a4d');
+   drawGlyph(x+14,y-25,'✎','#f5dbac');
+  }else if(a.v29==='dailySpot'){
+   rect(x-12,y-10+bob,24,21,'#d6c994');rect(x-8,y-5+bob,16,12,'#46676b');
+   drawGlyph(x,y-18+bob,'⌕','#d5ffe5');
   }else if(a.v29==='find'){
    rect(x-13,y-11+bob,26,23,'#d2c5a3');rect(x-10,y-8+bob,20,17,'#334b56');
    rect(x-7,y-5+bob,14,2,'#f7daa3');rect(x-7,y+bob,9,2,'#89cfc2');
