@@ -65,6 +65,7 @@ const server=http.createServer((req,res)=>{
    await page.locator('#rpgDlg [data-v27-action="rpg:shop"]').click();
    assert.ok(await page.locator('#v24Shop').isVisible(),'quick shop opens inside the fullscreen game');
    await page.locator('#v24ShopClose').click();
+   if(process.env.SM_SCREENSHOTS){const dir=path.resolve(process.env.SM_SCREENSHOTS);fs.mkdirSync(dir,{recursive:true});await page.screenshot({path:path.join(dir,mode+'-rpg.png')})}
    assert.ok(await page.locator('#rpgDlg').evaluate(el=>el.classList.contains('sm-immersive')));
    await page.locator('#rpgDlg .sm-fullscreen-toggle').click();
    assert.ok(!(await page.locator('#rpgDlg').evaluate(el=>el.classList.contains('sm-immersive'))));
@@ -78,6 +79,7 @@ const server=http.createServer((req,res)=>{
    await page.locator('#gameDlg [data-v27-action="defense:tactics"]').click();
    assert.equal(await page.locator('#gameDlg .sm21-tactics').isVisible(),true,'tower controls open over defense arena');
    await page.locator('#gameDlg [data-v27-action="defense:tactics"]').click();
+   if(process.env.SM_SCREENSHOTS){const dir=path.resolve(process.env.SM_SCREENSHOTS);fs.mkdirSync(dir,{recursive:true});await page.screenshot({path:path.join(dir,mode+'-defesa.png')})}
    await page.locator('#gameDlg .sm-fullscreen-toggle').click();
    assert.deepEqual(missing,[],'local resources all fetched');
    assert.deepEqual(errors,[],'no browser JavaScript errors');
