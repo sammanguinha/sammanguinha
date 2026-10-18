@@ -5,12 +5,12 @@
  const ctx=cv.getContext('2d',{alpha:false});
  const W=768,H=448,T=32,COLS=24,ROWS=14;
  const $=id=>document.getElementById(id);
- const keys={up:false,down:false,left:false,right:false};
+ const keys={up:false,down:false,left:false,right:false,run:false};
  const rooms={
   vila:{name:'Vila da Mangueira',subtitle:'O início de toda colheita',floor:'#294d35',dirt:'#756043',night:false,
    blocks:[{x:2,y:2,w:5,h:3,type:'loja'},{x:17,y:2,w:5,h:3,type:'casa'},{x:2,y:9,w:4,h:3,type:'defesa'},{x:18,y:9,w:4,h:3,type:'portal'}],
    props:[{x:7,y:3,type:'tree'},{x:16,y:11,type:'tree'},{x:7,y:10,type:'tree'}],
-   actors:[{id:'guarda',x:11.5,y:8.4,type:'npc',label:'Guardião Bento'},{id:'livia',x:17,y:7,type:'npc',label:'Lívia'},{id:'loja',x:4.5,y:5.6,type:'shop',label:'Loja dos Mascotes'},{id:'defesa',x:4.0,y:8.1,type:'defense',label:'Arena de Defesa'},{id:'halloween',x:20,y:8.15,type:'halloween',label:'Pomar das Sombras'},{id:'forest',x:12,y:1.25,type:'passage',label:'Trilha Encantada'},{id:'profile',x:19,y:5.5,type:'profile',label:'Seu Refúgio'},{id:'praca',x:13.7,y:5.6,type:'social',label:'Praça Ao Vivo'}]},
+   actors:[{id:'guarda',x:11.5,y:8.4,type:'npc',label:'Guardião Bento'},{id:'livia',x:17,y:7,type:'npc',label:'Lívia'},{id:'loja',x:4.5,y:5.6,type:'shop',label:'Empório da Vila · RPG'},{id:'defesa',x:4.0,y:8.1,type:'defense',label:'Arena de Defesa'},{id:'halloween',x:20,y:8.15,type:'halloween',label:'Pomar das Sombras'},{id:'forest',x:12,y:1.25,type:'passage',label:'Trilha Encantada'},{id:'profile',x:19,y:5.5,type:'profile',label:'Seu Refúgio'},{id:'praca',x:13.7,y:5.6,type:'social',label:'Praça Ao Vivo'}]},
   floresta:{name:'Trilha Encantada',subtitle:'As sementes seguem a luz',floor:'#24442e',dirt:'#5c5434',night:false,
    blocks:[{x:2,y:2,w:3,h:2,type:'rocks'},{x:17,y:2,w:3,h:2,type:'rocks'},{x:8,y:9,w:3,h:2,type:'rocks'}],
    props:[{x:4,y:7,type:'tree'},{x:6,y:11,type:'tree'},{x:10,y:2,type:'tree'},{x:15,y:10,type:'tree'},{x:20,y:11,type:'tree'},{x:12,y:7,type:'tree'}],
@@ -87,13 +87,208 @@ rooms.floresta.actors.push(
 );
 rooms.ruinas.actors.push({id:'toEstufa',x:20.5,y:11,type:'door',epic:'gate',min:1,target:'estufa',tx:2.8,ty:7,label:'Estufa das Brasas'});
 
+
+/* V24 · Empório, cosméticos equipáveis e consumíveis úteis.
+   Moedas aqui são progressão LOCAL RPG: ranking e mangas oficiais intocados. */
+Object.assign(EPIC_ARTIFACTS,{
+ anel_orvalho:{name:'Anel do Orvalho',rarity:'Comum',element:'water',desc:'+10 HP máximo. Brilho azul no personagem.',effect:'bloom'},
+ broche_solar:{name:'Broche Solar',rarity:'Raro',element:'light',desc:'+12% de dano mágico.',effect:'focus'},
+ capa_brisa:{name:'Capa da Brisa',rarity:'Raro',element:'nature',desc:'Mais fôlego para correr.',effect:'swift'},
+ bracelete_casca:{name:'Bracelete da Casca',rarity:'Raro',element:'earth',desc:'Reduz dano recebido em 2.',effect:'ward'},
+ amuleto_luar:{name:'Amuleto do Luar',rarity:'Épico',element:'light',desc:'+2 MP no início do combate.',effect:'moonrise'}
+});
+const V24_SHOP=Object.freeze([
+ {id:'pocao',type:'Poções',name:'Poção de Vida',icon:'🧪',price:18,desc:'Recupera HP e remove veneno em combate.'},
+ {id:'tonico_mana',type:'Poções',name:'Tônico Lunar',icon:'🌙',price:22,desc:'Recupera 6 MP em combate ou fora dele.'},
+ {id:'antidoto',type:'Poções',name:'Antídoto Floral',icon:'🌿',price:12,desc:'Remove veneno no combate.'},
+ {id:'elixir_velocidade',type:'Poções',name:'Elixir de Passos',icon:'💨',price:25,desc:'Corrida reforçada durante 90 segundos.'},
+ {id:'bomba_esporos',type:'Combate',name:'Bomba de Esporos',icon:'🍄',price:34,desc:'20 de dano e cegueira temporária no alvo.'},
+ {id:'escudo_folha',type:'Combate',name:'Escudo de Folha',icon:'🛡️',price:28,desc:'Defende um turno e restaura 1 MP.'},
+ {id:'anel_orvalho',type:'Acessórios',name:'Anel do Orvalho',icon:'💍',price:85,desc:'+10 HP máximo.'},
+ {id:'broche_solar',type:'Acessórios',name:'Broche Solar',icon:'☀️',price:125,desc:'Magia reforçada.'},
+ {id:'capa_brisa',type:'Acessórios',name:'Capa da Brisa',icon:'🧣',price:110,desc:'Mais fôlego para correr.'},
+ {id:'bracelete_casca',type:'Acessórios',name:'Bracelete da Casca',icon:'🪵',price:120,desc:'Proteção aprimorada.'},
+ {id:'amuleto_luar',type:'Acessórios',name:'Amuleto do Luar',icon:'🌜',price:145,desc:'Energia extra ao iniciar batalhas.'}
+]);
+function v24Bag(){
+ const e=epic();
+ if(!e.v24||typeof e.v24!=='object')e.v24={};
+ if(!e.v24.bag||typeof e.v24.bag!=='object')e.v24.bag={};
+ if(!Number.isFinite(e.v24.stamina))e.v24.stamina=100;
+ if(!Number.isFinite(e.v24.hasteUntil))e.v24.hasteUntil=0;
+ return e.v24;
+}
+function v24Count(id){return Math.max(0,Math.floor(Number(v24Bag().bag[id])||0))}
+function v24Take(id){const n=v24Count(id);if(!n)return false;v24Bag().bag[id]=n-1;save();return true}
+function v24Buy(id){
+ const it=V24_SHOP.find(item=>item.id===id),e=epic();if(!it)return;
+ const accessory=!!EPIC_ARTIFACTS[id];
+ if(accessory&&e.items.includes(id))return notify('Este acessório já está no seu Relicário.');
+ if(!Number.isFinite(e.gold)||e.gold<it.price)return notify('Moedas insuficientes. Explore e vença batalhas.');
+ // O estado do jogador e suas moedas são gravados juntos no save da campanha.
+ const prev=JSON.stringify(e);
+ e.gold-=it.price;
+ if(accessory)e.items.push(id);
+ else if(id==='pocao')e.potions=(Number(e.potions)||0)+1;
+ else v24Bag().bag[id]=v24Count(id)+1;
+ try{
+  st.x=player.x;st.y=player.y;localStorage.setItem(storageKey(),JSON.stringify(st));
+ }catch(err){st.epic=JSON.parse(prev);notify('Não foi possível salvar a compra: nenhum item ou moeda foi alterado.');renderV24Shop();return}
+ recomputeHealth();update();renderV24Shop();
+ notify('Adquirido: '+it.name+(accessory?' · equipe no Relicário!':'!'));
+}
+function v24UseOutside(id){
+ const e=epic();if(!v24Count(id))return notify('Você não tem esse item.');
+ if(id==='tonico_mana'){
+  if(e.mp>=maxMana())return notify('MP já está cheio.');
+  v24Take(id);e.mp=Math.min(maxMana(),e.mp+6);
+ }else if(id==='elixir_velocidade'){
+  v24Take(id);v24Bag().hasteUntil=Date.now()+90000;v24Bag().stamina=100;
+ }else return notify('Esse item funciona durante o combate.');
+ save();update();renderV24Shop();notify('Item utilizado.');
+}
+let v24ShopFocus=null;
+function openV24Shop(){
+ const modal=document.getElementById('v24Shop');if(!modal||!modal.hidden)return;
+ if(epicCombat||document.getElementById('r12Bubble')?.hidden===false||document.getElementById('r13ClassSelect')?.hidden===false){notify('Conclua o combate, diálogo ou escolha de classe antes de comprar.');return}
+ v24ShopFocus=document.activeElement;keys.run=keys.up=keys.down=keys.left=keys.right=false;
+ dialogOpen=true;renderV24Shop();modal.hidden=false;
+ modal.querySelector('#v24ShopClose')?.focus({preventScroll:true});
+}
+function closeV24Shop(){
+ const modal=document.getElementById('v24Shop');if(!modal||modal.hidden)return;
+ modal.hidden=true;dialogOpen=false;update();save();
+ v24ShopFocus?.focus?.({preventScroll:true});v24ShopFocus=null;
+}
+function renderV24Shop(){
+ const holder=document.getElementById('v24ShopItems');if(!holder)return;
+ const e=epic();document.getElementById('v24ShopGold').textContent='🪙 '+Math.max(0,Math.floor(e.gold||0))+' moedas RPG';
+ holder.replaceChildren();
+ for(const kind of ['Poções','Combate','Acessórios']){
+  const sec=document.createElement('section');sec.className='v24-shop-group';
+  const title=document.createElement('h3');title.textContent=kind;sec.append(title);
+  const grid=document.createElement('div');grid.className='v24-shop-grid';
+  for(const it of V24_SHOP.filter(q=>q.type===kind)){
+   const owned=!!EPIC_ARTIFACTS[it.id]&&e.items.includes(it.id);
+   const count=it.id==='pocao'?e.potions:v24Count(it.id);
+   const card=document.createElement('article');card.className='v24-shop-item';
+   const name=document.createElement('strong');name.textContent=it.icon+' '+it.name;
+   const desc=document.createElement('p');desc.textContent=it.desc;
+   const amount=document.createElement('small');amount.textContent=owned?'✓ Adquirido':EPIC_ARTIFACTS[it.id]?'Acessório permanente':'Na bolsa: '+count;
+   const btn=document.createElement('button');btn.type='button';
+   btn.textContent=owned?'✓ Comprado':'🪙 '+it.price+' · Comprar';
+   btn.disabled=owned||e.gold<it.price;btn.onclick=()=>v24Buy(it.id);
+   card.append(name,desc,amount,btn);
+   if(!EPIC_ARTIFACTS[it.id]&&['tonico_mana','elixir_velocidade'].includes(it.id)&&count>0){
+    const use=document.createElement('button');use.type='button';use.className='v24-secondary';
+    use.textContent='Usar na exploração';use.onclick=()=>v24UseOutside(it.id);card.append(use);
+   }grid.append(card);
+  }sec.append(grid);holder.append(sec);
+ }
+}
+function initV24Shop(){
+ const root=document.getElementById('rpgDlg');if(!root||document.getElementById('v24Shop'))return;
+ const modal=document.createElement('div');modal.id='v24Shop';modal.className='v24-modal';modal.hidden=true;
+ modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');
+ modal.setAttribute('aria-label','Loja RPG Empório da Vila');
+ modal.innerHTML='<div class="v24-shop-panel"><header><div><small>VILA DA MANGUEIRA · COMÉRCIO RPG</small><h2>🏡 Empório da Vila</h2><p>Poções, itens de combate e acessórios equipáveis.</p></div><div><b id="v24ShopGold"></b><button id="v24ShopClose" type="button">✕ Fechar</button></div></header><p class="v24-shop-note">Moedas locais da aventura; não são mangas oficiais ou recursos de ranking. Acessórios podem ser equipados no Relicário.</p><div id="v24ShopItems"></div></div>';
+ root.append(modal);modal.querySelector('#v24ShopClose').onclick=closeV24Shop;
+ modal.addEventListener('click',ev=>{if(ev.target===modal)closeV24Shop()});
+ modal.addEventListener('keydown',ev=>{
+  if(ev.key==='Escape'){ev.preventDefault();closeV24Shop()}
+  if(ev.key==='Tab'){
+   const btns=[...modal.querySelectorAll('button:not(:disabled)')],first=btns[0],last=btns[btns.length-1];
+   if(ev.shiftKey&&document.activeElement===first){ev.preventDefault();last?.focus()}
+   else if(!ev.shiftKey&&document.activeElement===last){ev.preventDefault();first?.focus()}
+  }
+ });
+ const main=root.querySelector('.r12-main');
+ if(main){
+  const bar=document.createElement('div');bar.className='v24-sprint-bar';
+  bar.innerHTML='<label for="v24SprintMeter">⚡ Fôlego <span id="v24SprintText">100 fôlego</span></label><progress id="v24SprintMeter" max="100" value="100"></progress><button id="v24RunTouch" type="button" aria-pressed="false">💨 Segure para correr</button><button id="v24ShopShortcut" type="button">🛍️ Empório RPG</button><small>Shift + movimento no PC · segure Correr no celular</small>';
+  main.append(bar);
+  const run=bar.querySelector('#v24RunTouch');
+  run.addEventListener('pointerdown',ev=>{ev.preventDefault();keys.run=true;run.setAttribute('aria-pressed','true');run.setPointerCapture?.(ev.pointerId)});
+  for(const type of ['pointerup','pointercancel','lostpointercapture'])run.addEventListener(type,()=>{keys.run=false;run.setAttribute('aria-pressed','false')});
+  bar.querySelector('#v24ShopShortcut').onclick=openV24Shop;
+ }
+}
+
+
+const V24_BIOMES={
+ vila:['#365c3d','#426a46','#2b5139','#b2ce87'],floresta:['#1b4335','#235441','#153d2e','#67ab74'],
+ ruinas:['#343748','#434557','#292c3e','#9990bf'],estufa:['#584632','#684d32','#453729','#ffad54'],
+ bosque:['#283b3b','#354444','#1b2d31','#86aaa4'],mina:['#262c40','#343c59','#1d2337','#8ca9ee'],
+ pantano:['#243f46','#2b4a4b','#182f39','#90c4b2'],observatorio:['#313451','#3b426a','#252741','#c5b2fb'],
+ coracao:['#523346','#61394d','#42293b','#e986ba'],planicie:['#4d6440','#66804c','#3f563b','#ffe19b'],
+ gruta:['#253d45','#2f5660','#183139','#74dbe6']
+};
+function v24Tile(px,py,x,y,h){
+ const colors=V24_BIOMES[st.map]||V24_BIOMES.vila;
+ const m=random(x,y,st.map.length*77);
+ rect(px,py,T,T,h>.7?colors[1]:h<.16?colors[2]:colors[0]);
+ if(['ruinas','mina','gruta','observatorio'].includes(st.map)){
+  if(m>.63){rect(px+3,py+8,12,2,colors[3]);rect(px+3,py+10,2,9,colors[2]);rect(px+23,py+19,5,2,colors[3])}
+  else if(m<.19){rect(px+10,py+23,3,5,colors[3]);rect(px+14,py+21,2,7,colors[3])}
+ }else if(['pantano','bosque'].includes(st.map)){
+  if(m>.54){rect(px+4,py+20,23,2,colors[2]);rect(px+8,py+22,13,3,colors[3])}
+  if(m<.22){rect(px+21,py+5,3,8,colors[3]);rect(px+17,py+12,2,5,colors[3])}
+ }else if(['estufa','coracao'].includes(st.map)){
+  if(m>.58){rect(px+7,py+18,17,2,colors[3]);rect(px+12,py+12,3,7,colors[3])}
+ }else if(m>.56){
+  rect(px+4,py+20,2,4,colors[3]);rect(px+6,py+17,2,3,colors[3]);rect(px+22,py+13,2,4,colors[3]);
+ }
+}
+function v24Decor(){
+ const b=V24_BIOMES[st.map]||V24_BIOMES.vila;ctx.save();
+ for(let i=0;i<22;i++){
+  const x=32+random(i,7,77)*704,y=22+random(i,13,37)*397,m=random(i,5,18);
+  ctx.globalAlpha=.4+m*.36;
+  if(['mina','gruta','observatorio'].includes(st.map)){
+   ctx.fillStyle=b[3];ctx.beginPath();ctx.moveTo(x,y-9-m*9);ctx.lineTo(x+4,y);ctx.lineTo(x-5,y);ctx.closePath();ctx.fill();
+  }else if(['pantano','bosque','coracao'].includes(st.map)){
+   ctx.strokeStyle=b[3];ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-3,y-9);ctx.lineTo(x+3,y-13);ctx.stroke();
+   ctx.fillStyle=b[3];ctx.fillRect(x-4,y-14,7,3);
+  }else if(['estufa','ruinas'].includes(st.map)){
+   ctx.fillStyle=b[3];ctx.fillRect(x-5,y-2,11,2);ctx.fillRect(x-2,y-6,3,5);
+  }else{ctx.fillStyle=b[3];ctx.fillRect(x,y-4,2,6);ctx.fillRect(x-3,y-1,8,2)}
+ }
+ ctx.restore();
+}
+
+
+/* V24 · Ramificações opcionais da aventura, preservando os nove mapas originais. */
+Object.assign(rooms,{
+ planicie:{name:'Campina dos Ventos',subtitle:'Relva dourada, pedras antigas e brisa constante',floor:'#4d6440',dirt:'#807957',night:false,
+ blocks:[{x:3,y:3,w:3,h:2,type:'rocks'},{x:18,y:9,w:3,h:2,type:'rocks'}],
+ props:[{x:5,y:8,type:'tree'},{x:20,y:4,type:'tree'}],
+ actors:[{id:'toForestFromMeadow',x:1.4,y:7,type:'passage',epic:'gate',target:'floresta',tx:18,ty:11,label:'Voltar à Trilha'},
+ {id:'v24MeadowHerb',x:12,y:4,type:'seed',epic:'resource',label:'Erva do Vento'},
+ {id:'v24MeadowHerb2',x:19,y:11,type:'seed',epic:'resource',label:'Erva Solar'},
+ {id:'v24MeadowWolf',x:13,y:9,type:'npc',epic:'enemy',label:'Lobo dos Ventos'}]},
+ gruta:{name:'Gruta do Eco Azul',subtitle:'Cristais luminosos e ecos sob a terra',floor:'#253d45',dirt:'#395665',night:true,
+ blocks:[{x:4,y:2,w:3,h:3,type:'rocks'},{x:17,y:9,w:4,h:3,type:'rocks'}],
+ props:[{x:7,y:10,type:'dead'},{x:19,y:3,type:'dead'}],
+ actors:[{id:'toMineFromGrotto',x:1.4,y:7,type:'passage',epic:'gate',target:'mina',tx:19,ty:10,label:'Voltar às Minas'},
+ {id:'v24CrystalA',x:10,y:3,type:'seed',epic:'resource',label:'Cristal Ecoante'},
+ {id:'v24CrystalB',x:17,y:5,type:'seed',epic:'resource',label:'Fragmento Azul'},
+ {id:'v24GrottoWisp',x:12,y:9,type:'npc',epic:'enemy',label:'Vulto de Cristal'}]}
+});
+rooms.floresta.actors.push({id:'toMeadow',x:20.4,y:11.8,type:'passage',epic:'gate',target:'planicie',tx:2.5,ty:7,label:'Campina dos Ventos'});
+rooms.mina.actors.push({id:'toGrotto',x:20.8,y:10.7,type:'door',epic:'gate',min:3,target:'gruta',tx:2.5,ty:7,label:'Gruta do Eco Azul'});
+Object.assign(EPIC_ENEMIES,{
+ lobo_vento:{name:'Lobo dos Ventos',element:'nature',hp:44,atk:8,def:2,xp:68,gold:32,weak:'fire',sprite:'lobo_vento_v24',intro:'Um guardião da campina corre em círculos. A marca do vento revela quando ele vai atacar.'},
+ vulto_eco:{name:'Vulto de Cristal',element:'storm',hp:90,atk:13,def:4,xp:130,gold:58,weak:'earth',sprite:'vulto_eco_v24',intro:'Os cristais escutam seus passos. O vulto reúne a luz em um único ponto.'}
+});
+
  const storageKey=()=>{const handle=(typeof window.me!=='undefined'&&window.me)||localStorage.getItem('sg_handle')||'visitante';return 'sam_rpg_hibrido_v12_'+String(handle).toLowerCase()};
  const blank=()=>({map:'vila',x:11.7,y:10.8,found:[],unlocked:false,relic:false,bonus:false,altarActive:false,ritualStep:0,seen:[],journal:['O Guardião Bento espera por você na vila.'],visits:0,epic:freshEpic()});
  let accountRpgKey=storageKey();let st=blank();try{let raw=JSON.parse(localStorage.getItem(storageKey())||'null');if(raw&&rooms[raw.map]&&Number.isFinite(raw.x)&&Number.isFinite(raw.y))st={...blank(),...raw,found:Array.isArray(raw.found)?raw.found:[],seen:Array.isArray(raw.seen)?raw.seen:[],journal:Array.isArray(raw.journal)?raw.journal:[]}}catch(e){}
  st.epic={...freshEpic(),...(st.epic||{}),stats:{...freshEpic().stats,...(st.epic?.stats||{})},flags:{...(st.epic?.flags||{})},items:Array.isArray(st.epic?.items)?st.epic.items:['semente_guardia'],equipped:Array.isArray(st.epic?.equipped)?st.epic.equipped:['semente_guardia'],defeated:Array.isArray(st.epic?.defeated)?st.epic.defeated:[]};
  const v23Sprites=Object.fromEntries(['bento','livia','eldra','maira','amalia','tito'].map(name=>{const im=new Image();im.src='sprites/npc_'+name+'_v23.svg';return [name,im]}));
  const v23Trees=Object.fromEntries(['arvore_lunar','arvore_corrompida'].map(name=>{const im=new Image();im.src='sprites/'+name+'_v23.svg';return [name,im]}));
- const imgCache=new Map();const sprite=name=>{if(!imgCache.has(name)){const i=new Image();i.src='sprites/'+name+(name==='aranha_rainha_v14'?'.svg':'.png');imgCache.set(name,i)}return imgCache.get(name)};
+ const v24Trees=Object.fromEntries(['arvore_saudavel','arvore_danificada','arvore_destruida'].map(name=>{const im=new Image();im.src='sprites/'+name+'_v24.svg';return [name,im]}));
+ const imgCache=new Map();const sprite=name=>{if(!imgCache.has(name)){const i=new Image();i.src='sprites/'+name+((name==='aranha_rainha_v14'||name.endsWith('_v24'))?'.svg':'.png');imgCache.set(name,i)}return imgCache.get(name)};
  const player={x:st.x,y:st.y,vx:0,vy:0};let nextSave=0,last=0,clock=0,visible=false,touchDest=null,dialogOpen=false,lastTip='';
  const room=()=>rooms[st.map];
 
@@ -277,7 +472,7 @@ rooms.ruinas.actors.push({id:'toEstufa',x:20.5,y:11,type:'door',epic:'gate',min:
  }
  function warp(dest,x,y){if(!rooms[dest])return;if(dest==='floresta')v23DailyMark('forest');window.SamMusic?.scene(dest==='bosque'||dest==='coracao'?'shadows':'explore');st.map=dest;player.x=x;player.y=y;touchDest=null;save();update();notify('Você entrou em '+room().name+'.')}
  function pane(dest){save();window.SamMusic?.scene(dest==='eventDlg'?'shadows':'explore');if(typeof window.showPane==='function')window.showPane(dest)}
- function toShop(){pane('gameDlg');setTimeout(()=>document.querySelector('#orchardExtras [data-extras-tab="shop"]')?.click(),100);}
+ function toShop(){openV24Shop()}
  function toPets(){pane('gameDlg');setTimeout(()=>document.querySelector('#orchardExtras [data-extras-tab="pets"]')?.click(),100);}
  function toHalloween(){pane('eventDlg');setTimeout(()=>document.getElementById('h8World')?.scrollIntoView({behavior:'smooth',block:'start'}),250)}
  const labels={seedA:'O brilho amarelo aquece a palma da sua mão.',seedB:'A semente azul pulsa em silêncio, como um pequeno luar.',seedC:'A semente roxa murmura palavras de uma árvore esquecida.'};
@@ -289,7 +484,7 @@ function setFlag(id){epic().flags[id]=true;save();update()}
 function ownItem(id){if(!EPIC_ARTIFACTS[id])return;if(!epic().items.includes(id)){epic().items.push(id);log('Artefato encontrado: '+EPIC_ARTIFACTS[id].name)}save();update()}
 function hasEffect(effect){return epic().equipped.some(id=>EPIC_ARTIFACTS[id]?.effect===effect)}
 function classInfo(){return EPIC_CLASSES[epic().class]||EPIC_CLASSES.guardiao}
-function maxHealth(){return classInfo().hp+(epic().level-1)*4+epic().stats.vig*3+(hasEffect('vigor')?12:0)+(hasEffect('royal')?20:0)}
+function maxHealth(){return classInfo().hp+(epic().level-1)*4+epic().stats.vig*3+(hasEffect('vigor')?12:0)+(hasEffect('royal')?20:0)+(hasEffect('bloom')?10:0)}
 function maxMana(){return classInfo().mp+epic().stats.int+Math.floor(epic().level/2)}
 function recomputeHealth(){epic().hp=Math.min(Math.max(1,epic().hp),maxHealth());epic().mp=Math.min(Math.max(0,epic().mp),maxMana())}
 function xpNeed(){return 60+epic().level*47}
@@ -314,13 +509,14 @@ function epicActorVisible(a){if(!a.epic)return true;
  return true;
 }
 const epicMonsters={
- larva:'larva',spider:'rainha',crystalBoss:'besouro',collector:'espectro',moonGuardian:'sentinela',finalKing:'rei'
+ larva:'larva',spider:'rainha',crystalBoss:'besouro',collector:'espectro',moonGuardian:'sentinela',finalKing:'rei',v24MeadowWolf:'lobo_vento',v24GrottoWisp:'vulto_eco'
 };
 function epicInteract(a){if(!a||!a.epic)return false;
  const e=epic(),f=e.flags;
  if(a.epic==='gate'){epicMapPortal(a.id,a.target,a.tx,a.ty,a.min||0);return true}
  if(a.epic==='enemy'){startCombat(epicMonsters[a.id],a.id);return true}
  if(a.epic==='resource'){
+   if(a.id.startsWith('v24')){if(eflag(a.id))return true;setFlag(a.id);const reward=a.id.includes('Crystal')?20:12;e.gold+=reward;save();update();notify('Coletado: '+a.label+' · +'+reward+' moedas RPG.');return true}
   if(a.id==='dew'||a.id==='glass'){setFlag(a.id);log(a.id==='dew'?'Você recolheu o Orvalho Solar; uma memória de Maíra aqueceu sua mão.':'Você encontrou um Vidro-Lua intacto, pulsando sob o brilho das folhas.');say('Achado',a.id==='dew'?'O Orvalho Solar foi guardado na bolsa. Ele resiste ao calor que consumiu a estufa.':'O fragmento de vidro preserva uma imagem antiga: Eldra sorrindo diante de uma muda.');return true}
   if(a.id.startsWith('stone')){setFlag(a.id);const stories={stoneRoot:'“A raiz protege o primeiro nome que a chuva esqueceu.”',stoneLeaf:'“A folha escuta aquilo que o vento não ousa contar.”',stoneDew:'“O orvalho registra a promessa quando chega a manhã.”'};say('Pedra do Juramento',stories[a.id]);return true}
   if(a.id.startsWith('gem')){setFlag(a.id);const c={gemBlue:'azul, frio como a chuva',gemAmber:'âmbar, quente como o amanhecer',gemWhite:'branco como uma promessa'}[a.id];say('Cristal recuperado','O cristal '+c+' reverbera no seu inventário.');return true}
@@ -376,14 +572,18 @@ function finishEpilogue(){const e=epic();e.chapter=7;ownItem('coroa_semente');co
 let epicCombat=null;let epicCombatBusy=false;let epicSoundLast=0;
 function startCombat(monster,actor){if(epicCombat||!EPIC_ENEMIES[monster])return;if(!epic().class){showEpicClasses();return}
  const m=EPIC_ENEMIES[monster];const basePhase=m.phases?m.phases[0]:{hp:m.hp,element:m.element,title:''};epicCombat={key:monster,actor,name:m.name,hp:basePhase.hp,maxHp:basePhase.hp,phase:0,element:basePhase.element,playerGuard:false,turn:1,status:'',enemyStatus:'',logs:[m.intro],enemyIntent:'O inimigo prepara seu primeiro golpe.',lock:false};
- window.SamMusic?.scene(monster==='rei'?'boss':'battle');const e=epic();e.mp=Math.min(e.mp+1,maxMana());if(hasEffect('vigor'))e.hp=Math.min(e.hp+2,maxHealth());dialogOpen=true;createCombat();renderCombat();save();}
+ window.SamMusic?.scene(monster==='rei'?'boss':'battle');const e=epic();e.mp=Math.min(e.mp+1,maxMana());if(hasEffect('vigor'))e.hp=Math.min(e.hp+2,maxHealth());if(hasEffect('moonrise'))e.mp=Math.min(maxMana(),e.mp+2);dialogOpen=true;createCombat();renderCombat();save();}
 function damageMult(atk,def){if(atk===def)return .76;if(EPIC_ADV[atk]===def)return 1.55;if(EPIC_ADV[def]===atk)return .65;return 1}
-function damageToEnemy(element,magic=false){const e=epic(),m=EPIC_ENEMIES[epicCombat.key];const attr=magic?e.stats.int:e.stats.for;const coeff=magic?1.7:1.4;const base=Math.max(2,Math.floor(8+e.level*2.0+attr*coeff-m.def));let mult=damageMult(element,epicCombat.element);if(m.weak===element)mult=Math.max(mult,1.65);if(hasEffect('attack'))mult+=(3/base);if(hasEffect('spell')&&magic)mult*=1.3;if(hasEffect('royal')&&epicCombat.key==='rei')mult*=1.15;if(hasEffect('halloween')&&epicCombat.element==='shadow')mult*=1.15;const variation=.88+Math.random()*.26;const crit=Math.random()<Math.min(.36,.035+epic().stats.agi*.011+(epic().class==='rastreador'?.10:0));return {value:Math.max(1,Math.floor(base*mult*variation*(crit?1.55:1))),mult,crit}}
+function damageToEnemy(element,magic=false){const e=epic(),m=EPIC_ENEMIES[epicCombat.key];const attr=magic?e.stats.int:e.stats.for;const coeff=magic?1.7:1.4;const base=Math.max(2,Math.floor(8+e.level*2.0+attr*coeff-m.def));let mult=damageMult(element,epicCombat.element);if(m.weak===element)mult=Math.max(mult,1.65);if(hasEffect('attack'))mult+=(3/base);if(hasEffect('spell')&&magic)mult*=1.3;if(hasEffect('focus')&&magic)mult*=1.12;if(hasEffect('royal')&&epicCombat.key==='rei')mult*=1.15;if(hasEffect('halloween')&&epicCombat.element==='shadow')mult*=1.15;const variation=.88+Math.random()*.26;const crit=Math.random()<Math.min(.36,.035+epic().stats.agi*.011+(epic().class==='rastreador'?.10:0));return {value:Math.max(1,Math.floor(base*mult*variation*(crit?1.55:1))),mult,crit}}
 function battleMessage(s){epicCombat.logs.unshift(s);epicCombat.logs=epicCombat.logs.slice(0,8)}
 function resolveCombatAction(type){const c=epicCombat;if(!c||c.lock)return;const e=epic(),cls=classInfo(),enemy=EPIC_ENEMIES[c.key];let d;
  if(type==='run'){if(c.key==='rei'||['rainha','besouro','espectro','sentinela'].includes(c.key)){battleMessage('Este guardião não permite fuga.');renderCombat();return}endCombat(false,true);return}
  if(type==='potion'){if(e.potions<=0){battleMessage('Você não tem poções.');renderCombat();return}if(e.hp>=maxHealth()&&c.status!=='poison'){battleMessage('Sua vida já está cheia.');renderCombat();return}e.potions--;c.status='';const heal=Math.min(maxHealth()-e.hp,38+e.stats.vig);e.hp+=heal;battleMessage('Você recuperou '+heal+' HP com uma poção.')}
- else if(type==='guard'){c.playerGuard=true;e.mp=Math.min(maxMana(),e.mp+2);battleMessage('Você ergue a guarda e recupera 2 de energia.')}
+ else if(type==='tonico_mana'){if(!v24Count(type)||e.mp>=maxMana()){battleMessage('Tônico indisponível ou MP cheio.');renderCombat();return}v24Take(type);e.mp=Math.min(maxMana(),e.mp+6);battleMessage('Tônico Lunar: +6 MP!')}
+  else if(type==='antidoto'){if(!v24Count(type)||c.status!=='poison'){battleMessage('Antídoto apenas quando envenenado.');renderCombat();return}v24Take(type);c.status='';battleMessage('Você neutralizou o veneno.')}
+  else if(type==='bomba_esporos'){if(!v24Count(type)){battleMessage('Sem bombas!');renderCombat();return}v24Take(type);c.hp-=20;c.enemyStatus='blind';c.enemyStatusDuration=2;battleMessage('Bomba de Esporos: 20 de dano e cegueira!')}
+  else if(type==='escudo_folha'){if(!v24Count(type)){battleMessage('Sem escudo de folha!');renderCombat();return}v24Take(type);c.playerGuard=true;e.mp=Math.min(maxMana(),e.mp+1);battleMessage('O Escudo de Folha protege este turno.')}
+  else if(type==='guard'){c.playerGuard=true;e.mp=Math.min(maxMana(),e.mp+2);battleMessage('Você ergue a guarda e recupera 2 de energia.')}
  else if(type==='skill'){
   const cost=3-(hasEffect('mana')?1:0);if(e.mp<cost){battleMessage('Energia insuficiente. Use DEFENDER para recuperar MP.');renderCombat();return}
   e.mp-=cost;const element=cls.element;d=damageToEnemy(element,true);c.hp-=d.value;let msg=cls.skill+' causou '+d.value+' de dano'+(d.crit?' — CRÍTICO!':'')+(d.mult>1.2?' — fraqueza explorada!':'')+'.';if(e.class==='guardiao'){c.playerGuard=true;msg+=' Raízes protegem você.'}if(e.class==='rastreador'&&Math.random()<.65){c.enemyStatus='burn';c.enemyStatusDuration=4;msg+=' Queimadura aplicada!'}if(e.class==='arcanista'&&c.element==='shadow'){c.enemyStatus='blind';c.enemyStatusDuration=2;msg+=' A luz enfraqueceu o inimigo!'}battleMessage(msg)
@@ -421,11 +621,11 @@ async function doCombatAction(type){
  const e=epic(),valid=type==='run'?(c.key!=='rei'&&!['rainha','besouro','espectro','sentinela'].includes(c.key))
   :type==='skill'?e.mp>=(3-(hasEffect('mana')?1:0))
   :type==='artifact'?!c.artUsed&&e.equipped.some(id=>EPIC_ARTIFACTS[id])
-  :type==='potion'?e.potions>0&&(e.hp<maxHealth()||c.status==='poison'):true;
+  :type==='potion'?e.potions>0&&(e.hp<maxHealth()||c.status==='poison'):type==='tonico_mana'?v24Count(type)>0&&e.mp<maxMana():type==='antidoto'?v24Count(type)>0&&c.status==='poison':['bomba_esporos','escudo_folha'].includes(type)?v24Count(type)>0:true;
  if(!valid){resolveCombatAction(type);return}
  c.lock=true;for(const b of $('r13Combat').querySelectorAll('[data-r13action]'))b.disabled=true;
- const attack=type==='attack'||type==='skill'||type==='artifact';
- const scene=type==='skill'?'magic':type==='artifact'?'artifact':type==='potion'?'heal':type==='guard'?'guard':type==='attack'?'attack':'';
+ const attack=type==='attack'||type==='skill'||type==='artifact'||type==='bomba_esporos';
+ const scene=type==='skill'?'magic':type==='artifact'?'artifact':['potion','tonico_mana','antidoto'].includes(type)?'heal':['guard','escudo_folha'].includes(type)?'guard':type==='bomba_esporos'?'magic':type==='attack'?'attack':'';
  try {
   if(scene){battleVisualEffect('hero',scene,classInfo().element);window.SamMusic?.effect(type==='skill'||type==='artifact'?'magic':type==='guard'?'guard':type==='potion'?'heal':'hit')}
   if(attack){await delayBattle(type==='skill'||type==='artifact'?310:230);if(epicCombat!==c)return;battleVisualEffect('enemy','receive',classInfo().element);window.SamMusic?.effect('hit')}
@@ -448,12 +648,12 @@ function enemyTurn(){const c=epicCombat,e=epic(),enemy=EPIC_ENEMIES[c.key];if(!c
  if(miss){battleMessage(c.enemyStatus==='blind'?'A luz cegou o inimigo! Ele errou o golpe.':'Sua Agilidade permitiu esquivar do ataque!')}else{
   const coeff=c.key==='rei'?(1+c.phase*.16):1;
   const raw=enemy.atk*coeff+Math.floor(c.turn/3)+Math.random()*5;
-  let dmg=Math.max(1,Math.floor(raw-epic().stats.vig*.9-(hasEffect('defense')?3:0)-(hasEffect('harvest')?2:0)));
+  let dmg=Math.max(1,Math.floor(raw-epic().stats.vig*.9-(hasEffect('defense')?3:0)-(hasEffect('harvest')?2:0)-(hasEffect('ward')?2:0)));
   const incoming=damageMult(c.element,classInfo().element);dmg=Math.max(1,Math.floor(dmg*(incoming>1.3?1.13:incoming<.9?.86:1)));if(c.playerGuard)dmg=Math.max(1,Math.floor(dmg*.38));if(c.key==='rei'&&c.phase===1&&epic().class==='guardiao')dmg=Math.floor(dmg*.88);
   e.hp=Math.max(0,e.hp-dmg);battleMessage(enemy.name+' causou '+dmg+' de dano'+(c.playerGuard?' (bloqueado parcialmente)':'')+'.');
   if(!c.playerGuard&&Math.random()<.16&&c.key!=='sentinela'){c.status='poison';battleMessage('Você foi envenenado!')}
  }
- if(c.status==='poison'){e.hp=Math.max(0,e.hp-4);battleMessage('Veneno: -4 HP. A poção cura, mas não elimina o veneno.')}else if(hasEffect('regen'))e.hp=Math.min(maxHealth(),e.hp+3);
+ if(c.status==='poison'){e.hp=Math.max(0,e.hp-4);battleMessage('Veneno: -4 HP. Poções e antídotos removem esse estado.')}else if(hasEffect('regen'))e.hp=Math.min(maxHealth(),e.hp+3);
  if(c.enemyStatusDuration>0){c.enemyStatusDuration--;if(c.enemyStatusDuration===0)c.enemyStatus='';}c.turn++;c.playerGuard=false;c.enemyIntent= c.turn%3===0?'O inimigo prepara um ataque mais feroz.':'O inimigo observa seus movimentos.';
  if(e.hp<=0){e.losses++;e.hp=Math.max(1,Math.floor(maxHealth()*.55));e.mp=maxMana();e.gold=Math.max(0,e.gold-12);const target=c.key;endCombat(false,false);say('Derrota e recomeço','Você despertou protegido pelas raízes. Perdeu 12 moedas, mas manteve todas as pistas e missões. Reforce atributos ou equipe artefatos antes de enfrentar '+EPIC_ENEMIES[target].name+' novamente.');}
 }
@@ -471,7 +671,7 @@ function endCombat(win,ran){if(!epicCombat)return;window.SamMusic?.scene(['bosqu
 function createCombat(){let modal=$('r13Combat');if(!modal){modal=document.createElement('div');modal.id='r13Combat';modal.className='r13-combat';modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');modal.setAttribute('aria-label','Combate por turno');document.getElementById('rpgDlg').append(modal)}modal.hidden=false}
 function renderCombat(){const c=epicCombat;if(!c)return;const e=epic(),m=EPIC_ENEMIES[c.key],info=EPIC_CHAPTERS[e.chapter];const escape=escapeHtml;const prevAction=document.activeElement?.closest?.('[data-r13action]')?.dataset.r13action||'';const weak=Object.keys(EPIC_ADV).find(key=>EPIC_ADV[key]===c.element)||m.weak;
  const phaseText=m.phases?' · '+m.phases[c.phase].title:'';
- $('r13Combat').innerHTML='<div class="r13-battle-card"><header><small>⚔️ COMBATE RPG '+phaseText+'</small><h2>'+escape(m.name)+'</h2><p>Elemento: '+EPIC_ELEMENTS[c.element]+' · Fraqueza atual: '+EPIC_ELEMENTS[weak]+'</p></header><div class="r13-battle-field"><div class="r13-enemy-figure"><img src="sprites/'+m.sprite+(m.sprite==='aranha_rainha_v14'?'.svg':'.png')+'" alt="'+escape(m.name)+'"><span>Inimigo · '+Math.max(0,c.hp)+' / '+c.maxHp+' HP</span><div class="r13-bar enemy"><i style="width:'+Math.min(100,Math.max(0,100*c.hp/c.maxHp))+'%"></i></div></div><div class="r13-battle-vs">⚔</div><div class="r13-player-figure"><canvas id="r13Fighter" width="72" height="90"></canvas><span>'+escape(classInfo().name)+' · Nv. '+e.level+'</span><div class="r13-bar"><i style="width:'+Math.round(e.hp/maxHealth()*100)+'%"></i></div><span>❤ '+e.hp+'/'+maxHealth()+' · ✦ '+e.mp+'/'+maxMana()+' MP</span></div></div><p class="r13-weak">'+escape(c.enemyIntent)+' · '+(c.status==='poison'?'☠ Envenenado · ':'')+(c.enemyStatus==='burn'?'🔥 Inimigo queimando · ':'')+(c.enemyStatus==='blind'?'✨ Inimigo cego':'')+'</p><div class="r13-combat-controls"><button data-r13action="attack">⚔ ATACAR</button><button data-r13action="skill">✦ '+escape(classInfo().skill)+' ('+(3-(hasEffect('mana')?1:0))+' MP)</button><button data-r13action="guard">🛡 DEFENDER (+2 MP)</button><button data-r13action="artifact">◆ ARTEFATO '+(c.artUsed?'(usado)':'')+'</button><button data-r13action="potion">🧪 POÇÃO ('+e.potions+')</button><button data-r13action="run">↩ RECUAR</button></div><div class="r13-combat-log" role="log" aria-live="polite" aria-label="Histórico do combate">'+c.logs.slice(0,5).map(x=>'<p>'+escape(x)+'</p>').join('')+'</div></div>';
+ $('r13Combat').innerHTML='<div class="r13-battle-card"><header><small>⚔️ COMBATE RPG '+phaseText+'</small><h2>'+escape(m.name)+'</h2><p>Elemento: '+EPIC_ELEMENTS[c.element]+' · Fraqueza atual: '+EPIC_ELEMENTS[weak]+'</p></header><div class="r13-battle-field"><div class="r13-enemy-figure"><img src="sprites/'+m.sprite+((m.sprite==='aranha_rainha_v14'||m.sprite.endsWith('_v24'))?'.svg':'.png')+'" alt="'+escape(m.name)+'"><span>Inimigo · '+Math.max(0,c.hp)+' / '+c.maxHp+' HP</span><div class="r13-bar enemy"><i style="width:'+Math.min(100,Math.max(0,100*c.hp/c.maxHp))+'%"></i></div></div><div class="r13-battle-vs">⚔</div><div class="r13-player-figure"><canvas id="r13Fighter" width="72" height="90"></canvas><span>'+escape(classInfo().name)+' · Nv. '+e.level+'</span><div class="r13-bar"><i style="width:'+Math.round(e.hp/maxHealth()*100)+'%"></i></div><span>❤ '+e.hp+'/'+maxHealth()+' · ✦ '+e.mp+'/'+maxMana()+' MP</span></div></div><p class="r13-weak">'+escape(c.enemyIntent)+' · '+(c.status==='poison'?'☠ Envenenado · ':'')+(c.enemyStatus==='burn'?'🔥 Inimigo queimando · ':'')+(c.enemyStatus==='blind'?'✨ Inimigo cego':'')+'</p><div class="r13-combat-controls"><button data-r13action="attack">⚔ ATACAR</button><button data-r13action="skill">✦ '+escape(classInfo().skill)+' ('+(3-(hasEffect('mana')?1:0))+' MP)</button><button data-r13action="guard">🛡 DEFENDER (+2 MP)</button><button data-r13action="artifact">◆ ARTEFATO '+(c.artUsed?'(usado)':'')+'</button><button data-r13action="potion">🧪 POÇÃO ('+e.potions+')</button><button data-r13action="tonico_mana">🌙 MP ('+v24Count('tonico_mana')+')</button><button data-r13action="antidoto">🌿 ANTÍDOTO ('+v24Count('antidoto')+')</button><button data-r13action="bomba_esporos">🍄 BOMBA ('+v24Count('bomba_esporos')+')</button><button data-r13action="escudo_folha">🍃 ESCUDO ('+v24Count('escudo_folha')+')</button><button data-r13action="run">↩ RECUAR</button></div><div class="r13-combat-log" role="log" aria-live="polite" aria-label="Histórico do combate">'+c.logs.slice(0,5).map(x=>'<p>'+escape(x)+'</p>').join('')+'</div></div>';
  $('r13Combat').querySelectorAll('[data-r13action]').forEach(b=>b.addEventListener('click',()=>doCombatAction(b.dataset.r13action)));
  renderAvatarToCanvas($('r13Fighter'),72,90,true);if(c.lock)$('r13Combat').querySelectorAll('[data-r13action]').forEach(b=>b.disabled=true);if(prevAction&&!c.lock)$('r13Combat').querySelector('[data-r13action="'+prevAction+'"]')?.focus({preventScroll:true})
 }
@@ -497,7 +697,7 @@ function renderEpicUI(){const e=epic(),n=EPIC_CHAPTERS[Math.min(e.chapter,7)];le
  $('r13Chronicles').innerHTML=e.story.filter(x=>x&&typeof x==='object'&&x.who).slice(-18).reverse().map(x=>'<div class="r13-chronicle-line"><strong>'+escapeHtml(x.who)+'</strong><p>'+escapeHtml(x.text)+'</p></div>').join('')||'<p>As primeiras memórias serão registradas após a escolha de sua classe.</p>';
  $('r13Side').innerHTML=[['Ajude Dona Amália',!!e.flags.sideAmalia],['Ajude Tito, o Botânico',!!e.flags.sideHerb],['Vitória no Defesa do Pomar',!!e.flags.defenseSaved],['Conclua O Pomar das Sombras',!!e.flags.halloweenComplete]].map(([label,done])=>'<div class="r12-quest-row '+(done?'done':'')+'">'+(done?'✓ ':'◇ ')+label+'</div>').join('');
  $('r13Status').textContent=e.ending?'FINAL: '+({libertar:'O Pomar Compartilhado',selar:'Guardião Silencioso',reconciliar:'A Mesa para Todos'}[e.ending]):e.defeated.length+' chefes derrotados · '+e.wins+' vitórias · '+e.losses+' derrotas.';
- const tasks=epicObjectives(),complete=tasks.filter(x=>x[1]).length;const questList=$('r12Quests');if(questList)questList.innerHTML=tasks.map(([t,done])=>'<div class="r12-quest-row '+(done?'done':'')+'">'+(done?'✓ ':'◇ ')+escapeHtml(t)+'</div>').join('');$('r12Objective').textContent=epicCurrentObjective()+'.';$('r12Progress').style.width=Math.round((Math.min(e.chapter,7)+complete/Math.max(1,tasks.length))/7*100)+'%';$('r12Counter').textContent='Capítulo '+(Math.min(e.chapter,7)+1)+'/8';$('r12Inventory').innerHTML='<span class="r12-tag">🌱 '+st.found.length+'/3 sementes</span><span class="r12-tag">◆ '+e.items.length+' artefatos</span><span class="r12-tag">🧪 '+e.potions+' poções</span>';
+ const tasks=epicObjectives(),complete=tasks.filter(x=>x[1]).length;const questList=$('r12Quests');if(questList)questList.innerHTML=tasks.map(([t,done])=>'<div class="r12-quest-row '+(done?'done':'')+'">'+(done?'✓ ':'◇ ')+escapeHtml(t)+'</div>').join('');$('r12Objective').textContent=epicCurrentObjective()+'.';$('r12Progress').style.width=Math.round((Math.min(e.chapter,7)+complete/Math.max(1,tasks.length))/7*100)+'%';$('r12Counter').textContent='Capítulo '+(Math.min(e.chapter,7)+1)+'/8';$('r12Inventory').innerHTML='<span class="r12-tag">🌱 '+st.found.length+'/3 sementes</span><span class="r12-tag">◆ '+e.items.length+' artefatos</span><span class="r12-tag">🧪 '+e.potions+' poções</span><span class="r12-tag">🪙 '+e.gold+' moedas RPG</span><span class="r12-tag">🎒 '+Object.values(v24Bag().bag).reduce((total,qty)=>total+Math.max(0,Number(qty)||0),0)+' consumíveis</span>';
  $('r13ChapterHint').textContent= e.chapter<=6?'História principal: '+(e.chapter+1)+'/7 · '+n.next:'Campanha encerrada · explore livremente';
  $('r13Attrs').querySelectorAll('[data-raise]').forEach(b=>b.onclick=()=>{if(e.points<=0)return;e.points--;e.stats[b.dataset.raise]++;e.hp=Math.min(maxHealth(),e.hp+(b.dataset.raise==='vig'?3:0));e.mp=Math.min(maxMana(),e.mp+(b.dataset.raise==='int'?1:0));save();update()});
  $('r13Equip').querySelectorAll('[data-artifact]').forEach(b=>b.onclick=()=>{let id=b.dataset.artifact;if(e.equipped.includes(id))e.equipped=e.equipped.filter(x=>x!==id);else{if(e.equipped.length>=2){notify('Só é possível equipar dois artefatos. Desequipe um primeiro.');return}e.equipped.push(id)}recomputeHealth();save();update()});
@@ -521,11 +721,11 @@ function visualData(){let custom={};try{const handle=(localStorage.getItem('sg_h
  // Cor do guarda-roupa é a fonte principal para a aparência, chapéu oficial do perfil prevalece.
  if(Number.isInteger(custom.fruit))av.c=custom.fruit;
  const eq=custom.equipped||{};return {av,face:custom.face||'warm',equipped:eq,classId:epic().class};}
-function refreshEpicAvatar(){const v=visualData(),sig=JSON.stringify(v);if(sig===epicAvatarSig)return;epicAvatarSig=sig;epicVisual=v;
+function refreshEpicAvatar(){const v=visualData(),sig=JSON.stringify([v,epic().equipped.filter(id=>['anel_orvalho','broche_solar','capa_brisa','bracelete_casca','amuleto_luar'].includes(id))]);if(sig===epicAvatarSig)return;epicAvatarSig=sig;epicVisual=v;
  const canvas=document.createElement('canvas');canvas.width=24;canvas.height=34;const g=canvas.getContext('2d');g.imageSmoothingEnabled=false;
  const eq=v.equipped||{},c=v.av.c;
  // Capa atrás da manga: as peças escolhidas no guarda-roupa aparecem no mundo.
- if(eq.cape){g.fillStyle=eq.cape.includes('leaf')?'#5d973f':eq.cape.includes('dawn')?'#c67b33':eq.cape.includes('aurora')?'#398e99':eq.cape.includes('night')?'#27294f':'#5d417b';g.fillRect(4,8,16,22);g.fillRect(2,23,20,6);g.fillStyle='#292236';g.fillRect(2,29,4,2);g.fillRect(18,29,4,2)}
+ if(eq.cape||hasEffect('swift')){g.fillStyle=(eq.cape||'leaf').includes('leaf')?'#5d973f':(eq.cape||'leaf').includes('dawn')?'#c67b33':(eq.cape||'leaf').includes('aurora')?'#398e99':(eq.cape||'leaf').includes('night')?'#27294f':'#5d417b';g.fillRect(4,8,16,22);g.fillRect(2,23,20,6);g.fillStyle='#292236';g.fillRect(2,29,4,2);g.fillRect(18,29,4,2)}
  const tmp=document.createElement('canvas');tmp.width=16;tmp.height=20;try{if(typeof drawAv==='function')drawAv(tmp,{c:Math.max(0,Math.min(7,Number(c)||0)),h:v.av.h||'none'});else{let gg=tmp.getContext('2d');gg.fillStyle='#f2b632';gg.fillRect(3,3,10,15)}}catch(ex){}
  g.drawImage(tmp,4,4,16,22);
  if(eq.body){g.fillStyle=eq.body.includes('prism')?'#657fc2':eq.body.includes('amber')?'#b87d40':'#6b4c37';g.fillRect(7,19,10,4);g.fillStyle='#cdad74';g.fillRect(9,20,6,1)}
@@ -535,18 +735,19 @@ function refreshEpicAvatar(){const v=visualData(),sig=JSON.stringify(v);if(sig==
  if(eq.head && !['none','sprout-pin',v.av.h].includes(eq.head)){g.fillStyle=eq.head.includes('witch')||eq.head.includes('mushroom')?'#634a84':eq.head.includes('crown')||eq.head.includes('circlet')?'#ffc756':eq.head.includes('storm')?'#8bd9eb':'#3d4764';g.fillRect(7,2,10,4);g.fillRect(4,5,16,2)}
  if(eq.hand){g.fillStyle=eq.hand.includes('staff')?'#76dbec':eq.hand.includes('torch')?'#ffb862':'#e0c47c';g.fillRect(21,13,2,15);g.fillRect(19,13,6,3)}
  if(v.classId==='arcanista'){g.fillStyle='#87d4f2';g.fillRect(20,11,2,5)}else if(v.classId==='rastreador'){g.fillStyle='#f39b55';g.fillRect(20,12,2,6)}else if(v.classId==='guardiao'){g.fillStyle='#7fc96c';g.fillRect(20,14,2,5)}
- epicAvatarCanvas=canvas;
+ if(hasEffect('bloom')){g.fillStyle='#8be6dc';g.fillRect(17,10,4,4)}if(hasEffect('focus')){g.fillStyle='#ffd166';g.fillRect(4,13,5,5)}if(hasEffect('ward')){g.fillStyle='#b9ccae';g.fillRect(3,20,4,7)}if(hasEffect('moonrise')){g.fillStyle='#b5a2fa';g.fillRect(11,2,4,3)}
+  epicAvatarCanvas=canvas;
 }
 function renderAvatarToCanvas(target,w,h,inBattle=false){if(!target)return;refreshEpicAvatar();const g=target.getContext('2d');g.clearRect(0,0,w,h);g.imageSmoothingEnabled=false;if(!epicAvatarCanvas)return;
  const ratio=Math.min(w/24,h/34)*.91,szW=24*ratio,szH=34*ratio;g.drawImage(epicAvatarCanvas,(w-szW)/2,(h-szH)/2,szW,szH)}
-function drawEpicAvatar(x,y){refreshEpicAvatar();const moving=Math.abs(player.vx)+Math.abs(player.vy)>.1,bob=moving?Math.sin(clock*14)*1.6:Math.sin(clock*2.5)*.55;
+function drawEpicAvatar(x,y){refreshEpicAvatar();const moving=Math.abs(player.vx)+Math.abs(player.vy)>.1,cadence=keys.run?21:14,bob=moving?Math.sin(clock*cadence)*(keys.run?2.6:1.6):Math.sin(clock*2.5)*.55;
  ctx.save();ctx.fillStyle='#121925aa';ctx.beginPath();ctx.ellipse(x,y+10,12,4,0,0,Math.PI*2);ctx.fill();ctx.translate(x,y-14+bob);
  if(player.vx<-.1)ctx.scale(-1,1);
- const sway=moving?Math.sin(clock*14)*.036:Math.sin(clock*2)*.012;ctx.rotate(sway);
+ const sway=moving?Math.sin(clock*cadence)*(keys.run?.065:.036):Math.sin(clock*2)*.012;ctx.rotate(sway);
  ctx.imageSmoothingEnabled=false;
  if(epicVisual.equipped?.aura){ctx.strokeStyle=epicVisual.equipped.aura.includes('ember')?'#ffc05baa':epicVisual.equipped.aura.includes('aurora')?'#6ff9d5aa':'#9fbcf0aa';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(0,-2,25+Math.sin(clock*5)*2,27,0,0,Math.PI*2);ctx.stroke()}
- if(epicAvatarCanvas)ctx.drawImage(epicAvatarCanvas,-21,-39,42,60);
- if(moving){const foot=Math.sin(clock*14)*4;ctx.fillStyle='#44332e';ctx.fillRect(-10,19+foot,7,5);ctx.fillRect(4,19-foot,7,5)}
+ if(epicAvatarCanvas)ctx.drawImage(epicAvatarCanvas,-21,-39,42,60);if(keys.run&&moving){ctx.fillStyle='#caf2b888';ctx.fillRect(-14,25,6,3);ctx.fillRect(8,23,7,3)}
+ if(moving){const foot=Math.sin(clock*cadence)*(keys.run?6:4);ctx.fillStyle='#44332e';ctx.fillRect(-10,19+foot,7,5);ctx.fillRect(4,19-foot,7,5)}
  if(epicVisual.equipped?.companion){ctx.shadowColor=epicVisual.equipped.companion.includes('owl')?'#b5a2ff':'#f8f39b';ctx.shadowBlur=10;ctx.fillStyle=epicVisual.equipped.companion.includes('owl')?'#ac99ff':'#e8ed73';ctx.beginPath();ctx.arc(23,-24+Math.sin(clock*7)*3,3.5,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0}
  ctx.restore();}
 function drawEpicEnemy(a,x,y,bob){const type=epicMonsters[a.id];const m=EPIC_ENEMIES[type];if(!m)return;ctx.save();ctx.fillStyle='#160d2ba4';ctx.beginPath();ctx.ellipse(x,y+17,20,6,0,0,Math.PI*2);ctx.fill();ctx.shadowColor= m.element==='shadow'?'#d485fc':m.element==='nature'?'#79db6f':'#e3d683';ctx.shadowBlur=8+Math.sin(clock*3)*3;pixelSprite(m.sprite,x,y-16+bob,70,65);ctx.restore()}
@@ -607,8 +808,7 @@ function drawEpicActor(a,x,y,bob){
  function baseMap(){let rm=room();rect(0,0,W,H,rm.floor);
   for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){
    const px=x*T,py=y*T,h=random(x,y,st.map==='vila'?31:st.map==='floresta'?17:9);
-   if(st.map==='ruinas'){rect(px,py,T,T,h>.64?'#353746':h<.16?'#2b2e3c':'#343546');if(h>.87)rect(px+3,py+3,26,1,'#56536c');if(h<.15)rect(px+24,py+26,3,2,'#635a67')}
-   else{rect(px,py,T,T,h>.7?'#2d5135':h<.18?'#24462e':rm.floor);if(h>.82){rect(px+10,py+11,3,5,'#8dbb61');rect(px+17,py+17,2,4,'#b4c972')}else if(h<.12){rect(px+20,py+11,3,3,'#e5bd63');rect(px+22,py+11,3,4,'#fff1a7')}else if(h<.37){rect(px+4,py+24,3,2,'#36653f');rect(px+17,py+8,4,2,'#3a693b')}}
+   v24Tile(px,py,x,y,h);
   }
   if(st.map==='vila'){
    rect(11*T,0,2*T,H,'#74593b');rect(0,7*T,W,2*T,'#74593b');for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){if((x===11||x===12||y===7||y===8)&&random(x,y,44)>.45)rect(x*T+6,y*T+19,11,3,'#927954')}
@@ -624,12 +824,12 @@ function drawEpicActor(a,x,y,bob){
  }
  function drawSign(x,y,msg){rect(x-65,y-15,130,27,'#3f2c25');rect(x-63,y-13,126,23,'#9a6a3c');rect(x-57,y-8,115,14,'#473425');ctx.fillStyle='#ffe5a5';ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.fillText(msg,x,y+1)}
  function drawTree(x,y,dead=false,scale=1){
-  const im=v23Trees[dead?'arvore_corrompida':'arvore_lunar'];
+  const im=v24Trees[dead?'arvore_destruida':(['ruinas','bosque','pantano','coracao'].includes(st.map)?'arvore_danificada':'arvore_saudavel')];
   if(im.complete&&im.naturalWidth){
    const still=matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.classList.contains('sm165-lowfx');
    const frame=still?0:Math.floor(clock*1.8+x)%4;
    ctx.save();ctx.imageSmoothingEnabled=false;
-   ctx.drawImage(im,frame*64,0,64,64,x*T-31*scale,y*T-29*scale,62*scale,62*scale);
+   ctx.drawImage(im,frame*48,0,48,48,x*T-31*scale,y*T-29*scale,62*scale,62*scale);
    ctx.restore();return;
   }
   ctx.save();ctx.translate(x*T,y*T);ctx.scale(scale,scale);const sway=Math.sin(clock*1.5+x)*1.2;
@@ -685,7 +885,7 @@ function drawEpicActor(a,x,y,bob){
    return {z,cx:Math.max(halfW,Math.min(W-halfW,player.x*T)),cy:Math.max(halfH,Math.min(H-halfH,player.y*T))};
  }
  function render(){const cam=camera();ctx.save();ctx.translate(W/2,H/2);ctx.scale(cam.z,cam.z);ctx.translate(-cam.cx,-cam.cy);
-  baseMap();for(const b of room().blocks)drawBuilding(b);for(const p of room().props)drawTree(p.x,p.y,p.type==='dead');for(const a of room().actors)drawActor(a);guideDraw();drawPlayer();v23Atmosphere();
+  baseMap();v24Decor();for(const b of room().blocks)drawBuilding(b);for(const p of room().props)drawTree(p.x,p.y,p.type==='dead');for(const a of room().actors)drawActor(a);guideDraw();drawPlayer();v23Atmosphere();
   const a=nearest();if(a){ctx.save();ctx.textAlign='center';ctx.font='bold 13px sans-serif';let line='E · '+a.label;let width=Math.min(280,ctx.measureText(line).width+22);let px=Math.min(W-width/2-8,Math.max(width/2+8,a.x*T));let py=Math.max(64,a.y*T-39);rect(px-width/2,py-20,width,25,'#1e1428ee');ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=1;ctx.strokeRect(px-width/2,py-20,width,25);ctx.fillStyle='#ffebce';ctx.fillText(line,px,py-3);ctx.restore()}
   if(st.map==='ruinas'){ctx.fillStyle='#b8a3ff12';ctx.fillRect(0,0,W,H)}ctx.restore();
  }
@@ -694,10 +894,11 @@ function drawEpicActor(a,x,y,bob){
    v23NpcRoutine();if(Math.floor(clock)%3===0&&Math.floor((clock-dt))%3!==0)v23DailyRender();
    if(!dialogOpen){let dx=(keys.right?1:0)-(keys.left?1:0),dy=(keys.down?1:0)-(keys.up?1:0);
     if(touchDest){const a=touchDest;dx=a.x-player.x;dy=a.y-player.y;if(Math.hypot(dx,dy)<.3){touchDest=null;dx=dy=0}}
-    const m=Math.hypot(dx,dy);if(m>0){dx/=m;dy/=m;const step=3.45*dt;player.vx=dx;player.vy=dy;
+    const m=Math.hypot(dx,dy);if(m>0){dx/=m;dy/=m;const bag=v24Bag(),boost=Date.now()<bag.hasteUntil,run=keys.run&&bag.stamina>1,step=(run?(boost?6.4:5.4):3.45)*dt;if(run)bag.stamina=Math.max(0,bag.stamina-(boost?8:24)*dt);else bag.stamina=Math.min(hasEffect('swift')?140:100,bag.stamina+18*dt);player.vx=dx;player.vy=dy;
       if(!collide(player.x+dx*step,player.y))player.x+=dx*step;
       if(!collide(player.x,player.y+dy*step))player.y+=dy*step;
-    }else{player.vx=player.vy=0}
+    }else{player.vx=player.vy=0;const bag=v24Bag();bag.stamina=Math.min(hasEffect('swift')?140:100,bag.stamina+22*dt)}
+     const meter=document.getElementById('v24SprintMeter');if(meter){meter.max=hasEffect('swift')?140:100;meter.value=v24Bag().stamina;document.getElementById('v24SprintText').textContent=Math.round(v24Bag().stamina)+' fôlego'}
     if(time>nextSave){nextSave=time+900;save()}
    }
    render();guideUI();let a=nearest(),tip=a?'Pressione E ou INVESTIGAR para '+a.label+'.':'WASD/setas ou toque no mapa. Interaja com portais, NPCs e chefões. Aventure-se pela campanha.';
@@ -709,9 +910,10 @@ function drawEpicActor(a,x,y,bob){
   const controlKeys={ArrowUp:'up',w:'up',W:'up',ArrowDown:'down',s:'down',S:'down',ArrowLeft:'left',a:'left',A:'left',ArrowRight:'right',d:'right',D:'right'};
   document.addEventListener('keydown',e=>{if(!visible||dialogOpen)return;const t=e.target;if(t&&(/INPUT|TEXTAREA|SELECT/.test(t.tagName)||t.isContentEditable))return;
    const k=controlKeys[e.key];if(k){keys[k]=true;e.preventDefault()}
-   if(e.key==='e'||e.key==='E'||e.key===' '){e.preventDefault();if(!e.repeat)action()}
+   if(e.key==='Shift'){keys.run=true;e.preventDefault()}
+    if(e.key==='e'||e.key==='E'||e.key===' '){e.preventDefault();if(!e.repeat)action()}
   });
-  document.addEventListener('keyup',e=>{const k=controlKeys[e.key];if(k)keys[k]=false});window.addEventListener('blur',()=>Object.keys(keys).forEach(k=>keys[k]=false));
+  document.addEventListener('keyup',e=>{const k=controlKeys[e.key];if(k)keys[k]=false;if(e.key==='Shift')keys.run=false});window.addEventListener('blur',()=>Object.keys(keys).forEach(k=>keys[k]=false));
   document.querySelectorAll('[data-r12move]').forEach(b=>{let name=b.dataset.r12move;
    b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture?.(e.pointerId);keys[name]=true;b.classList.add('pressed');touchDest=null});
    for(const type of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(type,()=>{keys[name]=false;b.classList.remove('pressed')});
@@ -727,9 +929,9 @@ function drawEpicActor(a,x,y,bob){
  }
  const prevShow=window.showPane;
  if(typeof prevShow==='function')window.showPane=function(id){let result=prevShow.apply(this,arguments);const was=visible;visible=id==='rpgDlg';if(visible){if(storageKey()!==accountRpgKey){accountRpgKey=storageKey();const newData=JSON.parse(localStorage.getItem(accountRpgKey)||'null');st={...blank(),...(newData||{})};st.epic={...freshEpic(),...(st.epic||{}),stats:{...freshEpic().stats,...(st.epic?.stats||{})},flags:{...(st.epic?.flags||{})}};if(!rooms[st.map])st.map='vila';player.x=Number.isFinite(st.x)?st.x:11.7;player.y=Number.isFinite(st.y)?st.y:10.8;epicAvatarSig=''}syncEpicCrossModes();update();if(!epic().class)showEpicClasses();last=performance.now();if(!was){save();requestAnimationFrame(()=>cv.focus({preventScroll:true}))}}
-   else if(was){save();Object.keys(keys).forEach(k=>keys[k]=false);touchDest=null}return result};
+   else if(was){if(document.getElementById('v24Shop')?.hidden===false)closeV24Shop();save();Object.keys(keys).forEach(k=>keys[k]=false);touchDest=null}return result};
  const targetVisible=()=>!host.hidden;
- setupEpicUI();if(st.relic&&epic().chapter===0)advanceEpicChapter(1);bind();visible=targetVisible();update();if(visible&&!epic().class)showEpicClasses();requestAnimationFrame(tick);
+ setupEpicUI();initV24Shop();if(st.relic&&epic().chapter===0)advanceEpicChapter(1);bind();visible=targetVisible();update();if(visible&&!epic().class)showEpicClasses();requestAnimationFrame(tick);
  if(!st.seen.includes('welcome')){st.seen.push('welcome');save();}
- window.SamHybridRPG={interactById:(id)=>{const a=room().actors.find(a=>a.id===id);if(a)interact(a)},startBattle:(key)=>startCombat(key,Object.entries(epicMonsters).find(([a,b])=>b===key)?.[0]||key),chooseClass:(id)=>{document.querySelector('[data-r13class="'+id+'"]')?.click()},getState:()=>JSON.parse(JSON.stringify(st)),gotoRoom:(name)=>{if(rooms[name]){st.map=name;player.x=11;player.y=8;update();save()}},onDefenseResult:(won)=>epicDefenseReward(won),open:()=>window.showPane?.('rpgDlg')};
+ window.SamHybridRPG={openShop:openV24Shop,getShopCatalog:()=>V24_SHOP.map(x=>({...x})),interactById:(id)=>{const a=room().actors.find(a=>a.id===id);if(a)interact(a)},startBattle:(key)=>startCombat(key,Object.entries(epicMonsters).find(([a,b])=>b===key)?.[0]||key),chooseClass:(id)=>{document.querySelector('[data-r13class="'+id+'"]')?.click()},getState:()=>JSON.parse(JSON.stringify(st)),gotoRoom:(name)=>{if(rooms[name]){st.map=name;player.x=11;player.y=8;update();save()}},onDefenseResult:(won)=>epicDefenseReward(won),open:()=>window.showPane?.('rpgDlg')};
 })();

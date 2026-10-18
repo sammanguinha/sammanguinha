@@ -26,7 +26,7 @@ test('animated NPCs and trees are original 4-frame sprites with working drawImag
   for(const n of [0,64,128,192])assert.ok(svg.includes('translate('+n+','),name+' frame '+n);
  }
  assert.ok(world.includes('ctx.drawImage(im,frame*48,0,48,48'));
- assert.ok(world.includes('ctx.drawImage(im,frame*64,0,64,64'));
+ assert.ok(world.includes("const v24Trees=Object.fromEntries"));
 });
 test('V23 supports accessibility and preserved V22 cloud saving',()=>{
  for(const id of ['r23SettingsToggle','r23SettingsPanel','r23EffectPref','r23ContrastPref'])assert.ok(prefs.includes(id));
@@ -36,7 +36,7 @@ test('V23 supports accessibility and preserved V22 cloud saving',()=>{
  assert.ok(html.includes('casa_sync_v22.js?v=22'));
  assert.ok(css.includes('@media(max-width:540px)'));
  assert.ok(css.includes('focus-visible'));
- assert.ok(html.includes("const version='23.0.0'"));
+ assert.ok(html.includes("const version='24.0.0'"));
 });
 test('defense lane targeting remains tied to physical lane after tree losses',()=>{
  assert.ok(html.includes('Math.floor(p.x/GW*s.trees.length)'));

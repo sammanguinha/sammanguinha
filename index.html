@@ -3263,7 +3263,15 @@ sm21JobsSync();
 
 const sm21Towers={arrow:{cost:3,cooldown:1.3,damage:1,name:'Torre de Mangas'},frost:{cost:4,cooldown:2.4,damage:1,name:'Runa de Gelo'},root:{cost:5,cooldown:3.0,damage:0,name:'Raiz Guardiã'},solar:{cost:6,cooldown:3.1,damage:1,name:'Totem Solar'}};
 const sm22RunnerSprite=new Image();sm22RunnerSprite.src='sprites/corredor_ambar_v22.svg';
-const sm21TowerSprites={};for(const type of ['arrow','frost','root','solar']){const img=new Image();img.src=(type==='root'||type==='solar')?'sprites/torre_'+(type==='root'?'raiz':'solar')+'_v23.svg':'sprites/torre_'+(type==='arrow'?'arco':'gelo')+'_v21.svg';sm21TowerSprites[type]=img}
+const sm21TowerSprites={};for(const type of ['arrow','frost','root','solar']){const img=new Image();img.src='sprites/torre_'+({arrow:'arco',frost:'gelo',root:'raiz',solar:'solar'}[type])+'_v24.svg';sm21TowerSprites[type]=img}
+const sm24Sprites={};for(const kind of ['arvore_saudavel','arvore_danificada','arvore_destruida','praga_larva','praga_besouro','praga_esporo','praga_corredor','praga_curandeira','rei_pragas']){const im=new Image();im.src='sprites/'+kind+'_v24.svg';sm24Sprites[kind]=im}
+function sm24DrawSprite(g,kind,x,y,w,h,t,anchorBottom=false){
+ const im=sm24Sprites[kind];if(!im?.complete||!im.naturalWidth)return false;
+ const still=matchMedia('(prefers-reduced-motion:reduce)').matches||document.documentElement.classList.contains('sm165-lowfx');
+ const frame=still?0:Math.floor(t*6+x*.02)%4;
+ g.save();g.imageSmoothingEnabled=false;
+ g.drawImage(im,48*frame,0,48,48,x-w/2,anchorBottom?y-h:y-h/2,w,h);g.restore();return true;
+}
 function sm21Lanes(n){const out=$("sm21Lanes");if(!out)return;out.innerHTML=Array.from({length:n},(_,i)=>'<button type="button" data-sm21-lane="'+i+'" aria-pressed="'+(i===sm21SelectedLane)+'">🌳 Rota '+(i+1)+'</button>').join('')}
 function sm21StrategyUi(){
  const energy=$("sm21Energy"),status=$("sm21TacticalStatus");if(!energy||!status)return;
@@ -3276,8 +3284,9 @@ function sm21StrategyUi(){
  const upgrade=$("sm22Upgrade"),priority=$("sm22Priority"),detail=$("sm22LaneDetail");
  const lvl=tower?.level||1,cost=lvl===1?3:5;
  if(upgrade){upgrade.disabled=!s||sm17GamePaused||!tower||lvl>=3||s.energy<cost;upgrade.textContent=lvl>=3?'✨ Torre no nível máximo':'⬆ Melhorar para nível '+(lvl+1)+' · '+cost+' energia'}
- if(priority){priority.disabled=!s||sm17GamePaused||!tower;priority.textContent='🎯 Alvo: '+(tower?.priority==='strongest'?'mais resistente':'mais próximo')}
+ if(priority){priority.disabled=!s||sm17GamePaused||!tower;priority.textContent='🎯 Alvo: '+(tower?.priority==='strongest'?'mais resistente':tower?.priority==='healer'?'curandeiras':'mais próximo')}
  if(detail)detail.textContent=tower?'Rota '+(lane+1)+' · nível '+lvl+'/3 · '+tower.shots+' disparos':'Escolha ou construa uma torre para melhorá-la.';
+ const pulse=$('sm24GrovePulse');if(pulse){pulse.disabled=!s||s.mode==='normal'||sm17GamePaused||s.energy<6||s.groveCd>0;pulse.textContent=s?.mode==='normal'?'🌿 Pulso do Bosque · somente treino':'🌿 Pulso do Bosque · 6 ✦'+(s?.groveCd>0?' ('+Math.ceil(s.groveCd)+'s)':'')}
 }
 function sm21Build(id){
  const s=gs,lane=sm21SelectedLane;if(!s||sm17GamePaused||document.hidden)return;
@@ -3295,6 +3304,23 @@ function sm21Build(id){
 $("sm21Lanes")?.addEventListener('click',e=>{const btn=e.target.closest('[data-sm21-lane]');if(!btn)return;sm21SelectedLane=+btn.dataset.sm21Lane;sm21StrategyUi()});
 document.querySelectorAll('[data-sm21-build]').forEach(btn=>btn.addEventListener('click',()=>sm21Build(btn.dataset.sm21Build)));
 addEventListener('keydown',e=>{if(!gs||sm17GamePaused||e.target.closest?.('input,textarea,select,[contenteditable]'))return;if(/^[1-5]$/.test(e.key)){const lane=Number(e.key)-1;if(lane<gs.trees.length){sm21SelectedLane=lane;sm21StrategyUi()}}if(e.key==='r'||e.key==='R')sm21Build('heal')});
+
+/* V24 · Pulso do Bosque: efeito real sobre pragas em modos não ranqueados. */
+const sm24PulseButton=document.createElement('button');sm24PulseButton.type='button';sm24PulseButton.id='sm24GrovePulse';
+sm24PulseButton.textContent='🌿 Pulso do Bosque · 6 ✦';
+sm24PulseButton.setAttribute('aria-label','Imobilizar pragas por dois segundos, apenas no modo treino');
+$("sm21Lanes")?.parentElement?.append(sm24PulseButton);
+sm24PulseButton.addEventListener('click',()=>{
+ const s=gs;if(!s||s.mode==='normal'||sm17GamePaused||document.hidden||s.energy<6||s.groveCd>0)return;
+ const victims=s.pe.filter(x=>!x.dead);
+ if(!victims.length){toast('Aguarde a chegada das pragas para usar o Pulso.');return}
+ s.energy-=6;s.groveCd=12;
+ for(const enemy of victims)enemy.rooted=Math.max(enemy.rooted||0,2.2);
+ orchardBurst(s.x,GH-130,'#93ffb7',2.2,'PULSO DO BOSQUE!');
+ toast('🌿 '+victims.length+' pragas imobilizadas por 2,2 s.');
+ sm21StrategyUi();
+});
+
 // V22: investimento em torres tem efeito real em cadência, dano e lentidão.
 function sm22UpgradeTower(){
  const s=gs;if(!s||sm17GamePaused||document.hidden)return;
@@ -3307,7 +3333,7 @@ function sm22UpgradeTower(){
 }
 function sm22Priority(){
  const t=gs?.towers?.find(x=>x.lane===sm21SelectedLane);if(!t||sm17GamePaused)return;
- t.priority=t.priority==='strongest'?'danger':'strongest';sm21StrategyUi();
+ t.priority=t.priority==='strongest'?'healer':t.priority==='healer'?'danger':'strongest';sm21StrategyUi();
 }
 $("sm22Upgrade")?.addEventListener('click',sm22UpgradeTower);
 $("sm22Priority")?.addEventListener('click',sm22Priority);
@@ -3315,12 +3341,27 @@ addEventListener('keydown',e=>{if(!gs||sm17GamePaused||e.repeat||e.target.closes
  if(e.key==='u'||e.key==='U')sm22UpgradeTower();
  if(e.key==='t'||e.key==='T')sm22Priority();
 });
+/* V24: Curandeira de Esporos opera no modo dificil/infinito. */
+function sm24HealTick(s,dt){
+ for(const healer of s.pe){
+  if(healer.dead||healer.kind!=='healer')continue;
+  healer.healCd=(healer.healCd||3.4)-dt;
+  if(healer.healCd>0)continue;
+  healer.healCd=3.4;
+  const injured=s.pe.filter(enemy=>!enemy.dead&&enemy!==healer&&enemy.hp<Math.max(1,enemy.maxHp||1)&&Math.hypot(enemy.x-healer.x,enemy.y-healer.y)<115);
+  injured.sort((a,b)=>(a.hp/(a.maxHp||1))-(b.hp/(b.maxHp||1)));
+  const target=injured[0];if(!target)continue;
+  target.hp=Math.min(Math.max(1,target.maxHp||1),target.hp+1);
+  orchardBurst(target.x,target.y,'#9bffd0',.45,'+1 CURA');
+ }
+}
 function sm21TacticsTick(s,dt){
+ s.groveCd=Math.max(0,(s.groveCd||0)-dt);
  s.towers.forEach(t=>{
   t.cooldown-=dt;if(t.cooldown>0)return;
   const cx=GW*(t.lane+.5)/s.trees.length;
   const candidates=s.pe.filter(p=>!p.dead&&Math.abs(p.x-cx)<(GW/s.trees.length)*.48&&p.y>70&&p.y<GH-115);
-  candidates.sort(t.priority==='strongest'?(a,b)=>b.hp-a.hp||b.y-a.y:(a,b)=>b.y-a.y);
+  candidates.sort(t.priority==='strongest'?(a,b)=>b.hp-a.hp||b.y-a.y:t.priority==='healer'?(a,b)=>(b.kind==='healer')-(a.kind==='healer')||b.y-a.y:(a,b)=>b.y-a.y);
   const target=candidates[0];if(!target)return;
   const level=Math.min(3,Math.max(1,t.level||1));
   t.cooldown=sm21Towers[t.kind].cooldown*(s.job==='mage'&&t.kind==='frost'?.76:1)*(1-(level-1)*.18);t.shots++;
@@ -3453,9 +3494,10 @@ function stepG(dt){
     if(r<.182)s.it.push({x,y:-10,vy:65,k:"m"});
     else if(r<.182+.045+s.wave*.009)s.it.push({x,y:-10,vy:90,k:"r"});
     else{const beetle=s.hard?(Math.random()<Math.min(.64,.25+s.wave*.038)):(s.wave>=3&&Math.random()<.3);const runner=!beetle&&s.wave>=3&&Math.random()<.26;
- const spore=!beetle&&!runner&&s.wave>=2&&Math.random()<.18;
- const hp=beetle?2:1;
- s.pe.push({x,y:-10,originX:x,phase:Math.random()*6.28,vy:(s.hard?49+s.wave*9:34+s.wave*9)*(runner?1.65:spore?.85:1),hp,kind:beetle?'beetle':runner?'runner':spore?'spore':'larva'})}
+ const healer=s.hard&&s.wave>=4&&!beetle&&!runner&&Math.random()<.19;
+ const spore=!beetle&&!runner&&!healer&&s.wave>=2&&Math.random()<.18;
+ const hp=healer?3:beetle?2:1;
+ s.pe.push({x,y:-10,originX:x,phase:Math.random()*6.28,vy:(s.hard?49+s.wave*9:34+s.wave*9)*(runner?1.65:healer?.72:spore?.85:1),hp,maxHp:hp,healCd:healer?2.1:0,kind:beetle?'beetle':runner?'runner':healer?'healer':spore?'spore':'larva'})}
   }
   // Mascotes com poderes reais; todos funcionam apenas quando equipados.
   if(s.petId&&s.petCooldown<=0){
@@ -3469,7 +3511,7 @@ function stepG(dt){
     }
    }
   s.sh.forEach(b=>{b.y+=b.vy*dt;b.trail=(b.trail||0)+dt;if(b.trail>.055){b.trail=0;orchardFX.push({x:b.x+(Math.random()-.5)*8,y:b.y+9,vx:(Math.random()-.5)*18,vy:30,life:.18,max:.18,c:"#ffc45e",size:3})}});s.sh=s.sh.filter(b=>b.y>-10);
-  s.pe.forEach(p=>{p.slow=Math.max(0,(p.slow||0)-dt);p.rooted=Math.max(0,(p.rooted||0)-dt);p.y+=p.vy*dt*(p.rooted>0?0:p.slow>0?.38:1);if(p.kind==="spore")p.x=Math.max(30,Math.min(GW-30,(p.originX||p.x)+Math.sin(s.t*2.7+p.phase)*27));p.hit=Math.max(0,(p.hit||0)-dt)});s.it.forEach(i=>i.y+=i.vy*dt);
+  s.pe.forEach(p=>{p.slow=Math.max(0,(p.slow||0)-dt);p.rooted=Math.max(0,(p.rooted||0)-dt);p.y+=p.vy*dt*(p.rooted>0?0:p.slow>0?.38:1);if(p.kind==="spore")p.x=Math.max(30,Math.min(GW-30,(p.originX||p.x)+Math.sin(s.t*2.7+p.phase)*27));p.hit=Math.max(0,(p.hit||0)-dt)});sm24HealTick(s,dt);s.it.forEach(i=>i.y+=i.vy*dt);
   s.bossShots.forEach(b=>{b.x+=b.vx*dt;b.y+=b.vy*dt});
   s.bossShots=s.bossShots.filter(b=>{if(Math.hypot(b.x-s.x,b.y-(GH-90))<b.r+19){orchardHurtPlayer(s,2,b.x,b.y,"REI DAS PRAGAS");return false}return b.y<GH+25&&b.x>-25&&b.x<GW+25});
   s.pe.forEach(p=>{if(!p.dead&&Math.hypot(p.x-s.x,p.y-(GH-90))<(p.kind==="beetle"?39:34)){orchardHurtPlayer(s,p.kind==="beetle"?2:1,p.x,p.y,p.kind==="beetle"?"BESOURO":"LARVA");p.dead=true}});
@@ -3510,7 +3552,7 @@ function drawG(){
   Array.from({length:s.trees.length},(_,i)=>GW*(i+.5)/s.trees.length).forEach((x,i)=>{
     const alive=s.trees[i];const variant=!alive?'arvore_destruida':s.hard&&s.treeHits&&s.treeHits[i]>0?'arvore_danificada':'arvore_saudavel';
     const sway=alive?Math.sin(t*.85+i*.92)*.018:0;
-    if(!v11Draw(g,variant,x,GH-19,s.hard?98:117,s.hard?114:126,{anchor:'bottom',rotate:sway})){
+    if(!sm24DrawSprite(g,variant,x,GH-19,s.hard?98:117,s.hard?114:126,t,true)&&!v11Draw(g,variant,x,GH-19,s.hard?98:117,s.hard?114:126,{anchor:'bottom',rotate:sway})){
       const c=alive?treeCv():spr('stump');const k=alive?2.6:3;g.drawImage(c,x-c.width*k/2,GH-16-c.height*k,c.width*k,c.height*k)
     }
     // Shield around vulnerable tree during pumpkin power.
@@ -3524,7 +3566,7 @@ function drawG(){
     g.save();g.globalAlpha=.3;g.fillStyle='#6d2c8a';g.beginPath();g.ellipse(b.x,b.y+74,78,9,0,0,Math.PI*2);g.fill();g.restore();
     if(attack){g.save();g.globalAlpha=.18+.12*Math.sin(t*22);g.fillStyle='#ff7e26';g.beginPath();g.arc(b.x,b.y,104,0,Math.PI*2);g.fill();g.restore()}
     const shake=hit>0?Math.sin(t*76)*4*hit/.3:0;
-    v11Draw(g,'rei_das_pragas_completo',b.x+shake,b.y+Math.sin(t*2.4)*2,195,166,{scale:1+Math.sin(t*2.2)*.018,rotate:attack?Math.sin(t*15)*.018:0,alpha:hit>0?.85:1});
+    sm24DrawSprite(g,'rei_pragas',b.x+shake,b.y+Math.sin(t*2.4)*2,195,166,t)||v11Draw(g,'rei_das_pragas_completo',b.x+shake,b.y+Math.sin(t*2.4)*2,195,166,{scale:1+Math.sin(t*2.2)*.018,rotate:attack?Math.sin(t*15)*.018:0,alpha:hit>0?.85:1});
     if(hit>0){g.save();g.globalAlpha=.12*hit/.3;g.fillStyle='#fff9ff';g.beginPath();g.ellipse(b.x,b.y,98,75,0,0,Math.PI*2);g.fill();g.restore()}
     const barw=116,y=b.y-94;g.fillStyle='#160f20';g.fillRect(b.x-barw/2-2,y-2,barw+4,12);
     g.fillStyle='#9b3157';g.fillRect(b.x-barw/2,y,barw,8);g.fillStyle='#9dff95';g.fillRect(b.x-barw/2,y,barw*Math.max(0,b.hp/b.max),8);
@@ -3535,7 +3577,7 @@ function drawG(){
     const bob=Math.sin(t*8+p.x*.07)*2;
     g.save();g.fillStyle='#06150c88';g.beginPath();g.ellipse(p.x,p.y+sz*.40,sz*.35,4,0,0,Math.PI*2);g.fill();
     if(p.hit>0){g.shadowColor='#fff5bb';g.shadowBlur=12;g.globalAlpha=.76+Math.sin(t*64)*.2}
-    if(p.kind==='runner'&&sm22RunnerSprite.complete&&sm22RunnerSprite.naturalWidth){
+    if(sm24DrawSprite(g,p.kind==='runner'?'praga_corredor':p.kind==='beetle'?'praga_besouro':p.kind==='spore'?'praga_esporo':p.kind==='healer'?'praga_curandeira':'praga_larva',p.x,p.y+bob,sz,sz,t)){}else if(p.kind==='runner'&&sm22RunnerSprite.complete&&sm22RunnerSprite.naturalWidth){
       g.imageSmoothingEnabled=false;g.drawImage(sm22RunnerSprite,(lowFX?0:Math.floor(t*9+p.phase)%4)*48,0,48,48,p.x-sz/2,p.y+bob-sz/2,sz,sz);
     }else if(!v11Draw(g,beetle?'besouro':p.kind==='spore'?'esporo_v20':'larva_pequena',p.x,p.y+bob,sz,sz)){
       const fallback=spr(beetle?'beetle':'pest');g.drawImage(fallback,p.x-20,p.y+bob-20,40,40)
@@ -4755,14 +4797,14 @@ load();update();requestAnimationFrame(render);requestAnimationFrame(movement);
 /* Início móvel acessível, sem interferir na lógica original da partida. */
 (()=>{const btn=document.getElementById('gMobileStart'),overlay=document.getElementById('gOv'),play=document.getElementById('gPlay');if(!btn||!overlay||!play)return;const sync=()=>{btn.hidden=overlay.hidden;btn.textContent=play.textContent.includes('novo')?'▶ Jogar novamente':'▶ Iniciar Defesa do Pomar'};btn.addEventListener('click',()=>play.click());new MutationObserver(sync).observe(overlay,{attributes:true,attributeFilter:['hidden']});new MutationObserver(sync).observe(play,{childList:true,subtree:true});sync()})();
 </script>
-<link rel="stylesheet" href="visual_v14.css"><link rel="stylesheet" href="melhorias_v16_5.css"><link rel="stylesheet" href="revisao_v17.css"><link rel="stylesheet" href="polimento_v17_1.css">
+<link rel="stylesheet" href="mundo_v24.css?v=24"><link rel="stylesheet" href="visual_v14.css"><link rel="stylesheet" href="melhorias_v16_5.css"><link rel="stylesheet" href="revisao_v17.css"><link rel="stylesheet" href="polimento_v17_1.css">
 <link rel="stylesheet" href="expedicao_v18.css?v=19">
 <script src="rpg_epico_expansao.js"></script>
 <script src="musica_rpg_v14.js"></script>
 <script src="mundo_pomar.js"></script>
 <script src="interface_v14.js"></script>
 <script>
-(()=>{'use strict';const version='23.0.0';const key='sm_last_seen_update_version';const layer=document.getElementById('smUpdateLayer');const panel=document.getElementById('smUpdatePanel');const openBtn=document.getElementById('smUpdatesReopen');const closeBtn=document.getElementById('smUpdatesClose');const laterBtn=document.getElementById('smUpdatesLater');if(!layer||!panel||!openBtn||!closeBtn||!laterBtn)return;let priorFocus=null;const read=()=>{try{return localStorage.getItem(key)}catch(e){return null}};const save=()=>{try{localStorage.setItem(key,version)}catch(e){}};function show(){priorFocus=document.activeElement;layer.classList.add('sm-show');document.body.style.overflow='hidden';closeBtn.focus({preventScroll:true})}function hide(){save();layer.classList.remove('sm-show');document.body.style.overflow='';if(priorFocus&&priorFocus.isConnected&&typeof priorFocus.focus==='function')priorFocus.focus({preventScroll:true})}closeBtn.addEventListener('click',hide);laterBtn.addEventListener('click',hide);openBtn.addEventListener('click',show);layer.addEventListener('click',e=>{if(e.target===layer)hide()});document.addEventListener('keydown',e=>{if(!layer.classList.contains('sm-show'))return;if(e.key==='Escape'){e.preventDefault();hide()}else if(e.key==='Tab'){const items=[closeBtn,laterBtn];if(e.shiftKey&&document.activeElement===items[0]){e.preventDefault();items[1].focus()}else if(!e.shiftKey&&document.activeElement===items[1]){e.preventDefault();items[0].focus()}}});openBtn.classList.add('sm-ready');if(read()!==version)requestAnimationFrame(()=>requestAnimationFrame(show));})();
+(()=>{'use strict';const version='24.0.0';const key='sm_last_seen_update_version';const layer=document.getElementById('smUpdateLayer');const panel=document.getElementById('smUpdatePanel');const openBtn=document.getElementById('smUpdatesReopen');const closeBtn=document.getElementById('smUpdatesClose');const laterBtn=document.getElementById('smUpdatesLater');if(!layer||!panel||!openBtn||!closeBtn||!laterBtn)return;let priorFocus=null;const read=()=>{try{return localStorage.getItem(key)}catch(e){return null}};const save=()=>{try{localStorage.setItem(key,version)}catch(e){}};function show(){priorFocus=document.activeElement;layer.classList.add('sm-show');document.body.style.overflow='hidden';closeBtn.focus({preventScroll:true})}function hide(){save();layer.classList.remove('sm-show');document.body.style.overflow='';if(priorFocus&&priorFocus.isConnected&&typeof priorFocus.focus==='function')priorFocus.focus({preventScroll:true})}closeBtn.addEventListener('click',hide);laterBtn.addEventListener('click',hide);openBtn.addEventListener('click',show);layer.addEventListener('click',e=>{if(e.target===layer)hide()});document.addEventListener('keydown',e=>{if(!layer.classList.contains('sm-show'))return;if(e.key==='Escape'){e.preventDefault();hide()}else if(e.key==='Tab'){const items=[closeBtn,laterBtn];if(e.shiftKey&&document.activeElement===items[0]){e.preventDefault();items[1].focus()}else if(!e.shiftKey&&document.activeElement===items[1]){e.preventDefault();items[0].focus()}}});openBtn.classList.add('sm-ready');if(read()!==version)requestAnimationFrame(()=>requestAnimationFrame(show));})();
 </script>
 <script src="revisao_v17.js" defer></script>
 <script src="polimento_v17_1.js" defer></script>
@@ -4772,5 +4814,6 @@ load();update();requestAnimationFrame(render);requestAnimationFrame(movement);
 <script src="casa_v21.js?v=22" defer></script>
 <script src="casa_sync_v22.js?v=22" defer></script>
 <script src="renascimento_v23.js?v=23" defer></script>
+<script src="tela_cheia_v24.js?v=24.2" defer></script>
 </body>
 </html>
