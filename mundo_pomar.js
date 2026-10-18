@@ -552,6 +552,227 @@ function epicActorVisible(a){if(!a.epic)return true;
 const epicMonsters={
  larva:'larva',spider:'rainha',crystalBoss:'besouro',collector:'espectro',moonGuardian:'sentinela',finalKing:'rei',v24MeadowWolf:'lobo_vento',v24GrottoWisp:'vulto_eco',v29Mariposa:'v29_silencio',v29Sentinela:'v29_sentinela'
 };
+/* V29 · CRÔNICAS VIVAS — trilha narrativa jogável, pistas e recompensas únicas.
+   Salva tudo no mesmo epic.v29; rankings, Supabase e a campanha principal não mudam. */
+function v29State(){
+ const e=epic();
+ if(!e.v29||typeof e.v29!=='object'||Array.isArray(e.v29))e.v29={};
+ const q=e.v29;
+ if(!Array.isArray(q.clues))q.clues=[];
+ if(!Array.isArray(q.finds))q.finds=[];
+ if(!Array.isArray(q.dialogues))q.dialogues=[];
+ if(!Array.isArray(q.notes))q.notes=[];
+ if(!Number.isInteger(q.step)||q.step<0||q.step>3)q.step=0;
+ q.failures=Math.max(0,Math.floor(Number(q.failures)||0));
+ return q;
+}
+function v29Objective(){
+ const q=v29State();
+ if(!q.started)return 'Encontre Íris, a cartógrafa, na Vila da Mangueira.';
+ if(q.clues.length<3)return 'Investigue o relógio na Vila, a casca na Floresta e a biruta na Campina ('+q.clues.length+'/3).';
+ if(!q.chime)return 'Afine o carrilhão no leste da Trilha Encantada usando suas três pistas.';
+ if(!q.wisp)return 'Investigue e enfrente a Mariposa do Silêncio na Floresta.';
+ if(!q.scout)return 'Encontre Caio na Campina e descubra por que a sentinela levou o sino.';
+ if(!q.guardian)return 'Enfrente a Sentinela da Badalada na Campina. Observe seus ataques antes de agir.';
+ if(!q.ending)return 'Volte à Copa da Primeira Mangueira, ao norte da Trilha, e decida o destino do sino.';
+ return 'Crônica concluída. Descubra as nove memórias escondidas nos mapas ('+q.finds.length+'/9).';
+}
+function v29ActorVisible(a){
+ const q=v29State();
+ if(a.v29==='find')return !q.finds.includes(a.id);
+ if(a.v29==='enemy'){
+  if(a.id==='v29Mariposa')return !!q.chime&&!q.wisp&&!epic().defeated.includes(a.id);
+  return !!q.scout&&!q.guardian&&!epic().defeated.includes(a.id);
+ }
+ if(a.v29==='ending')return !!q.guardian;
+ if(a.v29==='puzzle')return !!q.started;
+ return true;
+}
+function v29Memory(id){
+ const q=v29State(),data=v29Data?.discoveries[id];
+ if(!data)return false;
+ if(q.finds.includes(id)){
+  say('Registro do Pomar',data.text);return true;
+ }
+ q.finds.push(id);
+ if(q.notes.length<16)q.notes.unshift(data.chapter+' · '+data.title);
+ const e=epic();e.gold+=6;giveXP(10);
+ log('Descoberta: '+data.title+' · +10 XP e +6 moedas RPG.');
+ if(q.finds.length===Object.keys(v29Data.discoveries).length&&!q.collectionReward){
+  q.collectionReward=true;e.gold+=45;giveXP(80);
+  log('Coleção completa: as nove memórias do Pomar foram preservadas. Bônus de +80 XP e +45 moedas!');
+ }
+ say('Descoberta de cenário · '+data.title,data.text+'\n\nO registro entrou no Livro da Crônica. +10 XP e +6 moedas RPG'+(q.collectionReward&&q.finds.length===9?' · Coleção completa!':'')+'.');
+ save();update();return true;
+}
+function v29Clue(id){
+ const q=v29State(),c=v29Data?.clues[id];if(!c)return false;
+ if(!q.started){
+  say(c.who,c.text+' Procure Íris na Vila para começar a investigação da badalada.');return true;
+ }
+ if(q.clues.includes(id)){say(c.who,c.text+' Esta pista já está anotada no seu diário.');return true}
+ q.clues.push(id);q.notes.unshift('Pista '+q.clues.length+'/3: '+c.name);
+ log('Pista musical encontrada: '+c.name+'.');
+ say(c.who,c.text+'\n\nPista registrada ('+q.clues.length+'/3).');
+ save();update();return true;
+}
+function v29ShowClues(){
+ const q=v29State();
+ const texts=q.clues.map(id=>v29Data.clues[id]?.text).filter(Boolean);
+ say('Caderno de Íris',
+  texts.length?texts.join('\n\n')+'\n\nPense na ordem dos acontecimentos, não na ordem em que encontrou os objetos.':
+  'Sua investigação ainda não tem pistas. O relógio, a casca da árvore e a biruta guardam uma informação cada.');
+}
+function v29Puzzle(){
+ const q=v29State(),seq=v29Data.chime.symbols;
+ if(!q.started){say('Carrilhão Silencioso','Os sinos não respondem. Encontre Íris na Vila para começar a investigação.');return}
+ if(q.clues.length<3){
+  say('Carrilhão das Três Vozes','Há três encaixes e apenas '+q.clues.length+' pista(s) anotada(s). Investigue o relógio, a casca e a biruta antes de tentar.');return;
+ }
+ if(q.chime){say('Carrilhão Restaurado','A melodia atravessa o vento e as raízes. Ela aponta para um vulto na parte sul da Floresta.');return}
+ const step=q.step;
+ const explain=step===0?'Primeira nota: onde nasceu o chamado?':step===1?'Segunda nota: quem guardou o som?':'Terceira nota: quem respondeu ao chamado?';
+ choiceBox('🎼 Carrilhão · '+(step+1)+'/3',
+  explain+'\n\n'+v29Data.chime.clue+'\nErros: '+q.failures,
+  [...['LUZ','RAIZ','SOPRO'].map(key=>[key,()=>{
+   if(key!==seq[step]){
+    q.step=0;q.failures++;save();update();
+    say('Carrilhão desafinado','Uma nota ressoa fora de ordem e o carrilhão silencia. Sua investigação não foi perdida. Leia as pistas antes de tentar de novo.',()=>v29Puzzle(),'Tentar novamente');
+    return;
+   }
+   q.step=step+1;save();update();
+   if(q.step>=3){
+    q.step=3;q.chime=true;
+    log('O carrilhão despertou. Sopro, Raiz e Luz revelaram a Mariposa do Silêncio.');
+    goStory([['Carrilhão das Três Vozes','O último toque traz de volta uma canção infantil e aponta para a mata ao sul.'],['Íris, na lembrança','Agora você consegue ouvir o que roubou a badalada. Procure o som no silêncio da Floresta.']]);
+    return;
+   }
+   say('Carrilhão · nota correta','A nota foi ouvida. O som percorre as raízes e espera a próxima escolha.',()=>v29Puzzle(),'Escolher próxima nota');
+  }]),['📖 Relêr as pistas',()=>v29ShowClues()],['Deixar o carrilhão',()=>{}]]);
+}
+function v29StoryChoice(){
+ const q=v29State();if(!q.guardian)return;
+ if(q.ending){say('Copa da Primeira Mangueira',q.ending==='vila'
+  ?'Sua decisão permanece: a badalada une os habitantes na Vila.'
+  :'Sua decisão permanece: o Bosque guia viajantes com sua melodia.');return}
+ goStory(v29Data.story.final,()=>choiceBox('A Última Badalada',
+  'O sino foi recuperado. Onde a melodia poderá cuidar melhor de quem vive no Pomar?',
+  [['Devolver a badalada à Vila',()=>v29Ending('vila')],
+   ['Confiar o sino às raízes do Bosque',()=>v29Ending('bosque')],
+   ['Preciso pensar mais',()=>say('Eco da Mangueira','A decisão é sua. Volte à Copa quando estiver pronto.')]]));
+}
+function v29Ending(kind){
+ const q=v29State();if(q.ending)return;
+ q.ending=kind;
+ const e=epic();e.gold+=75;
+ ownItem('broche_aurora');
+ giveXP(140);save();update();
+ log(kind==='vila'?'A badalada voltou para todos na Vila.':'A badalada passou a orientar viajantes pela Floresta.');
+ goStory(v29Data.story[kind==='vila'?'share':'shelter'],()=>{
+  say('Nova conquista · A Última Badalada','Você completou a Crônica da Badalada! +140 XP, +75 moedas RPG e o Broche da Badalada. Há nove histórias de cenário para colecionar.');
+ });
+}
+function v29CombatWon(key){
+ const q=v29State();
+ if(key==='v29_silencio'&&!q.wisp){
+  q.wisp=true;log('A Mariposa libertou a melodia. Agora Caio precisa ouvir o que você encontrou.');
+  goStory(v29Data.story.afterWisp);
+ }else if(key==='v29_sentinela'&&!q.guardian){
+  q.guardian=true;
+  log('A Sentinela reconheceu a música do sino. A Copa da Primeira Mangueira aguarda a decisão final.');
+  goStory([['Sentinela da Badalada','Eu protegia o sino da palavra que exclui. Não deixarei que calem os pequenos outra vez.'],
+   ['Caio, em lembrança','A Copa, ao norte da Floresta, sabe por que o sino foi criado. Encontre a árvore e escute sua escolha.']]);
+ }
+ save();update();
+}
+function v29Interact(a){
+ const q=v29State();if(!v29Data)return false;
+ if(a.v29==='clue')return v29Clue(a.id);
+ if(a.v29==='find')return v29Memory(a.id);
+ if(a.v29==='puzzle'){v29Puzzle();return true}
+ if(a.v29==='ending'){v29StoryChoice();return true}
+ if(a.v29==='enemy'){
+  if(a.id==='v29Mariposa'&&!q.chime){say('Vulto Silencioso','O carrilhão ainda não revelou o caminho.');return true}
+  if(a.id==='v29Sentinela'&&!q.scout){say('Sentinela','Caio pode explicar por que esta guardiã se esconde.');return true}
+  startCombat(epicMonsters[a.id],a.id);return true;
+ }
+ if(a.id==='v29Iris'){
+  if(!q.started){
+   goStory(v29Data.story.intro,()=>{
+    q.started=true;q.notes.unshift('Íris pediu ajuda para recuperar a última badalada.');
+    log('Uma nova Crônica começou: A Última Badalada. Investigue relógio, casca e biruta.');
+   });return true;
+  }
+  const mood=q.ending==='vila'?'A Vila voltou a celebrar em conjunto.':q.ending==='bosque'?'Desenhei no mapa o novo caminho musical.':'É bom ver alguém que ouve com tanta atenção.';
+  choiceBox('Íris, Cartógrafa',
+   mood+'\n\n'+v29Objective(),
+   [['Relembrar pistas',()=>v29ShowClues()],
+    ['Perguntar sobre a Crônica',()=>say('Íris','Explore a Vila, a Trilha e a Campina. Pistas e histórias de cenário serão registradas no seu livro.')],
+    ['Até logo',()=>{}]]);return true;
+ }
+ if(a.id==='v29Mara'){
+  if(!q.started){say('Mara, Jardineira','A Floresta silenciou e eu não entendo por quê. Íris investiga a badalada perdida na Vila.');return true}
+  if(!q.dialogues.includes('mara')){
+   q.dialogues.push('mara');goStory(v29Data.story.mara);return true;
+  }
+  say('Mara, Jardineira',q.chime?'Você ouviu a melodia! Procure a Mariposa ao sul, perto da trilha.':
+   'A partitura nasce no sopro, percorre a raiz e alcança a luz. Guarde o que cada objeto contou.');return true;
+ }
+ if(a.id==='v29Caio'){
+  if(!q.started){say('Caio, Aprendiz','Íris precisa da sua ajuda na Vila. O relógio da Praça não toca há dias.');return true}
+  if(!q.wisp){say('Caio, Aprendiz','Ouvi passos na Campina, mas a névoa não me deixa ver. Afine o carrilhão e liberte primeiro a Mariposa na Floresta.');return true}
+  if(!q.scout){
+   q.scout=true;log('Caio revelou que a Sentinela da Badalada protege o sino na Campina.');
+   goStory(v29Data.story.caio);return true;
+  }
+  say('Caio, Aprendiz',q.guardian?'Você atravessou a tempestade! A Copa ao norte da Floresta espera sua decisão.':
+   'A Sentinela guarda o sino perto do centro da Campina. Quando reunir nuvens para o golpe forte, use DEFENDER.');return true;
+ }
+ return false;
+}
+function v29SetupUI(){
+ if($('v29Chronicle'))return;
+ const aside=host.querySelector('.r12-aside');
+ if(!aside)return;
+ const card=document.createElement('section');card.id='v29Chronicle';card.className='r12-card v29-chronicle';
+ card.setAttribute('aria-label','Nova crônica de exploração');
+ card.innerHTML='<div class="v29-eyebrow">NOVA AVENTURA · V29</div><h3>🔔 A Última Badalada</h3>'+
+ '<p id="v29QuestObjective"></p><div class="v29-progress-track" role="progressbar" aria-label="Progresso da Crônica" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0"><i id="v29QuestBar"></i></div>'+
+ '<p id="v29QuestMeta"></p><div id="v29QuestSteps"></div><div id="v29QuestClues" class="v29-clues"></div>'+
+ '<button type="button" id="v29ReadClues">📖 Ver pistas no diário</button>'+
+ '<p class="v29-caption">Pistas, combates e descobertas salvam no seu RPG. Sem alterar o ranking.</p>';
+ aside.prepend(card);
+ $('v29ReadClues').addEventListener('click',v29ShowClues);
+ const main=host.querySelector('.r12-main');
+ if(main){
+  const badge=document.createElement('button');badge.id='v29WorldQuest';badge.type='button';
+  badge.className='v29-world-quest';badge.textContent='🔔 A Última Badalada · ver missão';
+  badge.addEventListener('click',()=>{
+   const menu=host.querySelector('.sm-immersive-menu');
+   if(host.classList.contains('sm-immersive')&&!host.classList.contains('sm-immersive-panel-open'))menu?.click();
+   card.scrollIntoView({block:'nearest',behavior:'auto'});
+  });
+  main.append(badge);
+ }
+}
+function v29RenderUI(){
+ const card=$('v29Chronicle');if(!card)return;
+ const q=v29State();
+ let done=[!!q.started,q.clues.length===3,!!q.chime,!!q.wisp,!!q.scout,!!q.guardian,!!q.ending];
+ const n=done.filter(Boolean).length;
+ $('v29QuestObjective').textContent=v29Objective();
+ $('v29QuestMeta').textContent='Progresso '+n+'/7 · '+q.clues.length+'/3 pistas · '+q.finds.length+'/9 descobertas'+(q.failures?' · '+q.failures+' tentativas incorretas':'');
+ $('v29QuestBar').style.width=Math.round(100*n/7)+'%';
+ card.querySelector('[role="progressbar"]').setAttribute('aria-valuenow',String(n));
+ const labels=['Converse com Íris','Reúna três pistas do cenário','Afine o Carrilhão','Liberte a Mariposa','Ouça Caio','Enfrente a Sentinela','Decida o destino do sino'];
+ $('v29QuestSteps').innerHTML=labels.map((label,i)=>'<div class="r12-quest-row '+(done[i]?'done':'')+'">'+(done[i]?'✓ ':'◇ ')+label+'</div>').join('');
+ const clues=$('v29QuestClues');
+ clues.innerHTML=q.clues.map(id=>'<div>✧ '+escapeHtml(v29Data.clues[id]?.name||id)+'</div>').join('')||
+  '<small>O caderno aguarda a primeira pista.</small>';
+ const badge=$('v29WorldQuest');
+ if(badge)badge.textContent=q.ending?'🔔 Crônica concluída · '+q.finds.length+'/9 memórias':
+  '🔔 '+(q.started?'Crônica: '+n+'/7 etapas · abrir diário':'Nova crônica: fale com Íris');
+}
 function epicInteract(a){if(!a||!a.epic)return false;
  const e=epic(),f=e.flags;
  if(a.epic==='gate'){epicMapPortal(a.id,a.target,a.tx,a.ty,a.min||0);return true}
