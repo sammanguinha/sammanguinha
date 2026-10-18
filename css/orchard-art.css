@@ -1,0 +1,13 @@
+
+#orchardExtras{background:radial-gradient(ellipse at 50% 0%,#493045 0%,#241827 42%,#130f1a 100%)!important;border:4px solid #b7864e!important;border-radius:17px!important;box-shadow:inset 0 0 0 3px #36211f,inset 0 0 30px #080611,0 12px 35px #0009!important}
+#orchardExtras [data-extras-tab]{border:2px solid #af7c49!important;box-shadow:inset 0 -4px #21111c,0 3px 0 #100b10!important;transition:transform .15s,filter .15s}
+#orchardExtras [data-extras-tab]:hover{transform:translateY(-2px);filter:brightness(1.15)}
+.orchard-hero{height:clamp(170px,29vw,270px)!important;border:3px solid #b47a49!important;border-radius:11px!important;box-shadow:inset 0 0 0 4px #211623,0 5px 14px #0008!important;overflow:hidden!important;background-size:contain!important}
+.orchard-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))!important;gap:16px!important}
+.orchard-card{min-width:0!important;overflow:visible!important;background:linear-gradient(155deg,#53343c,#281c2e 56%,#1b1526)!important;border:3px solid #b27b4d!important;box-shadow:inset 0 0 0 3px #6d4935,0 7px 0 #120d16,0 10px 22px #0007!important;padding:16px!important;transition:transform .2s,border-color .2s!important}
+.orchard-card:before{content:"✦";position:absolute;right:11px;top:7px;color:#ffd68a;font-size:14px;opacity:.75}
+.orchard-card img{box-sizing:border-box!important;object-fit:contain!important;object-position:center!important;display:block!important;width:100%!important;max-width:165px!important;height:165px!important;margin:5px auto 12px!important;padding:12px!important;image-rendering:pixelated!important;filter:drop-shadow(0 7px 4px #0c0710bb)!important;animation:orchardFloat 3s ease-in-out infinite!important}
+.orchard-card button{width:100%;margin-top:9px}
+.orchard-mission{background:linear-gradient(100deg,#66412f,#302034)!important;border:3px solid #bb8750!important;box-shadow:inset 0 0 0 2px #38242c,0 6px 0 #130e18!important}
+@media(max-width:520px){.orchard-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}.orchard-card{padding:10px!important}.orchard-card img{height:108px!important;max-width:100%!important;padding:7px!important}.orchard-hero{height:170px!important}}
+@media(prefers-reduced-motion:reduce){.orchard-card img{animation:none!important}}

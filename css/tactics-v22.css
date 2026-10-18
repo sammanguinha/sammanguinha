@@ -1,0 +1,5 @@
+
+.sm22-upgrade-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0 10px;padding:11px;background:#1a2936;border:1px dashed #9d92c8;border-radius:11px}
+.sm22-upgrade-tools button{flex:1;min-width:155px;font-weight:800}.sm22-upgrade-tools span{width:100%;font-size:.76rem;color:#c2d2da}
+.sm22-upgrade-tools button:disabled{opacity:.55}
+@media(max-width:600px){.sm22-upgrade-tools button{flex:1 1 100%}}
