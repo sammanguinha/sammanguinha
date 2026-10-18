@@ -48,7 +48,7 @@ const srv=http.createServer((req,res)=>{
    await page.locator('#v24ShopClose').click();
    assert.equal(await page.locator('#v24Shop').isVisible(),false);
    // A tela imersiva realmente transforma o mapa em viewport e mantém controles utilizáveis.
-   await page.locator('#rpgDlg .sm-fullscreen-toggle').click();
+   await page.locator('#rpgDlg .sm-rpg-map-enter').click();
    assert.equal(await page.locator('#rpgDlg').evaluate(el=>el.classList.contains('sm-immersive')),true);
    assert.ok(await page.locator('#r12Canvas').isVisible());
    assert.ok(await page.locator('#r12Action').isVisible());
