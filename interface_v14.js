@@ -3,7 +3,7 @@
 const qs=(s,root=document)=>root.querySelector(s),qsa=(s,root=document)=>[...root.querySelectorAll(s)];
 const nav=qs('#areas'),tabs=qs('.areas .tabs2'),actions=qs('.areas .nav-actions');
 if(nav&&tabs){
- const keep=new Set(['home','rpgDlg','gameDlg','profDlg']);
+ const keep=new Set(['home','rpgDlg','gameDlg','houseDlg','profDlg']);
  const wrap=document.createElement('div');wrap.className='r14-more';wrap.innerHTML='<button type="button" class="r14-more-button" id="r14MoreToggle" aria-controls="r14MoreMenu" aria-expanded="false">☰ Mais</button><div id="r14MoreMenu" class="r14-more-menu" hidden></div>';
  tabs.after(wrap);const menu=qs('#r14MoreMenu'),toggle=qs('#r14MoreToggle');
  // O painel administrativo continua acessível, mas sai da barra para economizar largura.
@@ -35,7 +35,7 @@ if(actions&&window.SamMusic){
 const portal=qs('.rpg-portal-grid');
 if(portal){
  const entries=qsa('.portal-card',portal),byId=new Map(entries.map(b=>[b.dataset.go,b]));
- const main=['rpgDlg','gameDlg','profDlg','eventDlg'];
+ const main=['rpgDlg','gameDlg','houseDlg','profDlg','eventDlg'];
  main.forEach(id=>{const c=byId.get(id);if(c)portal.appendChild(c)});
  const others=entries.filter(c=>!main.includes(c.dataset.go));
  if(others.length){

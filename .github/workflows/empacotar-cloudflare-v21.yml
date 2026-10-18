@@ -1,0 +1,36 @@
+name: Pacote Cloudflare Pages V21
+on:
+  push:
+    branches: [dev/v21-reinos-do-pomar]
+    paths: ['index.html','*.js','*.css','sprites/**','audio/**','halloween_art/**','tests/v21_reinos_pomar.test.cjs','.github/workflows/empacotar-cloudflare-v21.yml']
+  workflow_dispatch:
+jobs:
+  zip-estatico:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Testar mecanicas
+        run: node --test tests/v21_reinos_pomar.test.cjs
+      - name: Copiar arquivos do jogo sem Wrangler
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          find . -maxdepth 1 -type f \( -iname '*.html' -o -iname '*.css' -o -iname '*.js' -o -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' -o -iname '*.gif' -o -iname '*.svg' -o -iname '*.ico' -o -iname '*.mp3' -o -iname '*.ogg' -o -iname '*.wav' -o -iname '*.woff*' -o -name '_redirects' -o -name '_headers' \) -exec cp -t dist/ {} +
+          for dir in sprites audio halloween_art; do
+            if [ -d "$dir" ]; then cp -a "$dir" dist/; fi
+          done
+          test -f dist/index.html
+          test -f dist/casa_v21.js
+          test -f dist/sprites/casa_bed_v21.svg
+          test -f dist/sprites/torre_arco_v21.svg
+          test -f dist/sprites/torre_gelo_v21.svg
+          if find dist -iname 'wrangler*' | grep -q .; then echo 'Erro: configuracao Wrangler no ZIP'; exit 1; fi
+          cd dist
+          zip -qr ../Sam-Manguinha-V21-Cloudflare-Pages.zip .
+          unzip -t ../Sam-Manguinha-V21-Cloudflare-Pages.zip | tail -1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V21-Cloudflare-Pages
+          path: Sam-Manguinha-V21-Cloudflare-Pages.zip
+          retention-days: 30
