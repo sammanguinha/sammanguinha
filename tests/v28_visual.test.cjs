@@ -8,7 +8,7 @@ test('V28 loads four ordered CSS layers AFTER V27 without removing the existing 
  let prev=html.indexOf('visual_v27.css?v=27');
  assert.ok(prev>=0);
  for(const file of styles){
-  const marker='href="'+file+'?v=28"';
+  const marker='href="'+file+'?v='+(file.includes('fullscreen')?'28.1':'28')+'"';
   const i=html.indexOf(marker);
   assert.ok(i>prev,'visual layer load order: '+file);prev=i;
   assert.ok(fs.statSync(path.join(root,file)).size>2200,'real stylesheet: '+file);
