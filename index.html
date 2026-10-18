@@ -2111,6 +2111,17 @@ dialog[open]{max-height:92vh;overflow:auto}
  </section>
  <div id="sm21House" class="sm21-house-layout">
   <section class="sm21-house-stage" aria-label="Editor visual da casa">
+   <div class="sm23-home-life" aria-label="Passear pelo Refúgio">
+    <div><strong>🥭 Modo Visita — caminhe pela sua casa</strong><p>Explore seus móveis com o personagem; a decoração permanece intacta.</p></div>
+    <button type="button" id="sm23HomeVisit" aria-pressed="false">▶ Entrar na Casa</button>
+    <button type="button" id="sm23HomeInteract" disabled>✦ Interagir</button>
+   </div>
+   <div class="sm23-home-pad" role="group" aria-label="Movimentar personagem pela casa" hidden>
+    <button type="button" data-sm23-hmove="up" aria-label="Andar para cima">▲</button>
+    <button type="button" data-sm23-hmove="left" aria-label="Andar para esquerda">◀</button>
+    <button type="button" data-sm23-hmove="down" aria-label="Andar para baixo">▼</button>
+    <button type="button" data-sm23-hmove="right" aria-label="Andar para direita">▶</button>
+   </div>
    <canvas id="sm21HouseCanvas" width="540" height="390" role="img" aria-label="Planta da casa: toque nos quadrados para decorar" style="max-width:100%;height:auto"></canvas>
    <div class="sm21-house-tools" role="group" aria-label="Ferramentas de decoração">
     <button type="button" data-house-mode="place" aria-pressed="true">🪑 Posicionar</button><button type="button" data-house-mode="move" aria-pressed="false">↔️ Recolher</button><button type="button" data-house-mode="erase" aria-pressed="false">📦 Guardar</button>
