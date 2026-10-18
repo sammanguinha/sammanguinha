@@ -56,6 +56,11 @@ const server=http.createServer((req,res)=>{
    await page.locator('#rpgDlg .sm-fullscreen-toggle').click();
    assert.ok(await page.locator('#r12Action').isVisible(),'action button must overlay viewport');
    assert.ok(await page.locator('#v27RpgHud').isVisible(),'RPG HUD visible during immersive gameplay');
+   if(mode==='mobile'){
+     const rect=await page.locator('#r12Canvas').boundingBox();
+     const ratio=rect.width/rect.height;
+     assert.ok(Math.abs(ratio-(768/448))<0.1,'mobile RPG art must retain its native aspect ratio; got '+ratio.toFixed(3));
+   }
    assert.ok(await page.locator('#rpgDlg .v27-rpg-actionbar').isVisible(),'RPG app actionbar visible');
    const vitals=await page.evaluate(()=>window.SamGameV27.getSnapshot().rpg);
    assert.ok(vitals.maxHp>=vitals.hp&&vitals.maxMp>=vitals.mp,'calculated RPG resource caps are available');
