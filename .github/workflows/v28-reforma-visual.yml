@@ -1,0 +1,88 @@
+name: V28 · Reforma visual completa · Testes e ZIP (sem deploy)
+on:
+  push:
+    branches: [dev/v28-reforma-visual-total]
+    paths:
+      - 'index.html'
+      - 'css/**'
+      - 'tests/**'
+      - 'scripts/**'
+      - '.github/workflows/v28-reforma-visual.yml'
+      - 'REFORMA_VISUAL_V28.md'
+  pull_request:
+    branches: [dev/v27-interface-viva]
+  workflow_dispatch:
+jobs:
+  integridade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar reforma visual e preservar regressões V20 a V27
+        run: |
+          node --test tests/v28_visual.test.cjs tests/v27_bridge_ui.test.cjs tests/v26_modules.test.cjs tests/v25_architecture.test.cjs tests/v24_fullscreen.test.cjs tests/v24_world_shop.test.cjs tests/v23_vila_defesa.test.cjs tests/v23_renascimento.test.cjs tests/v22_defense.test.cjs tests/v22_fundacao.test.cjs tests/v21_reinos_pomar.test.cjs tests/v20_pomar_vivo.test.cjs
+      - name: Compilar projeto modular e checar integridade do pacote
+        run: |
+          node scripts/build-v26.cjs
+          node --test tests/v26_bundle.test.cjs
+          for f in dist/css/v28-foundation.css dist/css/v28-pages.css dist/css/v28-responsive.css; do test -s "$f"; done
+          grep -q 'css/v28-foundation.css?v=28' dist/index.html
+          grep -q 'css/v28-pages.css?v=28' dist/index.html
+          grep -q 'css/v28-responsive.css?v=28' dist/index.html
+  navegador:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar Chromium Playwright
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Testar visual das 13 telas no computador, tablet e celular
+        run: SM_V28_SHOTS=visual-review/fonte node tests/v28_browser.cjs
+      - name: Testar novamente gameplay, loja e HUD imersivo
+        run: |
+          node tests/v25_browser.cjs
+          node tests/v24_browser.cjs
+      - name: Testar visual do ZIP de produção em três resoluções
+        run: |
+          node scripts/build-v26.cjs
+          SM_GAME_ROOT=dist SM_V28_SHOTS=visual-review/producao node tests/v28_browser.cjs
+      - name: Guardar capturas de todas as telas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: V28-Revisao-Visual-Desktop-Tablet-Mobile
+          path: visual-review/
+          retention-days: 14
+          if-no-files-found: ignore
+  pacote:
+    needs: [integridade, navegador]
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Montar arquivo completo para Cloudflare Pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/build-v26.cjs
+          node --test tests/v26_bundle.test.cjs
+          for f in dist/css/v28-foundation.css dist/css/v28-pages.css dist/css/v28-responsive.css dist/visual_v27.css dist/js/game-v26.bundle.js dist/js/ui/game-shell-v27.js; do test -s "$f"; done
+          cd dist
+          zip -qr ../Sam-Manguinha-V28-Reforma-Visual-Cloudflare-Pages.zip .
+          unzip -t ../Sam-Manguinha-V28-Reforma-Visual-Cloudflare-Pages.zip | tail -1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V28-Reforma-Visual-Cloudflare-Pages
+          path: Sam-Manguinha-V28-Reforma-Visual-Cloudflare-Pages.zip
+          retention-days: 30
