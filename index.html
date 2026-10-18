@@ -3264,7 +3264,7 @@ sm21JobsSync();
 const sm21Towers={arrow:{cost:3,cooldown:1.3,damage:1,name:'Torre de Mangas'},frost:{cost:4,cooldown:2.4,damage:1,name:'Runa de Gelo'},root:{cost:5,cooldown:3.0,damage:0,name:'Raiz Guardiã'},solar:{cost:6,cooldown:3.1,damage:1,name:'Totem Solar'}};
 const sm22RunnerSprite=new Image();sm22RunnerSprite.src='sprites/corredor_ambar_v22.svg';
 const sm21TowerSprites={};for(const type of ['arrow','frost','root','solar']){const img=new Image();img.src='sprites/torre_'+({arrow:'arco',frost:'gelo',root:'raiz',solar:'solar'}[type])+'_v24.svg';sm21TowerSprites[type]=img}
-const sm24Sprites={};for(const kind of ['arvore_saudavel','arvore_danificada','arvore_destruida','praga_larva','praga_besouro','praga_esporo','praga_corredor','rei_pragas']){const im=new Image();im.src='sprites/'+kind+'_v24.svg';sm24Sprites[kind]=im}
+const sm24Sprites={};for(const kind of ['arvore_saudavel','arvore_danificada','arvore_destruida','praga_larva','praga_besouro','praga_esporo','praga_corredor','praga_curandeira','rei_pragas']){const im=new Image();im.src='sprites/'+kind+'_v24.svg';sm24Sprites[kind]=im}
 function sm24DrawSprite(g,kind,x,y,w,h,t,anchorBottom=false){
  const im=sm24Sprites[kind];if(!im?.complete||!im.naturalWidth)return false;
  const still=matchMedia('(prefers-reduced-motion:reduce)').matches||document.documentElement.classList.contains('sm165-lowfx');
@@ -3284,7 +3284,7 @@ function sm21StrategyUi(){
  const upgrade=$("sm22Upgrade"),priority=$("sm22Priority"),detail=$("sm22LaneDetail");
  const lvl=tower?.level||1,cost=lvl===1?3:5;
  if(upgrade){upgrade.disabled=!s||sm17GamePaused||!tower||lvl>=3||s.energy<cost;upgrade.textContent=lvl>=3?'✨ Torre no nível máximo':'⬆ Melhorar para nível '+(lvl+1)+' · '+cost+' energia'}
- if(priority){priority.disabled=!s||sm17GamePaused||!tower;priority.textContent='🎯 Alvo: '+(tower?.priority==='strongest'?'mais resistente':'mais próximo')}
+ if(priority){priority.disabled=!s||sm17GamePaused||!tower;priority.textContent='🎯 Alvo: '+(tower?.priority==='strongest'?'mais resistente':tower?.priority==='healer'?'curandeiras':'mais próximo')}
  if(detail)detail.textContent=tower?'Rota '+(lane+1)+' · nível '+lvl+'/3 · '+tower.shots+' disparos':'Escolha ou construa uma torre para melhorá-la.';
  const pulse=$('sm24GrovePulse');if(pulse){pulse.disabled=!s||s.mode==='normal'||sm17GamePaused||s.energy<6||s.groveCd>0;pulse.textContent=s?.mode==='normal'?'🌿 Pulso do Bosque · somente treino':'🌿 Pulso do Bosque · 6 ✦'+(s?.groveCd>0?' ('+Math.ceil(s.groveCd)+'s)':'')}
 }
@@ -3333,7 +3333,7 @@ function sm22UpgradeTower(){
 }
 function sm22Priority(){
  const t=gs?.towers?.find(x=>x.lane===sm21SelectedLane);if(!t||sm17GamePaused)return;
- t.priority=t.priority==='strongest'?'danger':'strongest';sm21StrategyUi();
+ t.priority=t.priority==='strongest'?'healer':t.priority==='healer'?'danger':'strongest';sm21StrategyUi();
 }
 $("sm22Upgrade")?.addEventListener('click',sm22UpgradeTower);
 $("sm22Priority")?.addEventListener('click',sm22Priority);
@@ -3341,13 +3341,27 @@ addEventListener('keydown',e=>{if(!gs||sm17GamePaused||e.repeat||e.target.closes
  if(e.key==='u'||e.key==='U')sm22UpgradeTower();
  if(e.key==='t'||e.key==='T')sm22Priority();
 });
+/* V24: Curandeira de Esporos opera no modo dificil/infinito. */
+function sm24HealTick(s,dt){
+ for(const healer of s.pe){
+  if(healer.dead||healer.kind!=='healer')continue;
+  healer.healCd=(healer.healCd||3.4)-dt;
+  if(healer.healCd>0)continue;
+  healer.healCd=3.4;
+  const injured=s.pe.filter(enemy=>!enemy.dead&&enemy!==healer&&enemy.hp<Math.max(1,enemy.maxHp||1)&&Math.hypot(enemy.x-healer.x,enemy.y-healer.y)<115);
+  injured.sort((a,b)=>(a.hp/(a.maxHp||1))-(b.hp/(b.maxHp||1)));
+  const target=injured[0];if(!target)continue;
+  target.hp=Math.min(Math.max(1,target.maxHp||1),target.hp+1);
+  orchardBurst(target.x,target.y,'#9bffd0',.45,'+1 CURA');
+ }
+}
 function sm21TacticsTick(s,dt){
  s.groveCd=Math.max(0,(s.groveCd||0)-dt);
  s.towers.forEach(t=>{
   t.cooldown-=dt;if(t.cooldown>0)return;
   const cx=GW*(t.lane+.5)/s.trees.length;
   const candidates=s.pe.filter(p=>!p.dead&&Math.abs(p.x-cx)<(GW/s.trees.length)*.48&&p.y>70&&p.y<GH-115);
-  candidates.sort(t.priority==='strongest'?(a,b)=>b.hp-a.hp||b.y-a.y:(a,b)=>b.y-a.y);
+  candidates.sort(t.priority==='strongest'?(a,b)=>b.hp-a.hp||b.y-a.y:t.priority==='healer'?(a,b)=>(b.kind==='healer')-(a.kind==='healer')||b.y-a.y:(a,b)=>b.y-a.y);
   const target=candidates[0];if(!target)return;
   const level=Math.min(3,Math.max(1,t.level||1));
   t.cooldown=sm21Towers[t.kind].cooldown*(s.job==='mage'&&t.kind==='frost'?.76:1)*(1-(level-1)*.18);t.shots++;
@@ -3480,9 +3494,10 @@ function stepG(dt){
     if(r<.182)s.it.push({x,y:-10,vy:65,k:"m"});
     else if(r<.182+.045+s.wave*.009)s.it.push({x,y:-10,vy:90,k:"r"});
     else{const beetle=s.hard?(Math.random()<Math.min(.64,.25+s.wave*.038)):(s.wave>=3&&Math.random()<.3);const runner=!beetle&&s.wave>=3&&Math.random()<.26;
- const spore=!beetle&&!runner&&s.wave>=2&&Math.random()<.18;
- const hp=beetle?2:1;
- s.pe.push({x,y:-10,originX:x,phase:Math.random()*6.28,vy:(s.hard?49+s.wave*9:34+s.wave*9)*(runner?1.65:spore?.85:1),hp,kind:beetle?'beetle':runner?'runner':spore?'spore':'larva'})}
+ const healer=s.hard&&s.wave>=4&&!beetle&&!runner&&Math.random()<.19;
+ const spore=!beetle&&!runner&&!healer&&s.wave>=2&&Math.random()<.18;
+ const hp=healer?3:beetle?2:1;
+ s.pe.push({x,y:-10,originX:x,phase:Math.random()*6.28,vy:(s.hard?49+s.wave*9:34+s.wave*9)*(runner?1.65:healer?.72:spore?.85:1),hp,maxHp:hp,healCd:healer?2.1:0,kind:beetle?'beetle':runner?'runner':healer?'healer':spore?'spore':'larva'})}
   }
   // Mascotes com poderes reais; todos funcionam apenas quando equipados.
   if(s.petId&&s.petCooldown<=0){
@@ -3496,7 +3511,7 @@ function stepG(dt){
     }
    }
   s.sh.forEach(b=>{b.y+=b.vy*dt;b.trail=(b.trail||0)+dt;if(b.trail>.055){b.trail=0;orchardFX.push({x:b.x+(Math.random()-.5)*8,y:b.y+9,vx:(Math.random()-.5)*18,vy:30,life:.18,max:.18,c:"#ffc45e",size:3})}});s.sh=s.sh.filter(b=>b.y>-10);
-  s.pe.forEach(p=>{p.slow=Math.max(0,(p.slow||0)-dt);p.rooted=Math.max(0,(p.rooted||0)-dt);p.y+=p.vy*dt*(p.rooted>0?0:p.slow>0?.38:1);if(p.kind==="spore")p.x=Math.max(30,Math.min(GW-30,(p.originX||p.x)+Math.sin(s.t*2.7+p.phase)*27));p.hit=Math.max(0,(p.hit||0)-dt)});s.it.forEach(i=>i.y+=i.vy*dt);
+  s.pe.forEach(p=>{p.slow=Math.max(0,(p.slow||0)-dt);p.rooted=Math.max(0,(p.rooted||0)-dt);p.y+=p.vy*dt*(p.rooted>0?0:p.slow>0?.38:1);if(p.kind==="spore")p.x=Math.max(30,Math.min(GW-30,(p.originX||p.x)+Math.sin(s.t*2.7+p.phase)*27));p.hit=Math.max(0,(p.hit||0)-dt)});sm24HealTick(s,dt);s.it.forEach(i=>i.y+=i.vy*dt);
   s.bossShots.forEach(b=>{b.x+=b.vx*dt;b.y+=b.vy*dt});
   s.bossShots=s.bossShots.filter(b=>{if(Math.hypot(b.x-s.x,b.y-(GH-90))<b.r+19){orchardHurtPlayer(s,2,b.x,b.y,"REI DAS PRAGAS");return false}return b.y<GH+25&&b.x>-25&&b.x<GW+25});
   s.pe.forEach(p=>{if(!p.dead&&Math.hypot(p.x-s.x,p.y-(GH-90))<(p.kind==="beetle"?39:34)){orchardHurtPlayer(s,p.kind==="beetle"?2:1,p.x,p.y,p.kind==="beetle"?"BESOURO":"LARVA");p.dead=true}});
@@ -3562,7 +3577,7 @@ function drawG(){
     const bob=Math.sin(t*8+p.x*.07)*2;
     g.save();g.fillStyle='#06150c88';g.beginPath();g.ellipse(p.x,p.y+sz*.40,sz*.35,4,0,0,Math.PI*2);g.fill();
     if(p.hit>0){g.shadowColor='#fff5bb';g.shadowBlur=12;g.globalAlpha=.76+Math.sin(t*64)*.2}
-    if(sm24DrawSprite(g,p.kind==='runner'?'praga_corredor':p.kind==='beetle'?'praga_besouro':p.kind==='spore'?'praga_esporo':'praga_larva',p.x,p.y+bob,sz,sz,t)){}else if(p.kind==='runner'&&sm22RunnerSprite.complete&&sm22RunnerSprite.naturalWidth){
+    if(sm24DrawSprite(g,p.kind==='runner'?'praga_corredor':p.kind==='beetle'?'praga_besouro':p.kind==='spore'?'praga_esporo':p.kind==='healer'?'praga_curandeira':'praga_larva',p.x,p.y+bob,sz,sz,t)){}else if(p.kind==='runner'&&sm22RunnerSprite.complete&&sm22RunnerSprite.naturalWidth){
       g.imageSmoothingEnabled=false;g.drawImage(sm22RunnerSprite,(lowFX?0:Math.floor(t*9+p.phase)%4)*48,0,48,48,p.x-sz/2,p.y+bob-sz/2,sz,sz);
     }else if(!v11Draw(g,beetle?'besouro':p.kind==='spore'?'esporo_v20':'larva_pequena',p.x,p.y+bob,sz,sz)){
       const fallback=spr(beetle?'beetle':'pest');g.drawImage(fallback,p.x-20,p.y+bob-20,40,40)
