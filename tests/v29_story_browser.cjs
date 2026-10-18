@@ -45,9 +45,9 @@ const server=http.createServer((req,res)=>{
    });
    assert.ok(await page.locator('#v29Chronicle').isVisible(),'living chronicle panel exists: '+JSON.stringify(chronicle));
    assert.ok((await page.locator('#v29QuestObjective').innerText()).includes('Íris'));
-   await interact('v29Sentinela');
+   await go('planicie');await interact('v29Sentinela');
    assert.equal(await page.locator('#r13Combat').count(),0,'boss cannot be reached before scouting');
-   await next();
+   await next();await go('vila');
    await interact('v29Iris');await next(3);
    assert.equal((await snapshot()).started,true,'quest starts only after intro');
    assert.ok((await page.locator('#v29QuestObjective').innerText()).includes('Investigue'));
