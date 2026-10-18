@@ -1,0 +1,205 @@
+/* Sam Manguinha V28 / 03 — RESPONSIVIDADE, TOUCH E ACESSIBILIDADE.
+   O canvas imersivo mantém o layout de jogo V27, sem converter em página ampliada. */
+@media(min-width:1600px){
+ #home,#panes,#diary{max-width:1500px!important}
+ #home .r23-home-hero{grid-template-columns:minmax(0,1.2fr) minmax(350px,.62fr)!important}
+ #hero .titleblock{width:min(860px,90%)}
+ #home .rpg-portal-grid{gap:25px!important}
+}
+@media(max-width:1200px){
+ #areas .logo-title{font-size:.93rem!important}
+ #areas .tabs2 button{padding:10px 11px!important}
+ #home .rpg-portal-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ #home .portal-card{min-height:178px}
+ #home .r23-home-hero{grid-template-columns:minmax(0,1.3fr) minmax(200px,.75fr)!important}
+ #rpgDlg .r12-columns{gap:13px}
+ #rpgDlg .r23-village-systems{gap:13px}
+}
+@media(max-width:960px){
+ nav#areas.areas{
+  grid-template-columns:minmax(0,1fr) auto!important;
+  grid-template-rows:auto auto!important;gap:7px 9px!important;
+  padding:8px 13px 7px!important;
+ }
+ #areas .logo{grid-column:1;grid-row:1;justify-self:start;padding:4px 8px}
+ #areas .logo-title{font-size:1rem!important}
+ #areas .nav-actions{grid-column:2;grid-row:1;justify-self:end}
+ #areas .tabs2{
+  grid-column:1/-1;grid-row:2;width:100%!important;
+  padding:2px 0 5px!important;gap:5px!important;
+  overscroll-behavior-x:contain;
+ }
+ #areas .tabs2 button{padding:9px 12px!important;min-height:40px}
+ #areas .gear{width:39px;height:39px}
+ #areas #admBtn{min-height:39px}
+ #home .r23-home-hero{min-height:340px}
+ #rpgDlg .r12-columns{grid-template-columns:minmax(0,1.55fr) minmax(230px,.8fr)}
+ #rpgDlg .r23-village-systems{grid-template-columns:1fr}
+}
+@media(max-width:740px){
+ html{scroll-padding-top:115px}
+ body{font-size:.94rem}
+ #hero.hero{min-height:0;padding:50px 14px 40px!important}
+ #hero .hero-gate-art{opacity:.58}
+ #hero .titleblock{padding:8px 0}
+ #hero .hero-badge{font-size:.64rem!important;letter-spacing:.1em!important;
+  padding:8px 12px!important}
+ #hero h1 button{font-size:clamp(2.2rem,10vw,4.1rem)!important;line-height:1.14!important}
+ #hero .subtitle{font-size:clamp(.98rem,4vw,1.3rem)!important;letter-spacing:.07em!important}
+ #hero .tag{max-width:510px;font-size:.88rem!important;line-height:1.75!important}
+ #hero #eventLaunch{min-height:58px;padding:11px 16px!important;
+  box-shadow:0 6px 0 #72522f,0 15px 28px #0008!important}
+ #hero .stats{margin:21px auto 0!important;padding:7px!important;
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  border-radius:17px!important}
+ #hero .stats .cell{
+  display:flex!important;flex-direction:column!important;align-items:center!important;
+  justify-content:center!important;text-align:center!important;
+  gap:6px!important;padding:9px 5px!important;
+ }
+ #hero .stats .cell.mid{border:0!important;border-inline:1px solid #fff4d033!important;border-radius:0}
+ #hero .stats .cell small{font-size:.63rem!important;letter-spacing:0}
+ #hero .stats .num{font-size:1.06rem}
+ #hero .stats .cell .ic.xl{width:28px!important;height:28px!important}
+ #hero .stats .cell .av{width:27px!important;height:34px!important}
+ #hero .stats .cell .grow{max-width:100%}
+ #hero .stats :is(button,.lnk){white-space:normal}
+ #home{padding-top:25px!important}
+ #home .r23-home-hero{
+  grid-template-columns:1fr!important;padding:clamp(20px,4vw,30px)!important;
+  border-radius:20px!important;min-height:0;
+ }
+ #home .r23-home-hero h2{font-size:clamp(1.55rem,6vw,2.4rem)!important}
+ #home .r23-hero-art{min-height:175px}
+ #home .r23-hero-buttons{gap:8px!important}
+ #home .r23-hero-buttons button{flex:1 1 135px;min-height:45px}
+ #home .portal-heading{align-items:flex-start}
+ #home #sm17HomeCTA{padding:15px!important}
+ #home .rpg-portal-grid{gap:12px!important}
+ #home .portal-card{min-height:185px;padding:17px!important}
+ #home .portal-card .portal-ic{width:43px!important;height:43px!important}
+ #home .portal-card h3{font-size:.93rem!important}
+ #home .cols{grid-template-columns:1fr!important}
+ #home .cols>.panel{max-width:none}
+ #panes,#diary{padding-inline:13px!important}
+ #rpgDlg .r12-head{gap:10px}
+ #rpgDlg .r12-head h2{font-size:clamp(1.4rem,5.2vw,1.85rem)!important}
+ #rpgDlg .r23-travel-guide{padding:13px!important}
+ #rpgDlg .r23-guide-actions{display:flex!important;overflow-x:auto;padding-block:4px}
+ #rpgDlg .r23-guide-actions button{min-width:max-content;flex:0 0 auto}
+ #rpgDlg:not(.sm-immersive) .r12-columns{grid-template-columns:1fr!important}
+ #rpgDlg:not(.sm-immersive) .r12-aside{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ #rpgDlg:not(.sm-immersive) .r12-aside .r12-card{margin:0}
+ #rpgDlg:not(.sm-immersive) .r12-aside .r12-card:first-child{grid-column:1/-1}
+ #gameDlg:not(.sm-immersive) .sm21-jobs{padding:12px!important}
+ #gameDlg:not(.sm-immersive) .sm21-job-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ #gameDlg:not(.sm-immersive) .sm21-tactics{padding:13px!important}
+ #gameDlg:not(.sm-immersive) .gctl{gap:6px!important;flex-wrap:wrap}
+ #gameDlg:not(.sm-immersive) .gctl button{min-height:52px;flex:1 1 80px}
+ #eventDlg .orchard-map-container{padding:15px!important}
+ #eventDlg .map-header{gap:12px;flex-wrap:wrap}
+ #houseDlg .sm21-house-layout{grid-template-columns:1fr!important}
+ #houseDlg .sm21-house-stage{padding:13px!important}
+ #profDlg .sanctuary-grid{grid-template-columns:1fr!important}
+ #profDlg .map-header{padding:16px!important}
+ #rankDlg .podium{padding:12px!important}
+ #galDlg #gGal{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ #murDlg .sm17-social-head{flex-wrap:wrap}
+ #diary .bar{padding:12px!important;gap:8px!important}
+ #diary .bar input{width:100%;min-width:0}
+ #diary #grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .ptitle{font-size:1.45rem!important;gap:8px!important}
+ dialog{padding:clamp(13px,3vw,22px)!important;border-radius:18px!important}
+}
+@media(max-width:520px){
+ html{scroll-padding-top:104px}
+ nav#areas.areas{padding:6px 9px!important;gap:4px 6px!important}
+ #areas .logo{padding:3px 6px;border-radius:10px}
+ #areas .logo .ic{width:28px;height:28px}
+ #areas .logo-title{font-size:.91rem!important}
+ #areas .nav-actions{gap:5px}
+ #areas .gear,#areas #admBtn{padding:5px 8px!important;min-height:35px!important}
+ #areas .gear{width:35px;height:35px}
+ #areas .tabs2{gap:4px!important}
+ #areas .tabs2 button{
+  min-height:39px!important;padding:8px 10px!important;
+  font-size:.72rem!important;border-radius:9px!important;
+ }
+ #areas .tabs2 button .ic{width:16px;height:16px}
+ #hero.hero{padding-top:35px!important}
+ #hero h1 button{font-size:clamp(2rem,10vw,3rem)!important;
+  overflow-wrap:break-word}
+ #hero .subtitle{margin:6px 0 9px!important}
+ #hero .tag{font-size:.83rem!important;margin:9px auto 16px!important}
+ #hero .chips{gap:5px!important;margin-bottom:17px!important}
+ #hero .chip{font-size:.69rem!important;padding:6px 9px!important}
+ #hero #eventLaunch{width:min(345px,100%);font-size:.83rem!important}
+ #hero .stats{padding:4px!important;gap:0!important}
+ #hero .stats .cell{padding:10px 3px!important}
+ #hero .stats .cell small{font-size:.57rem!important}
+ #hero .stats .num{font-size:.97rem}
+ #hero .stats .lnk{font-size:.68rem}
+ #home .r23-home-hero{padding:20px!important}
+ #home .r23-home-hero h2{font-size:1.75rem!important}
+ #home .r23-hero-art{min-height:145px}
+ #home .r23-hero-buttons button{width:100%;flex:1 1 100%}
+ #home .portal-heading>span{font-size:1.48rem!important}
+ #home .rpg-portal-grid{grid-template-columns:1fr!important}
+ #home .portal-card{min-height:0;padding:18px 18px 26px!important}
+ #home .portal-card .card-head{margin-bottom:8px!important}
+ #home .portal-card p{margin-bottom:2px;max-width:42ch}
+ #rpgDlg:not(.sm-immersive) .r12-shell{padding:10px!important;border-radius:17px!important}
+ #rpgDlg:not(.sm-immersive) .r12-aside{grid-template-columns:1fr}
+ #rpgDlg:not(.sm-immersive) .r12-aside .r12-card:first-child{grid-column:auto}
+ #rpgDlg:not(.sm-immersive) .r12-controls button{min-width:43px}
+ #rpgDlg .r23-contract-board,#rpgDlg .r23-mood-board{padding:13px!important}
+ #gameDlg:not(.sm-immersive) .sm21-job-grid{grid-template-columns:1fr}
+ #gameDlg:not(.sm-immersive) .sm21-job-grid button{min-height:54px}
+ #gameDlg .v27-defense-panel{padding:12px!important}
+ #gameDlg:not(.sm-immersive) .sm21-tower-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #houseDlg .sm21-house-top{padding:18px!important}
+ #houseDlg .sm21-house-options{gap:6px}
+ #houseDlg .sm21-house-options button{min-height:42px}
+ #profDlg .wardrobe-tabs{overflow-x:auto;flex-wrap:nowrap}
+ #profDlg .wardrobe-tabs button{flex:0 0 auto}
+ #questDlg .wardrobe-tabs{display:grid;grid-template-columns:1fr 1fr}
+ #questDlg .wardrobe-tabs button{min-width:0;padding:11px 7px!important}
+ #galDlg #gGal{grid-template-columns:1fr!important}
+ #diary #grid{gap:10px!important}
+ #diary #grid .card .meta{font-size:.72rem}
+ #diary .bar input{font-size:.9rem}
+ #rankDlg .rkbar{flex-wrap:wrap}
+ #curDlg #facts li{padding:13px!important}
+ .panel{padding:15px!important;border-radius:16px!important}
+ .ptitle{font-size:1.3rem!important}
+ dialog .row{flex-direction:column;align-items:stretch}
+ dialog .row button{width:100%}
+}
+@media(max-width:355px){
+ #areas .logo-title{font-size:.8rem!important}
+ #hero .stats .cell{padding-inline:1px!important}
+ #hero h1 button{font-size:1.93rem!important}
+ #home .portal-card{padding:14px 15px 22px!important}
+}
+@media(hover:none){
+ #home .portal-card:hover{transform:none!important}
+ #hero #eventLaunch:hover{transform:none!important}
+ #areas .tabs2 button:hover{transform:none!important}
+ :where(.btn-gothic,.r23-primary,.r23-secondary,.btn,.more):hover{
+  transform:none!important
+ }
+}
+@media(orientation:landscape) and (max-height:560px){
+ nav#areas.areas{position:relative!important}
+ #hero.hero{min-height:0;padding:24px 20px!important}
+ #hero .titleblock{padding:0}
+ #hero .tag{max-width:700px}
+ #rpgDlg.sm-immersive,#gameDlg.sm-immersive{border-radius:0!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #hero .hero-mist,#hero .hero-moon{animation:none!important}
+ #home .portal-card,
+ #home .portal-card::after,
+ #eventDlg .region-node,
+ #hero #eventLaunch{transition:none!important}
+}
