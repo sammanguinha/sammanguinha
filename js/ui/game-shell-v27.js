@@ -93,7 +93,8 @@
      actionButton('📜 Missões','rpg:quests'),
      actionButton('🛒 Loja','rpg:shop')
    );
-   rpg.append(toolbar);
+   // Keep the toolbar in the same stacking context as the world canvas, so mobile touches are never intercepted by the world shell.
+   (rpg.querySelector('.r12-main')||rpg).append(toolbar);
  }
  if(game){
    gHud=hud('v27DefenseHud','✦ DEFESA DO POMAR');
