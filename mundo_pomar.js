@@ -85,20 +85,38 @@ rooms.floresta.actors.push(
  {id:'herb',x:21.4,y:4.8,type:'seed',epic:'resource',label:'Broto Luminoso'}
 );
 rooms.ruinas.actors.push({id:'toEstufa',x:20.5,y:11,type:'door',epic:'gate',min:1,target:'estufa',tx:2.8,ty:7,label:'Estufa das Brasas'});
+// V23: rondas jogáveis na vila original. Cada lanterna é um ator real com estado persistido.
+rooms.vila.actors.push(
+ {id:'mira',x:9.0,y:8.4,type:'npc',label:'Mira, a Acendedora'},
+ {id:'v23LampEast',x:15.2,y:6.8,type:'lantern',label:'Lanterna do Leste'},
+ {id:'v23LampNorth',x:9.5,y:5.9,type:'lantern',label:'Lanterna do Norte'},
+ {id:'v23LampSouth',x:15.4,y:10.7,type:'lantern',label:'Lanterna do Jardim'}
+);
 
  const storageKey=()=>{const handle=(typeof window.me!=='undefined'&&window.me)||localStorage.getItem('sg_handle')||'visitante';return 'sam_rpg_hibrido_v12_'+String(handle).toLowerCase()};
- const blank=()=>({map:'vila',x:11.7,y:10.8,found:[],unlocked:false,relic:false,bonus:false,altarActive:false,ritualStep:0,seen:[],journal:['O Guardião Bento espera por você na vila.'],visits:0,epic:freshEpic()});
+ const blank=()=>({map:'vila',x:11.7,y:10.8,found:[],unlocked:false,relic:false,bonus:false,altarActive:false,ritualStep:0,seen:[],journal:['O Guardião Bento espera por você na vila.'],visits:0,epic:freshEpic(),v23:{started:false,lit:[],rewarded:false}});
  let accountRpgKey=storageKey();let st=blank();try{let raw=JSON.parse(localStorage.getItem(storageKey())||'null');if(raw&&rooms[raw.map]&&Number.isFinite(raw.x)&&Number.isFinite(raw.y))st={...blank(),...raw,found:Array.isArray(raw.found)?raw.found:[],seen:Array.isArray(raw.seen)?raw.seen:[],journal:Array.isArray(raw.journal)?raw.journal:[]}}catch(e){}
+ st.v23={started:!!st.v23?.started,lit:Array.isArray(st.v23?.lit)?st.v23.lit.filter(x=>['v23LampEast','v23LampNorth','v23LampSouth'].includes(x)).slice(0,3):[],rewarded:!!st.v23?.rewarded};
  st.epic={...freshEpic(),...(st.epic||{}),stats:{...freshEpic().stats,...(st.epic?.stats||{})},flags:{...(st.epic?.flags||{})},items:Array.isArray(st.epic?.items)?st.epic.items:['semente_guardia'],equipped:Array.isArray(st.epic?.equipped)?st.epic.equipped:['semente_guardia'],defeated:Array.isArray(st.epic?.defeated)?st.epic.defeated:[]};
  const imgCache=new Map();const sprite=name=>{if(!imgCache.has(name)){const i=new Image();i.src='sprites/'+name+(name==='aranha_rainha_v14'?'.svg':'.png');imgCache.set(name,i)}return imgCache.get(name)};
  const player={x:st.x,y:st.y,vx:0,vy:0};let nextSave=0,last=0,clock=0,visible=false,touchDest=null,dialogOpen=false,lastTip='';
  const room=()=>rooms[st.map];
+ // API limitada para navegar entre áreas sem expor estado mutável do mapa.
+ window.Sam23World=Object.freeze({snapshot:()=>({map:st.map,x:player.x,y:player.y,mission:{started:st.v23.started,lit:st.v23.lit.slice(),rewarded:st.v23.rewarded}}),returnToVillage:()=>{
+   warp('vila',11.7,10.8);if(typeof window.showPane==='function')window.showPane('rpgDlg')
+ }});
  function save(){st.x=player.x;st.y=player.y;try{localStorage.setItem(storageKey(),JSON.stringify(st))}catch(e){}}
  function notify(msg){const tip=$('r12Tip');if(tip)tip.textContent=msg;if(typeof window.toast==='function')window.toast(msg,3500)}
  function log(msg){if(!st.journal.includes(msg)){st.journal.unshift(msg);st.journal=st.journal.slice(0,14)}update();save()}
  function allSeeds(){return ['seedA','seedB','seedC'].every(x=>st.found.includes(x))}
  function gainLocalSeeds(amount){if(typeof orchardRead==='function'&&typeof orchardSave==='function'){const inv=orchardRead();inv.seeds=(inv.seeds||0)+amount;orchardSave(inv);if(typeof orchardRender==='function')orchardRender();return true}return false}
  function update(){const n=st.found.length;
+  const lights=['v23LampEast','v23LampNorth','v23LampSouth'];
+  const lit=lights.filter(x=>st.v23.lit.includes(x)).length;
+  const quest=$('r12V23Quest');
+  if(quest)quest.textContent=st.v23.rewarded?'✓ Ronda concluída · as três lanternas brilham!':st.v23.started?'🏮 Lanternas: '+lit+'/3 acesas. Procure os três postes brilhantes na vila.':'🏮 Conheça Mira na praça e ajude a iluminar a vila.';
+  const button=$('r12V23Return');if(button)button.textContent=st.map==='vila'?'📍 Você está na vila':'↩ Voltar à Vila';
+  
   let objective=!st.seen.includes('guarda')?'Converse com o Guardião Bento na praça.':!allSeeds()?'Encontre as 3 Sementes Ancestrais na Trilha Encantada.':!st.unlocked?'Abra o Santuário das Raízes na passagem leste da floresta.':!st.relic?'Resolva o enigma do altar e recupere a Relíquia do Guardião.':'A Relíquia despertou. Explore a campanha de Halloween ou defenda o pomar!';
   $('r12Objective').textContent=objective;$('r12MapName').textContent=room().name;$('r12Counter').textContent=n+'/3 sementes · '+(st.relic?'Relíquia encontrada':'Relíquia oculta');
   $('r12Progress').style.width=((n+(st.unlocked?1:0)+(st.altarActive?1:0)+(st.relic?1:0))/6*100)+'%';
@@ -416,7 +434,7 @@ function drawEpicEnemy(a,x,y,bob){const type=epicMonsters[a.id];const m=EPIC_ENE
 function drawEpicActor(a,x,y,bob){if(a.epic==='enemy')drawEpicEnemy(a,x,y,bob);
  else if(a.epic==='resource'){ctx.save();ctx.fillStyle=a.id.startsWith('echo')?'#bbb0fd':'#f8d477';ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=17;ctx.beginPath();ctx.arc(x,y-7+bob,9,0,Math.PI*2);ctx.fill();ctx.restore()}
  else if(a.epic==='gate'){ctx.save();ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=4;ctx.shadowColor='#c5a5fc';ctx.shadowBlur=12;ctx.beginPath();ctx.ellipse(x,y-7,19,12,0,0,Math.PI*2);ctx.stroke();ctx.restore()}
- else if(a.epic==='npc'){drawCharacter(x,y-6+bob,'#687a9e','#e3ba96',false)}
+ else if(a.epic==='npc'){if(!v23DrawNpc(a.id,x,y,bob))drawCharacter(x,y-6+bob,'#687a9e','#e3ba96',false)}
  else if(a.epic==='altar'){ctx.save();ctx.fillStyle='#72586d';ctx.fillRect(x-15,y-6,30,20);ctx.fillStyle='#cba88c';ctx.fillRect(x-12,y-13,24,9);ctx.fillStyle='#fde0a9';ctx.font='bold 23px serif';ctx.fillText('✧',x,y-21);ctx.restore()}
 }
 
@@ -424,6 +442,23 @@ function drawEpicActor(a,x,y,bob){if(a.epic==='enemy')drawEpicEnemy(a,x,y,bob);
  function interact(a){
   if(a?.epic){epicInteract(a);return;}
   if(!a){say('Pomar','Não há nada para investigar aqui. Aproxime-se de um brilho, personagem ou construção.');return}
+  if(a.id==='mira'){
+    if(st.v23.rewarded){say('Mira, a Acendedora','As três lanternas voltaram a brilhar. Agora o caminho até sua casa e a Arena de Defesa está iluminado. Obrigada, guardião!');return}
+    if(!st.v23.started){st.v23.started=true;save();log('Mira pediu que eu reacendesse três lanternas da Vila da Mangueira.');}
+    const lit=st.v23.lit.length;
+    say('Mira, a Acendedora','A névoa cobriu nossos caminhos. Reacenda as três lanternas perto das trilhas da vila. Progresso: '+lit+'/3. Cada lanterna fica acesa depois de ser reparada.');return
+  }
+  if(a.type==='lantern'){
+    if(!st.v23.started){say('Lanterna apagada','Uma faísca adormecida... Fale primeiro com Mira, que está na praça da vila.');return}
+    if(st.v23.lit.includes(a.id)){say('Lanterna restaurada','A chama desta lanterna já está protegida. Encontre as outras no mapa.');return}
+    st.v23.lit.push(a.id);save();log('Acesa: '+a.label+' ('+st.v23.lit.length+'/3).');
+    if(st.v23.lit.length===3){
+      st.v23.rewarded=true;save();const granted=gainLocalSeeds(40);
+      log('Todas as lanternas foram restauradas. Concluí a Ronda da Vila.');
+      say('Ronda concluída!','A Vila da Mangueira está iluminada! '+(granted?'Você recebeu 40 sementes locais para decorar seu refúgio.':'Progresso salvo. Esta recompensa é da economia local, não do ranking oficial.')+' Visite a casa pela cabana na região leste.');
+    }else say('Lanterna restaurada','Uma nova luz protege a vila! '+st.v23.lit.length+'/3 lanternas. Siga até a próxima.');
+    return
+  }
   if(a.id==='guarda'){const first=!st.seen.includes('guarda');st.seen.push('guarda');save();say('Guardião Bento',first?'Sam! O pomar está perdendo sua luz. Três Sementes Ancestrais foram levadas para a floresta. Encontre-as e o Santuário das Raízes voltará a despertar.':'Se precisar de ajuda, caminhe pela passagem ao norte. Quando recuperar as três sementes, procure o portão a leste da floresta.',()=>{if(first)log('Bento pediu que eu reunisse três sementes escondidas na floresta.')});return}
   if(a.id==='livia'){say('Lívia, a Bruxa','A floresta está acordada, mas a maldição cresce sob as raízes. O portal de Halloween guarda os segredos de uma história antiga. Quer conhecer essa história?',()=>toHalloween(),'Explorar Halloween');return}
   if(a.id==='firefly'){say('Lumi, o Vaga-lume',allSeeds()?'Você reuniu as três luzes! A porta do Santuário finalmente escutará seu chamado.':'Uma semente responde ao sol, outra à lua e a última à memória. Procure os três brilhos em lugares diferentes da trilha.');return}
@@ -440,7 +475,7 @@ function drawEpicActor(a,x,y,bob){if(a.epic==='enemy')drawEpicEnemy(a,x,y,bob);
   if(a.id==='halloween'){toHalloween();return}
   if(a.id==='defesa'){pane('gameDlg');return}
   if(a.id==='loja'){toShop();return}
-  if(a.id==='profile'){pane('profDlg');return}
+  if(a.id==='profile'){pane('houseDlg');return}
  }
  function nearest(){let best=null,d=Infinity;for(const a of room().actors){if(!actorVisible(a))continue;let dist=Math.hypot(player.x-a.x,player.y-a.y);if(dist<d){d=dist;best=a}}return d<1.9?best:null}
  function action(){if(!visible||dialogOpen)return;interact(nearest())}
@@ -487,6 +522,15 @@ function drawEpicActor(a,x,y,bob){if(a.epic==='enemy')drawEpicEnemy(a,x,y,bob);
   ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.fillStyle='#ffdfae';ctx.fillText(b.type==='loja'?'MASCOTES':b.type==='defesa'?'DEFESA':b.type==='portal'?'HALLOWEEN':'CABANA',x+w/2,y+25)
  }
  function actorColor(type){return ({seed:'#ffe27d',npc:'#baceff',shop:'#f9c58a',defense:'#ffa783',halloween:'#dda8ff',profile:'#b3d5ff',passage:'#a5e6a9',door:'#d8cf9b',altar:'#ffe0a3',relic:'#ffe7af'})[type]||'#ffffff'}
+ const v23SpriteCache=new Map();
+ function v23Sprite(name){if(!v23SpriteCache.has(name)){const img=new Image();img.src='sprites/'+name+'.svg';v23SpriteCache.set(name,img)}return v23SpriteCache.get(name)}
+ function v23DrawAnimation(name,x,y,w,h,bob=0){
+   const img=v23Sprite(name);if(!img.complete||!img.naturalWidth)return false;
+   const frames=4,fw=img.naturalWidth/frames,reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches||document.documentElement.classList.contains('sm165-lowfx');
+   const frame=reduce?0:Math.floor(clock*3+x*.025)%frames;
+   ctx.save();ctx.imageSmoothingEnabled=false;ctx.drawImage(img,frame*fw,0,fw,img.naturalHeight,x-w/2,y-h*.74+bob,w,h);ctx.restore();return true
+ }
+ function v23DrawNpc(id,x,y,bob){const name=({guarda:'bento',livia:'livia',mira:'mira',espirito:'eldra',elder:'eldra'})[id];return name?v23DrawAnimation('v23_'+name,x,y,42,53,bob):false}
  function drawActor(a){if(!actorVisible(a))return;const x=a.x*T,y=a.y*T,bob=Math.sin(clock*3+a.x)*2;ctx.save();if(a.epic){drawEpicActor(a,x,y,bob);ctx.restore();return;}
   if(['passage','door','halloween','defense','shop','profile'].includes(a.type)){
    const alpha=.47+Math.sin(clock*3+a.x)*.27;ctx.globalAlpha=alpha;ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(x,y-4,19,10,0,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;
@@ -500,7 +544,20 @@ function drawEpicActor(a,x,y,bob){if(a.epic==='enemy')drawEpicEnemy(a,x,y,bob);
   if(a.type==='seed'){const colors={seedA:'#f5b945',seedB:'#8cceff',seedC:'#d9a7ff'};const col=colors[a.id];ctx.shadowColor=col;ctx.shadowBlur=14;rect(x-7,y-11+bob,14,17,col);rect(x-3,y-15+bob,6,5,'#fff6ce');ctx.shadowBlur=0;drawGlyph(x,y-24+bob,'✦',col)}
   if(a.type==='altar'){rect(x-25,y-5,50,17,'#443d51');rect(x-21,y-12,42,9,'#927b6c');for(let k=0;k<3;k++){ctx.fillStyle=st.unlocked?'#ffcd7a':'#282234';ctx.beginPath();ctx.arc(x+(k-1)*15,y-13,5,0,Math.PI*2);ctx.fill()}drawGlyph(x,y-37,'✧',st.unlocked?'#ffdc93':'#9285a0')}
   if(a.type==='relic'){drawGlyph(x,y-7+bob,'✦',st.relic?'#ffe9aa':'#e8cb8f')}
-  if(a.type==='npc'){rect(x-10,y+13,20,5,'#1e2535');if(a.id==='firefly'){pixelSprite('vagalume_idle',x,y+bob-3,43,43)}else if(a.id==='livia'){drawCharacter(x,y-7+bob,'#9d61c4','#f9d4b2',true)}else if(a.id==='espirito'){drawCharacter(x,y-8+bob,'#b3dcf8','#e0f8ff',true)}else{drawCharacter(x,y-7+bob,'#a6aa5e','#e6bd88',false)}}
+  if(a.type==='npc'){
+    rect(x-10,y+13,20,5,'#1e2535');
+    if(a.id==='firefly')pixelSprite('vagalume_idle',x,y+bob-3,43,43);
+    else if(!v23DrawNpc(a.id,x,y,bob)){
+      if(a.id==='livia')drawCharacter(x,y-7+bob,'#9d61c4','#f9d4b2',true);
+      else if(a.id==='espirito')drawCharacter(x,y-8+bob,'#b3dcf8','#e0f8ff',true);
+      else drawCharacter(x,y-7+bob,'#a6aa5e','#e6bd88',false)
+    }
+  }
+  if(a.type==='lantern'){
+    const lit=st.v23.lit.includes(a.id);
+    if(lit){ctx.save();ctx.globalAlpha=.20+.11*Math.sin(clock*3+a.x);ctx.fillStyle='#ffe3a0';ctx.beginPath();ctx.arc(x,y-16,27,0,Math.PI*2);ctx.fill();ctx.restore()}
+    if(!v23DrawAnimation('v23_lanterna',x,y,38,48,bob)){rect(x-5,y-27,10,20,lit?'#e8c187':'#544c5f');rect(x-2,y-7,4,23,'#675363')}
+  }
   ctx.restore()}
  function drawCharacter(x,y,coat,face,witch){rect(x-9,y-7,18,24,coat);rect(x-7,y-28,14,20,face);rect(x-8,y+16,6,6,'#41374a');rect(x+3,y+16,6,6,'#41374a');rect(x-3,y-20,3,3,'#302437');rect(x+4,y-20,3,3,'#302437');if(witch){rect(x-18,y-33,36,6,'#37233d');rect(x-8,y-49,16,17,'#4d315d')}else{rect(x-9,y-30,18,7,'#635039')}}
  function drawGlyph(x,y,symbol,color){ctx.fillStyle=color;ctx.font='bold 24px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(symbol,x,y)}
@@ -541,6 +598,10 @@ function drawEpicActor(a,x,y,bob){if(a.epic==='enemy')drawEpicEnemy(a,x,y,bob);
    for(const type of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(type,()=>{keys[name]=false;b.classList.remove('pressed')});
   });
   $('r12Action').addEventListener('click',action);
+  $('r12V23Return')?.addEventListener('click',()=>{
+    if(st.map==='vila'){notify('Você já está na Vila da Mangueira.');return}
+    warp('vila',11.7,10.8)
+  });
   cv.addEventListener('pointerdown',e=>{if(dialogOpen)return;const b=cv.getBoundingClientRect(),cam=camera();const x=(cam.cx+((e.clientX-b.left)/b.width*W-W/2)/cam.z)/T,y=(cam.cy+((e.clientY-b.top)/b.height*H-H/2)/cam.z)/T;
    const target=room().actors.find(a=>actorVisible(a)&&Math.hypot(x-a.x,y-a.y)<.85);
    if(target&&Math.hypot(player.x-target.x,player.y-target.y)<1.9){interact(target);return}
