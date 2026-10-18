@@ -9,10 +9,10 @@ const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const exists=p=>fs.existsSync(path.join(root,p));
 const html=read('index.html');
 const manifest=JSON.parse(read('architecture-v25.json'));
-const styles=[...html.matchAll(/<link\s+[^>]*href="(css\/[^"?]+)\?v=25"[^>]*>/gi)].map(m=>m[1]);
-const scripts=[...html.matchAll(/<script\s+src="(js\/[^"?]+)\?v=25"><\/script>/gi)].map(m=>m[1]);
-test('index.html has been physically split into 12 CSS assets and 14 classic JS files',()=>{
- assert.equal(styles.length,12);
+const styles=[...html.matchAll(/<link\s+[^>]*href="(css\/[^"?]+)\\?v=(?:25|26)"[^>]*>/gi)].map(m=>m[1]);
+const scripts=[...html.matchAll(/<script\s+src="(js\/[^"?]+)\\?v=(?:25|26)"><\/script>/gi)].map(m=>m[1]);
+test('index.html has been physically split into 19 CSS assets and 14 classic JS files',()=>{
+ assert.equal(styles.length,19);
  assert.equal(scripts.length,14);
  assert.deepEqual(styles,manifest.styles.map(x=>x.file));
  assert.deepEqual(scripts,manifest.scripts.map(x=>x.file));

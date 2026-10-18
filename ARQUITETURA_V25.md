@@ -45,3 +45,18 @@ O arquivo de ~120 KB `js/core/app.js` foi distribuído em **nove scripts clássi
 - `js/core/progression.js` — 7807 caracteres
 
 As declarações `let` e `const` permanecem compartilhadas no *ambiente léxico global* dos scripts clássicos. Não foi aplicada minificação, bundling, módulos ES ou troca de contratos. Esta etapa permite manutenção e futura introdução de uma API de módulos explícita com segurança.
+
+## Fase 3 / V26 — CSS de interface por sistema
+
+A antiga folha `css/base.css` (68 KB) foi separada sem alterar os seletores nem a ordem da cascata. Divisão:
+
+- `css/base.css` — 6385 caracteres
+- `css/home-scene.css` — 7089 caracteres
+- `css/layout-panels.css` — 4299 caracteres
+- `css/wardrobe-stage.css` — 8621 caracteres
+- `css/world-map.css` — 8110 caracteres
+- `css/community-ui.css` — 6089 caracteres
+- `css/legacy-compat.css` — 14382 caracteres
+- `css/premium-cards.css` — 13160 caracteres
+
+As folhas são carregadas na posição original do tema, antes das sobreposições V20–V25. A organização permite mudar os estilos de mapas, guarda-roupa e interface de forma localizada.

@@ -1,10 +1,38 @@
 {
   "release": "V26.0",
-  "description": "Separação do controlador clássico em 9 blocos síncronos de responsabilidade única, preservando lexical globals e ordem de execução.",
+  "description": "V26.0: 9 scripts clássicos para sistemas de jogo + 8 folhas base CSS temáticas; preservada ordenação.",
   "styles": [
     {
       "file": "css/base.css",
-      "bytes": 68135
+      "bytes": 6385
+    },
+    {
+      "file": "css/home-scene.css",
+      "bytes": 7089
+    },
+    {
+      "file": "css/layout-panels.css",
+      "bytes": 4299
+    },
+    {
+      "file": "css/wardrobe-stage.css",
+      "bytes": 8621
+    },
+    {
+      "file": "css/world-map.css",
+      "bytes": 8110
+    },
+    {
+      "file": "css/community-ui.css",
+      "bytes": 6089
+    },
+    {
+      "file": "css/legacy-compat.css",
+      "bytes": 14382
+    },
+    {
+      "file": "css/premium-cards.css",
+      "bytes": 13160
     },
     {
       "file": "css/ranking.css",
@@ -113,6 +141,7 @@
     "Script tags intentionally omit defer to retain the original exact execution order. Do not convert to ES modules without evaluating global lexical bindings.",
     "CSS asset URLs should be relative to css/; extracted CSS currently has no relative url().",
     "Stage 1 only: markup and some style attributes remain in index.html.",
-    "Os nove blocos devem manter sua ordem de carregamento clássica (sem defer nem type=module)."
+    "Os nove blocos devem manter sua ordem de carregamento clássica (sem defer nem type=module).",
+    "css/base.css foi separado em oito folhas na ordem original; os seletores e especificidades permanecem idênticos."
   ]
 }

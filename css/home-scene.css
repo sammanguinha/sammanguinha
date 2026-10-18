@@ -1,0 +1,180 @@
+/* HERO: O PORTÃO DO POMAR AMALDIÇOADO */
+.hero {
+  position: relative; text-align: center;
+  padding: 30px 18px 75px;
+  background: 
+    radial-gradient(circle at 50% 15%, rgba(157, 78, 221, 0.18) 0%, transparent 65%),
+    linear-gradient(180deg, #130a1c 0%, #0a0710 100%);
+  border-bottom: 2px solid var(--border);
+  overflow: hidden;
+}
+.hero::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(245, 166, 35, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.4; pointer-events: none;
+}
+
+/* Árvore e Portão Cenográfico */
+.hero-gate-art {
+  position: absolute; inset: 0; pointer-events: none; overflow: hidden; opacity: 0.45;
+}
+.hero-moon {
+  position: absolute; top: 25px; left: 50%; transform: translateX(-50%);
+  width: 140px; height: 140px; border-radius: 50%;
+  background: radial-gradient(circle, #fff5d1 0%, #ffd066 40%, rgba(245, 166, 35, 0) 70%);
+  filter: blur(2px); opacity: 0.3;
+}
+.hero-mist {
+  position: absolute; bottom: 0; left: -20%; right: -20%; height: 80px;
+  background: linear-gradient(180deg, transparent, rgba(15, 11, 20, 0.95));
+}
+
+/* Galho das Mangas e Colheita */
+.hang {
+  display: flex; justify-content: space-around; max-width: 600px;
+  margin: 0 auto 15px; align-items: flex-start; min-height: 110px;
+  position: relative; z-index: 2;
+}
+.hm {
+  all: unset; cursor: pointer; display: flex; flex-direction: column; align-items: center;
+  transform-origin: top center; animation: swing 3.8s ease-in-out var(--d) infinite;
+  transition: filter 0.2s;
+}
+.hm:hover { filter: drop-shadow(0 0 12px var(--pumpkin)); }
+.hm .st { width: 3px; height: var(--l); background: #5a3920; }
+.hm .mg {
+  position: relative; width: 46px; height: 58px;
+  border-radius: 58% 42% 52% 48%/60% 55% 45% 40%;
+  background: linear-gradient(150deg, #9bcb4b, #ffb326 45%, #e65100);
+  box-shadow: inset -6px -8px 0 rgba(0,0,0,0.35), 0 6px 14px rgba(0,0,0,0.5);
+}
+.hm .mg::before {
+  content: ""; position: absolute; top: -8px; left: 50%; width: 22px; height: 11px;
+  background: #2e6b34; border-radius: 100% 0 100% 0;
+  transform: translateX(-20%) rotate(-14deg);
+}
+.hm.gold .mg {
+  background: linear-gradient(150deg, #fff8b3, #f5a623 50%, #d48806);
+  box-shadow: inset -6px -8px 0 rgba(0,0,0,0.25), 0 0 24px 6px rgba(245, 166, 35, 0.85);
+  animation: glow 1.2s ease-in-out infinite alternate;
+}
+@keyframes glow { to { box-shadow: inset -6px -8px 0 rgba(0,0,0,0.25), 0 0 35px 12px rgba(255, 230, 90, 1); } }
+.hm.pick { animation: none; pointer-events: none; }
+.hm.pick .mg { animation: drop 0.9s ease-in forwards; }
+@keyframes swing { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
+@keyframes drop { to { transform: translateY(180px) rotate(45deg); opacity: 0; } }
+
+/* Título e Chamada do Pomar */
+.titleblock { position: relative; z-index: 2; margin-bottom: 20px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-rune); font-size: 1.05rem; letter-spacing: 0.12em;
+  color: var(--amber); background: rgba(245, 166, 35, 0.1);
+  padding: 4px 14px; border-radius: 999px; border: 1px solid rgba(245, 166, 35, 0.35);
+  margin-bottom: 10px;
+}
+.hero h1 {
+  margin: 0; font-family: var(--font-gothic);
+  font-size: clamp(2.8rem, 8vw, 5.2rem);
+  line-height: 0.95; letter-spacing: 0.02em;
+  color: var(--ink-bright);
+  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.8), 0 0 25px rgba(245, 166, 35, 0.3);
+}
+.hero h1 button {
+  all: unset; cursor: pointer; color: inherit; transition: color 0.2s;
+}
+.hero h1 button:hover { color: var(--amber); }
+
+.hero .subtitle {
+  font-family: var(--font-title); font-size: clamp(1rem, 3vw, 1.4rem);
+  color: var(--amber); margin: 6px 0 14px; letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.hero .tag {
+  max-width: 60ch; margin: 0 auto 16px;
+  color: var(--muted); font-size: 0.95rem; line-height: 1.5;
+}
+
+/* Chips de Status */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 12px 0 22px; }
+.chip {
+  background: var(--surface); color: var(--ink);
+  border: 1px solid var(--border); border-radius: 999px;
+  padding: 5px 14px; font-weight: 600; font-size: 0.85rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+button.chip { cursor: pointer; transition: all 0.2s; }
+button.chip:hover { border-color: var(--amber); color: var(--amber); }
+
+/* Botão Principal do Portão */
+.orchard-main-cta {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: linear-gradient(180deg, #ff8c2b, #d94e00);
+  color: #fff; text-decoration: none;
+  font-family: var(--font-title); font-size: 1.15rem; font-weight: 700;
+  letter-spacing: 0.05em; padding: 14px 34px; border-radius: 12px;
+  border: 1px solid rgba(255, 235, 180, 0.4);
+  box-shadow: 0 8px 24px rgba(217, 78, 0, 0.45), 0 0 18px rgba(255, 140, 43, 0.3);
+  cursor: pointer; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-bottom: 24px;
+}
+.orchard-main-cta:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(217, 78, 0, 0.6), 0 0 26px rgba(255, 140, 43, 0.5);
+  background: linear-gradient(180deg, #ffa043, #e65500);
+}
+.orchard-main-cta .cta-icon { width: 24px; height: 24px; }
+
+/* HUD / Barra de Status do Jogador no Topo */
+.stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  max-width: 780px; margin: 0 auto;
+  background: rgba(22, 16, 31, 0.95);
+  border: 1px solid var(--border);
+  border-radius: 16px; padding: 12px 18px;
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(8px);
+}
+@media (max-width: 640px) { .stats { grid-template-columns: 1fr; gap: 10px; } }
+
+.stats .cell {
+  display: flex; align-items: center; gap: 12px; text-align: left;
+}
+.stats .cell.mid { justify-content: center; }
+.stats .cell small { display: block; color: var(--muted); font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.stats .num {
+  all: unset; cursor: pointer; font-family: var(--font-pixel); font-size: 1.45rem;
+  font-weight: 700; color: var(--amber); transition: color 0.2s;
+}
+.stats .num:hover { color: var(--ink-bright); }
+.stats .lnk {
+  all: unset; cursor: pointer; font-weight: 700; color: var(--ink-bright);
+  font-size: 0.95rem; display: block;
+}
+.stats .lnk.sub { color: var(--amber); font-size: 0.78rem; margin-top: 2px; }
+.stats .lnk:hover { text-decoration: underline; }
+
+.stats .grow { flex: 1; min-width: 0; }
+.xp {
+  height: 8px; background: rgba(0, 0, 0, 0.6); border-radius: 999px;
+  overflow: hidden; border: 1px solid var(--border); margin: 4px 0 2px;
+}
+.xp i {
+  display: block; height: 100%; border-radius: 999px;
+  background: linear-gradient(90deg, var(--witch-purple), var(--amber));
+  box-shadow: 0 0 8px rgba(245, 166, 35, 0.6);
+  transition: width 0.4s ease;
+}
+.xpt { font-size: 0.74rem; color: var(--muted); font-family: var(--font-pixel); }
+
+/* Avatar Canvas */
+.av {
+  image-rendering: pixelated; border-radius: 8px;
+  border: 1px solid var(--border-light);
+  background: var(--bg-deep);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+.av.big { width: 64px; height: 80px; }
+.av.tree { width: 72px; height: 72px; }
+

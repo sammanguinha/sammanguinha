@@ -12,7 +12,7 @@ function sourceView(html,read){
   html=html.replace(/<script\s+src="(js\/[^"?]+)\?v=(?:25|26)"\s*><\/script>/gi,(_,file)=>{
     scripts++;return '<script>'+read(file)+'</script>';
   });
-  if(styles!==12||scripts!==14)throw new Error('V25 source view: expected 12 CSS and 14 JS files, got '+styles+'/'+scripts);
+  if(styles!==19||scripts!==14)throw new Error('V26 source view: expected 19 CSS and 14 JS files, got '+styles+'/'+scripts);
   return html;
 }
 module.exports={sourceView};
