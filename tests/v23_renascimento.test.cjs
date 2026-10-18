@@ -32,7 +32,7 @@ test('root tower immobilizes its target and movement code respects the root stat
  const s=game('root',[target]);
  towerTick()(s,.016);
  assert.ok(target.rooted>=1.8);
- const source=slice(html,'s.pe.forEach(p=>{p.slow=Math.max(0,(p.slow||0)-dt);','s.it.forEach(i=>i.y+=i.vy*dt);');
+ const source=slice(html,'s.pe.forEach(p=>{\n   p.slow=Math.max(0,(p.slow||0)-dt);','s.it.forEach(i=>i.y+=i.vy*dt);');
  const move=vm.runInNewContext('(function(s,dt){'+source+'})',{GW:360,GH:480,orchardBurst:()=>{}});
  const previous=target.y;
  move(s,.4);assert.equal(target.y,previous,'root stops actual vertical movement');
@@ -42,7 +42,7 @@ test('healer genuinely restores injured ally, but not above its maximum HP',()=>
  const healer={kind:'healer',x:180,y:145,vy:0,hp:3,maxHp:3,healCd:.01,phase:0};
  const hurt={kind:'beetle',x:174,y:156,vy:0,hp:1,maxHp:2,phase:0};
  const s=game('arrow',[healer,hurt]);s.towers=[];
- const source=slice(html,'s.pe.forEach(p=>{p.slow=Math.max(0,(p.slow||0)-dt);','s.it.forEach(i=>i.y+=i.vy*dt);');
+ const source=slice(html,'s.pe.forEach(p=>{\n   p.slow=Math.max(0,(p.slow||0)-dt);','s.it.forEach(i=>i.y+=i.vy*dt);');
  const move=vm.runInNewContext('(function(s,dt){'+source+'})',{GW:360,GH:480,orchardBurst:()=>{}});
  move(s,.1);assert.equal(hurt.hp,2);
  healer.healCd=.01;move(s,.1);assert.equal(hurt.hp,2,'cannot heal past max HP');
@@ -100,6 +100,6 @@ test('visual overhaul has functional accessibility toggles, no direct secret key
 test('existing server-ranked flow remains unmodified',()=>{
  assert.ok(html.includes('if(gDifficulty==="normal")gRun=await rpc("game_start"'));
  assert.ok(html.includes('rpc("game_finish",{p_handle:me,p_token:tok,p_run:gRun,p_score:s.score'));
- assert.ok(html.includes('sm22_house_save'));
- assert.ok(html.includes('sm_live_send'));
+ assert.ok(read('casa_sync_v22.js').includes('sm22_house_save'));
+ assert.ok(read('pomar_ao_vivo_v20.js').includes('sm_live_send'));
 });
