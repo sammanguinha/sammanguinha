@@ -200,7 +200,8 @@ rooms.ruinas.actors.push({id:'toEstufa',x:20.5,y:11,type:'door',epic:'gate',min:
   casa:{label:'Seu Refúgio',map:'vila',id:'profile'},
   defesa:{label:'Arena de Defesa',map:'vila',id:'defesa'},
   praca:{label:'Praça Ao Vivo',map:'vila',id:'praca'},
-  floresta:{label:'Trilha Encantada',map:'vila',id:'forest'}
+  floresta:{label:'Trilha Encantada',map:'vila',id:'forest'},
+  quadro:{label:'Quadro de Contratos',map:'vila',id:'guildBoard'}
  };
  let guideKey='guardiao';
  function guideTarget(){const item=guide[guideKey];return item?{...item,actor:rooms[item.map]?.actors.find(a=>a.id===item.id)}:null}
