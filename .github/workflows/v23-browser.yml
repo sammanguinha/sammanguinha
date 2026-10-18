@@ -1,0 +1,31 @@
+name: V23 - Navegador e celular
+on:
+  push:
+    branches: [dev/v23-renascimento-do-pomar]
+    paths:
+      - 'index.html'
+      - 'mundo_pomar.js'
+      - 'renascimento_v23.css'
+      - 'renascimento_v23.js'
+      - 'tests/v23_browser.cjs'
+      - '.github/workflows/v23-browser.yml'
+  workflow_dispatch:
+jobs:
+  chromium:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright@1.56.1
+      - run: npx playwright install chromium --with-deps
+      - name: Testar mundo, Mira, minimapa e acessibilidade em desktop e celular
+        run: node tests/v23_browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v23-screenshots-vila
+          path: test-artifacts/
+          if-no-files-found: ignore
