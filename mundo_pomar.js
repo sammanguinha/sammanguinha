@@ -526,7 +526,7 @@ function drawEpicActor(a,x,y,bob){if(a.epic==='enemy')drawEpicEnemy(a,x,y,bob);
  function v23Sprite(name){if(!v23SpriteCache.has(name)){const img=new Image();img.src='sprites/'+name+'.svg';v23SpriteCache.set(name,img)}return v23SpriteCache.get(name)}
  function v23DrawAnimation(name,x,y,w,h,bob=0){
    const img=v23Sprite(name);if(!img.complete||!img.naturalWidth)return false;
-   const frames=4,fw=img.naturalWidth/frames,reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches||document.documentElement.classList.contains('sm165-lowfx');
+   const frames=4,fw=img.naturalWidth/frames,reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches||document.documentElement.classList.contains('sm165-lowfx')||document.documentElement.classList.contains('v23-reduce-motion');
    const frame=reduce?0:Math.floor(clock*3+x*.025)%frames;
    ctx.save();ctx.imageSmoothingEnabled=false;ctx.drawImage(img,frame*fw,0,fw,img.naturalHeight,x-w/2,y-h*.74+bob,w,h);ctx.restore();return true
  }
