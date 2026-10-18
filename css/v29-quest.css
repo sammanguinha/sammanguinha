@@ -176,3 +176,10 @@ html[data-v27-theme=eclipse] #rpgDlg #v29ReadClues{
  #rpgDlg .v29-progress-track>i,#rpgDlg .r12-choice{transition:none!important}
  #rpgDlg .r12-choice:hover{transform:none!important}
 }
+
+/* Older RPG rules hide unrecognized sidebar cards; keep the playable journal discoverable. */
+#rpgDlg .r12-aside #v29Chronicle{
+ display:grid!important;visibility:visible!important;
+ position:relative!important;height:auto!important;
+ opacity:1!important;max-height:none!important;min-height:0!important;
+}
