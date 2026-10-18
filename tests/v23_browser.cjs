@@ -63,13 +63,43 @@ const walk=async(page,keys,duration)=>{
    assert.equal(state.mission.started,true,'Mira quest starts by interacting in world: '+JSON.stringify(state));
    await page.locator('#r12TalkNext').click();
    assert.ok((await page.locator('#r12V23Quest').textContent()).includes('0/3'));
+   // Finish the whole three-lantern quest using real player movement and interaction.
+   await page.locator('#r12Canvas').focus();
+   await walk(page,['ArrowUp'],660);
+   await page.keyboard.press('e');
+   await page.waitForTimeout(100);
+   state=await page.evaluate(()=>window.Sam23World.snapshot());
+   assert.ok(state.mission.lit.includes('v23LampNorth'),'north lamp lit by real interaction: '+JSON.stringify(state));
+   await page.locator('#r12TalkNext').click();
+   await page.locator('#r12Canvas').focus();
+   await walk(page,['ArrowRight'],1620);
+   await page.keyboard.press('e');
+   await page.waitForTimeout(100);
+   state=await page.evaluate(()=>window.Sam23World.snapshot());
+   assert.ok(state.mission.lit.includes('v23LampEast'),'east lamp lit by real interaction: '+JSON.stringify(state));
+   await page.locator('#r12TalkNext').click();
+   await page.locator('#r12Canvas').focus();
+   await walk(page,['ArrowDown'],1120);
+   await page.keyboard.press('e');
+   await page.waitForTimeout(100);
+   state=await page.evaluate(()=>window.Sam23World.snapshot());
+   assert.ok(state.mission.lit.includes('v23LampSouth'),'south lamp lit by real interaction: '+JSON.stringify(state));
+   assert.equal(state.mission.rewarded,true,'quest completion saved in world state');
+   await page.locator('#r12TalkNext').click();
+   const wallet=await page.evaluate(()=>JSON.parse(localStorage.getItem('sg_extras_v1_v23tester')||'null'));
+   assert.ok(wallet?.seeds>=40,'40 local seeds granted: '+JSON.stringify(wallet));
+   const before=wallet.seeds;
+   await page.keyboard.press('e');
+   await page.waitForTimeout(100);
+   const again=await page.evaluate(()=>JSON.parse(localStorage.getItem('sg_extras_v1_v23tester')||'null'));
+   assert.equal(again?.seeds,before,'quest reward cannot be claimed twice');
    const assets=await page.evaluate(()=>performance.getEntriesByType('resource').filter(x=>x.name.includes('v23_mira.svg')).length);
    assert.ok(assets>=1,'animated Mira sprite fetched during world render');
    await page.locator('#r12V23Return').click();
    assert.equal((await page.evaluate(()=>window.Sam23World.snapshot())).map,'vila');
    await page.screenshot({path:(fs.mkdirSync(path.join(root,'test-artifacts'),{recursive:true}),path.join(root,'test-artifacts','v23-vila-'+device.name+'.png')),animations:'disabled'});
    assert.equal(errors.length,0,device.name+' unexpected JS errors: '+errors.join(' | '));
-   console.log(device.name+' PASS: Hub, accessibility, map, Mira NPC quest, sprite animation asset, 0 JavaScript errors.');
+   console.log(device.name+' PASS: Hub, accessibility, map, Mira NPC and three lanterns completed, local reward once, sprite animation asset, 0 JS errors.');
    await page.close();
   }
  }finally{await browser.close();server.close()}
