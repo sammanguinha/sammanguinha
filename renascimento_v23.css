@@ -32,3 +32,21 @@ body{background:radial-gradient(ellipse at 20% 0%,#173d3b 0,transparent 32%),rad
 @media(max-width:540px){.r23-travel-guide{padding:12px}.r23-guide-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.r23-guide-actions button{padding:8px 6px}.r23-settings-toggle{right:8px;bottom:78px}.r23-settings-panel{right:8px;bottom:131px}.r12-hud span{font-size:.69rem!important;padding:4px 7px!important}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.r23-guide-actions button{transition:none!important;transform:none!important}}
 .sm165-lowfx .r23-guide-actions button{transition:none}
+
+/* Um mesmo vocabulário visual para portal, batalha, refúgio, personagem e comunidade. */
+#home .rpg-portal-section,.pane .panel,#houseDlg .sm21-house-stage,#houseDlg .sm21-house-sidebar,#murDlg #sm20Live{
+  border-color:#ad9bc6;box-shadow:0 9px 26px #0005,inset 0 1px #ffffff12
+}
+#home .rpg-portal-section{background:radial-gradient(circle at 85% 8%,#67518138,transparent 39%),linear-gradient(143deg,#1b2a36,#232035);border-radius:21px}
+#home .portal-card{border-color:#9988ad;background:linear-gradient(160deg,#243444,#242239);box-shadow:0 7px 20px #050b1380;transition:transform .17s,box-shadow .17s,border-color .17s}
+#home .portal-card:hover,#home .portal-card:focus-visible{transform:translateY(-3px);border-color:#efd0a1;box-shadow:0 12px 27px #0009}
+#home .portal-card h3{color:#ffe0af}
+#gameDlg .panel{background:radial-gradient(circle at 55% 0%,#38486b31,transparent 45%),linear-gradient(145deg,#1a2433,#191c2c);border-radius:16px}
+#gameDlg .sm21-tactics,#gameDlg .sm21-jobs{box-shadow:0 7px 22px #0005}
+#houseDlg .sm21-house-top{border-color:#d9bd93;background:radial-gradient(circle at 90% 10%,#9b7eb451,transparent 43%),linear-gradient(110deg,#233c42,#2b2643)}
+#houseDlg .sm21-house-sidebar{background:linear-gradient(152deg,#252641,#171f30)}
+#murDlg #sm20Live{background:radial-gradient(circle at 95% 5%,#54477578,transparent 38%),linear-gradient(160deg,#152e38,#211d34)}
+#profDlg .panel,.pane .inventory-grid{border-color:#aa98c0}
+.pane .ptitle{letter-spacing:.02em;text-shadow:0 2px 8px #070b1699}
+@media(prefers-reduced-motion:reduce){#home .portal-card{transition:none}#home .portal-card:hover{transform:none}}
+.sm165-lowfx #home .portal-card{transition:none}
