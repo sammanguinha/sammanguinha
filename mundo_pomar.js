@@ -740,14 +740,14 @@ function refreshEpicAvatar(){const v=visualData(),sig=JSON.stringify([v,epic().e
 }
 function renderAvatarToCanvas(target,w,h,inBattle=false){if(!target)return;refreshEpicAvatar();const g=target.getContext('2d');g.clearRect(0,0,w,h);g.imageSmoothingEnabled=false;if(!epicAvatarCanvas)return;
  const ratio=Math.min(w/24,h/34)*.91,szW=24*ratio,szH=34*ratio;g.drawImage(epicAvatarCanvas,(w-szW)/2,(h-szH)/2,szW,szH)}
-function drawEpicAvatar(x,y){refreshEpicAvatar();const moving=Math.abs(player.vx)+Math.abs(player.vy)>.1,bob=moving?Math.sin(clock*14)*1.6:Math.sin(clock*2.5)*.55;
+function drawEpicAvatar(x,y){refreshEpicAvatar();const moving=Math.abs(player.vx)+Math.abs(player.vy)>.1,cadence=keys.run?21:14,bob=moving?Math.sin(clock*cadence)*(keys.run?2.6:1.6):Math.sin(clock*2.5)*.55;
  ctx.save();ctx.fillStyle='#121925aa';ctx.beginPath();ctx.ellipse(x,y+10,12,4,0,0,Math.PI*2);ctx.fill();ctx.translate(x,y-14+bob);
  if(player.vx<-.1)ctx.scale(-1,1);
- const sway=moving?Math.sin(clock*14)*.036:Math.sin(clock*2)*.012;ctx.rotate(sway);
+ const sway=moving?Math.sin(clock*cadence)*(keys.run?.065:.036):Math.sin(clock*2)*.012;ctx.rotate(sway);
  ctx.imageSmoothingEnabled=false;
  if(epicVisual.equipped?.aura){ctx.strokeStyle=epicVisual.equipped.aura.includes('ember')?'#ffc05baa':epicVisual.equipped.aura.includes('aurora')?'#6ff9d5aa':'#9fbcf0aa';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(0,-2,25+Math.sin(clock*5)*2,27,0,0,Math.PI*2);ctx.stroke()}
- if(epicAvatarCanvas)ctx.drawImage(epicAvatarCanvas,-21,-39,42,60);
- if(moving){const foot=Math.sin(clock*14)*4;ctx.fillStyle='#44332e';ctx.fillRect(-10,19+foot,7,5);ctx.fillRect(4,19-foot,7,5)}
+ if(epicAvatarCanvas)ctx.drawImage(epicAvatarCanvas,-21,-39,42,60);if(keys.run&&moving){ctx.fillStyle='#caf2b888';ctx.fillRect(-14,25,6,3);ctx.fillRect(8,23,7,3)}
+ if(moving){const foot=Math.sin(clock*cadence)*(keys.run?6:4);ctx.fillStyle='#44332e';ctx.fillRect(-10,19+foot,7,5);ctx.fillRect(4,19-foot,7,5)}
  if(epicVisual.equipped?.companion){ctx.shadowColor=epicVisual.equipped.companion.includes('owl')?'#b5a2ff':'#f8f39b';ctx.shadowBlur=10;ctx.fillStyle=epicVisual.equipped.companion.includes('owl')?'#ac99ff':'#e8ed73';ctx.beginPath();ctx.arc(23,-24+Math.sin(clock*7)*3,3.5,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0}
  ctx.restore();}
 function drawEpicEnemy(a,x,y,bob){const type=epicMonsters[a.id];const m=EPIC_ENEMIES[type];if(!m)return;ctx.save();ctx.fillStyle='#160d2ba4';ctx.beginPath();ctx.ellipse(x,y+17,20,6,0,0,Math.PI*2);ctx.fill();ctx.shadowColor= m.element==='shadow'?'#d485fc':m.element==='nature'?'#79db6f':'#e3d683';ctx.shadowBlur=8+Math.sin(clock*3)*3;pixelSprite(m.sprite,x,y-16+bob,70,65);ctx.restore()}
