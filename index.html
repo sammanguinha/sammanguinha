@@ -360,8 +360,8 @@
 <section class="pane" id="profDlg" hidden aria-label="Personagem e Guarda-Roupa">
   <div class="map-header">
     <div>
-      <h2 style="font-family:var(--font-gothic);font-size:2rem;color:var(--amber);margin:0">Personagem & Guarda-Roupa</h2>
-      <p style="margin:4px 0 0;font-size:0.86rem;color:var(--muted)">Forje a aparência e equipamentos do seu personagem-manga. Visual salvo no servidor e persistente.</p>
+      <h2>Personagem & Guarda-Roupa</h2>
+      <p>Forje a aparência e equipamentos do seu personagem-manga. Visual salvo no servidor e persistente.</p>
     </div>
     <div id="pLvl" class="map-progress-pill">Nível 1 • Semente</div>
   </div>
@@ -744,7 +744,7 @@
  </section>
  <div id="sm21House" class="sm21-house-layout">
   <section class="sm21-house-stage" aria-label="Editor visual da casa">
-   <canvas id="sm21HouseCanvas" width="540" height="390" role="img" aria-label="Planta da casa: toque nos quadrados para decorar" style="max-width:100%;height:auto"></canvas>
+   <canvas id="sm21HouseCanvas" width="540" height="390" role="img" aria-label="Planta da casa: toque nos quadrados para decorar"></canvas>
    <div class="sm21-house-tools" role="group" aria-label="Ferramentas de decoração">
     <button type="button" data-house-mode="place" aria-pressed="true">🪑 Posicionar</button><button type="button" data-house-mode="move" aria-pressed="false">↔️ Recolher</button><button type="button" data-house-mode="erase" aria-pressed="false">📦 Guardar</button>
    </div>
@@ -762,10 +762,10 @@
 </section>
 <section class="pane" id="gameDlg" hidden aria-label="Defesa do Pomar">
   <h2 class="ptitle"><svg class="ic xl"><use href="#i-game"/></svg>Defesa do Pomar Amaldiçoado</h2>
-  <div class="panel" style="text-align:center">
+  <div class="panel v27-defense-panel">
     <button type="button" id="gMobileStart" class="btn-gothic g-mobile-start" hidden>▶ Iniciar Defesa do Pomar</button><div class="sm17-defense-actions"><button id="sm17PauseBtn" type="button" class="btn-gothic alt" aria-pressed="false" disabled>⏸ Pausar</button><span id="sm17DefenseStatus" role="status" aria-live="polite">No jogo: ← → / A D para mover, Espaço para atirar; no celular use os botões.</span></div>
-    <div class="sm21-jobs" id="sm21Jobs" role="group" aria-label="Profissões de combate"><h3>⚔️ Escolha seu Ofício de Batalha</h3><p>Três funções com vantagens diferentes. Todas usam o mesmo ranking no modo Normal.</p><div class="sm21-job-grid"><button type="button" data-sm21-job="guardian" aria-pressed="true"><b>🛡️ Sentinela das Raízes</b><span>+1 escudo · esquiva a cada 6s · restauração por 4 energias</span></button><button type="button" data-sm21-job="ranger" aria-pressed="false"><b>🏹 Patrulheiro da Colheita</b><span>Mais mobilidade e disparos mais rápidos</span></button><button type="button" data-sm21-job="mage" aria-pressed="false"><b>🌙 Arcanista do Eclipse</b><span>Explosão a cada 9s · Runa de Gelo mais rápida</span></button></div></div><div style="position:relative;display:inline-block;max-width:100%;border-radius:12px;overflow:hidden;border:2px solid var(--border);box-shadow:var(--shadow-lg)">
-      <canvas id="gCv" width="360" height="480" role="img" aria-label="Jogo Defesa do Pomar. Use as setas ou A e D para mover e Espaço para atirar; controles na tela para celular" style="background:#000;display:block;max-width:100%;height:auto"></canvas><div id="sm17PauseCover" class="sm17-pause-cover" hidden><div><b>⏸ PARTIDA PAUSADA</b><p>Respire, a mangueira continua esperando.</p><button type="button" class="btn-gothic" id="sm17ResumeOverlay">▶ CONTINUAR</button></div></div>
+    <div class="sm21-jobs" id="sm21Jobs" role="group" aria-label="Profissões de combate"><h3>⚔️ Escolha seu Ofício de Batalha</h3><p>Três funções com vantagens diferentes. Todas usam o mesmo ranking no modo Normal.</p><div class="sm21-job-grid"><button type="button" data-sm21-job="guardian" aria-pressed="true"><b>🛡️ Sentinela das Raízes</b><span>+1 escudo · esquiva a cada 6s · restauração por 4 energias</span></button><button type="button" data-sm21-job="ranger" aria-pressed="false"><b>🏹 Patrulheiro da Colheita</b><span>Mais mobilidade e disparos mais rápidos</span></button><button type="button" data-sm21-job="mage" aria-pressed="false"><b>🌙 Arcanista do Eclipse</b><span>Explosão a cada 9s · Runa de Gelo mais rápida</span></button></div></div><div class="v27-defense-stage">
+      <canvas id="gCv" width="360" height="480" role="img" aria-label="Jogo Defesa do Pomar. Use as setas ou A e D para mover e Espaço para atirar; controles na tela para celular"></canvas><div id="sm17PauseCover" class="sm17-pause-cover" hidden><div><b>⏸ PARTIDA PAUSADA</b><p>Respire, a mangueira continua esperando.</p><button type="button" class="btn-gothic" id="sm17ResumeOverlay">▶ CONTINUAR</button></div></div>
       <div id="gOv" class="gov" style="position:absolute;inset:0;background:rgba(10,7,14,0.92);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center">
         <p class="who" id="gOvT" style="font-family:var(--font-gothic);font-size:2rem;color:var(--amber);margin:0 0 10px">Defenda as Árvores!</p>
         <p id="gOvP" style="font-size:0.86rem;color:var(--ink);line-height:1.45;margin:0 0 16px">Pragas descem do céu sombrio. Atire mangas para derrubá-las e colha as que caem. Sobreviva a 5 ondas.</p>
@@ -778,19 +778,19 @@
         </div>
       </div>
     </div>
-    <section class="sm21-tactics" aria-label="Estratégia de defesa"><div class="sm21-tactics-head"><h3>🛡️ Conselho de Batalha</h3><p id="sm21TacticalStatus" role="status" aria-live="polite">Comece uma partida para construir defesas. Energia ganha eliminando pragas.</p><strong id="sm21Energy">✦ 0 energias</strong></div><div id="sm21Lanes" class="sm21-lanes" role="group" aria-label="Escolher rota de defesa"><button type="button" data-sm21-lane="0" aria-pressed="true">🌳 Rota 1</button><button type="button" data-sm21-lane="1" aria-pressed="false">🌳 Rota 2</button><button type="button" data-sm21-lane="2" aria-pressed="false">🌳 Rota 3</button></div><div class="sm21-tower-buttons"><button type="button" data-sm21-build="arrow" disabled><b>🏹 Torre de Mangas</b><span>3 energia · dano automático na rota</span></button><button type="button" data-sm21-build="frost" disabled><b>❄️ Runa de Gelo</b><span>4 energia · lentidão e dano na rota</span></button><button type="button" data-sm21-build="root" disabled><b>🌿 Raiz Guardiã</b><span>5 energia · prende os inimigos da rota</span></button><button type="button" data-sm21-build="solar" disabled><b>☀️ Totem Solar</b><span>6 energia · dano em área entre rotas</span></button><button type="button" data-sm21-build="heal" disabled><b>🌿 Restauração</b><span>5 energia · recupera uma árvore destruída</span></button></div><div class="sm22-upgrade-tools"><button id="sm22Upgrade" type="button" disabled>⬆ Melhorar torre · 3 energia</button><button id="sm22Priority" type="button" disabled>🎯 Alvo: mais próximo</button><span id="sm22LaneDetail" aria-live="polite">Selecione uma rota para gerenciar sua torre.</span></div><div class="sm21-tactical-help">Estratégia: cada rota aceita uma torre. Inimigos derrotados abastecem energia; escolha onde investir. Use <b>1–5</b> para trocar de rota, <b>R</b> para restaurar. Pausa automática entre ondas.</div></section><div class="sm20-defense-hint"><strong>⚡ Habilidades especiais</strong><span>Q: Impulso evasivo · E: Explosão astral · Combo aumenta seus pontos. No celular, use os novos botões.</span></div><div class="gctl" style="display:flex;gap:12px;justify-content:center;margin:16px 0">
-      <button type="button" class="btn-gothic alt" id="gL" style="padding:12px 24px">◀ Esquerda</button>
-      <button type="button" class="btn-gothic" id="gF" style="padding:12px 28px">🥭 Atirar</button>
-      <button type="button" class="btn-gothic alt" id="gR" style="padding:12px 24px">Direita ▶</button>
+    <section class="sm21-tactics" aria-label="Estratégia de defesa"><div class="sm21-tactics-head"><h3>🛡️ Conselho de Batalha</h3><p id="sm21TacticalStatus" role="status" aria-live="polite">Comece uma partida para construir defesas. Energia ganha eliminando pragas.</p><strong id="sm21Energy">✦ 0 energias</strong></div><div id="sm21Lanes" class="sm21-lanes" role="group" aria-label="Escolher rota de defesa"><button type="button" data-sm21-lane="0" aria-pressed="true">🌳 Rota 1</button><button type="button" data-sm21-lane="1" aria-pressed="false">🌳 Rota 2</button><button type="button" data-sm21-lane="2" aria-pressed="false">🌳 Rota 3</button></div><div class="sm21-tower-buttons"><button type="button" data-sm21-build="arrow" disabled><b>🏹 Torre de Mangas</b><span>3 energia · dano automático na rota</span></button><button type="button" data-sm21-build="frost" disabled><b>❄️ Runa de Gelo</b><span>4 energia · lentidão e dano na rota</span></button><button type="button" data-sm21-build="root" disabled><b>🌿 Raiz Guardiã</b><span>5 energia · prende os inimigos da rota</span></button><button type="button" data-sm21-build="solar" disabled><b>☀️ Totem Solar</b><span>6 energia · dano em área entre rotas</span></button><button type="button" data-sm21-build="heal" disabled><b>🌿 Restauração</b><span>5 energia · recupera uma árvore destruída</span></button></div><div class="sm22-upgrade-tools"><button id="sm22Upgrade" type="button" disabled>⬆ Melhorar torre · 3 energia</button><button id="sm22Priority" type="button" disabled>🎯 Alvo: mais próximo</button><span id="sm22LaneDetail" aria-live="polite">Selecione uma rota para gerenciar sua torre.</span></div><div class="sm21-tactical-help">Estratégia: cada rota aceita uma torre. Inimigos derrotados abastecem energia; escolha onde investir. Use <b>1–5</b> para trocar de rota, <b>R</b> para restaurar. Pausa automática entre ondas.</div></section><div class="sm20-defense-hint"><strong>⚡ Habilidades especiais</strong><span>Q: Impulso evasivo · E: Explosão astral · Combo aumenta seus pontos. No celular, use os novos botões.</span></div><div class="gctl">
+      <button type="button" class="btn-gothic alt" id="gL">◀ Esquerda</button>
+      <button type="button" class="btn-gothic" id="gF">🥭 Atirar</button>
+      <button type="button" class="btn-gothic alt" id="gR">Direita ▶</button>
     </div><div class="sm20-skills"><button type="button" id="sm20Dash" aria-label="Usar impulso evasivo">💨 Impulso <span id="sm20DashCd">Pronto</span></button><button type="button" id="sm20Nova" aria-label="Usar explosão astral">💥 Explosão <span id="sm20NovaCd">Pronto</span></button><span id="sm20Combo" aria-live="polite">Combo x1</span></div>
-    <label class="chk" style="display:inline-flex;align-items:center;gap:6px;font-size:0.85rem;color:var(--muted);cursor:pointer">
+    <label class="chk v27-defense-sound">
       <input type="checkbox" id="gSnd"> Efeitos sonoros místicos
     </label>
-    <div class="panel" id="orchardExtras" style="margin-top:18px;text-align:left">
-      <h3 style="color:var(--amber);font-family:var(--font-title);margin:0 0 8px">🌟 Novidades do Pomar</h3>
+    <div class="panel v27-extra-panel" id="orchardExtras">
+      <h3 class="v27-extra-heading">🌟 Novidades do Pomar</h3>
       <p class="sm">Economia de sementes local deste navegador. Mangas e ranking oficiais continuam no Supabase.</p>
-      <p id="orchardWallet" style="font-weight:800;color:var(--gold)"></p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+      <p id="orchardWallet"></p>
+      <div class="v27-extra-tabs">
         <button type="button" class="btn-gothic alt" data-extras-tab="shop">🛒 Loja</button>
         <button type="button" class="btn-gothic alt" data-extras-tab="daily">📅 Missões diárias</button>
         <button type="button" class="btn-gothic alt" data-extras-tab="pets">🐾 Mascotes</button>
@@ -798,9 +798,9 @@
       <div id="orchardExtrasBody" aria-live="polite"></div>
       <p id="infiniteRecord" class="sm"></p>
     </div>
-    <div style="margin-top:24px">
-      <h3 style="font-family:var(--font-title);font-size:1.15rem;color:var(--amber);margin-bottom:10px">Recordes dos Defensores</h3>
-      <ol class="list rk" id="gRank" style="max-width:480px;margin:0 auto"></ol>
+    <div class="v27-defense-records">
+      <h3 class="v27-record-heading">Recordes dos Defensores</h3>
+      <ol class="list rk" id="gRank"></ol>
     </div>
   </div>
 </section>
