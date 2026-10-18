@@ -183,3 +183,13 @@ html[data-v27-theme=eclipse] #rpgDlg #v29ReadClues{
  position:relative!important;height:auto!important;
  opacity:1!important;max-height:none!important;min-height:0!important;
 }
+
+/* The V28 map's fullscreen CTA must never block puzzle options or NPC dialogue.
+   Keep the full-screen entry in the header while a conversation is active. */
+#rpgDlg .r12-frame:has(#r12Bubble:not([hidden]))>.sm-rpg-map-enter,
+#rpgDlg:has(#r13Combat:not([hidden])) .sm-rpg-map-enter,
+#rpgDlg:has(#r13ClassSelect:not([hidden])) .sm-rpg-map-enter{display:none!important}
+#rpgDlg .r12-frame #r12Bubble:not([hidden]){
+ position:absolute;z-index:250!important;
+ isolation:isolate;pointer-events:auto;
+}
