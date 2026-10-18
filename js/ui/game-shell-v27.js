@@ -39,6 +39,7 @@
    const host=$(id)?.querySelector(selector);
    if(host){host.classList.add('v27-theme-anchor');host.append(themeButton())}
  }
+ setTheme(theme);
  function meter(label,icon,max=100){
    const stat=mk('div','v27-stat');
    const caption=mk('span','v27-stat-label',icon+' '+label);
@@ -114,9 +115,9 @@
  function paint(state){
    if(state.mode==='rpgDlg'&&state.rpg&&rHud){
      const x=state.rpg;
-     update(rStats.hp,x.hp,Math.max(32,x.hp));
-     update(rStats.mp,x.mp,Math.max(12,x.mp));
-     update(rStats.stamina,x.stamina,140);
+     update(rStats.hp,x.hp,x.maxHp);
+     update(rStats.mp,x.mp,x.maxMp);
+     update(rStats.stamina,x.stamina,x.maxStamina);
      rStats.gold.textContent='🪙 '+x.gold+' moedas · Nv. '+x.level;
      rStats.region.textContent=x.region.toUpperCase().replace(/_/g,' ');
      rHud.el.dataset.empty='false';
