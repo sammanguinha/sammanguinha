@@ -62,7 +62,7 @@ const server=http.createServer((req,res)=>{let file=path.resolve(root,'.'+decode
   s=await page.evaluate(()=>window.Sam21Defense.snapshot());
   assert.equal(s.towers[0].priority,'strongest','targeting preference changed through real UI');
     assert.equal(errs.length,0,'no runtime exceptions: '+errs.join('; '));
-  console.log('V22 BATTLE/UPGRADE PASS wave=+s.wave+' towerShots='+s.towers[0].shots+' kills='+s.kills+' energy='+s.energy+' errors='+errs.length);
+  console.log('V22 BATTLE/UPGRADE PASS wave='+s.wave+' towerShots='+s.towers[0].shots+' kills='+s.kills+' energy='+s.energy+' errors='+errs.length);
   await page.close();
  }finally{await browser.close();server.close()}
 })().catch(e=>{console.error(e.stack||e);server.close();process.exitCode=1});
