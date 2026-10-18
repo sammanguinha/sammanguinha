@@ -1,0 +1,68 @@
+name: V26 · Motor separado · Testes e pacote (sem deploy)
+on:
+  push:
+    branches: [dev/v26-motores-modulares]
+    paths:
+      - 'index.html'
+      - 'css/**'
+      - 'js/**'
+      - 'tests/**'
+      - 'mundo_pomar.js'
+      - 'architecture-v26.json'
+      - 'architecture-v25.json'
+      - '.github/workflows/v26-motores.yml'
+  pull_request:
+    branches: [dev/v25-arquitetura-modular]
+  workflow_dispatch:
+jobs:
+  logica:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Compilar scripts e validar integridade, salvamentos e regras de jogo
+        run: |
+          node --test tests/v26_modules.test.cjs tests/v25_architecture.test.cjs tests/v24_fullscreen.test.cjs tests/v24_world_shop.test.cjs tests/v23_vila_defesa.test.cjs tests/v23_renascimento.test.cjs tests/v22_defense.test.cjs tests/v22_fundacao.test.cjs tests/v21_reinos_pomar.test.cjs tests/v20_pomar_vivo.test.cjs
+  navegador:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar navegador Chromium
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Verificar CSS+JS externos, desktop e mobile
+        run: node tests/v25_browser.cjs
+      - name: Verificar loja, sprites, defesa e jogabilidade V24
+        run: node tests/v24_browser.cjs
+  pacote:
+    needs: [logica, navegador]
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Montar ZIP Cloudflare Pages com recursos modulares
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          find . -maxdepth 1 -type f \( -iname '*.html' -o -iname '*.css' -o -iname '*.js' -o -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' -o -iname '*.gif' -o -iname '*.svg' -o -iname '*.ico' -o -iname '*.mp3' -o -iname '*.ogg' -o -iname '*.wav' -o -iname '*.woff*' -o -name '_redirects' -o -name '_headers' \) -exec cp -t dist/ {} +
+          for d in css js sprites audio halloween_art; do test -d "$d"; cp -a "$d" dist/; done
+          for f in index.html css/base.css css/defense-v21.css css/world-map.css css/wardrobe-stage.css js/core/app.js js/games/defense-engine.js js/games/defense-animation.js js/core/progression.js js/games/halloween-wardrobe.js js/ui/update-notice.js mundo_pomar.js mundo_v24.css tela_cheia_v24.js sprites/torre_solar_v24.svg; do test -f "dist/$f"; done
+          ! find dist -iname 'wrangler*' | grep -q .
+          node -e 'const fs=require("fs"),m=JSON.parse(fs.readFileSync("architecture-v25.json","utf8"));for(const e of [...m.styles,...m.scripts])if(!fs.existsSync("dist/"+e.file))throw Error("Arquivo faltando: "+e.file)'
+          cd dist
+          zip -qr ../Sam-Manguinha-V26-Motores-Modulares-Cloudflare-Pages.zip .
+          unzip -t ../Sam-Manguinha-V26-Motores-Modulares-Cloudflare-Pages.zip | tail -1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V26-Motores-Modulares-Cloudflare-Pages
+          path: Sam-Manguinha-V26-Motores-Modulares-Cloudflare-Pages.zip
+          retention-days: 30
