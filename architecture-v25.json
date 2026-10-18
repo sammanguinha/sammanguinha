@@ -1,0 +1,85 @@
+{
+  "release": "V25.0",
+  "description": "Separation of legacy styles and synchronous classic scripts, preserving evaluation order.",
+  "styles": [
+    {
+      "file": "css/base.css",
+      "bytes": 68135
+    },
+    {
+      "file": "css/ranking.css",
+      "bytes": 141
+    },
+    {
+      "file": "css/orchard-art.css",
+      "bytes": 2293
+    },
+    {
+      "file": "css/halloween.css",
+      "bytes": 2512
+    },
+    {
+      "file": "css/halloween-mobile.css",
+      "bytes": 1959
+    },
+    {
+      "file": "css/update-notice.css",
+      "bytes": 3272
+    },
+    {
+      "file": "css/live-v20.css",
+      "bytes": 3935
+    },
+    {
+      "file": "css/house-v21.css",
+      "bytes": 2545
+    },
+    {
+      "file": "css/defense-v21.css",
+      "bytes": 1333
+    },
+    {
+      "file": "css/jobs-v21.css",
+      "bytes": 1043
+    },
+    {
+      "file": "css/cloud-v22.css",
+      "bytes": 1219
+    },
+    {
+      "file": "css/tactics-v22.css",
+      "bytes": 423
+    }
+  ],
+  "scripts": [
+    {
+      "file": "js/core/app.js",
+      "bytes": 120393
+    },
+    {
+      "file": "js/games/halloween-wardrobe.js",
+      "bytes": 56749
+    },
+    {
+      "file": "js/ui/home-logo.js",
+      "bytes": 120
+    },
+    {
+      "file": "js/games/halloween-campaign.js",
+      "bytes": 17179
+    },
+    {
+      "file": "js/games/defense-mobile.js",
+      "bytes": 602
+    },
+    {
+      "file": "js/ui/update-notice.js",
+      "bytes": 1608
+    }
+  ],
+  "notes": [
+    "Script tags intentionally omit defer to retain the original exact execution order. Do not convert to ES modules without evaluating global lexical bindings.",
+    "CSS asset URLs should be relative to css/; extracted CSS currently has no relative url().",
+    "Stage 1 only: markup and some style attributes remain in index.html."
+  ]
+}

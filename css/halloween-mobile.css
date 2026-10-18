@@ -1,0 +1,30 @@
+
+/* O início da Defesa deve ser alcançável mesmo em telefones de baixa altura. */
+.gov[hidden],#gOv[hidden]{display:none!important}
+.g-mobile-start{display:none;margin:0 auto 12px;min-height:48px;max-width:100%;font-size:1rem;position:relative;z-index:1}
+#gameDlg .panel,#gameDlg .row{min-width:0}
+#gameDlg #gOv{box-sizing:border-box;overflow-y:auto;overscroll-behavior:contain;gap:4px;scrollbar-width:thin}
+#gameDlg #gOv .row{flex-shrink:0;flex-wrap:wrap;justify-content:center}
+#gameDlg #gOv button{min-height:38px}
+@media(max-width:650px){
+ #gameDlg>.panel{padding:10px!important}
+ #gameDlg .g-mobile-start:not([hidden]){display:block}
+ #gameDlg #gOv{justify-content:flex-start!important;padding:7px 9px!important;gap:2px!important}
+ #gameDlg #gOvT{font-size:clamp(1rem,5vw,1.35rem)!important;margin:0 0 3px!important}
+ #gameDlg #gOvP{font-size:.74rem!important;margin:0 0 3px!important;line-height:1.3!important}
+ #gameDlg #gOvK{font-size:.68rem!important;margin:0 0 3px!important}
+ #gameDlg #gDifficulty{gap:4px!important;margin:2px 0 5px!important}
+ #gameDlg #gDifficulty button{padding:7px 8px!important;font-size:.74rem!important}
+ #gameDlg #gModeNote{font-size:.7rem!important;margin:0 0 4px!important}
+ #gameDlg #gOv .row button{padding:8px 13px!important}
+ #gameDlg .gctl{display:grid!important;grid-template-columns:1fr 1.2fr 1fr;gap:5px!important;margin:10px 0!important}
+ #gameDlg .gctl button{min-width:0!important;padding:12px 3px!important;font-size:.79rem!important;touch-action:none}
+ #gCv{width:100%!important;height:auto!important}
+ .h8-shell{margin:12px 0;padding:9px!important}
+ .h8-controls{gap:7px}
+ .h8-pad button,.h8-action{min-height:44px}
+ .h8-panel{padding:11px}
+ .h8-puzzle{position:relative;max-height:52vh;overflow-y:auto}
+}
+.h8-puzzle button{min-height:40px}.h8-puzzle .h8-inputrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.h8-puzzle input{font-size:16px}.h8-steps{color:#d6b0f2;font-size:.84rem;margin:7px 0}

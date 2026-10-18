@@ -1,5 +1,6 @@
+const {sourceView}=require('./v25_source_view.cjs');
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
-const root=path.resolve(__dirname,'..'),html=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const root=path.resolve(__dirname,'..'),html=sourceView(fs.readFileSync(path.join(root,'index.html'),'utf8'),p=>fs.readFileSync(path.join(root,p),'utf8'));
 const section=(a,b)=>{const i=html.indexOf(a),j=html.indexOf(b,i);assert.ok(i>0&&j>i,'missing combat section '+a);return html.slice(i,j)};
 function getTick(){
  const ctx={GW:360,GH:480,orchardBurst:()=>{},sm21Towers:{arrow:{cost:3,cooldown:1.3,damage:1},frost:{cost:4,cooldown:2.4,damage:1}}};

@@ -1,0 +1,3 @@
+
+/* Início móvel acessível, sem interferir na lógica original da partida. */
+(()=>{const btn=document.getElementById('gMobileStart'),overlay=document.getElementById('gOv'),play=document.getElementById('gPlay');if(!btn||!overlay||!play)return;const sync=()=>{btn.hidden=overlay.hidden;btn.textContent=play.textContent.includes('novo')?'▶ Jogar novamente':'▶ Iniciar Defesa do Pomar'};btn.addEventListener('click',()=>play.click());new MutationObserver(sync).observe(overlay,{attributes:true,attributeFilter:['hidden']});new MutationObserver(sync).observe(play,{childList:true,subtree:true});sync()})();

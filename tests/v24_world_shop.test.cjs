@@ -1,3 +1,4 @@
+const {sourceView}=require('./v25_source_view.cjs');
 const test=require('node:test');
 const assert=require('node:assert/strict');
 const vm=require('node:vm');
@@ -5,7 +6,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const read=name=>fs.readFileSync(path.join(root,name),'utf8');
-const world=read('mundo_pomar.js'),html=read('index.html');
+const world=read('mundo_pomar.js'),html=sourceView(read('index.html'),read);
 test('new RPG/Defense scripts parse and merchant stylesheet is referenced',()=>{
  assert.doesNotThrow(()=>new vm.Script(world));
  for(const [i,part] of [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].entries()){
