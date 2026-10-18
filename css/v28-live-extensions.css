@@ -1,0 +1,271 @@
+/* Sam Manguinha V28 / 04 — EXPANSÕES QUE SÃO CRIADAS VIA JAVASCRIPT.
+   Complementa V28 e corrige o posicionamento dos 4 blocos reais de navegação. */
+nav#areas.areas{
+ grid-template-columns:auto minmax(0,1fr) auto auto!important;
+ grid-auto-flow:row;align-content:center;
+}
+#areas>.logo{grid-column:1;grid-row:1}
+#areas>.tabs2{grid-column:2;grid-row:1}
+#areas>.r14-more{grid-column:3;grid-row:1;position:relative;z-index:1500;align-self:center}
+#areas>.nav-actions{grid-column:4;grid-row:1;align-self:center;white-space:nowrap}
+#areas .r14-more-button{
+ min-height:42px;display:flex;align-items:center;gap:6px;
+ border:1px solid #9da987!important;border-radius:12px!important;
+ color:#f9edce!important;background:linear-gradient(145deg,#314740,#263246)!important;
+ box-shadow:inset 0 1px #ffffff22,0 4px 12px #0006;
+ font-size:.79rem;font-weight:850;padding:9px 14px;cursor:pointer;
+ transition:background .15s,transform .15s;
+}
+#areas .r14-more-button:hover{background:#47655d!important;transform:translateY(-1px)}
+#areas .r14-more-button[aria-expanded=true]{background:#e5cb92!important;color:#16303b!important}
+#areas .r14-more-menu{
+ position:absolute;right:0;top:calc(100% + 10px);
+ display:grid;grid-template-columns:1fr 1fr;gap:8px;
+ width:min(355px,calc(100vw - 24px));max-height:min(65vh,620px);
+ overflow-y:auto;overscroll-behavior:contain;
+ padding:14px;border-radius:17px;border:1px solid #ccb58a!important;
+ background:linear-gradient(155deg,#20363bfa,#1c283bf9)!important;
+ box-shadow:0 25px 60px #000d,inset 0 1px #ffecc523!important;z-index:4000;
+}
+#areas .r14-more-menu[hidden]{display:none!important}
+#areas .r14-more-menu button{
+ display:flex;align-items:center;gap:8px;
+ min-height:48px;padding:11px 9px;border-radius:11px;
+ border:1px solid #6e9187!important;background:#263e46!important;
+ color:#eee9d9!important;font-size:.75rem;text-align:left;
+ transition:border-color .15s,background .15s;
+}
+#areas .r14-more-menu button:hover{background:#3a5a56!important;border-color:#e1d19a!important}
+#areas .r14-more-menu button[aria-current=page]{background:#d9c794!important;color:#173239!important}
+#areas .r14-more-menu button .ic{color:#e8d29c}
+#areas .r14-music-item{gap:4px}
+#areas .r14-music-toggle,#areas .r14-music-options{
+ border:1px solid #98af9a!important;border-radius:11px!important;
+ color:#f2e9d4!important;background:linear-gradient(145deg,#304d49,#273447)!important;
+ box-shadow:inset 0 1px #ffffff20;font-weight:850;min-height:42px;
+}
+#areas .r14-music-toggle{padding:9px 12px!important;font-size:.75rem}
+#areas .r14-music-toggle[aria-pressed=true]{color:#f3ead4!important;
+ border-color:#86dfaf!important;background:#255b4a!important}
+#areas .r14-music-options{min-width:33px;padding:8px!important}
+#areas .r14-music-pop{
+ background:linear-gradient(160deg,#213740fa,#1d2b3ffb)!important;
+ color:#f5e9d6!important;border:1px solid #c5b48b!important;
+ border-radius:15px!important;box-shadow:0 20px 60px #000d!important;
+ padding:16px!important;width:min(310px,calc(100vw - 20px));z-index:4100!important;
+}
+#areas .r14-music-pop strong{color:var(--v28-gold)!important}
+#areas .r14-music-pop p{color:#c5dad0!important;line-height:1.6}
+#areas .r14-music-pop input{accent-color:var(--v28-emerald)}
+/* Real first card in the home page is built by Expedição Astral JS */
+#home .sm18-hub{
+ max-width:none!important;margin:4px auto 32px!important;
+ position:relative;overflow:hidden;isolation:isolate;
+ min-height:275px;padding:clamp(21px,3.6vw,47px)!important;
+ border:1px solid #d3c090!important;border-radius:var(--v28-r-lg)!important;
+ background:radial-gradient(ellipse 42% 90% at 93% 4%,#55806c6d,transparent 85%),
+ radial-gradient(ellipse 42% 90% at 10% 100%,#26565b8a,transparent 85%),
+ linear-gradient(120deg,#172d36,#2b3446 67%,#1b3035)!important;
+ box-shadow:0 20px 60px #000a,inset 0 1px #fbedc638!important;
+}
+#home .sm18-hub::before{color:#e1c98e!important;opacity:.36!important}
+#home .sm18-hub::after{
+ content:"";position:absolute;inset:7px;pointer-events:none;
+ border-radius:19px;border:1px solid #f9e6b91e;
+}
+#home .sm18-hub-title{gap:20px;align-items:center}
+#home .sm18-hub .sm18-eyebrow{color:#aee5c9!important;font:850 .72rem var(--font-ui,system-ui)!important;
+ letter-spacing:.16em!important}
+#home .sm18-hub h2{
+ color:#f9dc9e!important;
+ font:850 clamp(2rem,4.1vw,3.4rem)/1.13 var(--font-title,Georgia,serif)!important;
+ margin:12px 0 10px!important;text-shadow:0 6px 23px #000b!important;
+}
+#home .sm18-hub p{color:#d5e6d9!important;line-height:1.7!important}
+#home .sm18-hub-title button{
+ min-height:54px;padding:13px 25px!important;
+ background:linear-gradient(145deg,#f4dcab,#cbaa70)!important;color:#17313c!important;
+ border:1px solid #ffe9b9!important;border-radius:12px!important;
+ font:900 .94rem var(--font-ui,system-ui)!important;
+ box-shadow:0 5px 0 #846439,0 14px 26px #0008!important;
+}
+#home .sm18-hub-title button:hover{transform:translateY(-2px);filter:brightness(1.07)}
+#home .sm18-hub-stats{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;
+ max-width:800px;margin:25px 0 0;
+}
+#home .sm18-hub-stats>span{
+ background:#10232dcc!important;border:1px solid #91b5a26d!important;
+ border-radius:13px!important;padding:15px!important;gap:5px;
+ box-shadow:inset 0 1px #ffffff19;
+}
+#home .sm18-hub-stats b{color:#f6dba1!important;font-size:clamp(1.15rem,2vw,1.65rem)!important}
+#home .sm18-hub-stats small{color:#c5d9c9!important;font-family:var(--font-ui,system-ui)!important;
+ font-size:.75rem}
+#home .portal-card.sm18-portal{border-color:#cbb892!important;
+ background:linear-gradient(145deg,#354640,#263446)!important}
+#home .sm18-portal-cta{color:#ffe0a3!important}
+#home .r14-home-extras,#home .r14-community{
+ border:1px solid #90af9a!important;border-radius:17px!important;
+ background:var(--v28-card)!important;box-shadow:0 12px 28px #0007!important;
+ overflow:hidden;margin:18px 0!important;
+}
+#home .r14-community>summary{
+ padding:18px 22px;color:#f3d69a!important;cursor:pointer;
+ font:850 1rem var(--font-ui,system-ui)!important;list-style-position:inside;
+ display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+#home .r14-community>summary:hover{background:#4e766c24}
+#home .r14-community>summary>span{font-size:.79rem;color:#c4dccc;font-weight:550}
+#home .r14-community[open]>summary{border-bottom:1px solid #a5bea147}
+#home .r14-extra-grid{padding:17px!important;grid-template-columns:repeat(3,minmax(0,1fr))!important}
+#home .r14-community .cols{padding:18px}
+/* Full Expedição Astral: a real extra game mode, with its own cinematic shell */
+#sm18Expedition.sm18-expedition{
+ max-width:1400px;padding:clamp(10px,2.4vw,30px)!important;margin:16px auto 40px!important;
+}
+.sm18-expedition .sm18-head{
+ position:relative;padding:clamp(22px,3vw,39px)!important;
+ background:radial-gradient(ellipse at 90% 0%,#52716f74,transparent 60%),
+ var(--v28-card)!important;
+ border:1px solid #c8b88e!important;border-radius:21px!important;
+ box-shadow:var(--v28-depth),var(--v28-inner)!important;
+}
+.sm18-expedition .sm18-head h2{
+ font:850 clamp(1.75rem,3vw,2.75rem)/1.2 var(--font-title,Georgia,serif)!important;
+ color:var(--v28-gold)!important;text-shadow:0 5px 20px #000b!important;
+}
+.sm18-expedition .sm18-head p{color:#cce1d4!important;line-height:1.75}
+.sm18-expedition .sm18-eyebrow{color:var(--v28-emerald)!important}
+.sm18-expedition .sm18-game-layout{gap:clamp(12px,2vw,24px)!important}
+.sm18-expedition .sm18-game-card,.sm18-expedition .sm18-side-box{
+ border:1px solid #a6b69c!important;border-radius:20px!important;
+ background:var(--v28-card)!important;
+ box-shadow:0 14px 36px #0009,inset 0 1px #ffffff29!important;
+ color:#f9efda!important;
+}
+.sm18-expedition .sm18-game-card{padding:clamp(10px,1.7vw,20px)!important}
+.sm18-expedition .sm18-side-box{padding:clamp(13px,2vw,21px)!important}
+.sm18-expedition .sm18-side-box h3{color:var(--v28-gold)!important;font-family:var(--font-title,Georgia,serif)!important}
+.sm18-expedition .sm18-side-box p{color:#c6dccf!important}
+.sm18-expedition .sm18-canvas-wrap{
+ border:2px solid #d1bb8a!important;border-radius:13px!important;
+ background:#10292f!important;
+ box-shadow:0 10px 35px #000a,0 0 0 4px #e4dbb511!important;
+}
+.sm18-expedition .sm18-hud span{
+ background:#132938!important;color:#f9dfa8!important;
+ border:1px solid #acc09b!important;border-radius:10px!important;
+}
+.sm18-expedition .sm18-controls{gap:9px!important}
+.sm18-expedition .sm18-controls button,.sm18-expedition .sm18-game-actions button{
+ border:1px solid #9ab49d!important;border-radius:11px!important;
+ background:linear-gradient(145deg,#355a56,#2c394e)!important;
+ color:#f6e9c9!important;min-height:47px;
+ box-shadow:inset 0 1px #ffffff20,0 4px 12px #0006!important;
+ transition:transform .14s,filter .14s;
+}
+.sm18-expedition .sm18-controls button:hover:not(:disabled){filter:brightness(1.15);transform:translateY(-1px)}
+.sm18-expedition .sm18-overlay{
+ background:#091823db!important;backdrop-filter:blur(4px);
+}
+.sm18-expedition .sm18-overlay h3{color:var(--v28-gold)!important;font-family:var(--font-title,Georgia,serif)!important}
+.sm18-expedition .sm18-overlay button{
+ background:linear-gradient(135deg,#f3daa7,#d6b47d)!important;
+ color:#17313a!important;border:1px solid #f9ecc0!important;border-radius:12px!important;
+}
+.sm18-expedition .sm18-medal{
+ border:1px solid #7f9f93!important;background:#1d343d!important;
+ border-radius:11px!important;padding:12px!important;
+}
+.sm18-expedition .sm18-medal.unlocked{border-color:#f1d49a!important;background:#3e4d42!important}
+.sm18-expedition .sm19-dialog{border-top-color:#dec189!important;
+ background:linear-gradient(150deg,#213842f8,#263448fa)!important}
+.sm18-expedition .sm19-dialog-header strong{color:var(--v28-gold)!important}
+.sm18-expedition .sm19-dialog p{color:#f0e8d7!important}
+/* Information panels created by V14 and their active-state tabs */
+#rpgDlg .r14-rpg-summary{gap:8px!important;margin:9px 0 14px!important}
+#rpgDlg .r14-rpg-summary span{
+ border:1px solid #94b29f!important;background:#2b474a!important;
+ border-radius:10px!important;color:#f1e9ce!important;padding:7px 11px!important;
+ font-weight:800!important;font-size:.74rem!important;
+}
+#rpgDlg .r14-info-tabs{
+ display:flex;flex-wrap:wrap;gap:6px!important;padding:5px;
+ background:#172b34;border:1px solid #708f83;border-radius:12px;margin-bottom:10px;
+}
+#rpgDlg .r14-info-tabs button{
+ flex:1 1 64px;min-height:40px!important;border-radius:9px!important;
+ background:#29464b!important;border:1px solid #7d9c92!important;
+ color:#e7ecde!important;font:.77rem var(--font-ui,system-ui)!important;
+ font-weight:800!important;padding:8px!important;
+}
+#rpgDlg .r14-info-tabs button[aria-pressed=true]{
+ background:linear-gradient(130deg,#f2d9a7,#bdd6aa)!important;
+ color:#17323a!important;border-color:#ffe9b5!important;
+}
+#rpgDlg .r14-bestiary-card .r14-beast{
+ background:#253f42!important;border:1px solid #769b88!important;
+ border-radius:12px!important;padding:12px!important;
+}
+#rpgDlg .r14-bestiary-card .r14-beast.found{border-color:#e5ca95!important}
+html[data-v27-theme=eclipse] #home .sm18-hub,
+html[data-v27-theme=eclipse] .sm18-expedition .sm18-game-card,
+html[data-v27-theme=eclipse] .sm18-expedition .sm18-side-box {
+ background:linear-gradient(135deg,#362e53,#292942 65%,#2f2446)!important;
+ border-color:#b7a1d2!important;
+}
+@media(max-width:1120px){
+ nav#areas.areas{grid-template-columns:auto minmax(0,1fr) auto auto!important}
+ #areas .logo-title{font-size:.9rem!important}
+ #areas .tabs2 button{padding:9px!important;font-size:.73rem!important}
+ #areas .r14-music-toggle{padding-inline:9px!important}
+ #home .r14-extra-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:960px){
+ nav#areas.areas{grid-template-columns:minmax(0,1fr) auto auto!important;grid-template-rows:auto auto!important}
+ #areas>.logo{grid-column:1;grid-row:1}
+ #areas>.r14-more{grid-column:2;grid-row:1}
+ #areas>.nav-actions{grid-column:3;grid-row:1}
+ #areas>.tabs2{grid-column:1/-1;grid-row:2;justify-content:flex-start!important;
+  overflow-x:auto!important;min-width:0}
+ #areas .r14-more-menu{right:0}
+ #home .sm18-hub-title{align-items:flex-start}
+}
+@media(max-width:640px){
+ #areas .logo-title{font-size:.8rem!important}
+ #areas .r14-more-button{padding:7px 9px;min-height:37px;font-size:.71rem}
+ #areas .r14-music-toggle{padding:7px!important;min-height:37px;font-size:.68rem}
+ #areas .r14-music-options{min-width:28px!important;min-height:37px!important;padding:5px!important}
+ #areas .r14-more-menu{width:min(330px,calc(100vw - 18px));
+  grid-template-columns:1fr 1fr!important}
+ #home .sm18-hub{padding:22px 16px!important;margin:6px auto 25px!important;min-height:0}
+ #home .sm18-hub-title{gap:12px!important}
+ #home .sm18-hub-title button{width:100%;min-height:45px}
+ #home .sm18-hub h2{font-size:clamp(1.7rem,7vw,2.3rem)!important}
+ #home .sm18-hub-stats{gap:6px;margin-top:17px}
+ #home .sm18-hub-stats>span{padding:11px 6px!important}
+ #home .sm18-hub-stats b{font-size:1.04rem!important}
+ #home .sm18-hub-stats small{font-size:.61rem}
+ #home .r14-extra-grid{grid-template-columns:1fr!important;padding:12px!important}
+ #home .r14-community>summary{padding:14px 15px!important;font-size:.84rem!important}
+ #home .r14-community>summary>span{font-size:.7rem}
+ #sm18Expedition.sm18-expedition{padding:10px!important}
+ .sm18-expedition .sm18-head{padding:17px!important}
+ .sm18-expedition .sm18-game-layout{grid-template-columns:1fr!important}
+ .sm18-expedition .sm18-hud{gap:5px}
+ .sm18-expedition .sm18-controls{gap:5px!important}
+ .sm18-expedition .sm18-controls button{min-height:45px!important;padding:5px!important}
+ #rpgDlg .r14-info-tabs button{font-size:.7rem!important;min-height:38px!important}
+}
+@media(max-width:400px){
+ #areas .logo-title{display:none!important}
+ #areas .logo .ic{width:30px;height:30px}
+ #areas .r14-music-toggle{font-size:.64rem;padding:5px!important}
+ #areas .r14-more-button{font-size:.67rem;padding:7px 8px!important}
+ #home .sm18-hub-stats>span{padding:8px 4px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .sm18-expedition :is(.sm18-head::after,.sm18-medal,.sm19-dialog){animation:none!important}
+ #home .sm18-hub button:hover{transform:none!important}
+}
