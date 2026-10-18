@@ -47,6 +47,18 @@ const srv=http.createServer((req,res)=>{
    assert.equal(after.gold,before-85-22);
    await page.locator('#v24ShopClose').click();
    assert.equal(await page.locator('#v24Shop').isVisible(),false);
+   // A tela imersiva realmente transforma o mapa em viewport e mantém controles utilizáveis.
+   await page.locator('#rpgDlg .sm-fullscreen-toggle').click();
+   assert.equal(await page.locator('#rpgDlg').evaluate(el=>el.classList.contains('sm-immersive')),true);
+   assert.ok(await page.locator('#r12Canvas').isVisible());
+   assert.ok(await page.locator('#r12Action').isVisible());
+   assert.ok(await page.locator('#v24RunTouch').isVisible());
+   assert.equal(await page.locator('#rpgDlg .r12-aside').isVisible(),false,'RPG sidebar hidden for gameplay');
+   await page.locator('#rpgDlg .sm-immersive-menu').click();
+   assert.equal(await page.locator('#rpgDlg .r12-aside').isVisible(),true,'inventory panel is an interactive overlay');
+   await page.locator('#rpgDlg .sm-immersive-menu').click();
+   await page.locator('#rpgDlg .sm-fullscreen-toggle').click();
+   assert.equal(await page.locator('#rpgDlg').evaluate(el=>el.classList.contains('sm-immersive')),false);
    await page.evaluate(()=>window.SamHybridRPG.gotoRoom('planicie'));
    assert.equal((await page.evaluate(()=>window.SamHybridRPG.getState())).map,'planicie');
    await page.evaluate(()=>window.SamHybridRPG.gotoRoom('gruta'));
