@@ -49,7 +49,7 @@ test('boss on normal wave five, normal ranking remains validated',()=>{
  assert.ok(html.includes('s.score+=10'), 'removed combat multiplier that could violate anti-cheat');
 });
 test('version menu retained and Cloudflare config only remains in source',()=>{
- assert.match(html,/const version='(?:21|22)\.0\.0'/);
+ assert.match(html,/const version='(?:21|22|23|24)\.0\.0'/);
  for(const n of ['<b>V21</b>','<b>V20</b>','<b>V19</b>','<b>V18</b>'])assert.ok(html.includes(n));
  assert.ok(fs.existsSync(path.join(root,'wrangler.jsonc')),'original Worker config preserved in repository but excluded from Pages ZIP');
 });
