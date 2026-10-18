@@ -150,6 +150,7 @@ function v24UseOutside(id){
 let v24ShopFocus=null;
 function openV24Shop(){
  const modal=document.getElementById('v24Shop');if(!modal||!modal.hidden)return;
+ if(epicCombat||document.getElementById('r12Bubble')?.hidden===false||document.getElementById('r13ClassSelect')?.hidden===false){notify('Conclua o combate, diálogo ou escolha de classe antes de comprar.');return}
  v24ShopFocus=document.activeElement;keys.run=keys.up=keys.down=keys.left=keys.right=false;
  dialogOpen=true;renderV24Shop();modal.hidden=false;
  modal.querySelector('#v24ShopClose')?.focus({preventScroll:true});
@@ -928,7 +929,7 @@ function drawEpicActor(a,x,y,bob){
  }
  const prevShow=window.showPane;
  if(typeof prevShow==='function')window.showPane=function(id){let result=prevShow.apply(this,arguments);const was=visible;visible=id==='rpgDlg';if(visible){if(storageKey()!==accountRpgKey){accountRpgKey=storageKey();const newData=JSON.parse(localStorage.getItem(accountRpgKey)||'null');st={...blank(),...(newData||{})};st.epic={...freshEpic(),...(st.epic||{}),stats:{...freshEpic().stats,...(st.epic?.stats||{})},flags:{...(st.epic?.flags||{})}};if(!rooms[st.map])st.map='vila';player.x=Number.isFinite(st.x)?st.x:11.7;player.y=Number.isFinite(st.y)?st.y:10.8;epicAvatarSig=''}syncEpicCrossModes();update();if(!epic().class)showEpicClasses();last=performance.now();if(!was){save();requestAnimationFrame(()=>cv.focus({preventScroll:true}))}}
-   else if(was){save();Object.keys(keys).forEach(k=>keys[k]=false);touchDest=null}return result};
+   else if(was){if(document.getElementById('v24Shop')?.hidden===false)closeV24Shop();save();Object.keys(keys).forEach(k=>keys[k]=false);touchDest=null}return result};
  const targetVisible=()=>!host.hidden;
  setupEpicUI();initV24Shop();if(st.relic&&epic().chapter===0)advanceEpicChapter(1);bind();visible=targetVisible();update();if(visible&&!epic().class)showEpicClasses();requestAnimationFrame(tick);
  if(!st.seen.includes('welcome')){st.seen.push('welcome');save();}
