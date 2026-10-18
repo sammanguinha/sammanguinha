@@ -56,7 +56,9 @@ const actors=Object.freeze({
  vila:[
   {id:'v29Iris',x:8.1,y:8.4,type:'npc',v29:'npc',label:'Íris, Cartógrafa'},
   {id:'v29Relogio',x:10.3,y:4.8,type:'altar',v29:'clue',label:'Relógio Parado'},
-  {id:'v29Livro',x:15.1,y:10.2,type:'seed',v29:'find',label:'Livro dos Lugares à Mesa'}
+  {id:'v29Livro',x:15.1,y:10.2,type:'seed',v29:'find',label:'Livro dos Lugares à Mesa'},
+  {id:'v29FieldBoard',x:12.7,y:10,type:'board',v29:'dailyBoard',label:'Diário de Campo'},
+  {id:'v29FieldVila',x:19.5,y:6.4,type:'altar',v29:'dailySpot',label:'Amostra da Vila'}
  ],
  floresta:[
   {id:'v29Mara',x:9.2,y:6.7,type:'npc',v29:'npc',label:'Mara, Jardineira'},
@@ -64,13 +66,15 @@ const actors=Object.freeze({
   {id:'v29Carrilhao',x:17,y:8.4,type:'altar',v29:'puzzle',label:'Carrilhão das Três Vozes'},
   {id:'v29Mariposa',x:10.8,y:11.6,type:'npc',v29:'enemy',label:'Mariposa do Silêncio'},
   {id:'v29Copa',x:18,y:3.2,type:'altar',v29:'ending',label:'Copa da Primeira Mangueira'},
-  {id:'v29Pegadas',x:14.4,y:5.2,type:'seed',v29:'find',label:'Pegadas de Vagalume'}
+  {id:'v29Pegadas',x:14.4,y:5.2,type:'seed',v29:'find',label:'Pegadas de Vagalume'},
+  {id:'v29FieldFloresta',x:20.2,y:9.0,type:'altar',v29:'dailySpot',label:'Amostra da Trilha'}
  ],
  planicie:[
   {id:'v29Caio',x:7.4,y:6.4,type:'npc',v29:'npc',label:'Caio, Aprendiz'},
   {id:'v29Biruta',x:10.6,y:4.4,type:'altar',v29:'clue',label:'Biruta dos Navegantes'},
   {id:'v29Sentinela',x:16.5,y:7.6,type:'npc',v29:'enemy',label:'Sentinela da Badalada'},
-  {id:'v29Cometa',x:9.2,y:10.4,type:'seed',v29:'find',label:'Cometa de Madeira'}
+  {id:'v29Cometa',x:9.2,y:10.4,type:'seed',v29:'find',label:'Cometa de Madeira'},
+  {id:'v29FieldPlanicie',x:6.1,y:9.4,type:'altar',v29:'dailySpot',label:'Amostra da Campina'}
  ],
  ruinas:[{id:'v29Marca',x:8.8,y:9.1,type:'seed',v29:'find',label:'Marca de Eldra'}],
  estufa:[{id:'v29Frasco',x:10.7,y:10.2,type:'seed',v29:'find',label:'Frasco de Maíra'}],
@@ -83,10 +87,15 @@ const enemies=Object.freeze({
  v29_silencio:{name:'Mariposa do Silêncio',element:'shadow',hp:60,atk:9,def:2,xp:90,gold:29,weak:'light',sprite:'vulto_eco_v24',intro:'O bater silencioso das asas tenta interromper cada lembrança. Observe seu ritmo e procure a luz entre as sombras.'},
  v29_sentinela:{name:'Sentinela da Badalada',element:'earth',hp:100,atk:12,def:3,xp:145,gold:48,weak:'nature',sprite:'lobo_vento_v24',intro:'A guardiã reúne nuvens ao redor das patas. Ela não luta por maldade: teme que a Vila volte a usar o sino para excluir alguém.'}
 });
+const fieldTasks=Object.freeze([
+ Object.freeze({id:'v29FieldVila',map:'Vila da Mangueira',text:'Observe como a manhã ilumina a Praça e anote três sinais de vida entre os moradores.'}),
+ Object.freeze({id:'v29FieldFloresta',map:'Trilha Encantada',text:'Ouça o vento entre as copas e registre a forma como os vaga-lumes se orientam.'}),
+ Object.freeze({id:'v29FieldPlanicie',map:'Campina dos Ventos',text:'Analise a relva e anote o caminho que as sementes percorrem antes da chuva.'})
+]);
 const chime=Object.freeze({
  title:'Carrilhão das Três Vozes',
  symbols:Object.freeze(['SOPRO','RAIZ','LUZ']),
  clue:'A partitura não está neste lugar. O relógio, a casca e a biruta contam como o som atravessa o Pomar.'
 });
-window.SamV29Data=Object.freeze({story,clues,discoveries,actors,enemies,chime});
+window.SamV29Data=Object.freeze({story,clues,discoveries,actors,enemies,chime,fieldTasks});
 })();
