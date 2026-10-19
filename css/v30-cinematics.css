@@ -103,3 +103,11 @@
 
 /* The generic cinematic layout must never override the native hidden attribute. */
 #sm30Cutscene.sm30-cutscene-layer[hidden]{display:none!important;visibility:hidden!important;pointer-events:none!important}
+
+/* Higher-specificity override for legacy rules that hide unknown RPG sidebar cards. */
+#rpgDlg .r12-aside #v30PrologueCard{
+ display:grid!important;visibility:visible!important;opacity:1!important;
+ position:relative!important;height:auto!important;min-height:0!important;
+ max-height:none!important;width:auto!important;max-width:100%!important;
+ transform:none!important;
+}
