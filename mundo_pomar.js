@@ -631,7 +631,7 @@ Object.assign(EPIC_ARTIFACTS,{
   $('r12Quests').innerHTML=lines.map(([x,done])=>'<div class="r12-quest-row '+(done?'done':'')+'">'+(done?'✓ ':'◇ ')+x+'</div>').join('');
   $('r12Inventory').innerHTML='<span class="r12-tag">🌱 '+n+'/3 sementes</span><span class="r12-tag '+(st.relic?'':'dim')+'">✦ Relíquia</span>';
   $('r12Journal').innerHTML=st.journal.map(e=>'<div>'+escapeHtml(e)+'</div>').join('');
-  $('r12Region').textContent=room().subtitle;renderEpicUI();v29RenderUI();v30RenderUI();v31RenderUI();
+  $('r12Region').textContent=room().subtitle;renderEpicUI();v29RenderUI();v30RenderUI();v31RenderUI();v33RenderUI();
  }
  function escapeHtml(str){return String(str).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
  function say(who,msg,onNext=null,actionText='Continuar'){
@@ -663,7 +663,7 @@ Object.assign(EPIC_ARTIFACTS,{
    }
    wrap.querySelector('button')?.focus({preventScroll:true});
  }
- function warp(dest,x,y){if(!rooms[dest])return;if(!v31Rooms.has(dest))v31State().small=false;if(dest==='floresta')v23DailyMark('forest');window.SamMusic?.scene(v30SceneForRoom(dest));st.map=dest;player.x=x;player.y=y;touchDest=null;save();update();notify('Você entrou em '+room().name+'.')}
+ function warp(dest,x,y){if(!rooms[dest])return;if(!v31Rooms.has(dest))v31State().small=false;if(dest==='floresta')v23DailyMark('forest');window.SamMusic?.scene(v30SceneForRoom(dest));st.map=dest;player.x=x;player.y=y;touchDest=null;v33Visit(dest);save();update();notify('Você entrou em '+room().name+'.')}
  function pane(dest){save();window.SamMusic?.scene(dest==='eventDlg'?'shadows':'explore');if(typeof window.showPane==='function')window.showPane(dest)}
  function toShop(){openV24Shop()}
  function toPets(){pane('gameDlg');setTimeout(()=>document.querySelector('#orchardExtras [data-extras-tab="pets"]')?.click(),100);}
@@ -1835,6 +1835,7 @@ function advanceBattlePhase(){const c=epicCombat,m=EPIC_ENEMIES[c.key];if(m.phas
   if(key==='v29_silencio'||key==='v29_sentinela')v29CombatWon(key);
    if(key==='v303_sentinela'){const c=v303State();c.bossWon=true;log('V30.3 · A Sentinela do Silêncio foi vencida. O mural a leste voltou a brilhar.');}
  if(key==='v31_guardiao'){const c=v31State();c.bossWon=true;log('Capítulo II · O Guardião de Musgo se libertou do juramento antigo.');}
+ if(key==='v33_sentinela'){const c=v33State();c.bossWon=true;log('Crônica III · A Sentinela da Primeira Aurora libertou o caminho para a Fonte das Duas Promessas.');}
  if(key==='larva'){log('A Larva da Ferrugem caiu. A fornalha agora pode ser purificada.');}
  if(key==='rainha'){ownItem('espinho_soberano');goStory([['Rainha das Aranhas','As crianças... ainda lembram de nosso juramento?'],['Eldra','A rainha era guardiã daquelas promessas. A maldição prendeu seu amor numa teia de ódio.'],['Narrador','Com a coroa de espinhos desfeita, uma passagem se abre para as Minas do Prisma Partido.']],()=>advanceEpicChapter(3))}
  if(key==='besouro'){ownItem('prisma_eco');goStory([['Dário','Ouço as minas cantando outra vez. O brilho volta a revelar o caminho das antigas águas.'],['Narrador','O Prisma do Eco se uniu ao seu inventário. A trilha do pântano se abriu.']],()=>advanceEpicChapter(4))}
@@ -2116,8 +2117,9 @@ function drawEpicActor(a,x,y,bob){
  else if(a.epic==='altar'){ctx.save();ctx.fillStyle='#72586d';ctx.fillRect(x-15,y-6,30,20);ctx.fillStyle='#cba88c';ctx.fillRect(x-12,y-13,24,9);ctx.fillStyle='#fde0a9';ctx.font='bold 23px serif';ctx.fillText('✧',x,y-21);ctx.restore()}
 }
 
- function actorVisible(a){if(a.v31)return v31ActorVisible(a);if(a.v30)return v303ActorVisible(a)&&v30ActorVisible(a);if(a.v29)return v29ActorVisible(a);if(a.epic)return epicActorVisible(a);if(a.type==='seed'&&st.found.includes(a.id))return false;if(a.id==='reliquia'&&!st.unlocked)return false;return true}
+ function actorVisible(a){if(a.v33)return v33ActorVisible(a);if(a.v31)return v31ActorVisible(a);if(a.v30)return v303ActorVisible(a)&&v30ActorVisible(a);if(a.v29)return v29ActorVisible(a);if(a.epic)return epicActorVisible(a);if(a.type==='seed'&&st.found.includes(a.id))return false;if(a.id==='reliquia'&&!st.unlocked)return false;return true}
  function interact(a){
+  if(a?.v33){v33Interact(a);return;}
   if(a?.v31){v31Interact(a);return;}
   if(a?.v30){v30Interact(a);return;}
   if(a?.v29){v29Interact(a);return;}
@@ -2196,7 +2198,7 @@ function drawEpicActor(a,x,y,bob){
   ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.fillStyle='#ffdfae';ctx.fillText(b.type==='loja'?'MASCOTES':b.type==='defesa'?'DEFESA':b.type==='portal'?'HALLOWEEN':'CABANA',x+w/2,y+25)
  }
  function actorColor(type){return ({seed:'#ffe27d',npc:'#baceff',shop:'#f9c58a',defense:'#ffa783',halloween:'#dda8ff',profile:'#b3d5ff',social:'#a8f1be',passage:'#a5e6a9',door:'#d8cf9b',altar:'#ffe0a3',relic:'#ffe7af'})[type]||'#ffffff'}
- function drawActor(a){if(!actorVisible(a))return;const x=a.x*T,y=a.y*T,bob=Math.sin(clock*3+a.x)*2;ctx.save();if(a.v31){v31DrawActor(a,x,y,bob);ctx.restore();return}if(a.v30){v30DrawActor(a,x,y,bob);ctx.restore();return}if(a.v29){v29DrawActor(a,x,y,bob);ctx.restore();return}if(a.epic){drawEpicActor(a,x,y,bob);ctx.restore();return;}
+ function drawActor(a){if(!actorVisible(a))return;const x=a.x*T,y=a.y*T,bob=Math.sin(clock*3+a.x)*2;ctx.save();if(a.v33){v33DrawActor(a,x,y,bob);ctx.restore();return}if(a.v31){v31DrawActor(a,x,y,bob);ctx.restore();return}if(a.v30){v30DrawActor(a,x,y,bob);ctx.restore();return}if(a.v29){v29DrawActor(a,x,y,bob);ctx.restore();return}if(a.epic){drawEpicActor(a,x,y,bob);ctx.restore();return;}
   if(['passage','door','halloween','defense','shop','profile','social','board'].includes(a.type)){
    const alpha=.47+Math.sin(clock*3+a.x)*.27;ctx.globalAlpha=alpha;ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(x,y-4,19,10,0,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;
    if(a.type==='passage'){rect(x-8,y-32,16,14,'#a5e6a9');rect(x-5,y-36,10,6,'#f3e3a3')}
@@ -2235,13 +2237,13 @@ function drawEpicActor(a,x,y,bob){
    return {z,cx:Math.max(halfW,Math.min(W-halfW,player.x*T)),cy:Math.max(halfH,Math.min(H-halfH,player.y*T))};
  }
  function render(){const cam=camera();ctx.save();ctx.translate(W/2,H/2);ctx.scale(cam.z,cam.z);ctx.translate(-cam.cx,-cam.cy);
-  baseMap();v24Decor();v29Decor();v30Decor();v31Decor();for(const b of room().blocks)drawBuilding(b);for(const p of room().props)drawTree(p.x,p.y,p.type==='dead');for(const a of room().actors)drawActor(a);guideDraw();drawPlayer();v23Atmosphere();
+  baseMap();v24Decor();v29Decor();v30Decor();v31Decor();v33Decor();for(const b of room().blocks)drawBuilding(b);for(const p of room().props)drawTree(p.x,p.y,p.type==='dead');for(const a of room().actors)drawActor(a);guideDraw();drawPlayer();v23Atmosphere();
   const a=nearest();if(a){ctx.save();ctx.textAlign='center';ctx.font='bold 13px sans-serif';let line='E · '+a.label;let width=Math.min(280,ctx.measureText(line).width+22);let px=Math.min(W-width/2-8,Math.max(width/2+8,a.x*T));let py=Math.max(64,a.y*T-39);rect(px-width/2,py-20,width,25,'#1e1428ee');ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=1;ctx.strokeRect(px-width/2,py-20,width,25);ctx.fillStyle='#ffebce';ctx.fillText(line,px,py-3);ctx.restore()}
   if(st.map==='ruinas'){ctx.fillStyle='#b8a3ff12';ctx.fillRect(0,0,W,H)}ctx.restore();
  }
  function tick(time){let dt=Math.min(.04,Math.max(0,(time-last)/1000||0));last=time;clock+=dt;
   if(visible&&!document.hidden){
-   v23NpcRoutine();if(Math.floor(clock)%3===0&&Math.floor((clock-dt))%3!==0)v23DailyRender();
+   v23NpcRoutine();v33NpcRoutine();if(Math.floor(clock)%3===0&&Math.floor((clock-dt))%3!==0)v23DailyRender();
    if(!dialogOpen&&!window.SamCutscenes?.isPlaying){let dx=(keys.right?1:0)-(keys.left?1:0),dy=(keys.down?1:0)-(keys.up?1:0);
     if(touchDest){const a=touchDest;dx=a.x-player.x;dy=a.y-player.y;if(Math.hypot(dx,dy)<.3){touchDest=null;dx=dy=0}}
     const m=Math.hypot(dx,dy);if(m>0){dx/=m;dy/=m;const bag=v24Bag(),boost=Date.now()<bag.hasteUntil,run=keys.run&&bag.stamina>1,step=(run?(boost?6.4:5.4):3.45)*dt;if(run)bag.stamina=Math.max(0,bag.stamina-(boost?8:24)*dt);else bag.stamina=Math.min(hasEffect('swift')?140:100,bag.stamina+18*dt);player.vx=dx;player.vy=dy;
@@ -2282,7 +2284,7 @@ function drawEpicActor(a,x,y,bob){
  if(typeof prevShow==='function')window.showPane=function(id){let result=prevShow.apply(this,arguments);const was=visible;visible=id==='rpgDlg';if(visible){window.SamMusic?.scene(v30SceneForRoom(st.map));if(storageKey()!==accountRpgKey){accountRpgKey=storageKey();const newData=JSON.parse(localStorage.getItem(accountRpgKey)||'null');st={...blank(),...(newData||{})};st.epic={...freshEpic(),...(st.epic||{}),stats:{...freshEpic().stats,...(st.epic?.stats||{})},flags:{...(st.epic?.flags||{})}};if(!rooms[st.map])st.map='vila';player.x=Number.isFinite(st.x)?st.x:11.7;player.y=Number.isFinite(st.y)?st.y:10.8;epicAvatarSig=''}syncEpicCrossModes();update();if(!epic().class)showEpicClasses();last=performance.now();if(!was){save();requestAnimationFrame(()=>cv.focus({preventScroll:true}))}}
    else if(was){if(document.getElementById('v24Shop')?.hidden===false)closeV24Shop();save();Object.keys(keys).forEach(k=>keys[k]=false);touchDest=null}return result};
  const targetVisible=()=>!host.hidden;
- setupEpicUI();v31Setup();initV24Shop();if(st.relic&&epic().chapter===0)advanceEpicChapter(1);bind();visible=targetVisible();update();if(visible&&!epic().class)showEpicClasses();requestAnimationFrame(tick);
+ setupEpicUI();v31Setup();v33Setup();v33Visit(st.map);initV24Shop();if(st.relic&&epic().chapter===0)advanceEpicChapter(1);bind();visible=targetVisible();update();if(visible&&!epic().class)showEpicClasses();requestAnimationFrame(tick);
  if(!st.seen.includes('welcome')){st.seen.push('welcome');save();}
- window.SamHybridRPG={openShop:openV24Shop,getShopCatalog:()=>V24_SHOP.map(x=>({...x})),interactById:(id)=>{const a=room().actors.find(a=>a.id===id);if(a)interact(a)},startBattle:(key)=>startCombat(key,Object.entries(epicMonsters).find(([a,b])=>b===key)?.[0]||key),chooseClass:(id)=>{document.querySelector('[data-r13class="'+id+'"]')?.click()},getState:()=>JSON.parse(JSON.stringify(st)),toggleBroto:v31Toggle,getV31Objective:v31Objective,getVitals:()=>({hp:epic().hp,maxHp:maxHealth(),mp:epic().mp,maxMp:maxMana(),stamina:v24Bag().stamina,maxStamina:hasEffect('swift')?140:100}),gotoRoom:(name)=>{if(rooms[name]){st.map=name;player.x=11;player.y=8;update();save()}},onDefenseResult:(won)=>epicDefenseReward(won),open:()=>window.showPane?.('rpgDlg')};
+ window.SamHybridRPG={openShop:openV24Shop,getShopCatalog:()=>V24_SHOP.map(x=>({...x})),interactById:(id)=>{const a=room().actors.find(a=>a.id===id);if(a)interact(a)},startBattle:(key)=>startCombat(key,Object.entries(epicMonsters).find(([a,b])=>b===key)?.[0]||key),chooseClass:(id)=>{document.querySelector('[data-r13class="'+id+'"]')?.click()},getState:()=>JSON.parse(JSON.stringify(st)),toggleBroto:v31Toggle,getV31Objective:v31Objective,getVitals:()=>({hp:epic().hp,maxHp:maxHealth(),mp:epic().mp,maxMp:maxMana(),stamina:v24Bag().stamina,maxStamina:hasEffect('swift')?140:100}),gotoRoom:(name)=>{if(rooms[name]){st.map=name;player.x=11;player.y=8;update();save()}},onDefenseResult:(won)=>{epicDefenseReward(won);v33OnDefenseResult(won)},getV33State:()=>JSON.parse(JSON.stringify(v33State())),getV33Objective:v33Objective,getWorldAtlas:v33Atlas,travelV33:v33Travel,open:()=>window.showPane?.('rpgDlg')};
 })();
