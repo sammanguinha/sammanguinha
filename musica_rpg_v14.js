@@ -14,7 +14,7 @@ temple:{bpm:82,key:48,scale:[0,2,3,6,7,9,10,12],mel:[0,3,4,null,6,5,3,2,4,null,5
  shadows:{bpm:78,key:50,scale:[0,2,3,5,7,9,10,12],mel:[0,null,2,3,null,5,4,null,3,2,null,0,2,null,null,null,0,null,3,5,null,4,3,null,5,7,null,5,4,null,2,null,3,null,2,0,null,2,4,null,5,4,3,2,null,0,null,null,0,null,5,4,3,null,2,0,null,2,3,null,2,0,null,null],chords:[[0,3,5],[2,4,7],[5,0,2],[3,5,7]],bass:[0,2,5,3],lead:'sine'}
 };
 let ctx=null,master=null,enabled=false,scene='explore',step=0,next=0,clock=null,volume=.32,session=0;
-try{const saved=+localStorage.getItem(VOL);if(Number.isFinite(saved)&&saved>=0&&saved<=1)volume=saved;}catch(e){}
+try{const saved=localStorage.getItem(VOL);if(saved!==null){const n=Number(saved);if(Number.isFinite(n)&&n>=0&&n<=1)volume=n}}catch(e){}
 const f=midi=>440*Math.pow(2,(midi-69)/12);
 function ensure(){if(ctx)return ctx;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;ctx=new AC();master=ctx.createGain();master.gain.value=volume*.43;const limiter=ctx.createDynamicsCompressor();limiter.threshold.value=-17;limiter.knee.value=15;limiter.ratio.value=5;master.connect(limiter);limiter.connect(ctx.destination);return ctx}
 function voice(midi,start,duration,shape='sine',level=.18,attack=.008){if(!ctx||!master)return;const o=ctx.createOscillator(),g=ctx.createGain(),v=level;let release=Math.min(.21,duration*.35);o.type=shape;o.frequency.setValueAtTime(f(midi),start);if(shape==='sawtooth')o.detune.value=-3;
