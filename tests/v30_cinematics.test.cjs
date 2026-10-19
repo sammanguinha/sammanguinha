@@ -27,7 +27,7 @@ t('Four original animated cutscenes with keyboard, reduced-motion and skip',()=>
  context.window.addEventListener=()=>{};
  vm.runInNewContext(film,context,{timeout:1000});
  const ui=context.window.SamCutscenes;
- a.deepEqual(Array.from(ui.scenes),['awakening','whisper','opening','archive']);
+ a.deepEqual(Array.from(ui.scenes),['awakening','whisper','opening','archive','grove','groveEnding']);
  for(const name of ui.scenes)a.equal(ui.getScene(name).frames,4);
  for(const k of ['createElement(\'div\')','imageSmoothingEnabled=false','requestAnimationFrame',
   'prefers-reduced-motion','ArrowRight','Escape',"'#sm30CutNext'","setAttribute('aria-modal'"])
