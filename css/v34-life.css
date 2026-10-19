@@ -1,0 +1,68 @@
+/* V33.4 — Horta jogável e novo ateliê. Escopo próprio, sem alterar saves V21. */
+:root{--sm34-leaf:#a7e6c4;--sm34-honey:#f4d7a5;--sm34-paper:#f5ecda}
+#houseDlg.sm21-house{max-width:1440px;margin-inline:auto}
+#houseDlg .sm21-house-top{padding:clamp(18px,3vw,32px);margin-bottom:18px;border:1px solid #abcfb15e;border-radius:19px;background:radial-gradient(circle at 90% 0%,#669c8235,transparent 46%),linear-gradient(145deg,#1c393f,#182b3a)}
+#houseDlg .sm21-house-top h2{color:#f2dab4!important;font-size:clamp(1.5rem,3vw,2.35rem)!important}
+#houseDlg .sm21-house-top p{max-width:750px;line-height:1.65}
+#houseDlg .sm21-house-layout{gap:clamp(14px,2vw,24px)}
+#houseDlg .sm21-house-stage,#houseDlg .sm21-house-sidebar{border-radius:15px;box-shadow:0 10px 30px #0003}
+#houseDlg .sm21-house-stage canvas{display:block;max-width:100%;height:auto;border-radius:12px;image-rendering:pixelated}
+#houseDlg .sm21-house-tools{display:flex;flex-wrap:wrap;gap:8px}
+#houseDlg .sm21-house-tools>button{flex:1 1 100px;min-height:44px}
+#houseDlg .sm21-house-options button:focus-visible,#houseDlg .sm21-house-tools button:focus-visible{outline:3px solid #d9dda6;outline-offset:3px}
+#houseDlg .sm34-garden{margin:23px auto 18px;padding:clamp(16px,3.2vw,29px);border:1px solid #a7dbb078;border-radius:20px;background:radial-gradient(circle at 92% 8%,#75b59c35,transparent 40%),linear-gradient(140deg,#1d393f,#1b2e3b 70%,#1d3436);box-shadow:0 16px 45px #07131b77,inset 0 1px #ffffff23;color:#f4eedd}
+.sm34-garden-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin:0 0 17px}
+.sm34-eyebrow{display:block;margin-bottom:8px;font:800 .66rem/1.4 Inter,system-ui,sans-serif;letter-spacing:.13em;color:#adddc1}
+.sm34-garden-heading h3{font:800 clamp(1.24rem,3vw,1.72rem) 'Cinzel',Georgia,serif;color:#f4dcab;margin:0 0 7px}
+.sm34-garden-heading p{max-width:620px;margin:0;color:#cbded8;font:.84rem/1.65 Inter,system-ui,sans-serif}
+.sm34-garden-budget{display:flex;flex-direction:column;align-items:flex-end;gap:6px;padding:10px 14px;border:1px solid #9bc7a65c;background:#0f2c34;border-radius:13px;white-space:nowrap}
+.sm34-garden-budget span{font:800 .59rem Inter,system-ui,sans-serif;letter-spacing:.12em;color:#a9ccba}
+.sm34-garden-budget strong{font:800 1.13rem 'Cinzel',Georgia,serif;color:#f6dfa8}
+.sm34-garden-work{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(260px,.8fr);align-items:start;gap:clamp(13px,2.2vw,24px)}
+.sm34-field{min-width:0}
+.sm34-seed-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:15px}
+.sm34-seed-choice{min-width:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:8px;padding:12px!important;min-height:84px;border:1px solid #a4bea365!important;border-radius:11px!important;background:linear-gradient(145deg,#244a47,#253946)!important;color:#f3ead6!important;text-align:left;cursor:pointer;font:750 .78rem/1.3 Inter,system-ui,sans-serif}
+.sm34-seed-choice small{font:.7rem/1.4 Inter,system-ui,sans-serif;color:#c1d9c5}
+.sm34-seed-choice[aria-pressed=true]{border:2px solid #f2d9a5!important;background:linear-gradient(145deg,#3c7058,#345751)!important}
+.sm34-plots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sm34-plot{position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:7px;min-height:138px;padding:15px 11px;border:2px dashed #81a9938a!important;border-radius:14px!important;background:repeating-linear-gradient(28deg,#21443c,#21443c 9px,#275044 9px,#275044 18px)!important;color:#f0ead8!important;cursor:pointer;text-align:center;transition:filter .14s,border-color .14s}
+.sm34-plot.growing{border-style:solid!important;background:linear-gradient(145deg,#2b5545,#254346)!important}
+.sm34-plot.ripe{border-color:#eacb90!important;background:linear-gradient(145deg,#3e6846,#496847)!important}
+.sm34-plot:hover{filter:brightness(1.16)}
+.sm34-plot-icon{display:block;font-size:1.85rem;line-height:1.1}
+.sm34-plot b{font:800 .82rem/1.3 'Cinzel',Georgia,serif}
+.sm34-plot small{font:.72rem/1.4 Inter,system-ui,sans-serif;color:#d6e8d6}
+#sm34GardenNotice{margin:13px 0 0;padding:10px 12px;border:1px solid #a6c8b057;border-radius:9px;background:#122d36;color:#d9e6d5;font:.8rem/1.5 Inter,system-ui,sans-serif}
+#sm34GardenNotice[data-state=error]{border-color:#eca995;background:#512c34;color:#ffe7d7}
+.sm34-garden-satchel{min-width:0;padding:16px;border:1px solid #a2cbb255;border-radius:14px;background:linear-gradient(160deg,#182f38,#152c35)}
+.sm34-garden-satchel h4{font:800 1.01rem 'Cinzel',Georgia,serif;color:#f2daa6;margin:0 0 12px}
+.sm34-garden-satchel h4:not(:first-child){margin-top:20px}
+.sm34-resource{display:flex;justify-content:space-between;gap:9px;padding:9px 0;border-bottom:1px solid #b2c9af2b;font:.81rem Inter,system-ui,sans-serif;color:#d4e2d5}
+.sm34-resource strong{color:#f9e6b4}
+#sm34Crafts{display:grid;gap:9px}
+.sm34-craft{display:grid;gap:6px;padding:12px!important;text-align:left;border:1px solid #8ebca27a!important;border-radius:10px!important;background:#294f4b!important;color:#f5ead7!important}
+.sm34-craft b{font:.83rem Inter,system-ui,sans-serif;font-weight:800;color:#f8dcaf}
+.sm34-craft small{font:.73rem/1.5 Inter,system-ui,sans-serif;color:#d1e3d8}
+.sm34-craft:disabled{opacity:.52;cursor:not-allowed}
+.sm34-disclaimer{font:.71rem/1.57 Inter,system-ui,sans-serif;color:#b5c9c8;margin:18px 0 0}
+.sm34-daily{margin-top:17px;padding:14px;border-radius:12px;border:1px solid #c9ad7675;background:#644f2b44}
+.sm34-daily h4{margin:0 0 8px}
+.sm34-daily p{font:.8rem/1.5 Inter,system-ui,sans-serif;color:#e9ddc3;margin:0 0 9px}
+#sm34DailyClaim{width:100%;min-height:44px;padding:10px;border:1px solid #eed7a1;border-radius:9px;background:#c7aa72;color:#183335;font:800 .78rem Inter,system-ui,sans-serif}
+#sm34DailyClaim:disabled{opacity:.52;cursor:not-allowed}
+#profDlg .sm34-wardrobe{margin:24px 0;padding:clamp(15px,3vw,24px);background:linear-gradient(135deg,#1c363f,#283644);border:1px solid #acccae85;border-radius:18px;color:#e9e7d5}
+#profDlg .sm34-wardrobe-layout{display:grid;grid-template-columns:clamp(100px,15vw,150px) minmax(0,1fr);gap:20px;align-items:start}
+#sm34WardrobePreview{display:block;width:100%;height:auto;border:1px solid #a7bdaf5d;border-radius:11px;image-rendering:pixelated;background:#142e38}
+#profDlg .sm34-accessories{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#profDlg .sm34-accessory{display:flex;flex-direction:column;gap:6px;align-items:start;min-height:72px;padding:12px 13px!important;border:1px solid #aac8ad68!important;border-radius:10px!important;background:#284752!important;color:#fff2d7!important;text-align:left}
+#profDlg .sm34-accessory b{font:800 .83rem Inter,system-ui,sans-serif}
+#profDlg .sm34-accessory small{font:.71rem/1.35 Inter,system-ui,sans-serif;color:#d2e0cc}
+#profDlg .sm34-accessory[aria-pressed=true]{border:2px solid #ebd293!important;background:#3d685c!important}
+#profDlg .sm34-accessory:disabled{opacity:.48;cursor:not-allowed}
+#sm34WardrobeStatus{min-height:27px;color:#e4e7cb;font:.78rem/1.5 Inter,system-ui,sans-serif}
+#profDlg .sm34-wardrobe-layout small{color:#b8d1c4;font:.72rem/1.5 Inter,system-ui,sans-serif}
+.sm34-plot:focus-visible,.sm34-craft:focus-visible,.sm34-seed-choice:focus-visible,.sm34-accessory:focus-visible,#sm34DailyClaim:focus-visible{outline:3px solid #f0dda9!important;outline-offset:3px!important}
+@media(max-width:900px){.sm34-garden-work{grid-template-columns:1fr}.sm34-garden-satchel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:18px}.sm34-garden-satchel h4:not(:first-child){margin-top:0}}
+@media(max-width:590px){.sm34-garden-heading{flex-wrap:wrap}.sm34-garden-budget{align-items:start}.sm34-plots{grid-template-columns:repeat(2,minmax(0,1fr))}.sm34-plot{min-height:127px}.sm34-seed-row{grid-template-columns:1fr}.sm34-seed-choice{min-height:63px}.sm34-garden-satchel{display:block}.sm34-garden-satchel h4:not(:first-child){margin-top:22px}
+ #profDlg .sm34-wardrobe-layout{grid-template-columns:1fr}#sm34WardrobePreview{width:128px;max-width:100%;margin-inline:auto}#profDlg .sm34-accessories{grid-template-columns:1fr 1fr}}
+@media(prefers-reduced-motion:reduce){.sm34-plot{transition:none!important}}
