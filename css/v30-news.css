@@ -30,3 +30,8 @@
  #home .sm30-news::after{font-size:3.2rem}}
 @media(prefers-reduced-motion:reduce){#home .sm30-news-links button{transition:none}
  #home .sm30-news-links button:hover{transform:none}}
+
+/* V30.2 interactive animated teaser, clearly marked as development preview. */
+#home #sm30WatchTeaser{border:1px solid #d6c3f5;background:linear-gradient(135deg,#4e486d,#2e4c57);
+ color:#fff1db}
+#home #sm30WatchTeaser:hover{background:linear-gradient(135deg,#645785,#396568)}
