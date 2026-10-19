@@ -32,6 +32,9 @@ const server=http.createServer((req,res)=>{
   });
   await page.goto('http://127.0.0.1:4292/',{waitUntil:'domcontentloaded',timeout:45000});
   await page.waitForFunction(()=>!!window.SamSiteV32&&typeof window.showPane==='function',{timeout:25000});
+  await page.waitForFunction(()=>document.getElementById('sm30NewsVersion')?.textContent?.includes('V32'));
+  assert.ok((await page.locator('#sm30NewsHeading').innerText()).includes('Pomar ficou mais fácil'),'V32 release news visible');
+  assert.ok((await page.locator('#smUpdatePanel .sm-update-history').innerText()).includes('Reestruturação Geral'),'V32 details available');
   for(const id of ['homeBtn','rpgWorldBtn','gameBtn','houseBtn','profBtn'])assert.equal(await page.locator('#areas .v32-tabs>button#'+id).count(),1,'primary '+id+' available');
   for(const id of ['eventBtn','diaryBtn','questBtn','rankBtn','murBtn','galBtn','curBtn','secBtn','sm18Nav'])assert.equal(await page.locator('#v32MorePanel #'+id).count(),1,'secondary navigation '+id);
   assert.equal(await page.locator('#v32MorePanel').isHidden(),true,'menu closed initially');
@@ -45,8 +48,6 @@ const server=http.createServer((req,res)=>{
   await page.locator('#v32DestinationSearch').fill('Diário');
   assert.equal(await page.locator('#v32MorePanel button[data-p]:visible').count(),1,'filter searches actual links');
   await page.locator('#diaryBtn').click();
-  const diaryInfo=await page.evaluate(()=>({onclick:typeof document.getElementById('diaryBtn').onclick,hidden:document.getElementById('diary').hidden,display:getComputedStyle(document.getElementById('diary')).display,homeHidden:document.getElementById('home').hidden,current:document.getElementById('diaryBtn').getAttribute('aria-current'),moreHidden:document.getElementById('v32MorePanel').hidden}));
-  console.log(name+' secondary navigation diagnostics: '+JSON.stringify(diaryInfo));
   assert.equal(await page.locator('#diary').isVisible(),true,'secondary destination opens');
   assert.equal(await page.locator('#v32MorePanel').isHidden(),true,'menu closes after selection');
   await page.locator('#homeBtn').click();
