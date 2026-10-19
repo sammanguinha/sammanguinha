@@ -1,0 +1,35 @@
+
+/* V31: pixel-world shell, miniature mechanic and responsive chapter HUD. */
+#sm30News.sm31-featured{position:relative;overflow:hidden;border:1px solid #c3a7757d;background:radial-gradient(circle at 90% 12%,#b6d88d33,transparent 39%),linear-gradient(135deg,#122d2e 0%,#142126 51%,#33283a 100%);box-shadow:0 12px 40px #0005,inset 0 0 0 1px #e0c69225}
+#sm30News.sm31-featured .sm30-news-version{background:#314e47;color:#fcdf9f}
+#sm30News.sm31-featured h2{color:#f9e8b8;text-wrap:balance;letter-spacing:.02em}
+#sm30News.sm31-featured .sm31-preview-features{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}
+#sm30News.sm31-featured .sm31-preview-features span{border:1px solid #e0ca9d33;background:#173d3ba3;border-radius:999px;padding:.35rem .7rem;color:#f4ecda;font-size:.85rem}
+#sm30News.sm31-featured .sm30-news-footnote{color:#b8cfc7}
+#sm30News.sm31-featured .sm30-news-links button{min-height:44px}
+#rpgDlg .r12-head{padding:clamp(1rem,2.4vw,2rem);border:1px solid #d9bd8645;background:radial-gradient(circle at 88% 12%,#d6c47b22,transparent 35%),linear-gradient(118deg,#142a29,#253041 65%,#37293d)}
+#rpgDlg .r12-head h2{color:#f7dba4;text-shadow:0 2px 14px #0008}
+#rpgDlg .r12-frame{border:3px solid #9a9167;border-radius:14px;overflow:hidden;box-shadow:0 0 0 3px #202b31,0 12px 30px #0007;position:relative;background:#142930}
+#rpgDlg #r12Canvas{image-rendering:pixelated;display:block;max-width:100%}
+#rpgDlg .r12-hud{background:linear-gradient(90deg,#111f28e6,#263a369e);backdrop-filter:blur(4px)}
+#rpgDlg .r12-card{border-color:#bba77c50;background:linear-gradient(150deg,#18272c,#252b36);box-shadow:inset 0 1px #fff1}
+#rpgDlg .r12-card h3{color:#f4d9a4}
+#rpgDlg .r12-controls button{touch-action:none;min-height:48px}
+#rpgDlg .sm31-quest-card{border:1px solid #8bd0ab72;background:radial-gradient(circle at 90% 0,#79c9a319,transparent 54%),linear-gradient(145deg,#182d2d,#242e37)}
+#rpgDlg .sm31-quest-card h3{font-family:'Cinzel',serif;font-size:1.16rem;letter-spacing:.018em}
+.sm31-eyebrow{display:block;color:#9edcc4;font-weight:800;font-size:.68rem;letter-spacing:.1em;margin-bottom:.7rem}
+.sm31-quest-card #v31Task{line-height:1.5;min-height:3rem;color:#ece5cf}
+.sm31-quest-card #v31Status{font-size:.76rem;color:#bad4ca;line-height:1.4;margin:.6rem 0}
+.sm31-track{height:10px;width:100%;background:#111f25;border:1px solid #577569;border-radius:100px;overflow:hidden}
+.sm31-track>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#4b9a81,#e7c477);transition:width .3s ease}
+#v31SizeButton,#v31MobileBroto{border:1px solid #bba77b;background:linear-gradient(150deg,#39665a,#244c51);color:#f8e8c1;border-radius:8px;font:800 .8rem 'Inter',system-ui,sans-serif;letter-spacing:.03em;cursor:pointer;padding:.8rem 1rem}
+#v31SizeButton{width:100%}
+#v31SizeButton:hover:not(:disabled),#v31MobileBroto:hover:not(:disabled){filter:brightness(1.18)}
+#v31SizeButton[aria-pressed="true"],#v31MobileBroto[aria-pressed="true"]{background:linear-gradient(150deg,#ac7d4d,#67543d);color:#fff1bc}
+#v31SizeButton:disabled,#v31MobileBroto:disabled{opacity:.4;cursor:not-allowed}
+#rpgDlg .sm31-mobile-toggle{display:inline-flex;align-items:center;justify-content:center;flex:1 1 auto;min-width:118px}
+#rpgDlg .r13-battle-field img[src*="v31_guardiao_musgo"]{image-rendering:pixelated;filter:drop-shadow(0 0 18px #a8dd9a5e);animation:sm31-guardian-breathe 2.5s ease-in-out infinite alternate}
+#rpgDlg.sm-immersive .sm31-mobile-toggle{z-index:20}
+@keyframes sm31-guardian-breathe{from{transform:translateY(0) scale(1)}to{transform:translateY(-7px) scale(1.055)}}
+@media(prefers-reduced-motion:reduce){.sm31-track>span{transition:none!important}#rpgDlg .r13-battle-field img[src*="v31_guardiao_musgo"]{animation:none!important}}
+@media(max-width:690px){#sm30News.sm31-featured{padding:1rem}#sm30News.sm31-featured .sm31-preview-features{gap:.3rem}#sm30News.sm31-featured .sm31-preview-features span{font-size:.73rem}#rpgDlg .r12-head{padding:.9rem}#rpgDlg .r12-controls{gap:.45rem;flex-wrap:wrap}#rpgDlg .r12-interact,#rpgDlg .sm31-mobile-toggle{min-height:54px;font-size:.75rem}}

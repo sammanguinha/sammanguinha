@@ -1,0 +1,51 @@
+name: V31 · Jardim das Entrelinhas
+on:
+  push:
+    branches: [dev/v31-jardim-das-entrelinhas]
+  workflow_dispatch:
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar sintaxe
+        run: |
+          node --check mundo_pomar.js
+          node --check js/ui/v31-news.js
+          node --check tests/v31_jardim_browser.cjs
+      - name: Regressões antigas
+        run: node --test tests/v30_cinematics.test.cjs tests/v30_news.test.cjs tests/v29_cronicas.test.cjs tests/v28_fullscreen_game.test.cjs
+      - name: Preparar navegador
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Jogar novos capítulos em desktop e mobile
+        run: node tests/v31_jardim_browser.cjs
+      - name: Verificar compatibilidade com V30.3
+        run: node tests/v303_chapter_browser.cjs
+      - name: Testar pacote Cloudflare Pages
+        run: |
+          node scripts/build-v26.cjs
+          SM_GAME_ROOT=dist node tests/v31_jardim_browser.cjs
+  pacote:
+    needs: validar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: |
+          set -euo pipefail
+          node scripts/build-v26.cjs
+          cd dist
+          zip -qr ../Sam-Manguinha-V31-Jardim-das-Entrelinhas-Cloudflare-Pages.zip .
+          unzip -t ../Sam-Manguinha-V31-Jardim-das-Entrelinhas-Cloudflare-Pages.zip | tail -1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V31-Jardim-das-Entrelinhas-Cloudflare-Pages
+          path: Sam-Manguinha-V31-Jardim-das-Entrelinhas-Cloudflare-Pages.zip
