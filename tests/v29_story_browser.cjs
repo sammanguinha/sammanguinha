@@ -106,10 +106,12 @@ const server=http.createServer((req,res)=>{
    await go('vila');await interact('v29FieldBoard');await next();
    const day=await page.evaluate(()=>({daily:window.SamHybridRPG.getState().epic.v29.daily,tasks:window.SamV29Data.fieldTasks}));
    const spot=day.tasks[day.daily.task];
-   await interact(spot.id);await next();
+   const dailyRoom=await page.evaluate(id=>Object.entries(window.SamV29Data.actors).find(([,actors])=>actors.some(a=>a.id===id))?.[0],spot.id);
+   assert.ok(dailyRoom,'daily field observation must exist on a map');
+   await go(dailyRoom);await interact(spot.id);await next();
    assert.equal((await snapshot()).daily.observed,true);
    const rewardStart=await page.evaluate(()=>window.SamHybridRPG.getState().epic.gold);
-   await interact('v29FieldBoard');await next();
+   await go('vila');await interact('v29FieldBoard');await next();
    assert.equal((await snapshot()).daily.claimed,true);
    assert.equal((await page.evaluate(()=>window.SamHybridRPG.getState().epic.gold))-rewardStart,18);
    await interact('v29FieldBoard');await next();
