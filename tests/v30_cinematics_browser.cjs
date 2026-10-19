@@ -48,7 +48,13 @@ const server=http.createServer((req,res)=>{
    const travel=room=>page.evaluate(room=>window.SamHybridRPG.gotoRoom(room),room);
    const dismiss=async()=>{if(await page.locator('#r12TalkNext:visible').count())await page.locator('#r12TalkNext:visible').click()};
    const nextMovie=async()=>{for(let i=0;i<4;i++)await page.locator('#sm30CutNext').click()};
-   assert.ok(await page.locator('#v30PrologueCard').isVisible(),name+' quest journal visible');
+   const journalDebug=await page.evaluate(()=>{
+    const d=document.getElementById('v30PrologueCard'),chain=[];let cur=d;
+    while(cur&&chain.length<6){const c=getComputedStyle(cur),r=cur.getBoundingClientRect();
+     chain.push({id:cur.id,cls:cur.className,display:c.display,visibility:c.visibility,w:r.width,h:r.height});cur=cur.parentElement}
+    return {exists:!!d,hidden:document.getElementById('rpgDlg')?.hidden,chain};
+   });
+   assert.ok(await page.locator('#v30PrologueCard').isVisible(),name+' quest journal visible: '+JSON.stringify(journalDebug));
    assert.ok((await page.locator('#v30QuestStatus').innerText()).includes('Raiz que Canta'));
    await interact('v30RootSignal');
    assert.ok(await page.locator('#sm30Cutscene').isVisible(),name+' prologue plays from actual world object');
