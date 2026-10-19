@@ -33,7 +33,7 @@ const server=http.createServer((req,res)=>{
   await page.goto('http://127.0.0.1:4292/',{waitUntil:'domcontentloaded',timeout:45000});
   await page.waitForFunction(()=>!!window.SamSiteV32&&typeof window.showPane==='function',{timeout:25000});
   for(const id of ['homeBtn','rpgWorldBtn','gameBtn','houseBtn','profBtn'])assert.equal(await page.locator('#areas .v32-tabs>button#'+id).count(),1,'primary '+id+' available');
-  assert.equal(await page.locator('#v32MorePanel [data-p]').count(),8,'eight preserved secondary destinations');
+  for(const id of ['eventBtn','diaryBtn','questBtn','rankBtn','murBtn','galBtn','curBtn','secBtn','sm18Nav'])assert.equal(await page.locator('#v32MorePanel #'+id).count(),1,'secondary navigation '+id);
   assert.equal(await page.locator('#v32MorePanel').isHidden(),true,'menu closed initially');
   for(const id of ['rpgDlg','gameDlg','houseDlg','profDlg'])assert.equal(await page.locator('.v32-featured-grid .portal-card[data-go="'+id+'"]').count(),1,'featured destination '+id);
   for(const id of ['eventDlg','diary','rankDlg','murDlg','galDlg','secDlg'])assert.ok(await page.locator('.v32-library .portal-card[data-go="'+id+'"]').count()>=1,'available library destination '+id);
