@@ -87,13 +87,26 @@
  });
  // Continuous updates only when the house is visible. Plants grow by wall clock,
  // including while the player is offline; no page refresh is necessary.
+ function refreshCountdown(){
+  // Never replace active buttons during pointerdown/focus: that cancels clicks.
+  const data=read(),now=Date.now();
+  for(const tile of plots.querySelectorAll('button[data-sm34-plot]')){
+   const i=Number(tile.dataset.sm34Plot),p=data.plots[i];if(!p)continue;
+   const ready=now>=p.readyAt;
+   tile.classList.toggle('ripe',ready);
+   tile.setAttribute('aria-label','Canteiro '+(i+1)+': '+cropNames[p.kind]+(ready?' pronto para colher':' crescendo'));
+   const icon=tile.querySelector('.sm34-plot-icon'),small=tile.querySelector('small');
+   if(icon)icon.textContent=ready?'🌾':p.watered?'🌷':'🌱';
+   if(small)small.textContent=ready?'✓ Colher agora':(p.watered?'Regado · ':'Regar · ')+asTime(p.readyAt-now);
+  }
+ }
  function poll(now){
-  if(!house.hidden&&now-lastTick>900){lastTick=now;draw()}
+  if(!house.hidden&&now-lastTick>900){lastTick=now;refreshCountdown()}
   requestAnimationFrame(poll);
  }
  requestAnimationFrame(poll);
  window.addEventListener('storage',e=>{if(e.key?.startsWith('sg_extras_v1_')||e.key?.startsWith('sam_rpg_hibrido_v12_'))draw()});
- root.addEventListener('focusin',()=>{if(!house.hidden)draw()});
+ // Focus must not rebuild the pressed button; user actions refresh immediately.
  draw();
  // Local wardrobe extension: changes actually render on the RPG canvas.
  const profile=document.getElementById('profDlg');
@@ -133,7 +146,7 @@
    const response=api.dressV34(key);status.textContent=response.message;status.dataset.state=response.ok?'ok':'error';refresh();
   });
   profile.addEventListener('pointerenter',refresh);
-  profile.addEventListener('focusin',refresh);
+  // No focus-triggered rebuild here: clicks on accessories must remain stable.
   refresh();
   const notify=()=>{if(!profile.hidden)refresh()};setInterval(notify,3000);
  }
