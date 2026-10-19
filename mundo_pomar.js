@@ -611,7 +611,7 @@ function v30ActorVisible(a){
  if(a.v30==='vision')return !!q.started;
  if(a.v30==='stone')return !!q.discovered&&!q.opened;
  if(a.v30==='gate')return !!q.started;
- if(a.v30==='record')return !q.records.includes(a.id);
+ if(a.v30==='record')return !q.records.includes(a.id)||(q.records.length===3&&!q.completed);
  return true;
 }
 function v30Cutscene(name,onFinish){
@@ -668,7 +668,7 @@ function v30Stone(a){
 }
 function v30Record(a){
  const q=v30State();
- if(q.records.includes(a.id)){say('Inscrição Lida','Este registro já entrou no seu diário.');return}
+ if(q.records.includes(a.id)){if(q.records.length===3&&!q.completed)v30Cutscene('archive',v30DoneArchive);else say('Inscrição Lida','Este registro já entrou no seu diário.');return}
  const texts={
   v30RecordPath:'O caminho que une aldeias pertence a quem precisa atravessá-lo, não ao primeiro que encontrou sua entrada.',
   v30RecordHarvest:'Toda colheita tem espaço para quem plantou, para quem cuidou e para quem chegou com fome.',
@@ -1271,6 +1271,92 @@ function drawEpicAvatar(x,y){refreshEpicAvatar();const moving=Math.abs(player.vx
  ctx.restore();}
 
 /* V29: scene objects are painted in Canvas and react to the same interaction button. */
+/* V30.2 — unique pixel props, animated forest roots and atrium floor. */
+function v30DrawActor(a,x,y,bob){
+ const q=v30State(),pulse=.55+Math.sin(clock*2.5+a.x)*.3,still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ ctx.save();ctx.imageSmoothingEnabled=false;
+ const col=a.v30==='stone'?'#e5d18f':a.v30==='record'?'#a7e0d5':'#91f2b0';
+ ctx.fillStyle='#09171caa';ctx.beginPath();ctx.ellipse(x,y+15,19,6,0,0,Math.PI*2);ctx.fill();
+ ctx.shadowColor=col;ctx.shadowBlur=5+15*pulse;
+ if(a.v30==='intro'){
+  rect(x-9,y-8,18,28,'#654936');rect(x-7,y-13,14,15,'#8a6747');
+  rect(x-3,y-26,6,18,'#d2ad73');
+  for(let i=0;i<3;i++){let r=17+i*7,c='#80d899';ctx.strokeStyle=c;ctx.lineWidth=2;
+   ctx.globalAlpha=.35+i*.11;ctx.beginPath();ctx.arc(x,y-7,r,Math.PI*1.04,Math.PI*1.96);ctx.stroke()}
+  drawGlyph(x,y-35+(still?0:bob),'♪','#ffe0a1');
+ }else if(a.v30==='vision'){
+  rect(x-21,y+5,42,6,'#6a755d');rect(x-16,y-4,32,12,'#3e604c');
+  for(let i=0;i<3;i++){const offset=still?0:Math.sin(clock*2+i)*2;
+   rect(x-13+i*13,y-18+offset,6,18,'#76bf9d');}
+  drawGlyph(x,y-29,'✧','#ecdbac');
+ }else if(a.v30==='stone'){
+  rect(x-16,y-8,32,22,'#4f5962');rect(x-12,y-18,24,12,'#778b82');
+  rect(x-8,y-20,16,4,'#d2cb9e');
+  const glyph={v30StoneSeed:'♧',v30StoneWater:'≈',v30StoneLight:'✦'}[a.id]||'✧';
+  drawGlyph(x,y-5+bob,glyph,q.sequence>0?'#fcf3ba':'#b6e8cd');
+  ctx.strokeStyle='#c7ddbd';ctx.lineWidth=2;ctx.strokeRect(x-17,y-19,34,33);
+ }else if(a.v30==='gate'){
+  rect(x-24,y-16,8,37,'#674f48');rect(x+16,y-16,8,37,'#674f48');
+  rect(x-23,y-27,46,12,'#96785b');
+  rect(x-16,y-15,32,36,q.opened?'#357a63':'#283b3e');
+  for(let i=0;i<4;i++)rect(x-10+i*6,y-22+(i%2)*9,4,8,'#d2c394');
+  drawGlyph(x,y-3,'◇',q.opened?'#aff0bb':'#9fb49e');
+ }else if(a.v30==='keeper'){
+  drawCharacter(x,y-6+bob,'#576878','#dfbd99',false);
+  rect(x-9,y-9+bob,18,5,'#c7c7a0');
+  rect(x+9,y-24+bob,8,2,'#e7d291');
+  drawGlyph(x,y-43+bob,'✦','#b8e7be');
+ }else if(a.v30==='record'){
+  rect(x-19,y-16,38,34,'#655a62');rect(x-14,y-21,28,9,'#99918b');
+  rect(x-11,y-8,22,3,'#afddbd');rect(x-11,y,17,3,'#dfcfac');rect(x-11,y+8,20,2,'#afddbd');
+  drawGlyph(x,y-32+(still?0:bob),'✧',col);
+ }else if(a.v30==='return'){
+  ctx.strokeStyle='#a1efb3';ctx.lineWidth=3;
+  ctx.beginPath();ctx.ellipse(x,y-4,19,11,0,0,2*Math.PI);ctx.stroke();
+  rect(x-11,y-31,22,22,'#3c6b50');drawGlyph(x,y-20,'↩','#edebba');
+ }
+ ctx.shadowBlur=0;ctx.globalAlpha=.65+Math.sin(clock*2)*.15;
+ ctx.strokeStyle=col;ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(x,y+15,19,7,0,0,2*Math.PI);ctx.stroke();
+ ctx.restore();
+}
+function v30Decor(){
+ if(st.map!=='floresta'&&st.map!=='atrioRaizes')return;
+ const q=v30State(),still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ ctx.save();ctx.imageSmoothingEnabled=false;
+ if(st.map==='floresta'){
+  // Ancient roots point towards the sealed gate and the three rune stones.
+  for(let i=0;i<21;i++){
+   const x=(i*11+3)%COLS,y=(i*7+4)%ROWS;
+   ctx.fillStyle=i%3===0?'#587e4e':'#456a43';
+   rect(x*T+4,y*T+18,24,6);rect(x*T+13,y*T+12,5,14);
+   if(i%4===0){ctx.fillStyle='#93c89b';rect(x*T+16,y*T+11,4,4)}
+  }
+  if(q.started){
+   ctx.save();ctx.globalAlpha=.28+Math.sin(clock*2)*.13;
+   ctx.fillStyle='#b0e9b1';for(let i=0;i<16;i++){
+    const px=((i*73+61)%755),py=60+((i*101)%340);
+    rect(px,py+(still?0:Math.sin(clock+i)*3),3,3);
+   }ctx.restore();
+  }
+ }
+ if(st.map==='atrioRaizes'){
+  // A new compact dungeon tile pattern rather than a recolored copy of the Forest.
+  for(let x=1;x<COLS-1;x++)for(let y=1;y<ROWS-1;y++){
+   const bx=x*T,by=y*T;
+   ctx.fillStyle=(x+y)%2?'#334e52':'#2d414b';
+   rect(bx+1,by+1,T-2,T-2);
+   ctx.fillStyle='#61726c';rect(bx+3,by+3,T-6,2);
+   if((x*3+y*5)%8===0){ctx.fillStyle='#9fbea0';rect(bx+15,by+15,4,4)}
+  }
+  rect(4*T,7*T,16*T,3,'#7b857a');
+  rect(11*T,4*T,3,8*T,'#7b857a');
+  for(let i=0;i<5;i++){
+   ctx.fillStyle='#c5aa73';rect((5+i*3)*T,8*T,7,8);
+   ctx.fillStyle='#a5e6c1';rect((5+i*3)*T+2,8*T+2,3,3);
+  }
+ }
+ ctx.restore();
+}
 function v29DrawActor(a,x,y,bob){
  ctx.save();const glow=.65+Math.sin(clock*2.3+a.x)*.2;
  const hue=a.v29==='find'?'#8eddd2':a.v29==='clue'?'#f3cf88':'#dfbaf9';
