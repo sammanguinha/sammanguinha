@@ -18,10 +18,16 @@ const server=http.createServer((req,res)=>{
  for(const [device,w,h]of[['desktop',1440,900],['mobile',390,844]]){
   const page=await browser.newPage({viewport:{width:w,height:h},isMobile:device==='mobile',hasTouch:device==='mobile'});
   const errors=[],missing=[];
-  page.on('pageerror',error=>errors.push(error.message));
+  page.on('pageerror',error=>errors.push(error.stack||error.message));
   page.on('response',response=>{if(response.url().startsWith('http://127.0.0.1:4295/')&&response.status()>=400)missing.push(response.url())});
   await page.route('https://cdn.jsdelivr.net/**',route=>route.fulfill({status:200,contentType:'text/javascript',body:'// isolated supabase SDK'}));
-  await page.route('https://rygeemrxyjknhxxlewdb.supabase.co/**',route=>route.fulfill({status:200,contentType:'application/json',body:'[]'}));
+  await page.route('https://rygeemrxyjknhxxlewdb.supabase.co/**',route=>{
+   const pathname=new URL(route.request().url()).pathname;
+   const data=pathname.endsWith('/rpc/quest_state')?{goals:[],title:''}:
+    pathname.endsWith('/rpc/game_bonus')?{mangoes:0,xp:0}:
+    pathname.endsWith('/rpc/claim_profile')?{mangoes:0,xp:0,found:[],avatar:{c:0,h:'none'}}:[];
+   return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(data)});
+  });
   await page.addInitScript(()=>{
    const realNow=Date.now.bind(Date);window.__v34Offset=0;Date.now=()=>realNow()+window.__v34Offset;
    window.__advanceGardenClock=ms=>{window.__v34Offset+=ms;return Date.now()};
