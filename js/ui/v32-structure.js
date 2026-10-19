@@ -71,10 +71,9 @@
    }
   }
  });
- // Accessible hover-free menu: close only when keyboard focus has actually left.
- nav.addEventListener('focusout',()=>queueMicrotask(()=>{
-  if(!panel.hidden&&!nav.contains(document.activeElement))showMenu(false);
- }));
+ // Do not close on focusout: the browser briefly focuses BODY while moving from
+ // the search field to a destination button, which would cancel the click.
+ // Outside click and Escape already dismiss the menu reliably.
  const observer=new MutationObserver(markActive);
  for(const button of more)observer.observe(button,{attributes:true,attributeFilter:['aria-current']});
  window.SamSiteV32=Object.freeze({openDestinations:()=>showMenu(true,true),getLastJourney:()=>safeGet()});
