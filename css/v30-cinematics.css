@@ -1,0 +1,102 @@
+/* V30.2 cinematic player, animated pixel scenes and playable quest interface */
+#sm30Cutscene[hidden]{display:none!important}
+#sm30Cutscene.sm30-cutscene-layer{
+ position:fixed!important;inset:0!important;z-index:2147483646!important;
+ display:flex!important;align-items:center;justify-content:center;
+ width:100%!important;height:100dvh!important;margin:0!important;
+ padding:clamp(9px,3vh,20px)!important;box-sizing:border-box!important;
+ background:radial-gradient(ellipse at 50% 20%,#234f4ee8,#08151bf6 68%)!important;
+ color:#fcf3dc;isolation:isolate;overflow:auto;overscroll-behavior:contain;
+}
+#sm30Cutscene .sm30-cut-box{
+ width:min(100%,850px);max-height:calc(100dvh - 16px);
+ overflow:auto;display:grid;gap:0;box-sizing:border-box;
+ border:2px solid #e2c78a;border-radius:19px;
+ box-shadow:0 30px 120px #000c,inset 0 0 0 1px #f9f2cf33;
+ background:linear-gradient(155deg,#1b3339,#1a2535 70%,#302d3e);
+}
+#sm30Cutscene .sm30-cut-top{display:flex;align-items:center;justify-content:space-between;gap:12px;
+ padding:11px 16px;background:#0c1c28dd;border-bottom:1px solid #e6c88c77}
+#sm30Cutscene #sm30CutTitle{font:850 .76rem/1.4 system-ui;letter-spacing:.13em;color:#f9da98}
+#sm30Cutscene #sm30CutSkip{padding:8px 12px;border-radius:9px;border:1px solid #d4c7aa73;
+ background:#2a4650;color:#f2e3cc;font:800 .75rem system-ui;cursor:pointer;min-height:42px}
+#sm30Cutscene canvas{display:block!important;width:100%!important;
+ aspect-ratio:16/9!important;height:auto!important;max-height:48dvh!important;
+ object-fit:contain;background:#192b37;
+ image-rendering:pixelated;image-rendering:crisp-edges;box-sizing:border-box;
+ border-bottom:5px solid #e4c482}
+#sm30Cutscene .sm30-cut-dialogue{
+ padding:clamp(12px,3vw,22px);min-height:118px;box-sizing:border-box;
+ background:radial-gradient(ellipse at 10% 10%,#33544d55,transparent 60%),#14252f;
+}
+#sm30Cutscene #sm30CutSpeaker{display:block;margin-bottom:10px;
+ color:#f5d69c;font:800 clamp(.9rem,2vw,1.06rem) Georgia,serif}
+#sm30Cutscene #sm30CutText{margin:0;line-height:1.7;max-width:75ch;
+ color:#f3eddc;font:500 clamp(.86rem,1.8vw,1.06rem)/1.7 system-ui}
+#sm30Cutscene .sm30-cut-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;
+ padding:10px 16px 14px;background:#12242f}
+#sm30Cutscene #sm30CutProgress{font:800 .72rem system-ui;letter-spacing:.14em;color:#b1d9c7}
+#sm30Cutscene #sm30CutNext{min-height:44px;padding:9px 26px;border-radius:10px;
+ border:1px solid #f8e0a6;background:linear-gradient(130deg,#f2daa9,#d9b77a);
+ color:#20333b;font:850 .82rem system-ui;cursor:pointer}
+#sm30Cutscene button:focus-visible{outline:3px solid #a9e8bc;outline-offset:3px}
+#rpgDlg .v30-prologue{
+ display:grid!important;visibility:visible!important;gap:11px;
+ padding:18px!important;margin:0 0 15px!important;
+ background:radial-gradient(circle at 100% 0%,#6da47e40,transparent 65%),
+ linear-gradient(145deg,#213c3a,#263148)!important;
+ border:1px solid #c8e8b1!important;border-radius:17px!important;
+ box-shadow:0 12px 28px #0008,inset 0 1px #fff3;
+}
+#rpgDlg .v30-prologue h3{font:800 1.14rem Georgia,serif!important;
+ margin:0!important;color:#ffe0a0!important}
+#rpgDlg .v30-kicker{font:800 .64rem system-ui;letter-spacing:.16em;color:#a1eabe}
+#rpgDlg .v30-prologue #v30QuestStatus{
+ font-size:.85rem;line-height:1.6;color:#f1e7cd;font-weight:700;margin:0
+}
+#rpgDlg .v30-track{height:9px;border-radius:999px;border:1px solid #8dae9e;
+ background:#10232f;overflow:hidden}
+#rpgDlg #v30ProgressFill{display:block;height:100%;width:0;
+ background:linear-gradient(90deg,#6bc29a,#f3d384);box-shadow:0 0 8px #afebbc;
+ border-radius:inherit;transition:width .2s}
+#rpgDlg .v30-quest-count{font:700 .77rem/1.5 system-ui;color:#b7daca}
+#rpgDlg .v30-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+#rpgDlg .v30-actions button{
+ min-width:0;min-height:43px;padding:8px 7px;
+ border-radius:11px;border:1px solid #bed5bb;background:#294c48;color:#fcf1d8;
+ font:800 .73rem/1.35 system-ui;cursor:pointer;white-space:normal
+}
+#rpgDlg .v30-actions button:disabled{opacity:.45;cursor:not-allowed}
+#rpgDlg .v30-actions button:not(:disabled):hover{filter:brightness(1.18)}
+#rpgDlg .v30-track-label{font:800 .76rem system-ui;color:#e9d5a6}
+#rpgDlg #v30TrackChoice{width:100%;min-width:0;min-height:43px;padding:9px 10px;
+ background:#152e35;border-radius:10px;border:1px solid #9fbfa5;color:#fff0d5;
+ font:700 .78rem system-ui}
+#rpgDlg .v30-help{font-size:.72rem;line-height:1.5;color:#b4d2bf;margin:0}
+#rpgDlg .v30-prologue :focus-visible{outline:3px solid #f1d69e;outline-offset:3px}
+@media(max-width:620px){
+ #sm30Cutscene.sm30-cutscene-layer{padding:7px!important;align-items:center}
+ #sm30Cutscene .sm30-cut-box{border-radius:11px;max-height:calc(100dvh - 8px)}
+ #sm30Cutscene .sm30-cut-top{padding:8px 10px}
+ #sm30Cutscene #sm30CutTitle{font-size:.64rem;letter-spacing:.08em}
+ #sm30Cutscene #sm30CutSkip{font-size:.67rem;min-height:38px;padding:7px}
+ #sm30Cutscene .sm30-cut-dialogue{min-height:100px;padding:12px}
+ #sm30Cutscene .sm30-cut-footer{padding:9px}
+ #sm30Cutscene #sm30CutNext{min-height:42px;padding:9px 14px}
+ #rpgDlg .v30-prologue{padding:13px!important;gap:9px}
+ #rpgDlg .v30-actions button{font-size:.69rem}
+}
+@media(max-height:440px) and (orientation:landscape){
+ #sm30Cutscene .sm30-cut-box{grid-template-columns:minmax(180px,48%) 1fr;
+  grid-template-rows:auto 1fr auto;max-width:min(920px,100%);}
+ #sm30Cutscene .sm30-cut-top{grid-column:1/-1}
+ #sm30Cutscene canvas{height:calc(100dvh - 101px)!important;max-height:none!important;
+  width:100%!important;align-self:center;aspect-ratio:auto!important;border-bottom:0;
+  border-right:4px solid #e4c482}
+ #sm30Cutscene .sm30-cut-dialogue{min-height:0;padding:11px}
+ #sm30Cutscene .sm30-cut-footer{grid-column:1/-1}
+}
+@media(prefers-reduced-motion:reduce){
+ #rpgDlg #v30ProgressFill{transition:none}
+ #sm30Cutscene *{animation:none!important;transition:none!important}
+}
