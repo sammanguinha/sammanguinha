@@ -132,8 +132,13 @@
     g.strokeStyle='#9cebc8';g.lineWidth=5;g.beginPath();g.ellipse(64,81,53,67,0,0,Math.PI*2);g.stroke();
    }
   }
+  let lastSkinSignature='';
   function refresh(){
-   const v=read();output.replaceChildren(...Object.entries(skins).map(([id,[name,requirement]])=>{
+   const v=read();
+   const signature=JSON.stringify([v.accessory,v.harvests,v.unlocked]);
+   if(signature===lastSkinSignature)return;
+   lastSkinSignature=signature;
+   output.replaceChildren(...Object.entries(skins).map(([id,[name,requirement]])=>{
     const btn=elem('button','sm34-accessory');btn.dataset.sm34Accessory=id;btn.type='button';
     btn.disabled=!v.unlocked[id];btn.setAttribute('aria-pressed',String(v.accessory===id));
     btn.append(elem('b',null,(id==='none'?'🥭 ':id==='leaf'?'🌿 ':id==='scarf'?'🧣 ':'✨ ')+name),
@@ -146,7 +151,8 @@
    const response=api.dressV34(key);status.textContent=response.message;status.dataset.state=response.ok?'ok':'error';refresh();
   });
   profile.addEventListener('pointerenter',refresh);
-  // No focus-triggered rebuild here: clicks on accessories must remain stable.
+  // Updating the preview for a changed official color must not recreate local buttons.
+  profile.querySelector('#colors')?.addEventListener('click',()=>preview(read().accessory));
   refresh();
   const notify=()=>{if(!profile.hidden)refresh()};setInterval(notify,3000);
  }
