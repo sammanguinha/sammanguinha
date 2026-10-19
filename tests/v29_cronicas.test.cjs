@@ -8,7 +8,7 @@ const book=context.window.SamV29Data;
 test('Both V29 scripts parse and are loaded in the only valid dependency order',()=>{
  assert.doesNotThrow(()=>new vm.Script(world));
  assert.doesNotThrow(()=>new vm.Script(data));
- assert.ok(html.indexOf('rpg_cronicas_v29.js?v=29')<html.indexOf('mundo_pomar.js?v=33.3'));
+ assert.ok(html.indexOf('rpg_cronicas_v29.js?v=29')<html.indexOf('mundo_pomar.js?v=33.5'));
  assert.ok(html.includes('css/v29-quest.css?v=29'));
 });
 test('Campaign connects 3 accessible regions, 3 NPCs and 3 environmental clues',()=>{

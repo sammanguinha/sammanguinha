@@ -1,0 +1,64 @@
+/* V33.5 — Reestruturação das telas de jogo: elementos objetivos e reais. */
+:root{--sm35-bg:#132933;--sm35-gold:#efdaab;--sm35-mint:#a5e7c9;--sm35-line:#a9cdae60}
+#home .v32-adventure-home{border:1px solid #b7d1b380!important;box-shadow:0 12px 38px #0005!important}
+#home .v32-adventure-home .r23-hero-buttons button{min-height:47px}
+#home .sm35-dashboard{margin:0 0 23px;padding:clamp(15px,2.6vw,22px);border-radius:17px;background:linear-gradient(145deg,#182f36,#233a3e);border:1px solid var(--sm35-line);box-shadow:0 7px 30px #0003}
+#home .sm35-dashboard-heading{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:15px}
+#home .sm35-eyebrow{color:var(--sm35-mint);font:850 .66rem Inter,system-ui,sans-serif;letter-spacing:.13em}
+#home .sm35-dashboard-heading h2{margin:0;color:var(--sm35-gold);font:800 clamp(1.06rem,2.5vw,1.38rem) 'Cinzel',Georgia,serif}
+#home .sm35-live-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#home .sm35-live-card{display:flex;align-items:center;gap:11px;min-height:134px;padding:17px!important;text-align:left;color:#f3eedc!important;border:1px solid #b2cbb064!important;border-radius:13px!important;background:linear-gradient(140deg,#29484c,#223844)!important;cursor:pointer;transition:transform .14s,border-color .14s}
+#home .sm35-live-card:hover{transform:translateY(-2px);border-color:#e6d299!important}
+#home .sm35-live-icon{flex:none;display:grid;place-items:center;border-radius:12px;width:46px;height:46px;font-size:1.5rem;background:#a0ccb525}
+#home .sm35-live-text{display:grid;gap:6px;min-width:0;flex:1}
+#home .sm35-live-text b{color:#a2dfc1;font:800 .7rem Inter,system-ui,sans-serif;letter-spacing:.05em}
+#home .sm35-live-text strong{color:#f9e4af;font:800 .92rem/1.33 'Cinzel',Georgia,serif}
+#home .sm35-live-text small{color:#c9d9d1;font:.74rem/1.5 Inter,system-ui,sans-serif;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#home .sm35-community-details{margin:14px 0;border-radius:12px;border:1px solid var(--sm35-line);background:#1b303a}
+#home .sm35-community-details summary{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:15px 19px;min-height:49px;color:#f2deb5;font:800 .88rem 'Cinzel',Georgia,serif;list-style:none}
+#home .sm35-community-details summary::after{content:'⌄';font-size:1.4rem}
+#home .sm35-community-details[open] summary::after{transform:rotate(180deg)}
+#home .sm35-community-details summary::-webkit-details-marker{display:none}
+#home .sm35-community-details #sm17HomeCTA{margin:4px 12px 14px!important}
+#home .rpg-portal-section{margin-top:16px}
+#home .v32-featured-grid{gap:13px!important}
+#home .v32-featured-grid .portal-card{position:relative;min-height:165px!important;background:linear-gradient(150deg,#2c4441,#1a323f)!important;border:1px solid #a7c5a24c!important}
+#home .v32-featured-grid .portal-card:hover{border-color:#e7d29b!important}
+#home .v32-featured-grid .portal-card p{line-height:1.55!important;color:#d8dfd4!important}
+#home .v32-featured-grid .portal-card:nth-child(1){background:linear-gradient(135deg,#355a4b,#243c43)!important}
+#home .v32-featured-grid .portal-card:nth-child(2){background:linear-gradient(135deg,#464259,#24394a)!important}
+#home .v32-featured-grid .portal-card:nth-child(3){background:linear-gradient(135deg,#4e493b,#294740)!important}
+#home .v32-featured-grid .portal-card:nth-child(4){background:linear-gradient(135deg,#3c4562,#29383b)!important}
+#home .cols{align-items:start}
+#home .cols>.panel,#home .cols .panel{border:1px solid #b5c79f35!important}
+#rpgDlg .r12-shell{max-width:1520px;margin-inline:auto}
+#rpgDlg .sm35-rpg-jumps{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:13px 16px;margin:0 0 14px;border:1px solid var(--sm35-line);border-radius:12px;background:#1b323a}
+#rpgDlg .sm35-rpg-jumps button{flex:1 1 122px;min-height:43px;text-align:center;border-radius:9px;border:1px solid #9dc2aa61;background:#284b4c;color:#f0e6d0;font:800 .78rem Inter,system-ui,sans-serif;padding:9px;cursor:pointer}
+#rpgDlg .sm35-rpg-jumps button:hover{background:#376458;border-color:#eccb8e}
+#rpgDlg .sm35-rpg-jumps button:last-child{background:#3f5d4e;color:#f7e4b5}
+#rpgDlg .r12-aside .r12-card{border-radius:14px;border-color:#a6c6af54}
+#rpgDlg .r12-aside .r12-card h3{line-height:1.4}
+#rpgDlg .r12-aside .r12-card p{line-height:1.55}
+#rpgDlg .r12-card.sm35-highlight{outline:3px solid #e9d396!important;outline-offset:4px}
+#rpgDlg .r12-shell canvas{image-rendering:pixelated}
+#profDlg .map-header{border-radius:15px;background:linear-gradient(140deg,#1c363d,#253d42);border:1px solid var(--sm35-line);padding:18px 23px}
+#profDlg .sanctuary-grid{gap:clamp(15px,2.4vw,24px)}
+#profDlg .wardrobe-panel{border:1px solid #a3c6ae5f;border-radius:16px}
+#profDlg .wardrobe-panel .wardrobe-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;padding-bottom:6px}
+#profDlg .wardrobe-panel button{min-height:42px}
+#houseDlg .sm35-house-intro{margin-top:11px!important;padding:12px 14px;border-radius:10px;background:#213d419c;border:1px solid #adccae67;color:#dce4d4!important;font-size:.84rem!important}
+#gameDlg .sm21-tactics{max-width:980px}
+#gameDlg .v27-defense-panel{border-radius:18px;border-color:#b5cbaf5c}
+#gameDlg .v27-defense-stage{overflow:hidden;border-radius:14px}
+#gameDlg #gCv{image-rendering:pixelated}
+#home .sm35-dashboard :focus-visible,#home .sm35-community-details summary:focus-visible,#rpgDlg .sm35-rpg-jumps :focus-visible{outline:3px solid #e7d69e!important;outline-offset:3px!important}
+@media(max-width:1050px){#home .sm35-live-grid{grid-template-columns:1fr 1fr}#home .sm35-live-grid button:first-child{grid-column:1/-1;min-height:106px}}
+@media(max-width:650px){#home .sm35-dashboard-heading{display:grid;gap:7px}#home .sm35-live-grid{grid-template-columns:1fr}
+#home .sm35-live-grid button:first-child{grid-column:auto}
+#home .sm35-live-card{min-height:101px;padding:13px!important}
+#home .sm35-live-icon{width:39px;height:39px;font-size:1.3rem}
+#rpgDlg .sm35-rpg-jumps{padding:10px}#rpgDlg .sm35-rpg-jumps button{flex:1 1 45%;font-size:.75rem}
+#profDlg .map-header{padding:15px}
+#houseDlg .sm21-house-layout{grid-template-columns:1fr!important}
+}
+@media(prefers-reduced-motion:reduce){#home .sm35-live-card{transition:none!important}#home .sm35-live-card:hover{transform:none!important}}
