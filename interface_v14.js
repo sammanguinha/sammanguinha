@@ -2,7 +2,9 @@
 (()=>{'use strict';
 const qs=(s,root=document)=>root.querySelector(s),qsa=(s,root=document)=>[...root.querySelectorAll(s)];
 const nav=qs('#areas'),tabs=qs('.areas .tabs2'),actions=qs('.areas .nav-actions');
-if(nav&&tabs){
+// V32 owns its accessible destination search; do not recreate the obsolete V14 menu.
+const modernNavigation=!!qs('#v32MoreToggle');
+if(nav&&tabs&&!modernNavigation){
  const keep=new Set(['home','rpgDlg','gameDlg','houseDlg','profDlg']);
  const wrap=document.createElement('div');wrap.className='r14-more';wrap.innerHTML='<button type="button" class="r14-more-button" id="r14MoreToggle" aria-controls="r14MoreMenu" aria-expanded="false">☰ Mais</button><div id="r14MoreMenu" class="r14-more-menu" hidden></div>';
  tabs.after(wrap);const menu=qs('#r14MoreMenu'),toggle=qs('#r14MoreToggle');
@@ -20,6 +22,8 @@ if(nav&&tabs){
  document.addEventListener('keydown',e=>{if(e.key==='Escape')show(false)});
  nav.addEventListener('click',e=>{const b=e.target.closest('[data-p]');if(b){window.SamMusic?.scene(b.dataset.p==='eventDlg'?'shadows':'explore')}});
 }
+// Music scene selection applies to both generations of navigation.
+if(nav&&modernNavigation)nav.addEventListener('click',e=>{const btn=e.target.closest('button[data-p]');if(btn)window.SamMusic?.scene(btn.dataset.p==='eventDlg'?'shadows':'explore')});
 // Music controls with user gesture: mobile browsers won't play unprompted.
 if(actions&&window.SamMusic){
  const dock=document.createElement('div');dock.className='r14-music-item';dock.innerHTML='<button id="r14MusicToggle" type="button" class="r14-music-toggle" aria-pressed="false">♫ Música</button><button id="r14MusicOptions" class="r14-music-options" aria-label="Volume e trilha" aria-expanded="false" type="button">▾</button><div id="r14MusicPopover" class="r14-music-pop" hidden><strong>♫ Trilha do Pomar</strong><p id="r14MusicStatus">Toque em Música para ouvir.</p><label for="r14MusicVolume">Volume</label><input id="r14MusicVolume" type="range" min="0" max="100" value="32" step="1"><p>4 temas instrumentais originais: exploração, combate, chefão e Halloween.</p></div>';
@@ -33,7 +37,7 @@ if(actions&&window.SamMusic){
 }
 // Reduce home information density: four main activities first, all other portal cards in one optional drawer.
 const portal=qs('.rpg-portal-grid');
-if(portal){
+if(portal&&!qs('#v32Library')){
  const entries=qsa('.portal-card',portal),byId=new Map(entries.map(b=>[b.dataset.go,b]));
  const main=['rpgDlg','gameDlg','houseDlg','profDlg','eventDlg'];
  main.forEach(id=>{const c=byId.get(id);if(c)portal.appendChild(c)});
@@ -46,7 +50,7 @@ if(portal){
 }
 // Compact the home page without removing any original content or server-backed ranking.
 const cols=qs('#home .cols')||qs('.wrap .cols');
-if(cols&&cols.parentElement&&cols.closest('#home, #stage')){
+if(cols&&cols.parentElement&&cols.closest('#home, #stage')&&!qs('#v32Library')){
  const details=document.createElement('details');details.className='r14-community';details.innerHTML='<summary>✦ Comunidade, ranking e notícias <span>Toque para expandir</span></summary>';
  cols.before(details);details.appendChild(cols);
 }

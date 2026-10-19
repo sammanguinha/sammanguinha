@@ -121,21 +121,31 @@
     <svg class="ic lg" aria-hidden="true"><use href="#i-mango"/></svg>
     <span class="logo-title">Sam Manguinha</span>
   </div>
-  <div class="tabs2">
-    <button type="button" data-p="home" id="homeBtn" aria-current="page"><svg class="ic"><use href="#i-home"/></svg><span>Início</span></button>
-    <button type="button" data-p="rpgDlg" id="rpgWorldBtn"><svg class="ic"><use href="#i-home"/></svg><span>Mundo RPG</span></button>
-    <button type="button" data-p="eventDlg" id="eventBtn"><svg class="ic"><use href="#rpg-icon-map"/></svg><span>Mapa & Missões</span></button>
-    <button type="button" data-p="diary" id="diaryBtn"><svg class="ic"><use href="#i-book"/></svg><span>Diário</span></button>
-    <button type="button" data-p="profDlg" id="profBtn"><svg class="ic"><use href="#rpg-icon-cloak"/></svg><span>Personagem</span></button>
-    <button type="button" data-p="rankDlg" id="rankBtn"><svg class="ic"><use href="#i-crown"/></svg><span>Ranking</span></button>
-    <button type="button" data-p="murDlg" id="murBtn"><svg class="ic"><use href="#i-chat"/></svg><span>Mural</span></button>
-    <button type="button" data-p="questDlg" id="questBtn"><svg class="ic"><use href="#i-scroll"/></svg><span>Conquistas</span></button>
-    <button type="button" data-p="houseDlg" id="houseBtn"><svg class="ic"><use href="#i-home"/></svg><span>Minha Casa</span></button>
-    <button type="button" data-p="gameDlg" id="gameBtn"><svg class="ic"><use href="#i-game"/></svg><span>Defesa</span></button>
-    <button type="button" data-p="galDlg" id="galBtn"><svg class="ic"><use href="#i-image"/></svg><span>Galeria</span></button>
-    <button type="button" data-p="curDlg" id="curBtn"><svg class="ic"><use href="#i-bulb"/></svg><span>Curiosidades</span></button>
-    <button type="button" data-p="secDlg" id="secBtn"><svg class="ic"><use href="#i-lock"/></svg><span>Segredos</span> <i class="cnt" id="secN"></i></button>
-  </div>
+  <div class="tabs2 v32-tabs" aria-label="Destinos principais">
+<button type="button" data-p="home" id="homeBtn" aria-current="page"><svg class="ic"><use href="#i-home"/></svg><span>Início</span></button>
+<button type="button" data-p="rpgDlg" id="rpgWorldBtn"><svg class="ic"><use href="#i-home"/></svg><span>Mundo RPG</span></button>
+<button type="button" data-p="gameDlg" id="gameBtn"><svg class="ic"><use href="#i-game"/></svg><span>Defesa</span></button>
+<button type="button" data-p="houseDlg" id="houseBtn"><svg class="ic"><use href="#i-home"/></svg><span>Minha Casa</span></button>
+<button type="button" data-p="profDlg" id="profBtn"><svg class="ic"><use href="#rpg-icon-cloak"/></svg><span>Personagem</span></button>
+<div class="v32-more" id="v32MoreWrap">
+<button type="button" id="v32MoreToggle" aria-controls="v32MorePanel" aria-expanded="false" aria-haspopup="true"><span class="v32-more-icon" aria-hidden="true">☷</span><span>Explorar</span></button>
+<div class="v32-more-panel" id="v32MorePanel" hidden>
+<label for="v32DestinationSearch">Encontrar área</label>
+<input id="v32DestinationSearch" type="search" autocomplete="off" placeholder="Mapa, diário, conquistas..." />
+<div class="v32-more-destinations" id="v32MoreDestinations">
+<button type="button" data-p="eventDlg" id="eventBtn"><svg class="ic"><use href="#rpg-icon-map"/></svg><span>Mapa & Missões</span></button>
+<button type="button" data-p="diary" id="diaryBtn"><svg class="ic"><use href="#i-book"/></svg><span>Diário</span></button>
+<button type="button" data-p="questDlg" id="questBtn"><svg class="ic"><use href="#i-scroll"/></svg><span>Conquistas</span></button>
+<button type="button" data-p="rankDlg" id="rankBtn"><svg class="ic"><use href="#i-crown"/></svg><span>Ranking</span></button>
+<button type="button" data-p="murDlg" id="murBtn"><svg class="ic"><use href="#i-chat"/></svg><span>Mural</span></button>
+<button type="button" data-p="galDlg" id="galBtn"><svg class="ic"><use href="#i-image"/></svg><span>Galeria</span></button>
+<button type="button" data-p="curDlg" id="curBtn"><svg class="ic"><use href="#i-bulb"/></svg><span>Curiosidades</span></button>
+<button type="button" data-p="secDlg" id="secBtn"><svg class="ic"><use href="#i-lock"/></svg><span>Segredos</span> <i class="cnt" id="secN"></i></button>
+</div>
+<p id="v32SearchEmpty" hidden>Nenhuma área encontrada.</p>
+</div>
+</div>
+</div>
   <div class="nav-actions">
     <button type="button" id="setBtn" class="gear" aria-label="Configurações"><svg class="ic"><use href="#i-gear"/></svg></button>
     <button type="button" id="admBtn">Admin</button>
@@ -156,10 +166,10 @@
     <button type="button" class="hm" style="--l:42px;--d:-0.6s" aria-label="Colher uma manga do pomar"><i class="st"></i><i class="mg"></i></button>
   </div>
   <div class="titleblock">
-    <div class="hero-badge">OUTUBRO 2026 • EVENTO ESPECIAL</div>
+    <div class="hero-badge">EDIÇÃO V32 • NOVO POMAR</div>
     <h1><button type="button" id="cheat" aria-haspopup="dialog">SAM MANGUINHA</button></h1>
     <div class="subtitle">A Maldição do Pomar</div>
-    <p class="tag">Lanternas se apagam sozinhas. Frutos proibidos brotam sob a lua. E, depois da trilha sombria, repousa uma árvore que ninguém lembra de ter plantado.</p>
+    <p class="tag">Uma vila cheia de histórias, desafios e segredos. Explore o mundo, defenda as árvores e construa seu próprio refúgio.</p>
     <p class="chips">
       <button type="button" class="chip" id="dayChip">Hoje no Pomar</button>
       <span class="chip" id="postChip">Carregando crônicas...</span>
@@ -168,7 +178,7 @@
     <div>
       <button type="button" class="orchard-main-cta" id="eventLaunch">
         <svg class="cta-icon" viewBox="0 0 24 24"><use href="#rpg-icon-gate"/></svg>
-        <span>Adentrar o Pomar Amaldiçoado</span>
+        <span>Entrar no mundo RPG</span>
       </button>
     </div>
     <div class="evbar" id="evBar" hidden role="status"><span id="evT"></span><button type="button" id="evGo">Resgatar</button></div>
@@ -207,66 +217,74 @@
  <div class="sm30-news-links"><button type="button" id="sm30NewsRead">📜 Ver todas as novidades</button><button type="button" id="sm30WatchTeaser">🎬 Prévia V30 em pixel art</button><button type="button" data-go="rpgDlg" id="sm30NewsPlay">🎮 Começar a nova história</button></div>
  <p class="sm30-news-footnote">🔔 Entre na Vila e procure Íris, a Cartógrafa. A V30 está em desenvolvimento; estas novidades são da V29 disponível neste pacote.</p>
  </section>
- <section class="r23-home-hero" aria-label="Bem-vindo ao Renascimento do Pomar">
- <div class="r23-hero-copy"><span class="r23-hero-eyebrow">✦ V28 · CRÔNICAS DO BOSQUE</span>
- <h2>Um reino para explorar. Uma floresta para proteger.</h2>
- <p>Entre na Vila da Mangueira, conheça os guardiões, cumpra contratos, cuide do seu refúgio e prepare suas defesas para as próximas ondas.</p>
- <div class="r23-hero-buttons"><button type="button" class="r23-primary" data-go="rpgDlg">🌳 Explorar a Vila</button><button type="button" class="r23-secondary" data-go="gameDlg">⚔️ Defender o Pomar</button><button type="button" class="r23-secondary" data-go="houseDlg">🏰 Minha Casa</button></div>
- <small>Seu progresso das versões anteriores permanece preservado. Contratos usam sementes locais, não pontos do ranking.</small></div>
- <div class="r23-hero-art" aria-hidden="true"><span class="r23-hero-moon">☾</span><span class="r23-hero-tree">♣</span><span class="r23-hero-light">✧</span><span class="r23-hero-caption">✦ O POMAR AGUARDA ✦</span></div>
- </section>
+ <section class="r23-home-hero v32-adventure-home" aria-label="Continue sua aventura" data-legacy-edition="V28 · CRÔNICAS DO BOSQUE">
+<div class="r23-hero-copy">
+<span class="r23-hero-eyebrow">✦ CENTRAL DE AVENTURA · V32</span>
+<h2>Seu Pomar. Sua história.</h2>
+<p>Volte de onde parou, proteja a floresta ou cuide do seu refúgio. Tudo em um único lugar.</p>
+<div class="r23-hero-buttons">
+<button type="button" class="r23-primary" data-go="rpgDlg" id="v32Resume">▶ Continuar a jornada</button>
+<button type="button" class="r23-secondary" data-go="gameDlg">🛡️ Modo Defesa</button>
+<button type="button" class="r23-secondary" data-go="houseDlg">🏡 Minha Casa</button>
+</div></div>
+<div class="v32-resume-panel" aria-live="polite">
+<span class="v32-status-dot" aria-hidden="true"></span><span class="v32-eyebrow">SUA PRÓXIMA PARADA</span>
+<strong id="v32ResumeTitle">Mundo RPG</strong>
+<span id="v32ResumeDescription">Explore novas regiões e conclua os capítulos do Pomar.</span>
+<button type="button" id="v32ResumeSecondary" data-go="eventDlg">Abrir mapa e missões <span aria-hidden="true">↗</span></button>
+</div></section>
   <!-- Grimório de Acesso Rápido -->
   <section class="rpg-portal-section" aria-labelledby="portalTitle">
     <h2 class="portal-heading" id="portalTitle">
-      <span>Escolha sua aventura</span>
-      <small>Escolha seu destino nesta noite</small>
+      <span>Onde você quer ir?</span>
+      <small>Um destino para cada estilo de jogo</small>
     </h2>
     
 <div class="sm17-home-cta" id="sm17HomeCTA" role="region" aria-label="O que fazer agora">
- <div><b>✦ Seu próximo passo no Pomar</b><p>Explore o RPG, defenda as árvores ou converse com outros guardiões.</p></div>
+ <div><b>✦ Atalhos úteis</b><p>Comunidade e códigos ficam aqui quando você precisar.</p></div>
  <button type="button" id="sm17GoSocial" class="btn-gothic">💬 Praça dos Jogadores</button>
  <button type="button" id="sm17GoGrimoire" class="btn-gothic alt">🔐 Códigos</button>
 </div>
-<div class="rpg-portal-grid">
-      <button type="button" class="portal-card" data-go="rpgDlg">
+<div class="rpg-portal-grid v32-featured-grid"><button type="button" class="portal-card" data-go="rpgDlg">
         <div class="card-head"><svg class="portal-ic"><use href="#i-home"/></svg><h3>O Mundo do Pomar</h3></div>
         <p>Nova aventura RPG híbrida: explore a vila, procure sementes, conheça personagens e descubra portais para a Defesa e Halloween.</p>
       </button>
-      <button type="button" class="portal-card" data-go="houseDlg"><div class="card-head"><svg class="portal-ic"><use href="#i-home"/></svg><h3>🏰 Minha Casa — Refúgio do Guardião</h3></div><p>Construa seu espaço, decore com móveis animados, escolha o ambiente e descanse. Seu progresso fica salvo no navegador.</p></button>
-      <button type="button" class="portal-card" data-go="eventDlg">
-        <div class="card-head"><svg class="portal-ic"><use href="#rpg-icon-map"/></svg><h3>Mapa das 6 Regiões</h3></div>
-        <p>Explore a Estufa, a Trilha das Folhas e desvende a Árvore Ancestral.</p>
-      </button>
-      <button type="button" class="portal-card" data-go="profDlg">
-        <div class="card-head"><svg class="portal-ic"><use href="#rpg-icon-cloak"/></svg><h3>Personagem & Guarda-Roupa</h3></div>
-        <p>Personalize sua manga com chapéus, mantos, máscaras e auras arcanas.</p>
-      </button>
-      <button type="button" class="portal-card" data-go="diary">
-        <div class="card-head"><svg class="portal-ic"><use href="#i-book"/></svg><h3>Crônicas & Diário</h3></div>
-        <p>Consulte todos os registros botânicos e fotos por data ou número.</p>
-      </button>
-      <button type="button" class="portal-card" data-go="rankDlg">
-        <div class="card-head"><svg class="portal-ic"><use href="#i-crown"/></svg><h3>Pódio da Colheita</h3></div>
-        <p>Veja as maiores lendas do pomar e dispute o topo do ranking de mangas.</p>
-      </button>
-      <button type="button" class="portal-card" data-go="murDlg">
-        <div class="card-head"><svg class="portal-ic"><use href="#i-chat"/></svg><h3>Mural dos Murmúrios</h3></div>
-        <p>Envie e leia mensagens misteriosas deixadas pela comunidade de visitantes.</p>
-      </button>
-      <button type="button" class="portal-card" data-go="galDlg">
-        <div class="card-head"><svg class="portal-ic"><use href="#i-image"/></svg><h3>Galeria Espectral</h3></div>
-        <p>Exposição de fotos e ilustrações compartilhadas pelos exploradores.</p>
-      </button>
-      <button type="button" class="portal-card" data-go="gameDlg">
+<button type="button" class="portal-card" data-go="gameDlg">
         <div class="card-head"><svg class="portal-ic"><use href="#i-game"/></svg><h3>Defesa do Pomar</h3></div>
         <p>Proteja as árvores ancestrais contra pragas e atire mangas colhidas.</p>
       </button>
-      <button type="button" class="portal-card" data-go="secDlg">
+<button type="button" class="portal-card" data-go="houseDlg"><div class="card-head"><svg class="portal-ic"><use href="#i-home"/></svg><h3>🏰 Minha Casa — Refúgio do Guardião</h3></div><p>Construa seu espaço, decore com móveis animados, escolha o ambiente e descanse. Seu progresso fica salvo no navegador.</p></button>
+<button type="button" class="portal-card" data-go="profDlg">
+        <div class="card-head"><svg class="portal-ic"><use href="#rpg-icon-cloak"/></svg><h3>Personagem & Guarda-Roupa</h3></div>
+        <p>Personalize sua manga com chapéus, mantos, máscaras e auras arcanas.</p>
+      </button></div>
+<details class="v32-library" id="v32Library">
+<summary><span><b>Biblioteca de aventuras</b><small>Mapa, crônicas, comunidade e descobertas</small></span><span class="v32-library-chevron" aria-hidden="true">⌄</span></summary>
+<div class="rpg-portal-grid v32-library-grid"><button type="button" class="portal-card" data-go="eventDlg">
+        <div class="card-head"><svg class="portal-ic"><use href="#rpg-icon-map"/></svg><h3>Mapa das 6 Regiões</h3></div>
+        <p>Explore a Estufa, a Trilha das Folhas e desvende a Árvore Ancestral.</p>
+      </button>
+<button type="button" class="portal-card" data-go="diary">
+        <div class="card-head"><svg class="portal-ic"><use href="#i-book"/></svg><h3>Crônicas & Diário</h3></div>
+        <p>Consulte todos os registros botânicos e fotos por data ou número.</p>
+      </button>
+<button type="button" class="portal-card" data-go="rankDlg">
+        <div class="card-head"><svg class="portal-ic"><use href="#i-crown"/></svg><h3>Pódio da Colheita</h3></div>
+        <p>Veja as maiores lendas do pomar e dispute o topo do ranking de mangas.</p>
+      </button>
+<button type="button" class="portal-card" data-go="murDlg">
+        <div class="card-head"><svg class="portal-ic"><use href="#i-chat"/></svg><h3>Mural dos Murmúrios</h3></div>
+        <p>Envie e leia mensagens misteriosas deixadas pela comunidade de visitantes.</p>
+      </button>
+<button type="button" class="portal-card" data-go="galDlg">
+        <div class="card-head"><svg class="portal-ic"><use href="#i-image"/></svg><h3>Galeria Espectral</h3></div>
+        <p>Exposição de fotos e ilustrações compartilhadas pelos exploradores.</p>
+      </button>
+<button type="button" class="portal-card" data-go="secDlg">
         <div class="card-head"><svg class="portal-ic"><use href="#i-lock"/></svg><h3>Grimório de Segredos</h3></div>
         <p>Decifre enigmas, pistas sonoras e códigos ocultos no pomar.</p>
-      </button>
-    </div>
-  </section>
+      </button></div></details>
+</section>
 
   <!-- Pódio e Notícias Recentes -->
   <div class="cols">
@@ -1059,6 +1077,7 @@
 <link rel="stylesheet" href="css/v28-rpg-fullscreen.css?v=28.1">
 <link rel="stylesheet" href="css/v29-quest.css?v=29">
 <link rel="stylesheet" href="css/v30-cinematics.css?v=30.2">
+<link rel="stylesheet" href="css/v32-structure.css?v=32.0">
 <script src="rpg_epico_expansao.js"></script>
 <script src="musica_rpg_v14.js?v=30.2"></script>
 <script src="rpg_cronicas_v29.js?v=29"></script>
@@ -1078,5 +1097,7 @@
 <script src="renascimento_v23.js?v=23" defer></script>
 <script src="tela_cheia_v24.js?v=28.1" defer></script>
 <script src="js/ui/game-shell-v27.js?v=27" defer></script>
+<script src="js/ui/v32-structure.js?v=32.0" defer></script>
+<script src="js/ui/v32-news.js?v=32.0" defer></script>
 </body>
 </html>
