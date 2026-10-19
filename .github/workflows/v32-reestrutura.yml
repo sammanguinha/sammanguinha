@@ -19,6 +19,7 @@ jobs:
           node --check mundo_pomar.js
       - name: Testes estáticos e regressões
         run: |
+          node scripts/build-v26.cjs
           node --test tests/v25_architecture.test.cjs tests/v26_bundle.test.cjs tests/v27_bridge_ui.test.cjs tests/v28_visual.test.cjs tests/v29_cronicas.test.cjs tests/v30_cinematics.test.cjs tests/v30_news.test.cjs
       - name: Instalar navegador de teste
         run: |
