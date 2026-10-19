@@ -424,6 +424,56 @@ Object.assign(EPIC_ARTIFACTS,{
   desc:'Prova de quem aprendeu a observar as pequenas coisas. Reduz em 2 o dano recebido.',effect:'ward'}
 });
 
+
+/* V33.1/33.2 — Vale da Primeira Aurora: três mapas ligados por uma campanha real.
+   Integra-se ao motor existente e mantém saves v12, moedas oficiais e RNG intactos. */
+Object.assign(V24_BIOMES,{
+ valeAurora:['#284c45','#456b53','#1e3631','#f7d390'],
+ bibliotecaSubmersa:['#233c4d','#34556a','#1e2d41','#a9dbe9'],
+ mirantePrimeiraLuz:['#454355','#71664c','#282e3c','#ffe7a3']
+});
+rooms.valeAurora={name:'Vale da Primeira Aurora',subtitle:'Crônica III · A Canção da Água',floor:'#284c45',dirt:'#5a795d',night:false,
+ blocks:[{x:3,y:2,w:3,h:2,type:'rocks'},{x:18,y:2,w:3,h:2,type:'rocks'},{x:9,y:11,w:5,h:1,type:'ruin'}],
+ props:[{x:4,y:10,type:'tree'},{x:8,y:3,type:'tree'},{x:16,y:10,type:'tree'},{x:20,y:4,type:'tree'}],
+ actors:[
+ {id:'v33Back',x:1.4,y:7,type:'passage',v33:'back',label:'Voltar à Vila'},
+ {id:'v33Iara',x:7.2,y:6,type:'npc',v33:'iara',label:'Iara, Cartógrafa das Chuvas'},
+ {id:'v33Nilo',x:15.4,y:9,type:'npc',v33:'nilo',label:'Nilo, Aprendiz do Rio'},
+ {id:'v33EchoWind',x:4.7,y:5,type:'seed',v33:'echo',label:'Eco do Vento'},
+ {id:'v33EchoRain',x:15,y:4.7,type:'seed',v33:'echo',label:'Eco da Chuva'},
+ {id:'v33EchoRoot',x:20,y:9.5,type:'seed',v33:'echo',label:'Eco da Raiz'},
+ {id:'v33RuneWind',x:6,y:10.5,type:'altar',v33:'rune',label:'Pedra do Vento'},
+ {id:'v33RuneRain',x:12.2,y:6,type:'altar',v33:'rune',label:'Pedra da Chuva'},
+ {id:'v33RuneRoot',x:19,y:6.5,type:'altar',v33:'rune',label:'Pedra da Raiz'},
+ {id:'v33RiverGate',x:22.1,y:7,type:'door',v33:'riverGate',label:'Passagem da Biblioteca Submersa'},
+ {id:'v33NiloSatchel',x:10.2,y:9.1,type:'seed',v33:'satchel',label:'Bolsa perdida de Nilo'}]};
+rooms.bibliotecaSubmersa={name:'Biblioteca Submersa',subtitle:'Palavras escritas na correnteza',floor:'#233c4d',dirt:'#556b73',night:true,
+ blocks:[{x:3,y:2,w:4,h:2,type:'ruin'},{x:17,y:2,w:4,h:2,type:'ruin'},{x:10,y:10,w:4,h:2,type:'rocks'}],
+ props:[{x:6,y:10,type:'dead'},{x:19,y:10,type:'dead'}],
+ actors:[
+ {id:'v33LibraryBack',x:1.4,y:7,type:'passage',v33:'libraryBack',label:'Voltar ao Vale'},
+ {id:'v33MemoryOne',x:7,y:5.4,type:'altar',v33:'memory',label:'Memória da Primeira Chuva'},
+ {id:'v33MemoryTwo',x:17,y:6.2,type:'altar',v33:'memory',label:'Memória da Última Seca'},
+ {id:'v33Librarian',x:10.8,y:8.7,type:'npc',v33:'librarian',label:'A Custódia das Páginas'},
+ {id:'v33SummitGate',x:22,y:7,type:'door',v33:'summitGate',label:'Subida ao Mirante'}]};
+rooms.mirantePrimeiraLuz={name:'Mirante da Primeira Luz',subtitle:'A origem de cada novo amanhecer',floor:'#454355',dirt:'#7b745b',night:true,
+ blocks:[{x:3,y:2,w:4,h:2,type:'ruin'},{x:17,y:2,w:4,h:2,type:'ruin'}],
+ props:[{x:5,y:10,type:'tree'},{x:18,y:11,type:'tree'}],
+ actors:[
+ {id:'v33SummitBack',x:1.4,y:7,type:'passage',v33:'summitBack',label:'Voltar à Biblioteca'},
+ {id:'v33Warden',x:12,y:7,type:'npc',v33:'warden',label:'Sentinela do Primeiro Orvalho'},
+ {id:'v33Choice',x:20,y:5.5,type:'altar',v33:'choice',label:'Fonte das Duas Promessas'}]};
+rooms.vila.actors.push({id:'v33Entrance',x:22.2,y:6.4,type:'door',v33:'entrance',label:'Vale da Primeira Aurora · V33'});
+Object.assign(EPIC_ENEMIES,{
+ v33_sentinela:{name:'Sentinela do Primeiro Orvalho',element:'water',hp:98,atk:12,def:4,xp:160,gold:65,weak:'storm',
+  sprite:'vulto_eco_v24',intro:'Duas correntes cercam a sentinela. Leia sua intenção e use a vantagem elemental.',
+  phases:[{title:'Água em Torvelinho',hp:98,element:'water'},{title:'Memória Tempestuosa',hp:88,element:'storm'}]}
+});
+Object.assign(EPIC_ARTIFACTS,{
+ medalhao_raiz_v33:{name:'Medalhão da Floresta Viva',rarity:'Épico',element:'nature',effect:'ward',desc:'Escolha do Vale: reduz em 2 o dano recebido quando equipado.'},
+ medalhao_rio_v33:{name:'Medalhão do Rio Livre',rarity:'Épico',element:'water',effect:'regen',desc:'Escolha do Vale: recupera vida a cada turno quando equipado.'}
+});
+
  const storageKey=()=>{const live=(typeof window.me==='string'&&window.me&&window.me!=='visitante')?window.me:null;const handle=live||localStorage.getItem('sg_handle')||'visitante';return 'sam_rpg_hibrido_v12_'+String(handle).toLowerCase()};
  const blank=()=>({map:'vila',x:11.7,y:10.8,found:[],unlocked:false,relic:false,bonus:false,altarActive:false,ritualStep:0,seen:[],journal:['O Guardião Bento espera por você na vila.'],visits:0,epic:freshEpic()});
  let accountRpgKey=storageKey();let st=blank();try{let raw=JSON.parse(localStorage.getItem(storageKey())||'null');if(raw&&rooms[raw.map]&&Number.isFinite(raw.x)&&Number.isFinite(raw.y))st={...blank(),...raw,found:Array.isArray(raw.found)?raw.found:[],seen:Array.isArray(raw.seen)?raw.seen:[],journal:Array.isArray(raw.journal)?raw.journal:[]}}catch(e){}
@@ -581,7 +631,7 @@ Object.assign(EPIC_ARTIFACTS,{
   $('r12Quests').innerHTML=lines.map(([x,done])=>'<div class="r12-quest-row '+(done?'done':'')+'">'+(done?'✓ ':'◇ ')+x+'</div>').join('');
   $('r12Inventory').innerHTML='<span class="r12-tag">🌱 '+n+'/3 sementes</span><span class="r12-tag '+(st.relic?'':'dim')+'">✦ Relíquia</span>';
   $('r12Journal').innerHTML=st.journal.map(e=>'<div>'+escapeHtml(e)+'</div>').join('');
-  $('r12Region').textContent=room().subtitle;renderEpicUI();v29RenderUI();v30RenderUI();v31RenderUI();
+  $('r12Region').textContent=room().subtitle;renderEpicUI();v29RenderUI();v30RenderUI();v31RenderUI();v33RenderUI();
  }
  function escapeHtml(str){return String(str).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
  function say(who,msg,onNext=null,actionText='Continuar'){
@@ -613,7 +663,7 @@ Object.assign(EPIC_ARTIFACTS,{
    }
    wrap.querySelector('button')?.focus({preventScroll:true});
  }
- function warp(dest,x,y){if(!rooms[dest])return;if(!v31Rooms.has(dest))v31State().small=false;if(dest==='floresta')v23DailyMark('forest');window.SamMusic?.scene(v30SceneForRoom(dest));st.map=dest;player.x=x;player.y=y;touchDest=null;save();update();notify('Você entrou em '+room().name+'.')}
+ function warp(dest,x,y){if(!rooms[dest])return;if(!v31Rooms.has(dest))v31State().small=false;if(dest==='floresta')v23DailyMark('forest');window.SamMusic?.scene(v30SceneForRoom(dest));st.map=dest;player.x=x;player.y=y;touchDest=null;v33Visit(dest);save();update();notify('Você entrou em '+room().name+'.')}
  function pane(dest){save();window.SamMusic?.scene(dest==='eventDlg'?'shadows':'explore');if(typeof window.showPane==='function')window.showPane(dest)}
  function toShop(){openV24Shop()}
  function toPets(){pane('gameDlg');setTimeout(()=>document.querySelector('#orchardExtras [data-extras-tab="pets"]')?.click(),100);}
@@ -879,6 +929,209 @@ function v31RenderUI(){
   button.setAttribute('aria-pressed',String(!!c.small));
   button.textContent=c.small?'↟ CRESCER · Q':'◇ MODO BROTO · Q';
  }
+}
+
+
+/* V33 — Estado do capítulo, encontros, puzzles, recompensas e mapa interligado. */
+const v33Rooms=new Set(['valeAurora','bibliotecaSubmersa','mirantePrimeiraLuz']);
+const v33Runes=['v33RuneWind','v33RuneRain','v33RuneRoot'];
+const v33Echoes=['v33EchoWind','v33EchoRain','v33EchoRoot'];
+const v33Memories=['v33MemoryOne','v33MemoryTwo'];
+const v33Locations=['vila','floresta','ruinas','valeAurora','bibliotecaSubmersa','mirantePrimeiraLuz'];
+function v33State(){
+ const e=epic();if(!e.v33||typeof e.v33!=='object'||Array.isArray(e.v33))e.v33={};
+ const c=e.v33;
+ if(!Array.isArray(c.echoes))c.echoes=[];c.echoes=[...new Set(c.echoes.filter(id=>v33Echoes.includes(id)))];
+ if(!Array.isArray(c.memories))c.memories=[];c.memories=[...new Set(c.memories.filter(id=>v33Memories.includes(id)))];
+ if(!Array.isArray(c.visited))c.visited=[];c.visited=[...new Set(c.visited.filter(id=>v33Locations.includes(id)))];
+ if(!Number.isInteger(c.runes)||c.runes<0||c.runes>3)c.runes=0;
+ if(!Number.isInteger(c.errors)||c.errors<0)c.errors=0;
+ return c;
+}
+function v33Visit(name){
+ if(!v33Locations.includes(name))return;
+ const c=v33State();if(!c.visited.includes(name)){c.visited.push(name);save();}
+}
+function v33Objective(){
+ const c=v33State();
+ if(!c.metIara)return 'Visite o Vale pelo portal leste da Vila e converse com Iara, a Cartógrafa.';
+ if(c.echoes.length<3)return 'Encontre os três ecos do Vale: Vento, Chuva e Raiz ('+c.echoes.length+'/3).';
+ if(c.runes<3)return 'Ative as pedras na ordem Vento → Chuva → Raiz ('+c.runes+'/3).';
+ if(c.memories.length<2)return 'Atravesse a porta leste e leia as duas memórias da Biblioteca ('+c.memories.length+'/2).';
+ if(!c.bossWon)return 'Suba ao Mirante e enfrente a Sentinela do Primeiro Orvalho.';
+ if(!c.ending)return 'Na Fonte do Mirante, decida proteger o Rio ou a Floresta.';
+ return 'Crônica concluída: '+(c.ending==='rio'?'o Rio corre livre':'a Floresta voltou a florescer')+'. Explore e conclua outras aventuras.';
+}
+function v33ActorVisible(a){
+ const c=v33State();
+ if(a.v33==='echo')return !c.echoes.includes(a.id);
+ if(a.v33==='satchel')return !c.satchel;
+ if(a.v33==='warden')return c.memories.length===2&&!c.bossWon;
+ if(a.v33==='choice')return !!c.bossWon;
+ return true;
+}
+function v33Finish(path){
+ const c=v33State();if(c.ending)return false;
+ if(path!=='rio'&&path!=='floresta')return false;
+ c.ending=path;c.finished=true;
+ const artifact=path==='rio'?'medalhao_rio_v33':'medalhao_raiz_v33';
+ epic().gold+=80;epic().potions+=2;giveXP(200);ownItem(artifact);
+ log(path==='rio'?'A Primeira Aurora voltou a correr pelo rio. As margens respiram novamente.':'O Bosque da Primeira Aurora floresceu depois da última chuva.');
+ save();update();
+ say('Iara, Cartógrafa das Chuvas',path==='rio'?'O rio conhece agora o caminho de volta. Seu medalhão protege quem acompanha a corrente.':'As raízes guardam as próximas gerações. Seu medalhão protege quem respeita o bosque.');
+ return true;
+}
+function v33Interact(a){
+ const c=v33State();
+ if(a.v33==='entrance'){warp('valeAurora',2.6,7);return;}
+ if(a.v33==='back'){warp('vila',20.4,6.4);return;}
+ if(a.v33==='libraryBack'){warp('valeAurora',20.4,7);return;}
+ if(a.v33==='summitBack'){warp('bibliotecaSubmersa',20.4,7);return;}
+ if(a.v33==='iara'){
+  const first=!c.metIara;
+  c.metIara=true;save();update();
+  const h=new Date().getHours(),hourLine=h<6||h>=18?'Mesmo sob as estrelas, o Vale conserva seus caminhos.':'Pela manhã, a névoa descansa sobre as pedras.';
+  say('Iara, Cartógrafa das Chuvas',first?'Bem-vindo ao Vale da Primeira Aurora. O rio esqueceu sua canção. Reúna os ecos do Vento, da Chuva e da Raiz, depois desperte as três pedras nesta mesma ordem. '+hourLine:
+   c.ending?'Você decidiu o destino da Fonte. Nossas próximas jornadas serão diferentes.':
+   v33Objective()+' '+hourLine);
+  if(first)log('Iara pediu que eu recuperasse os três ecos e abrisse a Biblioteca Submersa.');
+  return;
+ }
+ if(a.v33==='nilo'){
+  if(!c.satchel){say('Nilo, Aprendiz do Rio','Perdi minha bolsa de sementes perto das pedras centrais. Se a encontrar, compartilharei uma poção de viagem.');return;}
+  if(!c.niloReward){c.niloReward=true;epic().potions+=1;log('Devolvi a bolsa de Nilo. Recebi uma poção de viagem.');save();say('Nilo, Aprendiz do Rio','Você encontrou minha bolsa! Uma poção para suas aventuras. As coisas valiosas não são apenas as que brilham.');return;}
+  say('Nilo, Aprendiz do Rio','A bolsa voltou para casa. Obrigado, guardião! O rio já pode contar essa história.');return;
+ }
+ if(a.v33==='satchel'){if(c.satchel)return;c.satchel=true;save();update();say('Bolsa perdida','É a bolsa de sementes de Nilo. Devolva-a ao aprendiz perto do rio para receber uma poção.');return;}
+ if(a.v33==='echo'){
+  if(c.echoes.includes(a.id))return;
+  c.echoes.push(a.id);save();update();
+  const text={v33EchoWind:'O Vento recorda um mapa desenhado com folhas.',v33EchoRain:'A Chuva canta nomes que a seca tentou apagar.',v33EchoRoot:'A Raiz guarda o lugar onde tudo começou.'};
+  log(text[a.id]);say('Eco recuperado',text[a.id]+' ('+c.echoes.length+'/3).');return;
+ }
+ if(a.v33==='rune'){
+  if(c.echoes.length<3){say('Pedras da Aurora','Três espaços vazios esperam os ecos do Vento, da Chuva e da Raiz.');return;}
+  if(c.runes===3){say('Pedras da Aurora','As três pedras já abriram o caminho para a Biblioteca Submersa.');return;}
+  if(v33Runes[c.runes]===a.id){c.runes+=1;save();update();
+   if(c.runes===3){log('Vento, Chuva e Raiz: as pedras abriram a Biblioteca Submersa.');say('Ponte de Água','As três pedras reverberam juntas. O portão a leste se abre sobre uma corrente de luz.');}
+   else say('Pedra desperta','O símbolo respondeu! '+c.runes+'/3. Próximo: '+(c.runes===1?'Chuva.':'Raiz.'));
+  }else{
+   c.runes=0;c.errors=(c.errors||0)+1;save();update();
+   say('Pedras da Aurora','A corrente se partiu. A ordem é Vento → Chuva → Raiz. Recomece pela primeira pedra.');
+  }return;
+ }
+ if(a.v33==='riverGate'){if(c.runes<3){say('Portão das Páginas','A Biblioteca só emerge quando os três ecos responderem às pedras, na ordem correta.');return;}warp('bibliotecaSubmersa',2.7,7);return;}
+ if(a.v33==='memory'){
+  if(c.memories.includes(a.id)){say('Página lida','A memória já foi registrada no seu diário.');return;}
+  c.memories.push(a.id);save();update();
+  const story=a.id==='v33MemoryOne'?'Na primeira chuva, os moradores plantaram mangueiras nas margens. Não havia reis; apenas vizinhos que dividiam sementes.':'Durante a última seca, duas famílias discutiram pela água. Foi Iara quem desenhou os canais e mostrou que havia lugar para todos.';
+  log(story);say('Memória recuperada',story);return;
+ }
+ if(a.v33==='librarian'){say('A Custódia das Páginas',c.memories.length<2?'Duas memórias ainda dormem nestas páginas. Leia-as antes de atravessar ao Mirante.':'O rio tem duas margens, mas apenas uma nascente. O Mirante ao leste já pode recebê-lo.');return;}
+ if(a.v33==='summitGate'){if(c.memories.length<2){say('Porta do Mirante','A sentinela ainda guarda duas memórias não lidas nesta biblioteca.');return;}warp('mirantePrimeiraLuz',2.7,7);return;}
+ if(a.v33==='warden'){if(c.memories.length<2||c.bossWon)return;say('Sentinela do Primeiro Orvalho','Você viu a primeira chuva e a última seca. Agora prove que conhece o preço da escolha.',()=>startCombat('v33_sentinela','v33Warden'),'Enfrentar a Sentinela');return;}
+ if(a.v33==='choice'){
+  if(!c.bossWon){say('Fonte da Aurora','A Sentinela ainda impede o despertar da fonte.');return;}
+  if(c.ending){say('Fonte da Aurora',c.ending==='rio'?'Você libertou o rio. A água corre entre as pedras com um brilho novo.':'Você protegeu a floresta. As raízes recuperam os passos de quem voltou.');return;}
+  choiceBox('Fonte das Duas Promessas','A corrente oferece dois caminhos. Sua escolha permanecerá nesta aventura e concederá um medalhão equipável.',[
+   ['🌊 Libertar o Rio',()=>v33Finish('rio')],
+   ['🌳 Restaurar a Floresta',()=>v33Finish('floresta')],
+   ['Decidir mais tarde',()=>{}]
+  ]);return;
+ }
+}
+function v33DrawActor(a,x,y,bob){
+ ctx.save();ctx.translate(x,y);const floatY=(a.v33==='echo'||a.v33==='satchel'?bob:0);
+ const npc=['iara','nilo','librarian','warden'].includes(a.v33);
+ if(npc){
+  const palette={iara:['#4b9b94','#f5cea8'],nilo:['#bb8750','#ffe3ad'],librarian:['#8c96cd','#d5c6f4'],warden:['#6583a3','#b3d3f4']}[a.v33];
+  const sway=matchMedia('(prefers-reduced-motion: reduce)').matches?0:Math.sin(clock*2.5+a.x)*1.4;
+  const color=palette[0],face=palette[1];
+  ctx.fillStyle='#0d1e24aa';ctx.fillRect(-12,15,24,5);
+  ctx.fillStyle=color;ctx.fillRect(-11,0+sway,22,17);ctx.fillRect(-8,-15+sway,16,17);
+  ctx.fillStyle=face;ctx.fillRect(-6,-21+sway,12,11);ctx.fillStyle='#23202f';ctx.fillRect(-4,-17+sway,2,2);ctx.fillRect(3,-17+sway,2,2);
+  ctx.fillStyle='#e3d7aa';ctx.fillRect(-12,-25+sway,24,5);
+  if(a.v33==='warden'){ctx.strokeStyle='#a8ddea';ctx.lineWidth=2;ctx.strokeRect(-14,-29+sway,28,29)}
+ }else{
+  ctx.globalAlpha=.72;ctx.strokeStyle=a.v33==='echo'?'#afeed5':'#eddaa3';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(0,0,17,9,0,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;
+  const symbols={entrance:'✦',back:'↩',libraryBack:'↩',summitBack:'↩',echo:'◆',rune:'◇',riverGate:'❖',summitGate:'✦',memory:'▤',satchel:'▣',choice:'✧'};
+  ctx.fillStyle=a.v33==='echo'?'#aff6da':'#f5d89d';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='bold 25px serif';ctx.fillText(symbols[a.v33]||'✧',0,-16+floatY);
+  if(a.v33==='rune'){ctx.fillStyle='#735b52';ctx.fillRect(-13,-1,26,10);ctx.fillStyle='#d0ac7d';ctx.fillRect(-10,-9,20,10)}
+ }
+ ctx.restore();
+}
+function v33Decor(){
+ if(!v33Rooms.has(st.map))return;
+ ctx.save();const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ for(let i=0;i<16;i++){const px=24+((i*107+33)%715),py=50+((i*79+23)%365);
+   const sway=reduced?0:Math.sin(clock*(.5+i%4*.15)+i)*4;
+   ctx.fillStyle=i%3===0?'#c8ecad99':'#8dbacc77';ctx.fillRect(px+sway,py,3,3);
+ }
+ if(st.map==='bibliotecaSubmersa'){ctx.strokeStyle='#a7dce329';for(let i=0;i<5;i++){ctx.beginPath();ctx.arc(60+i*154,365,20+(reduced?0:(clock*6+i*13)%25),0,Math.PI*2);ctx.stroke()}}
+ ctx.restore();
+}
+function v33NpcRoutine(){
+ if(!v33Rooms.has(st.map))return;
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.classList.contains('sm165-lowfx');
+ for(const a of room().actors){
+  if(!['v33Iara','v33Nilo','v33Librarian'].includes(a.id))continue;
+  if(!Number.isFinite(a.originX)){a.originX=a.x;a.originY=a.y}
+  a.x=a.originX+(reduced?0:.28*Math.sin(clock*.43+a.originX));
+  a.y=a.originY+(reduced?0:.15*Math.sin(clock*.31+a.originY));
+ }
+}
+function v33OnDefenseResult(won){
+ if(!won)return false;const c=v33State();if(c.defenseReward)return false;
+ c.defenseReward=true;epic().potions+=1;
+ log('A Defesa do Pomar abasteceu a próxima jornada: uma poção foi enviada à mochila RPG.');
+ save();return true;
+}
+function v33SyncHouse(){
+ const c=v33State();if(c.houseReward)return;
+ const house=window.Sam21House;if(!house?.getLayout)return;
+ try{const layout=house.getLayout();if((layout?.items?.length||0)<4)return;
+  c.houseReward=true;epic().potions+=1;
+  log('Seu Refúgio acolhedor preparou uma poção para a próxima expedição.');
+  save();
+ }catch(_){}
+}
+function v33Atlas(){
+ const c=v33State();return v33Locations.map(id=>({
+  id,name:rooms[id].name,subtitle:rooms[id].subtitle,
+  visited:c.visited.includes(id)||st.map===id,here:st.map===id,
+  travel:c.visited.includes(id)||st.map===id
+ }));
+}
+function v33Travel(id){
+ if(!v33Locations.includes(id)||dialogOpen||epicCombat||host.hidden)return false;
+ const c=v33State();if(!c.visited.includes(id)&&st.map!==id)return false;
+ if(st.map===id)return true;
+ const points={vila:[11.7,10.8],floresta:[2.8,7],ruinas:[2.8,7],valeAurora:[2.7,7],bibliotecaSubmersa:[2.7,7],mirantePrimeiraLuz:[2.7,7]};
+ warp(id,...points[id]);return true;
+}
+function v33Setup(){
+ const aside=document.querySelector('#rpgDlg .r12-aside');
+ if(!aside||document.getElementById('v33Card'))return;
+ const card=document.createElement('section');card.id='v33Card';card.className='r12-card sm33-quest-card';
+ card.dataset.r14Group='journey';
+ card.innerHTML='<span class="sm33-eyebrow">CRÔNICA III · NOVA REGIÃO</span>'+
+ '<h3>🌊 A Canção da Água</h3><p id="v33Task" aria-live="polite"></p>'+
+ '<div class="sm33-track" role="progressbar" aria-label="Progresso da Canção da Água" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0"><span id="v33Track"></span></div>'+
+ '<p class="sm33-meta" id="v33Progress"></p>'+
+ '<div class="sm33-inline-actions"><button type="button" id="v33AtlasOpen">🗺 Atlas do Pomar</button></div>';
+ aside.prepend(card);
+ document.getElementById('v33AtlasOpen').addEventListener('click',()=>window.SamAtlasV33?.open());
+}
+function v33RenderUI(){
+ const card=document.getElementById('v33Card');if(!card)return;
+ v33SyncHouse();const c=v33State();
+ const steps=[!!c.metIara,c.echoes.length===3,c.runes===3,c.memories.length===2,!!c.bossWon,!!c.finished,!!c.niloReward];
+ const n=steps.filter(Boolean).length;
+ document.getElementById('v33Task').textContent=v33Objective();
+ document.getElementById('v33Progress').textContent=n+'/7 marcos · '+(c.errors||0)+' reinícios de enigma'+(c.defenseReward?' · Defesa conectada':'')+(c.houseReward?' · Casa conectada':'');
+ document.getElementById('v33Track').style.width=(n/7*100)+'%';
+ card.querySelector('[role="progressbar"]').setAttribute('aria-valuenow',String(n));
+ card.classList.toggle('sm33-active',v33Rooms.has(st.map));
 }
 
 function v303State(){
@@ -1582,6 +1835,7 @@ function advanceBattlePhase(){const c=epicCombat,m=EPIC_ENEMIES[c.key];if(m.phas
   if(key==='v29_silencio'||key==='v29_sentinela')v29CombatWon(key);
    if(key==='v303_sentinela'){const c=v303State();c.bossWon=true;log('V30.3 · A Sentinela do Silêncio foi vencida. O mural a leste voltou a brilhar.');}
  if(key==='v31_guardiao'){const c=v31State();c.bossWon=true;log('Capítulo II · O Guardião de Musgo se libertou do juramento antigo.');}
+ if(key==='v33_sentinela'){const c=v33State();c.bossWon=true;log('Crônica III · A Sentinela da Primeira Aurora libertou o caminho para a Fonte das Duas Promessas.');}
  if(key==='larva'){log('A Larva da Ferrugem caiu. A fornalha agora pode ser purificada.');}
  if(key==='rainha'){ownItem('espinho_soberano');goStory([['Rainha das Aranhas','As crianças... ainda lembram de nosso juramento?'],['Eldra','A rainha era guardiã daquelas promessas. A maldição prendeu seu amor numa teia de ódio.'],['Narrador','Com a coroa de espinhos desfeita, uma passagem se abre para as Minas do Prisma Partido.']],()=>advanceEpicChapter(3))}
  if(key==='besouro'){ownItem('prisma_eco');goStory([['Dário','Ouço as minas cantando outra vez. O brilho volta a revelar o caminho das antigas águas.'],['Narrador','O Prisma do Eco se uniu ao seu inventário. A trilha do pântano se abriu.']],()=>advanceEpicChapter(4))}
@@ -1863,8 +2117,9 @@ function drawEpicActor(a,x,y,bob){
  else if(a.epic==='altar'){ctx.save();ctx.fillStyle='#72586d';ctx.fillRect(x-15,y-6,30,20);ctx.fillStyle='#cba88c';ctx.fillRect(x-12,y-13,24,9);ctx.fillStyle='#fde0a9';ctx.font='bold 23px serif';ctx.fillText('✧',x,y-21);ctx.restore()}
 }
 
- function actorVisible(a){if(a.v31)return v31ActorVisible(a);if(a.v30)return v303ActorVisible(a)&&v30ActorVisible(a);if(a.v29)return v29ActorVisible(a);if(a.epic)return epicActorVisible(a);if(a.type==='seed'&&st.found.includes(a.id))return false;if(a.id==='reliquia'&&!st.unlocked)return false;return true}
+ function actorVisible(a){if(a.v33)return v33ActorVisible(a);if(a.v31)return v31ActorVisible(a);if(a.v30)return v303ActorVisible(a)&&v30ActorVisible(a);if(a.v29)return v29ActorVisible(a);if(a.epic)return epicActorVisible(a);if(a.type==='seed'&&st.found.includes(a.id))return false;if(a.id==='reliquia'&&!st.unlocked)return false;return true}
  function interact(a){
+  if(a?.v33){v33Interact(a);return;}
   if(a?.v31){v31Interact(a);return;}
   if(a?.v30){v30Interact(a);return;}
   if(a?.v29){v29Interact(a);return;}
@@ -1943,7 +2198,7 @@ function drawEpicActor(a,x,y,bob){
   ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.fillStyle='#ffdfae';ctx.fillText(b.type==='loja'?'MASCOTES':b.type==='defesa'?'DEFESA':b.type==='portal'?'HALLOWEEN':'CABANA',x+w/2,y+25)
  }
  function actorColor(type){return ({seed:'#ffe27d',npc:'#baceff',shop:'#f9c58a',defense:'#ffa783',halloween:'#dda8ff',profile:'#b3d5ff',social:'#a8f1be',passage:'#a5e6a9',door:'#d8cf9b',altar:'#ffe0a3',relic:'#ffe7af'})[type]||'#ffffff'}
- function drawActor(a){if(!actorVisible(a))return;const x=a.x*T,y=a.y*T,bob=Math.sin(clock*3+a.x)*2;ctx.save();if(a.v31){v31DrawActor(a,x,y,bob);ctx.restore();return}if(a.v30){v30DrawActor(a,x,y,bob);ctx.restore();return}if(a.v29){v29DrawActor(a,x,y,bob);ctx.restore();return}if(a.epic){drawEpicActor(a,x,y,bob);ctx.restore();return;}
+ function drawActor(a){if(!actorVisible(a))return;const x=a.x*T,y=a.y*T,bob=Math.sin(clock*3+a.x)*2;ctx.save();if(a.v33){v33DrawActor(a,x,y,bob);ctx.restore();return}if(a.v31){v31DrawActor(a,x,y,bob);ctx.restore();return}if(a.v30){v30DrawActor(a,x,y,bob);ctx.restore();return}if(a.v29){v29DrawActor(a,x,y,bob);ctx.restore();return}if(a.epic){drawEpicActor(a,x,y,bob);ctx.restore();return;}
   if(['passage','door','halloween','defense','shop','profile','social','board'].includes(a.type)){
    const alpha=.47+Math.sin(clock*3+a.x)*.27;ctx.globalAlpha=alpha;ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(x,y-4,19,10,0,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;
    if(a.type==='passage'){rect(x-8,y-32,16,14,'#a5e6a9');rect(x-5,y-36,10,6,'#f3e3a3')}
@@ -1982,13 +2237,13 @@ function drawEpicActor(a,x,y,bob){
    return {z,cx:Math.max(halfW,Math.min(W-halfW,player.x*T)),cy:Math.max(halfH,Math.min(H-halfH,player.y*T))};
  }
  function render(){const cam=camera();ctx.save();ctx.translate(W/2,H/2);ctx.scale(cam.z,cam.z);ctx.translate(-cam.cx,-cam.cy);
-  baseMap();v24Decor();v29Decor();v30Decor();v31Decor();for(const b of room().blocks)drawBuilding(b);for(const p of room().props)drawTree(p.x,p.y,p.type==='dead');for(const a of room().actors)drawActor(a);guideDraw();drawPlayer();v23Atmosphere();
+  baseMap();v24Decor();v29Decor();v30Decor();v31Decor();v33Decor();for(const b of room().blocks)drawBuilding(b);for(const p of room().props)drawTree(p.x,p.y,p.type==='dead');for(const a of room().actors)drawActor(a);guideDraw();drawPlayer();v23Atmosphere();
   const a=nearest();if(a){ctx.save();ctx.textAlign='center';ctx.font='bold 13px sans-serif';let line='E · '+a.label;let width=Math.min(280,ctx.measureText(line).width+22);let px=Math.min(W-width/2-8,Math.max(width/2+8,a.x*T));let py=Math.max(64,a.y*T-39);rect(px-width/2,py-20,width,25,'#1e1428ee');ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=1;ctx.strokeRect(px-width/2,py-20,width,25);ctx.fillStyle='#ffebce';ctx.fillText(line,px,py-3);ctx.restore()}
   if(st.map==='ruinas'){ctx.fillStyle='#b8a3ff12';ctx.fillRect(0,0,W,H)}ctx.restore();
  }
  function tick(time){let dt=Math.min(.04,Math.max(0,(time-last)/1000||0));last=time;clock+=dt;
   if(visible&&!document.hidden){
-   v23NpcRoutine();if(Math.floor(clock)%3===0&&Math.floor((clock-dt))%3!==0)v23DailyRender();
+   v23NpcRoutine();v33NpcRoutine();if(Math.floor(clock)%3===0&&Math.floor((clock-dt))%3!==0)v23DailyRender();
    if(!dialogOpen&&!window.SamCutscenes?.isPlaying){let dx=(keys.right?1:0)-(keys.left?1:0),dy=(keys.down?1:0)-(keys.up?1:0);
     if(touchDest){const a=touchDest;dx=a.x-player.x;dy=a.y-player.y;if(Math.hypot(dx,dy)<.3){touchDest=null;dx=dy=0}}
     const m=Math.hypot(dx,dy);if(m>0){dx/=m;dy/=m;const bag=v24Bag(),boost=Date.now()<bag.hasteUntil,run=keys.run&&bag.stamina>1,step=(run?(boost?6.4:5.4):3.45)*dt;if(run)bag.stamina=Math.max(0,bag.stamina-(boost?8:24)*dt);else bag.stamina=Math.min(hasEffect('swift')?140:100,bag.stamina+18*dt);player.vx=dx;player.vy=dy;
@@ -2029,7 +2284,7 @@ function drawEpicActor(a,x,y,bob){
  if(typeof prevShow==='function')window.showPane=function(id){let result=prevShow.apply(this,arguments);const was=visible;visible=id==='rpgDlg';if(visible){window.SamMusic?.scene(v30SceneForRoom(st.map));if(storageKey()!==accountRpgKey){accountRpgKey=storageKey();const newData=JSON.parse(localStorage.getItem(accountRpgKey)||'null');st={...blank(),...(newData||{})};st.epic={...freshEpic(),...(st.epic||{}),stats:{...freshEpic().stats,...(st.epic?.stats||{})},flags:{...(st.epic?.flags||{})}};if(!rooms[st.map])st.map='vila';player.x=Number.isFinite(st.x)?st.x:11.7;player.y=Number.isFinite(st.y)?st.y:10.8;epicAvatarSig=''}syncEpicCrossModes();update();if(!epic().class)showEpicClasses();last=performance.now();if(!was){save();requestAnimationFrame(()=>cv.focus({preventScroll:true}))}}
    else if(was){if(document.getElementById('v24Shop')?.hidden===false)closeV24Shop();save();Object.keys(keys).forEach(k=>keys[k]=false);touchDest=null}return result};
  const targetVisible=()=>!host.hidden;
- setupEpicUI();v31Setup();initV24Shop();if(st.relic&&epic().chapter===0)advanceEpicChapter(1);bind();visible=targetVisible();update();if(visible&&!epic().class)showEpicClasses();requestAnimationFrame(tick);
+ setupEpicUI();v31Setup();v33Setup();v33Visit(st.map);initV24Shop();if(st.relic&&epic().chapter===0)advanceEpicChapter(1);bind();visible=targetVisible();update();if(visible&&!epic().class)showEpicClasses();requestAnimationFrame(tick);
  if(!st.seen.includes('welcome')){st.seen.push('welcome');save();}
- window.SamHybridRPG={openShop:openV24Shop,getShopCatalog:()=>V24_SHOP.map(x=>({...x})),interactById:(id)=>{const a=room().actors.find(a=>a.id===id);if(a)interact(a)},startBattle:(key)=>startCombat(key,Object.entries(epicMonsters).find(([a,b])=>b===key)?.[0]||key),chooseClass:(id)=>{document.querySelector('[data-r13class="'+id+'"]')?.click()},getState:()=>JSON.parse(JSON.stringify(st)),toggleBroto:v31Toggle,getV31Objective:v31Objective,getVitals:()=>({hp:epic().hp,maxHp:maxHealth(),mp:epic().mp,maxMp:maxMana(),stamina:v24Bag().stamina,maxStamina:hasEffect('swift')?140:100}),gotoRoom:(name)=>{if(rooms[name]){st.map=name;player.x=11;player.y=8;update();save()}},onDefenseResult:(won)=>epicDefenseReward(won),open:()=>window.showPane?.('rpgDlg')};
+ window.SamHybridRPG={openShop:openV24Shop,getShopCatalog:()=>V24_SHOP.map(x=>({...x})),interactById:(id)=>{const a=room().actors.find(a=>a.id===id);if(a)interact(a)},startBattle:(key)=>startCombat(key,Object.entries(epicMonsters).find(([a,b])=>b===key)?.[0]||key),chooseClass:(id)=>{document.querySelector('[data-r13class="'+id+'"]')?.click()},getState:()=>JSON.parse(JSON.stringify(st)),toggleBroto:v31Toggle,getV31Objective:v31Objective,getVitals:()=>({hp:epic().hp,maxHp:maxHealth(),mp:epic().mp,maxMp:maxMana(),stamina:v24Bag().stamina,maxStamina:hasEffect('swift')?140:100}),gotoRoom:(name)=>{if(rooms[name]){st.map=name;player.x=11;player.y=8;update();save()}},onDefenseResult:(won)=>{epicDefenseReward(won);v33OnDefenseResult(won)},getV33State:()=>JSON.parse(JSON.stringify(v33State())),getV33Objective:v33Objective,getWorldAtlas:v33Atlas,travelV33:v33Travel,open:()=>window.showPane?.('rpgDlg')};
 })();
