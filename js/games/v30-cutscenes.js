@@ -132,6 +132,7 @@ function animate(){
 }
 function drawCurrent(){
  const data=active,frame=data.data.frames[data.index],layer=data.layer;
+ layer.querySelector('#sm30CutTitle').textContent=data.data.label;
  layer.querySelector('#sm30CutSpeaker').textContent=frame.who;
  layer.querySelector('#sm30CutText').textContent=frame.line;
  layer.querySelector('#sm30CutProgress').textContent='CENA '+(data.index+1)+' / '+data.data.frames.length;
