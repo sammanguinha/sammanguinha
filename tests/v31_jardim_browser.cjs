@@ -30,6 +30,7 @@ async function run(){
   localStorage.setItem('sg_handle','v31test');
   localStorage.setItem('sg_tok','abcdefghijklmnopqrstuvwxyz123456789');
   localStorage.setItem('sm_last_seen_release_v29','29.0.0');
+  localStorage.setItem('sm_last_seen_update_version','24.0.0');
   localStorage.setItem('sm_last_seen_v31_preview','31.0.0-preview');
   localStorage.setItem('sam_rpg_hibrido_v12_v31test',JSON.stringify(save));
  },{save:initial});
@@ -37,6 +38,8 @@ async function run(){
  await page.waitForFunction(()=>!!window.SamHybridRPG?.toggleBroto,{timeout:20000});
  await page.evaluate(()=>window.showPane('rpgDlg'));
  await page.waitForSelector('#v31Card',{state:'attached'});
+ await page.waitForTimeout(300);
+ if(await page.locator('#smUpdateLayer.sm-show').count())await page.locator('#smUpdatesClose').click();
  const state=()=>page.evaluate(()=>window.SamHybridRPG.getState());
  const interact=id=>page.evaluate(id=>window.SamHybridRPG.interactById(id),id);
  const close=async()=>{
