@@ -32,7 +32,7 @@ const server=http.createServer((req,res)=>{
   });
   await page.goto('http://127.0.0.1:4292/',{waitUntil:'domcontentloaded',timeout:45000});
   await page.waitForFunction(()=>!!window.SamSiteV32&&typeof window.showPane==='function',{timeout:25000});
-  assert.equal(await page.locator('#areas .v32-tabs>button[data-p]').count(),5,'five primary destinations');
+  for(const id of ['homeBtn','rpgWorldBtn','gameBtn','houseBtn','profBtn'])assert.equal(await page.locator('#areas .v32-tabs>button#'+id).count(),1,'primary '+id+' available');
   assert.equal(await page.locator('#v32MorePanel [data-p]').count(),8,'eight preserved secondary destinations');
   assert.equal(await page.locator('#v32MorePanel').isHidden(),true,'menu closed initially');
   assert.equal(await page.locator('.v32-featured-grid .portal-card').count(),4,'focused actions');
