@@ -31,6 +31,7 @@ const server=http.createServer((req,res)=>{
    await page.route('https://rygeemrxyjknhxxlewdb.supabase.co/**',r=>r.fulfill({status:200,contentType:'application/json',body:'null'}));
    await page.addInitScript(()=>{
     localStorage.setItem('sm_last_seen_update_version','24.0.0');
+    localStorage.setItem('sm_last_seen_release_v29','29.0.0');
     localStorage.setItem('sg_handle','fullscreenuser');
     localStorage.setItem('sg_tok','abcdefghijklmnopqrstuvxyz123456789');
     localStorage.setItem('sam_rpg_hibrido_v12_fullscreenuser',
