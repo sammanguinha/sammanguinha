@@ -100,3 +100,6 @@
  #rpgDlg #v30ProgressFill{transition:none}
  #sm30Cutscene *{animation:none!important;transition:none!important}
 }
+
+/* The generic cinematic layout must never override the native hidden attribute. */
+#sm30Cutscene.sm30-cutscene-layer[hidden]{display:none!important;visibility:hidden!important;pointer-events:none!important}
