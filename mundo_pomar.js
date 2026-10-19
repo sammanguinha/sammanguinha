@@ -1218,6 +1218,22 @@ function v34Harvest(index){
  if(v.harvests===2||v.harvests===5)log('Ateliê do Refúgio: nova aparência desbloqueada após '+v.harvests+' colheitas.');
  save();update();return v34Result(true,'Colheita: +'+crop.yield+' '+crop.name+'. Ingredientes na mochila RPG.');
 }
+function v35Today(){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
+function v35Contract(){
+ const c=v34State(),today=v35Today();
+ return {today,harvest:c.daily.harvest===today,craft:c.daily.craft===today,claimed:c.daily.claim===today,reward:20};
+}
+function v35Claim(){
+ const v=v34State(),c=v35Contract();
+ if(c.claimed)return {ok:false,message:'O contrato de hoje já foi concluído.',contract:c};
+ if(!c.harvest||!c.craft)return {ok:false,message:'Para concluir: faça uma colheita e prepare uma receita no mesmo dia.',contract:c};
+ v.daily.claim=c.today;
+ epic().gold+=20;
+ log('Contrato diário do Refúgio concluído: +20 moedas RPG locais.');
+ save();update();
+ return {ok:true,message:'Contrato entregue! +20 moedas RPG locais. Volte amanhã para novas colheitas.',contract:v35Contract()};
+}
+
 function v34Craft(recipe){
  const v=v34State(),r=v34Recipes[recipe];
  if(!r)return v34Result(false,'Receita desconhecida.');
@@ -1228,7 +1244,7 @@ function v34Craft(recipe){
  if(recipe==='pocao')epic().potions+=1;
  if(recipe==='mana')epic().mp=Math.min(maxMana(),epic().mp+12);
  if(recipe==='amuleto'){if(!epic().items.includes('amuleto_colheita_v34'))epic().items.push('amuleto_colheita_v34');}
- v.crafts++;save();update();
+ v.crafts++;v.daily.craft=v35Today();save();update();
  return v34Result(true,recipe==='pocao'?'Poção criada! Está na mochila RPG.':recipe==='mana'?'Infusão usada: até 12 MP recuperados.':'Amuleto criado! Equipe-o no Relicário do RPG e desbloqueie a aura da horta.');
 }
 function v34Dress(accessory){
@@ -2428,5 +2444,5 @@ function drawEpicActor(a,x,y,bob){
  const targetVisible=()=>!host.hidden;
  setupEpicUI();v31Setup();v33Setup();v33Visit(st.map);initV24Shop();if(st.relic&&epic().chapter===0)advanceEpicChapter(1);bind();visible=targetVisible();update();if(visible&&!epic().class)showEpicClasses();requestAnimationFrame(tick);
  if(!st.seen.includes('welcome')){st.seen.push('welcome');save();}
- window.SamHybridRPG={openShop:openV24Shop,getShopCatalog:()=>V24_SHOP.map(x=>({...x})),interactById:(id)=>{const a=room().actors.find(a=>a.id===id);if(a)interact(a)},startBattle:(key)=>startCombat(key,Object.entries(epicMonsters).find(([a,b])=>b===key)?.[0]||key),chooseClass:(id)=>{document.querySelector('[data-r13class="'+id+'"]')?.click()},getState:()=>JSON.parse(JSON.stringify(st)),toggleBroto:v31Toggle,getV31Objective:v31Objective,getVitals:()=>({hp:epic().hp,maxHp:maxHealth(),mp:epic().mp,maxMp:maxMana(),stamina:v24Bag().stamina,maxStamina:hasEffect('swift')?140:100}),gotoRoom:(name)=>{if(rooms[name]){st.map=name;player.x=11;player.y=8;update();save()}},onDefenseResult:(won)=>{epicDefenseReward(won);v33OnDefenseResult(won)},getV33State:()=>JSON.parse(JSON.stringify(v33State())),getV33Objective:v33Objective,getWorldAtlas:v33Atlas,travelV33:v33Travel,getGardenV34:()=>v34Result(true,'Jardim carregado.'),plantV34:v34Plant,waterV34:v34Water,harvestV34:v34Harvest,craftV34:v34Craft,dressV34:v34Dress,open:()=>window.showPane?.('rpgDlg')};
+ window.SamHybridRPG={openShop:openV24Shop,getShopCatalog:()=>V24_SHOP.map(x=>({...x})),interactById:(id)=>{const a=room().actors.find(a=>a.id===id);if(a)interact(a)},startBattle:(key)=>startCombat(key,Object.entries(epicMonsters).find(([a,b])=>b===key)?.[0]||key),chooseClass:(id)=>{document.querySelector('[data-r13class="'+id+'"]')?.click()},getState:()=>JSON.parse(JSON.stringify(st)),toggleBroto:v31Toggle,getV31Objective:v31Objective,getVitals:()=>({hp:epic().hp,maxHp:maxHealth(),mp:epic().mp,maxMp:maxMana(),stamina:v24Bag().stamina,maxStamina:hasEffect('swift')?140:100}),gotoRoom:(name)=>{if(rooms[name]){st.map=name;player.x=11;player.y=8;update();save()}},onDefenseResult:(won)=>{epicDefenseReward(won);v33OnDefenseResult(won)},getV33State:()=>JSON.parse(JSON.stringify(v33State())),getV33Objective:v33Objective,getWorldAtlas:v33Atlas,travelV33:v33Travel,getGardenV34:()=>v34Result(true,'Jardim carregado.'),getDailyContractV35:v35Contract,claimDailyV35:v35Claim,plantV34:v34Plant,waterV34:v34Water,harvestV34:v34Harvest,craftV34:v34Craft,dressV34:v34Dress,open:()=>window.showPane?.('rpgDlg')};
 })();
