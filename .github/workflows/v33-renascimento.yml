@@ -1,0 +1,64 @@
+name: V33 · Renascimento do Pomar
+on:
+  push:
+    branches:
+      - dev/v33-renascimento-pomar-fundacao
+  workflow_dispatch:
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar sintaxe e empacotamento determinístico
+        run: |
+          set -euo pipefail
+          node --check mundo_pomar.js
+          node --check js/ui/v33-atlas.js
+          node --check js/ui/v33-news.js
+          node --check tests/v33_world_browser.cjs
+          node scripts/build-v26.cjs
+      - name: Testes estáticos e regressões
+        run: |
+          node --test tests/v25_architecture.test.cjs tests/v26_bundle.test.cjs tests/v27_bridge_ui.test.cjs tests/v28_visual.test.cjs tests/v29_cronicas.test.cjs tests/v30_cinematics.test.cjs tests/v30_news.test.cjs tests/v28_fullscreen_game.test.cjs
+      - name: Instalar Chromium para os testes
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: V33 — RPG, chefe, Atlas, recompensas e mobile
+        run: node tests/v33_world_browser.cjs
+      - name: Regressão da campanha V31
+        run: node tests/v31_jardim_browser.cjs
+      - name: Regressão da interface V32
+        run: node tests/v32_structure_browser.cjs
+      - name: Conferir pacote Cloudflare Pages
+        run: |
+          SM_GAME_ROOT=dist node tests/v33_world_browser.cjs
+          find dist -type f \( -name '*.exe' -o -name '*.dll' -o -name '*.bat' -o -name '*.ps1' \) | tee /tmp/unexpected-files.txt
+          test ! -s /tmp/unexpected-files.txt
+  pacote:
+    needs: validar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Montar site estático
+        run: |
+          set -euo pipefail
+          node scripts/build-v26.cjs
+          cd dist
+          zip -qr ../Sam-Manguinha-V33-Renascimento-do-Pomar-Cloudflare-Pages.zip .
+          cd ..
+          unzip -t Sam-Manguinha-V33-Renascimento-do-Pomar-Cloudflare-Pages.zip | tail -1
+          sha256sum Sam-Manguinha-V33-Renascimento-do-Pomar-Cloudflare-Pages.zip > SHA256-V33.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V33-Renascimento-do-Pomar-Cloudflare-Pages
+          path: |
+            Sam-Manguinha-V33-Renascimento-do-Pomar-Cloudflare-Pages.zip
+            SHA256-V33.txt
