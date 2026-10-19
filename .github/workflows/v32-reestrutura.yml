@@ -1,0 +1,52 @@
+name: V32 · Reestruturação Geral
+on:
+  push:
+    branches: [dev/v32-reestruturacao-geral]
+  workflow_dispatch:
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar sintaxe
+        run: |
+          node --check js/ui/v32-structure.js
+          node --check tests/v32_structure_browser.cjs
+          node --check mundo_pomar.js
+      - name: Testes estáticos e regressões
+        run: |
+          node --test tests/v25_architecture.test.cjs tests/v26_bundle.test.cjs tests/v27_bridge_ui.test.cjs tests/v28_visual.test.cjs tests/v29_cronicas.test.cjs tests/v30_cinematics.test.cjs tests/v30_news.test.cjs
+      - name: Instalar navegador de teste
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Desktop e celular V32
+        run: node tests/v32_structure_browser.cjs
+      - name: Regressão do capítulo V31
+        run: node tests/v31_jardim_browser.cjs
+      - name: Publicação Cloudflare Pages em staging
+        run: |
+          node scripts/build-v26.cjs
+          SM_GAME_ROOT=dist node tests/v32_structure_browser.cjs
+  pacote:
+    needs: validar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: |
+          set -euo pipefail
+          node scripts/build-v26.cjs
+          cd dist
+          zip -qr ../Sam-Manguinha-V32-Reestruturacao-Geral-Cloudflare-Pages.zip .
+          unzip -t ../Sam-Manguinha-V32-Reestruturacao-Geral-Cloudflare-Pages.zip | tail -1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V32-Reestruturacao-Geral-Cloudflare-Pages
+          path: Sam-Manguinha-V32-Reestruturacao-Geral-Cloudflare-Pages.zip
