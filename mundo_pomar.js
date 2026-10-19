@@ -577,6 +577,176 @@ const epicMonsters={
 };
 /* V29 · CRÔNICAS VIVAS — trilha narrativa jogável, pistas e recompensas únicas.
    Salva tudo no mesmo epic.v29; rankings, Supabase e a campanha principal não mudam. */
+/* V30.2 — Root prologue: authored cinematic scenes + interactive three-stone environment.
+   All milestones are stored under the existing local save's epic.v30. */
+function v30State(){
+ const e=epic();
+ if(!e.v30||typeof e.v30!=='object'||Array.isArray(e.v30))e.v30={};
+ const q=e.v30;
+ if(!Array.isArray(q.records))q.records=[];
+ if(!Number.isInteger(q.sequence)||q.sequence<0||q.sequence>3)q.sequence=0;
+ if(!Number.isInteger(q.mistakes)||q.mistakes<0)q.mistakes=0;
+ return q;
+}
+function v30SceneForRoom(where){
+ if(where==='vila')return 'village';
+ if(where==='floresta'||where==='planicie'||where==='estufa')return 'forest';
+ if(where==='atrioRaizes'||where==='ruinas'||where==='mina'||where==='gruta')return 'temple';
+ if(where==='bosque'||where==='pantano'||where==='coracao')return 'mystery';
+ if(where==='observatorio')return 'shadows';
+ return 'explore';
+}
+function v30Objective(){
+ const q=v30State();
+ if(!q.started)return 'Procure a Raiz que Canta perto da Praça da Vila e descubra por que os mapas mudaram.';
+ if(!q.discovered)return 'Encontre a Fissura das Lembranças no caminho central da Floresta.';
+ if(q.sequence<3)return 'Ative as três pedras da Floresta na ordem Semente → Água → Luz ('+q.sequence+'/3).';
+ if(!q.opened)return 'Volte à Passagem das Raízes, a sudeste da Floresta, e abra o caminho oculto.';
+ if(!q.completed)return 'Explore o Átrio das Raízes e investigue suas três inscrições ('+q.records.length+'/3).';
+ return 'Prólogo V30 concluído. Explore livremente enquanto novos capítulos são construídos.';
+}
+function v30ActorVisible(a){
+ const q=v30State();
+ if(a.v30==='intro')return true;
+ if(a.v30==='vision')return !!q.started;
+ if(a.v30==='stone')return !!q.discovered&&!q.opened;
+ if(a.v30==='gate')return !!q.started;
+ if(a.v30==='record')return !q.records.includes(a.id);
+ return true;
+}
+function v30Cutscene(name,onFinish){
+ if(window.SamCutscenes?.play(name,{onFinish}))return;
+ say('Uma visão das Raízes','A história continua no Livro das Crônicas.',onFinish,'Continuar a aventura');
+}
+function v30DoneIntro(){
+ const q=v30State();if(q.started)return;
+ q.started=true;
+ log('V30 · A Raiz que Canta mostrou a nova ligação entre a Vila e a Floresta.');
+ save();update();
+ notify('Prólogo V30 iniciado. Investigue a Fissura das Lembranças na Floresta.');
+}
+function v30DoneVision(){
+ const q=v30State();if(q.discovered)return;
+ q.discovered=true;q.sequence=0;
+ log('V30 · A Fissura contou a ordem de crescimento: Semente, Água e Luz.');
+ save();update();
+ notify('Três Pedras da Floresta despertaram!');
+}
+function v30DoneGate(){
+ const q=v30State();if(!q.opened){
+  q.opened=true;epic().gold+=25;giveXP(40);
+  log('V30 · A Passagem das Raízes foi restaurada. Um Átrio oculto se abriu.');
+  notify('Passagem aberta! +40 XP e +25 moedas RPG.');
+  save();update();
+ }
+ warp('atrioRaizes',2.8,7);
+}
+function v30DoneArchive(){
+ const q=v30State();if(q.completed)return;
+ q.completed=true;epic().gold+=40;giveXP(80);
+ ownItem('pingente_primeira_raiz_v30');
+ log('V30 · As inscrições recuperaram o Juramento dos Primeiros Cuidadores.');
+ notify('Prólogo V30 concluído! +80 XP, +40 moedas e Pingente da Primeira Raiz.');
+ save();update();
+}
+function v30Stone(a){
+ const q=v30State();
+ if(!q.discovered){say('Pedra Antiga','As inscrições estão adormecidas. Investigue primeiro a Fissura na Floresta.');return}
+ const seq=['v30StoneSeed','v30StoneWater','v30StoneLight'],index=q.sequence;
+ if(q.opened){say('Pedra Antiga','A passagem já está aberta. O símbolo continua brilhando em sua lembrança.');return}
+ if(a.id===seq[index]){
+  q.sequence++;
+  window.SamMusic?.effect('magic');
+  log('V30 · A pedra '+a.label+' respondeu à melodia das raízes.');
+  if(q.sequence===3)say('Três Pedras Despertas','As inscrições se unem num feixe verde e abrem a passagem no sudeste da Floresta.');
+  else say('Pedra Desperta','Você ouviu a nota correta ('+q.sequence+'/3). Siga a ordem ensinada pela Fissura.');
+ }else{
+  q.sequence=0;q.mistakes++;
+  say('Ressonância Interrompida','As luzes se apagaram, mas você pode recomeçar sem perder o restante da aventura. A ordem é aquela que faz uma planta crescer.');
+ }
+ save();update();
+}
+function v30Record(a){
+ const q=v30State();
+ if(q.records.includes(a.id)){say('Inscrição Lida','Este registro já entrou no seu diário.');return}
+ const texts={
+  v30RecordPath:'O caminho que une aldeias pertence a quem precisa atravessá-lo, não ao primeiro que encontrou sua entrada.',
+  v30RecordHarvest:'Toda colheita tem espaço para quem plantou, para quem cuidou e para quem chegou com fome.',
+  v30RecordMemory:'A lembrança de um povo cresce quando pode ser contada por muitas vozes.'
+ };
+ q.records.push(a.id);
+ log('Registro do Átrio · '+a.label+': '+texts[a.id]);
+ save();update();
+ if(q.records.length===3&&!q.completed){
+  v30Cutscene('archive',v30DoneArchive);
+ }else say(a.label,texts[a.id]+'\n\nRegistro anotado ('+q.records.length+'/3).');
+}
+function v30Interact(a){
+ const q=v30State();
+ if(a.id==='v30RootSignal'){
+  if(!q.started)v30Cutscene('awakening',v30DoneIntro);
+  else say('Raiz que Canta',q.completed?
+   'Você restaurou o primeiro juramento. Há outras raízes esperando por alguém que saiba escutá-las.':
+   'A lembrança continua viva. '+v30Objective());
+  return;
+ }
+ if(a.id==='v30ForestFissure'){
+  if(!q.started){say('Fissura Adormecida','A Raiz que Canta na Vila ainda precisa despertar.');return}
+  if(!q.discovered)v30Cutscene('whisper',v30DoneVision);
+  else say('Fissura das Lembranças','A semente nasce, recebe água e encontra a luz. As pedras guardam essa sequência.');
+  return;
+ }
+ if(a.v30==='stone'){v30Stone(a);return}
+ if(a.v30==='gate'){
+  if(q.opened){warp('atrioRaizes',2.8,7);return}
+  if(q.sequence<3){
+   say('Passagem das Raízes','As raízes continuam entrelaçadas. Toque as três pedras da Floresta na ordem correta ('+q.sequence+'/3).');
+   return;
+  }
+  v30Cutscene('opening',v30DoneGate);return;
+ }
+ if(a.v30==='return'){warp('floresta',19.1,9.4);return}
+ if(a.v30==='record'){v30Record(a);return}
+ if(a.v30==='keeper'){
+  say('Guardião dos Registros',q.completed?
+   'Você ouviu três promessas, mas elas são só a primeira página de uma história esquecida.':
+   'As promessas estão gravadas em três inscrições. Leia-as para compreender por que as raízes se abriram.');
+ }
+}
+function v30SetupUI(){
+ if($('v30PrologueCard'))return;
+ const aside=host.querySelector('.r12-aside');if(!aside)return;
+ const card=document.createElement('section');
+ card.className='r12-card v30-prologue';card.id='v30PrologueCard';
+ card.setAttribute('aria-label','Diário do Despertar do Pomar');
+ card.innerHTML='<div class="v30-kicker">✦ NOVA CAMPANHA · V30.2</div>'+
+ '<h3>🌳 O Despertar do Pomar</h3><p id="v30QuestStatus" aria-live="polite"></p>'+
+ '<div class="v30-track" role="progressbar" aria-label="Progresso do prólogo" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><span id="v30ProgressFill"></span></div>'+
+ '<div id="v30QuestCount" class="v30-quest-count"></div>'+
+ '<div class="v30-actions"><button type="button" id="v30ReplayIntro">🎬 Rever cutscene</button>'+
+ '<button type="button" id="v30MusicToggle">♫ Ligar trilha</button></div>'+
+ '<label class="v30-track-label" for="v30TrackChoice">🎼 Trilha ambiente (5 músicas novas)</label>'+
+ '<select id="v30TrackChoice"><option value="village">Manhã na Vila</option>'+
+ '<option value="forest">Luzes da Floresta</option><option value="mystery">Raízes que Sussurram</option>'+
+ '<option value="cinematic">O Despertar da Árvore</option><option value="temple">Templo das Raízes</option></select>'+
+ '<p class="v30-help">As trilhas são originais, funcionam offline e só tocam depois que você ligar o som. O progresso permanece salvo.</p>';
+ aside.prepend(card);
+ $('v30ReplayIntro').addEventListener('click',()=>window.SamCutscenes?.play('awakening'));
+ $('v30MusicToggle').addEventListener('click',()=>{window.SamMusic?.toggle();v30RenderUI()});
+ $('v30TrackChoice').addEventListener('change',e=>window.SamMusic?.scene(e.target.value));
+}
+function v30RenderUI(){
+ const card=$('v30PrologueCard');if(!card)return;
+ const q=v30State();
+ $('v30QuestStatus').textContent=v30Objective();
+ const steps=[!!q.started,!!q.discovered,q.sequence>=3,!!q.opened,!!q.completed];
+ const n=steps.filter(Boolean).length;
+ $('v30QuestCount').textContent=n+'/5 marcos · '+q.records.length+'/3 inscrições'+(q.mistakes?' · '+q.mistakes+' tentativas refeitas':'');
+ $('v30ProgressFill').style.width=100*n/5+'%';
+ card.querySelector('[role="progressbar"]').setAttribute('aria-valuenow',String(n));
+ $('v30ReplayIntro').disabled=!q.started;
+ $('v30MusicToggle').textContent=window.SamMusic?.enabled?'♫ Silenciar trilha':'♫ Ligar trilha';
+}
 function v29State(){
  const e=epic();
  if(!e.v29||typeof e.v29!=='object'||Array.isArray(e.v29))e.v29={};
