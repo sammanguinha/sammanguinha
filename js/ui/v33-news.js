@@ -13,7 +13,7 @@
  change('#sm30NewsPlay','🎮 Começar o Vale pelo RPG');
  change('#sm30News .sm30-news-footnote','Prévia V33 de homologação: encontre o portal do Vale a leste da Vila. Todas as campanhas anteriores continuam disponíveis. Recompensas desta crônica são locais, sem pontos no ranking oficial.');
  change('#smUpdatePanel .sm-tag','🌿 VIDA NO POMAR · V33.5');
- change('#smUpdateTitle','V33.3 — Combate e Defesa');
+ change('#smUpdateTitle','V33.5 — O Pomar Vivo');
  change('#smUpdatePanel > p','A aventura volta a ser o centro do projeto: mapas, NPCs, escolhas e modos conectados numa única jornada.');
  const notes=[
   ['V33.4 · Horta Viva','Seis canteiros, três cultivos, crescimento persistente no relógio real, rega que acelera 30 segundos e colheita com ingredientes.'],
@@ -38,7 +38,7 @@
  ];
  const details=document.createElement('details');details.className='sm-update-version';details.open=true;
  const summary=document.createElement('summary'),span=document.createElement('span'),b=document.createElement('b');
- b.textContent='V33.3 · PRÉVIA';span.append(b,document.createTextNode(' O Renascimento do Pomar'));
+ b.textContent='V33.5 · PRÉVIA';span.append(b,document.createTextNode(' O Renascimento do Pomar'));
  const count=document.createElement('span');count.className='sm-update-count';count.textContent=notes.length+' melhorias';summary.append(span,count);
  const ul=document.createElement('ul');for(const [title,text]of notes){const li=document.createElement('li'),bold=document.createElement('strong');bold.textContent=title+' — ';li.append(bold,document.createTextNode(text));ul.append(li)}
  details.append(summary,ul);history.prepend(details);
