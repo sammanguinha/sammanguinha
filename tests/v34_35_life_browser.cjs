@@ -25,7 +25,9 @@ const server=http.createServer((req,res)=>{
   await page.addInitScript(()=>{
    const realNow=Date.now.bind(Date);window.__v34Offset=0;Date.now=()=>realNow()+window.__v34Offset;
    window.__advanceGardenClock=ms=>{window.__v34Offset+=ms;return Date.now()};
-   localStorage.setItem('sg_handle','v34test');localStorage.setItem('sg_tok','abcdefghijklmnopqrstuvwxyz123456789');
+   if(!localStorage.getItem('v34test_current'))localStorage.setItem('v34test_current','v34test');
+   localStorage.setItem('sg_handle',localStorage.getItem('v34test_current'));
+   localStorage.setItem('sg_tok','abcdefghijklmnopqrstuvwxyz123456789');
    localStorage.setItem('sm_last_seen_update_version','24.0.0');
    localStorage.setItem('sm_last_seen_release_v29','29.0.0');
    localStorage.setItem('sm_last_seen_v31_preview','31.0.0-preview');
@@ -62,12 +64,6 @@ const server=http.createServer((req,res)=>{
   const oldLayout=await page.evaluate(()=>window.Sam21House.getLayout());
   await chooseCrop('erva');await clickPlot(0);
   let st=await garden();
-  console.log(device+' garden planting diagnostic',JSON.stringify({
-   notice:await page.locator('#sm34GardenNotice').innerText(),
-   garden:st,
-   wallet:await page.evaluate(()=>JSON.parse(localStorage.getItem('sg_extras_v1_v34test')||'null')),
-   account:await page.evaluate(()=>localStorage.getItem('sg_handle'))
-  }));
   assert.equal(st.seeds,692,'planting actually charges eight local seeds');
   assert.equal(st.plots[0].kind,'erva','the plot stores the plant');
   await clickPlot(0);
@@ -126,12 +122,12 @@ const server=http.createServer((req,res)=>{
   assert.ok((await world()).epic.items.includes('amuleto_colheita_v34'),'crafted artifact persists');
   assert.equal((await contract()).claimed,true,'daily reward persists');
   // Changing profiles must not show the previous player's local garden.
-  await page.evaluate(()=>{localStorage.setItem('sg_handle','v34other');localStorage.setItem('sg_tok','another-token')});
+  await page.evaluate(()=>{localStorage.setItem('v34test_current','v34other');localStorage.setItem('sg_handle','v34other');localStorage.setItem('sg_tok','another-token')});
   await page.reload({waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>!!window.SamGardenV34,{timeout:20000});
   assert.equal((await garden()).harvests,0,'other account has independent save');
   assert.equal((await garden()).accessory,'none','other account has no unlocked cosmetic');
-  await page.evaluate(()=>{localStorage.setItem('sg_handle','v34test');localStorage.setItem('sg_tok','abcdefghijklmnopqrstuvwxyz123456789')});
+  await page.evaluate(()=>{localStorage.setItem('v34test_current','v34test');localStorage.setItem('sg_handle','v34test');localStorage.setItem('sg_tok','abcdefghijklmnopqrstuvwxyz123456789')});
   await page.reload({waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>!!window.SamGardenV34,{timeout:20000});
   assert.equal((await garden()).accessory,'aurora','switching back loads saved cosmetic');
