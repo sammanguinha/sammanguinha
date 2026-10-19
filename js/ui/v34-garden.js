@@ -9,6 +9,7 @@
   '<div class="sm34-garden-work"><div class="sm34-field"><div id="sm34PlantChoices" class="sm34-seed-row" role="group" aria-label="Escolha de cultivos"></div><div id="sm34Plots" class="sm34-plots" aria-label="Seis canteiros cultiváveis"></div>'+
    '<p id="sm34GardenNotice" role="status" aria-live="polite">Selecione uma cultura e um canteiro vazio para começar.</p></div>'+
    '<aside class="sm34-garden-satchel"><h4>🎒 Bolsa de ingredientes</h4><div id="sm34Resources"></div><h4>🧪 Oficina de receitas</h4><div id="sm34Crafts"></div>'+
+   '<div class="sm34-daily"><h4>📜 Contrato de Hoje</h4><p id="sm34Contract">Colha e prepare uma receita para ganhar moedas RPG locais.</p><button type="button" id="sm34DailyClaim">Entregar contrato · +20 moedas RPG</button></div>'+ 
    '<p class="sm34-disclaimer">Cultivo e receitas são locais e não geram mangas oficiais, posição no ranking ou compras externas. O progresso segue o save RPG desta conta.</p></aside></div>';
  const existing=document.getElementById('sm21House');
  existing.after(root);
@@ -56,6 +57,13 @@
     elem('small',null,done?'Relíquia já forjada':r.description));
    return button;
   }));
+  const today=api.getDailyContractV35?.();
+  if(today){
+   const contract=root.querySelector('#sm34Contract'),claim=root.querySelector('#sm34DailyClaim');
+   contract.textContent=(today.harvest?'✓':'◇')+' Colheita feita hoje · '+(today.craft?'✓':'◇')+' Receita preparada hoje';
+   claim.disabled=(!today.harvest||!today.craft||today.claimed);
+   claim.textContent=today.claimed?'✓ Contrato concluído — volte amanhã':'Entregar contrato · +20 moedas RPG';
+  }
   root.dataset.grown=String(data.harvests);
  }
  function action(result){notice.textContent=result.message;notice.dataset.state=result.ok?'ok':'error';draw();}
@@ -69,6 +77,9 @@
   if(!crop)return action(api.plantV34(i,selected));
   if(Date.now()>=crop.readyAt)return action(api.harvestV34(i));
   return action(api.waterV34(i));
+ });
+ root.querySelector('#sm34DailyClaim').addEventListener('click',()=>{
+  const r=api.claimDailyV35();notice.textContent=r.message;notice.dataset.state=r.ok?'ok':'error';draw();
  });
  crafts.addEventListener('click',e=>{
   const recipe=e.target.closest('[data-sm34-craft]')?.dataset.sm34Craft;
