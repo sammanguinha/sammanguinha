@@ -94,7 +94,7 @@ const server=http.createServer((req,res)=>{
   assert.equal((await page.evaluate(()=>window.SamHybridRPG.claimDailyV35())).ok,false,'daily replay rejected by backend state');
   // Original house save remains intact throughout the garden changes.
   assert.deepEqual(await page.evaluate(()=>window.Sam21House.getLayout()),oldLayout,'existing home layout preserved');
-  await page.evaluate(()=>window.showPane('profDlg'));
+  await page.evaluate(()=>{QS={goals:[]};window.showPane('profDlg')});
   assert.ok(await page.locator('#sm34Wardrobe').isVisible(),'wardrobe rendered inside real Profile');
   assert.equal(await page.locator('#sm34Accessories [data-sm34-accessory="scarf"]').isDisabled(),true);
   await page.locator('#sm34Accessories [data-sm34-accessory="leaf"]').click();
@@ -117,7 +117,7 @@ const server=http.createServer((req,res)=>{
   assert.ok((await world()).epic.items.includes('amuleto_colheita_v34'),'unique artifact available in RPG');
   assert.equal((await garden()).unlocked.aurora,true,'artifact unlocks matching visual aura');
   assert.equal((await page.locator('#sm34Crafts [data-sm34-craft="amuleto"]').isDisabled()),true,'artifact cannot be duplicated');
-  await page.evaluate(()=>window.showPane('profDlg'));
+  await page.evaluate(()=>{QS={goals:[]};window.showPane('profDlg')});
   await page.locator('#sm34Accessories [data-sm34-accessory="aurora"]').click();
   assert.equal((await garden()).accessory,'aurora');
   await page.reload({waitUntil:'domcontentloaded'});
