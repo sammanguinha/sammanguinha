@@ -62,6 +62,12 @@ const server=http.createServer((req,res)=>{
   const oldLayout=await page.evaluate(()=>window.Sam21House.getLayout());
   await chooseCrop('erva');await clickPlot(0);
   let st=await garden();
+  console.log(device+' garden planting diagnostic',JSON.stringify({
+   notice:await page.locator('#sm34GardenNotice').innerText(),
+   garden:st,
+   wallet:await page.evaluate(()=>JSON.parse(localStorage.getItem('sg_extras_v1_v34test')||'null')),
+   account:await page.evaluate(()=>localStorage.getItem('sg_handle'))
+  }));
   assert.equal(st.seeds,692,'planting actually charges eight local seeds');
   assert.equal(st.plots[0].kind,'erva','the plot stores the plant');
   await clickPlot(0);
