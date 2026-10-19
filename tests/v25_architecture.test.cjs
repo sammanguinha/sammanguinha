@@ -35,7 +35,7 @@ test('Classic scripts retain execution order, do not use async/defer, and compil
  assert.ok(html.indexOf('src="js/games/halloween-wardrobe.js?v=25"')<html.indexOf('src="rpg_epico_expansao.js"'));
  assert.ok(html.indexOf('src="js/ui/update-notice.js?v=25"')>html.indexOf('src="mundo_pomar.js"'));
  for(const m of html.matchAll(/<script\b([^>]*)src="(js\/[^"]+)"([^>]*)>/gi)){
-  if(m[2]==='js/ui/game-shell-v27.js?v=27')continue; // Visual component initializes after DOM is parsed, intentionally deferred.
+  if(['js/ui/game-shell-v27.js?v=27','js/ui/v32-structure.js?v=32.0'].includes(m[2]))continue; // Visual components initialize after DOM parsing; V25 core remains classic.
   assert.doesNotMatch(m[1]+m[3],/\b(?:defer|async|type="module")\b/i);
  }
 });
