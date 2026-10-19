@@ -60,7 +60,7 @@ const server=http.createServer((req,res)=>{let f=path.resolve(root,'.'+decodeURI
   const gold=(await state()).epic.gold,potions=(await state()).epic.potions;
   await act('v303Mural');await talk();
   assert.equal((await state()).epic.gold,gold,'no repeated chapter reward');
-  const beforeReload=await page.evaluate(()=>({handle:localStorage.getItem('sg_handle'),keys:Object.keys(localStorage).filter(k=>k.includes('rpg_hibrido')),saved:JSON.parse(localStorage.getItem('sam_rpg_hibrido_v12_v303test')||'null')?.epic?.v30?.chapter1}));
+  const beforeReload=await page.evaluate(()=>({handle:localStorage.getItem('sg_handle'),keys:Object.keys(localStorage).filter(k=>k.includes('rpg_hibrido')),saved:(()=>{const d=JSON.parse(localStorage.getItem('sam_rpg_hibrido_v12_v303test')||'null');return {map:d?.map,x:d?.x,y:d?.y,epic:d?.epic?.v30?.chapter1}})()}));
   await page.reload({waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>!!window.SamHybridRPG?.getState,{timeout:20000});
   const afterReload=await page.evaluate(()=>({handle:localStorage.getItem('sg_handle'),keys:Object.keys(localStorage).filter(k=>k.includes('rpg_hibrido')),current:window.SamHybridRPG.getState().epic.v30?.chapter1,saved:JSON.parse(localStorage.getItem('sam_rpg_hibrido_v12_v303test')||'null')?.epic?.v30?.chapter1}));
