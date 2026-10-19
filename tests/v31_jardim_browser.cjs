@@ -36,7 +36,7 @@ async function run(){
  await page.goto('http://127.0.0.1:4281/',{waitUntil:'domcontentloaded'});
  await page.waitForFunction(()=>!!window.SamHybridRPG?.toggleBroto,{timeout:20000});
  await page.evaluate(()=>window.showPane('rpgDlg'));
- await page.waitForSelector('#v31Card');
+ await page.waitForSelector('#v31Card',{state:'attached'});
  const state=()=>page.evaluate(()=>window.SamHybridRPG.getState());
  const interact=id=>page.evaluate(id=>window.SamHybridRPG.interactById(id),id);
  const close=async()=>{
@@ -53,7 +53,7 @@ async function run(){
  assert.equal((await state()).epic.v31.lens,true,'lens crafted');
  await interact('v31Heavy');await close();
  assert.equal((await state()).epic.v31.heavy,true,'normal weight plate');
- await page.locator('#v31SizeButton').click();
+ await page.locator('#v31MobileBroto').click();
  assert.equal((await state()).epic.v31.small,true,'size change from HUD');
  await interact('v31TinyGate');
  assert.equal((await state()).map,'galeriasInsetos','tiny gate');
@@ -78,13 +78,13 @@ async function run(){
  await interact('v31Chronicle');await close();
  await interact('v31RuneRoot');await close();
  assert.equal((await state()).epic.v31.runes,0,'normal size required for Root');
- await page.locator('#v31SizeButton').click();
+ await page.locator('#v31MobileBroto').click();
  await interact('v31RuneRoot');await close();
  assert.equal((await state()).epic.v31.runes,1);
- await page.locator('#v31SizeButton').click();
+ await page.locator('#v31MobileBroto').click();
  await interact('v31RuneDew');await close();
  assert.equal((await state()).epic.v31.runes,2);
- await page.locator('#v31SizeButton').click();
+ await page.locator('#v31MobileBroto').click();
  await interact('v31RuneMoon');await close();
  assert.equal((await state()).epic.v31.runes,3);
  await interact('v31Warden');
