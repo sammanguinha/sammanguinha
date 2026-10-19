@@ -57,6 +57,9 @@
  function openNotes(){layer.classList.add('sm-show');document.body.style.overflow='hidden';close.focus({preventScroll:true})}
  function markSeen(){try{store.setItem(flag,current)}catch(_){}}
  read.addEventListener('click',openNotes);
+ const teaser=document.getElementById('sm30WatchTeaser');
+ teaser?.addEventListener('click',()=>window.SamCutscenes?.play('awakening'));
+
  reopen.classList.add('sm-ready');reopen.setAttribute('aria-label','Ver novidades da versão V29');
  // The legacy modal closes through its own handlers; record the new release acknowledgement too.
  close.addEventListener('click',markSeen);
