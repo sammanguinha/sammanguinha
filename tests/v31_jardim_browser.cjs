@@ -32,7 +32,7 @@ async function run(){
   localStorage.setItem('sm_last_seen_release_v29','29.0.0');
   localStorage.setItem('sm_last_seen_update_version','24.0.0');
   localStorage.setItem('sm_last_seen_v31_preview','31.0.0-preview');
-  localStorage.setItem('sam_rpg_hibrido_v12_v31test',JSON.stringify(save));
+  if(!localStorage.getItem('sam_rpg_hibrido_v12_v31test'))localStorage.setItem('sam_rpg_hibrido_v12_v31test',JSON.stringify(save));
  },{save:initial});
  await page.goto('http://127.0.0.1:4281/',{waitUntil:'domcontentloaded'});
  await page.waitForFunction(()=>!!window.SamHybridRPG?.toggleBroto,{timeout:20000});
@@ -62,9 +62,16 @@ async function run(){
  assert.equal((await state()).map,'galeriasInsetos','tiny gate');
  // The barrier consists of two solid blocks with a 0.6-tile gap.
  // A normal-radius player cannot pass; mini radius must fit.
- await page.evaluate(()=>window.SamHybridRPG.gotoRoom('galeriasInsetos'));
+ // Place the saved player in the real corridor entrance; reload tests actual save hydration.
+ await page.evaluate(()=>{
+  const snapshot=window.SamHybridRPG.getState();
+  snapshot.map='galeriasInsetos';snapshot.x=12;snapshot.y=8.5;
+  localStorage.setItem('sam_rpg_hibrido_v12_v31test',JSON.stringify(snapshot));
+ });
+ await page.reload({waitUntil:'domcontentloaded'});
+ await page.waitForFunction(()=>!!window.SamHybridRPG?.toggleBroto);
+ await page.evaluate(()=>window.showPane('rpgDlg'));
  await page.evaluate(()=>window.SamHybridRPG.toggleBroto());
- await page.keyboard.down('ArrowRight');await page.waitForTimeout(290);await page.keyboard.up('ArrowRight');
  await page.keyboard.down('ArrowUp');await page.waitForTimeout(850);await page.keyboard.up('ArrowUp');
  await page.waitForTimeout(950);
  const normal=(await state());
