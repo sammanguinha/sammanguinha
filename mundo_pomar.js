@@ -1134,6 +1134,130 @@ function v33RenderUI(){
  card.classList.toggle('sm33-active',v33Rooms.has(st.map));
 }
 
+/* V33.4 · Jardim vivo e personalização RPG, mantidos no mesmo save v12.
+   Não altera pontuações oficiais nem o formato do save/casa em nuvem.
+   Cada operação de plantio/colheita/artesanato persiste imediatamente. */
+Object.assign(EPIC_ARTIFACTS,{
+ amuleto_colheita_v34:{name:'Amuleto dos Jardineiros',rarity:'Épico',element:'nature',effect:'ward',desc:'Forjado na horta do Refúgio. Reduz 2 pontos do dano recebido quando equipado.'}
+});
+const v34Seeds=Object.freeze({
+ erva:{name:'Erva do Guardião',emoji:'🌿',cost:8,grow:60000,yield:2,unit:'erva'},
+ orvalho:{name:'Flor do Orvalho',emoji:'💧',cost:11,grow:120000,yield:1,unit:'orvalho'},
+ lunar:{name:'Flor da Lua',emoji:'🌙',cost:15,grow:180000,yield:1,unit:'lunar'}
+});
+const v34Recipes=Object.freeze({
+ pocao:{name:'Poção de Jornada',cost:{erva:2,orvalho:1},description:'2 ervas + 1 orvalho → 1 poção RPG'},
+ mana:{name:'Infusão Lunar',cost:{orvalho:1,lunar:1},description:'1 orvalho + 1 flor lunar → recupera até 12 MP'},
+ amuleto:{name:'Amuleto dos Jardineiros',cost:{erva:2,orvalho:1,lunar:2},description:'2 ervas + 1 orvalho + 2 flores lunares → amuleto permanente'}
+});
+function v34State(){
+ const e=epic();if(!e.v34||typeof e.v34!=='object'||Array.isArray(e.v34))e.v34={};
+ const v=e.v34;
+ if(!Array.isArray(v.plots))v.plots=Array(6).fill(null);
+ v.plots=Array.from({length:6},(_,i)=>{
+  const p=v.plots[i];
+  if(!p||!v34Seeds[p.kind])return null;
+  const plantedAt=Number(p.plantedAt);
+  if(!Number.isFinite(plantedAt)||plantedAt<0)return null;
+  return {kind:p.kind,plantedAt:Math.min(Date.now(),Math.max(0,plantedAt)),watered:!!p.watered};
+ });
+ if(!v.resources||typeof v.resources!=='object')v.resources={};
+ for(const kind of ['erva','orvalho','lunar'])v.resources[kind]=Math.max(0,Math.min(999,Math.floor(Number(v.resources[kind])||0)));
+ v.harvests=Math.max(0,Math.min(9999,Math.floor(Number(v.harvests)||0)));
+ v.crafts=Math.max(0,Math.min(9999,Math.floor(Number(v.crafts)||0)));
+ if(!['none','leaf','scarf','aurora'].includes(v.accessory))v.accessory='none';
+ v.daily=typeof v.daily==='object'&&v.daily&&!Array.isArray(v.daily)?v.daily:{};
+ return v;
+}
+function v34Wallet(){
+ try{
+  const key='sg_extras_v1_'+String(localStorage.getItem('sg_handle')||'visitante').toLowerCase().replace(/[^a-z0-9._]/g,'').slice(0,30);
+  const raw=localStorage.getItem(key),data=raw?JSON.parse(raw):null;
+  const wallet=data&&typeof data==='object'&&!Array.isArray(data)?data:{seeds:0,owned:[],pet:'',best:0,day:'',claimed:[],stats:{}};
+  wallet.seeds=Math.max(0,Math.floor(Number(wallet.seeds)||0));
+  return {key,wallet};
+ }catch(_){return null}
+}
+function v34Result(ok,message){
+ const data=v34State(),wallet=v34Wallet();
+ return {ok,message,plots:data.plots.map(p=>p?{...p,readyAt:p.plantedAt+v34Seeds[p.kind].grow}:null),
+  resources:{...data.resources},harvests:data.harvests,crafts:data.crafts,
+  accessory:data.accessory,seeds:wallet?.wallet.seeds??0,unlocked:{
+  none:true,leaf:data.harvests>=2,scarf:data.harvests>=5,aurora:epic().items.includes('amuleto_colheita_v34')
+  },recipes:Object.fromEntries(Object.entries(v34Recipes).map(([id,r])=>[id,{...r,cost:{...r.cost}}])),
+  plants:Object.fromEntries(Object.entries(v34Seeds).map(([id,p])=>[id,{...p}]))};
+}
+function v34Plant(index,kind){
+ const v=v34State(),i=Number(index),seed=v34Seeds[kind];
+ if(!Number.isInteger(i)||i<0||i>=6||!seed)return v34Result(false,'Selecione um canteiro e uma semente válidos.');
+ if(v.plots[i])return v34Result(false,'Esse canteiro já está ocupado. Espere a colheita.');
+ const w=v34Wallet();
+ if(!w)return v34Result(false,'Armazenamento local indisponível.');
+ if(w.wallet.seeds<seed.cost)return v34Result(false,'Sementes insuficientes: cultive após descansar ou jogar Defesa.');
+ w.wallet.seeds-=seed.cost;
+ try{localStorage.setItem(w.key,JSON.stringify(w.wallet))}catch(_){return v34Result(false,'Não consegui salvar a compra de sementes.');}
+ v.plots[i]={kind,plantedAt:Date.now(),watered:false};save();update();
+ return v34Result(true,seed.name+' plantada. Acompanhe o crescimento!');
+}
+function v34Water(index){
+ const v=v34State(),i=Number(index),p=v.plots[i];
+ if(!Number.isInteger(i)||i<0||i>=6||!p)return v34Result(false,'Selecione um canteiro plantado.');
+ if(p.watered)return v34Result(false,'Este canteiro já foi regado neste ciclo.');
+ if(Date.now()>=p.plantedAt+v34Seeds[p.kind].grow)return v34Result(false,'Já está maduro: pode colher!');
+ p.watered=true;p.plantedAt=Math.max(0,p.plantedAt-30000);
+ save();return v34Result(true,'Regado! 30 segundos de crescimento antecipados.');
+}
+function v34Harvest(index){
+ const v=v34State(),i=Number(index),p=v.plots[i];
+ if(!Number.isInteger(i)||i<0||i>=6||!p)return v34Result(false,'Nada para colher neste canteiro.');
+ const crop=v34Seeds[p.kind];if(Date.now()<p.plantedAt+crop.grow)return v34Result(false,'Ainda não amadureceu. Aguarde ou regue.');
+ if(v.resources[crop.unit]+crop.yield>999)return v34Result(false,'Mochila de ingredientes cheia.');
+ v.plots[i]=null;v.resources[crop.unit]+=crop.yield;v.harvests++;
+ const day=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+ if(v.daily.harvest!==day){v.daily.harvest=day;const w=v34Wallet();if(w){w.wallet.seeds+=5;try{localStorage.setItem(w.key,JSON.stringify(w.wallet))}catch(_){}}}
+ if(v.harvests===2||v.harvests===5)log('Ateliê do Refúgio: nova aparência desbloqueada após '+v.harvests+' colheitas.');
+ save();update();return v34Result(true,'Colheita: +'+crop.yield+' '+crop.name+'. Ingredientes na mochila RPG.');
+}
+function v34Craft(recipe){
+ const v=v34State(),r=v34Recipes[recipe];
+ if(!r)return v34Result(false,'Receita desconhecida.');
+ if(recipe==='amuleto'&&epic().items.includes('amuleto_colheita_v34'))return v34Result(false,'Você já forjou este amuleto. Ele fica no Relicário.');
+ if(Object.entries(r.cost).some(([id,cost])=>v.resources[id]<cost))return v34Result(false,'Faltam ingredientes. Confira o inventário da horta.');
+ if(recipe==='mana'&&epic().mp>=maxMana())return v34Result(false,'Sua energia mágica já está completa.');
+ for(const [id,cost]of Object.entries(r.cost))v.resources[id]-=cost;
+ if(recipe==='pocao')epic().potions+=1;
+ if(recipe==='mana')epic().mp=Math.min(maxMana(),epic().mp+12);
+ if(recipe==='amuleto'){if(!epic().items.includes('amuleto_colheita_v34'))epic().items.push('amuleto_colheita_v34');}
+ v.crafts++;save();update();
+ return v34Result(true,recipe==='pocao'?'Poção criada! Está na mochila RPG.':recipe==='mana'?'Infusão usada: até 12 MP recuperados.':'Amuleto criado! Equipe-o no Relicário do RPG e desbloqueie a aura da horta.');
+}
+function v34Dress(accessory){
+ const v=v34State();const unlocked={none:true,leaf:v.harvests>=2,scarf:v.harvests>=5,aurora:epic().items.includes('amuleto_colheita_v34')};
+ if(!unlocked[accessory])return v34Result(false,'Esse acessório ainda não foi desbloqueado.');
+ v.accessory=accessory;save();return v34Result(true,'Aparência '+({none:'clássica',leaf:'Folha da Aurora',scarf:'Cachecol de Iara',aurora:'Aura do Jardineiro'}[accessory])+' equipada no mundo RPG.');
+}
+function v34DrawAccessory(x,y){
+ const kind=v34State().accessory;if(kind==='none')return;
+ ctx.save();ctx.imageSmoothingEnabled=false;
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const bob=reduced?0:Math.sin(clock*3)*1.1;
+ if(kind==='leaf'){
+  ctx.fillStyle='#274e3f';ctx.fillRect(x-10,y-51+bob,21,5);
+  ctx.fillStyle='#86c47f';ctx.fillRect(x-8,y-57+bob,17,8);
+  ctx.fillStyle='#ccebac';ctx.fillRect(x-3,y-62+bob,7,6);
+ }else if(kind==='scarf'){
+  ctx.fillStyle='#476584';ctx.fillRect(x-16,y-30+bob,32,6);
+  ctx.fillStyle='#e9c58d';ctx.fillRect(x-14,y-35+bob,28,6);
+  ctx.fillStyle='#d9a571';ctx.fillRect(x+8,y-30+bob,7,15);
+ }else if(kind==='aurora'){
+  ctx.strokeStyle='#aaf5cf';ctx.lineWidth=3;ctx.globalAlpha=.78;
+  ctx.beginPath();ctx.ellipse(x,y-20,24+(reduced?0:Math.sin(clock*2)*2),36,0,0,Math.PI*2);ctx.stroke();
+  ctx.fillStyle='#f0e3ac';
+  for(let i=0;i<4;i++)ctx.fillRect(x-19+i*13,y-52+(reduced?0:Math.sin(clock*3+i)*4),3,4);
+ }
+ ctx.restore();
+}
+
 function v303State(){
  const q=v30State();
  if(!q.chapter1||typeof q.chapter1!=='object')q.chapter1={};
@@ -2247,7 +2371,7 @@ function drawEpicActor(a,x,y,bob){
   ctx.restore()}
  function drawCharacter(x,y,coat,face,witch){rect(x-9,y-7,18,24,coat);rect(x-7,y-28,14,20,face);rect(x-8,y+16,6,6,'#41374a');rect(x+3,y+16,6,6,'#41374a');rect(x-3,y-20,3,3,'#302437');rect(x+4,y-20,3,3,'#302437');if(witch){rect(x-18,y-33,36,6,'#37233d');rect(x-8,y-49,16,17,'#4d315d')}else{rect(x-9,y-30,18,7,'#635039')}}
  function drawGlyph(x,y,symbol,color){ctx.fillStyle=color;ctx.font='bold 24px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(symbol,x,y)}
- function drawPlayer(){drawEpicAvatar(player.x*T,player.y*T)}
+ function drawPlayer(){drawEpicAvatar(player.x*T,player.y*T);v34DrawAccessory(player.x*T,player.y*T)}
  function camera(){const z=host.classList.contains('sm-immersive')
     ?Math.max(W/(COLS*T),H/(ROWS*T))*1.055
     :(window.innerWidth<=540?1.65:1);
@@ -2304,5 +2428,5 @@ function drawEpicActor(a,x,y,bob){
  const targetVisible=()=>!host.hidden;
  setupEpicUI();v31Setup();v33Setup();v33Visit(st.map);initV24Shop();if(st.relic&&epic().chapter===0)advanceEpicChapter(1);bind();visible=targetVisible();update();if(visible&&!epic().class)showEpicClasses();requestAnimationFrame(tick);
  if(!st.seen.includes('welcome')){st.seen.push('welcome');save();}
- window.SamHybridRPG={openShop:openV24Shop,getShopCatalog:()=>V24_SHOP.map(x=>({...x})),interactById:(id)=>{const a=room().actors.find(a=>a.id===id);if(a)interact(a)},startBattle:(key)=>startCombat(key,Object.entries(epicMonsters).find(([a,b])=>b===key)?.[0]||key),chooseClass:(id)=>{document.querySelector('[data-r13class="'+id+'"]')?.click()},getState:()=>JSON.parse(JSON.stringify(st)),toggleBroto:v31Toggle,getV31Objective:v31Objective,getVitals:()=>({hp:epic().hp,maxHp:maxHealth(),mp:epic().mp,maxMp:maxMana(),stamina:v24Bag().stamina,maxStamina:hasEffect('swift')?140:100}),gotoRoom:(name)=>{if(rooms[name]){st.map=name;player.x=11;player.y=8;update();save()}},onDefenseResult:(won)=>{epicDefenseReward(won);v33OnDefenseResult(won)},getV33State:()=>JSON.parse(JSON.stringify(v33State())),getV33Objective:v33Objective,getWorldAtlas:v33Atlas,travelV33:v33Travel,open:()=>window.showPane?.('rpgDlg')};
+ window.SamHybridRPG={openShop:openV24Shop,getShopCatalog:()=>V24_SHOP.map(x=>({...x})),interactById:(id)=>{const a=room().actors.find(a=>a.id===id);if(a)interact(a)},startBattle:(key)=>startCombat(key,Object.entries(epicMonsters).find(([a,b])=>b===key)?.[0]||key),chooseClass:(id)=>{document.querySelector('[data-r13class="'+id+'"]')?.click()},getState:()=>JSON.parse(JSON.stringify(st)),toggleBroto:v31Toggle,getV31Objective:v31Objective,getVitals:()=>({hp:epic().hp,maxHp:maxHealth(),mp:epic().mp,maxMp:maxMana(),stamina:v24Bag().stamina,maxStamina:hasEffect('swift')?140:100}),gotoRoom:(name)=>{if(rooms[name]){st.map=name;player.x=11;player.y=8;update();save()}},onDefenseResult:(won)=>{epicDefenseReward(won);v33OnDefenseResult(won)},getV33State:()=>JSON.parse(JSON.stringify(v33State())),getV33Objective:v33Objective,getWorldAtlas:v33Atlas,travelV33:v33Travel,getGardenV34:()=>v34Result(true,'Jardim carregado.'),plantV34:v34Plant,waterV34:v34Water,harvestV34:v34Harvest,craftV34:v34Craft,dressV34:v34Dress,open:()=>window.showPane?.('rpgDlg')};
 })();
