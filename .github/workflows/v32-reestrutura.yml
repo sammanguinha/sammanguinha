@@ -15,6 +15,7 @@ jobs:
       - name: Validar sintaxe
         run: |
           node --check js/ui/v32-structure.js
+          node --check js/ui/v32-news.js
           node --check tests/v32_structure_browser.cjs
           node --check mundo_pomar.js
       - name: Testes estáticos e regressões
