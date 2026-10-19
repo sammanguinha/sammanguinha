@@ -29,6 +29,24 @@ const SCENES=Object.freeze({
    {who:'Narrador',line:'Um novo caminho se abriu. Explore o Átrio, procure três inscrições e descubra a promessa dos antigos cuidadores.',stage:'tree'}
   ]
  },
+ grove:{
+  label:'CAPÍTULO I · A CANÇÃO PERDIDA',theme:'mystery',world:'forest',
+  frames:[
+   {who:'Narrador',line:'Depois do Átrio, uma trilha escondida conduz a um bosque onde até os pássaros parecem ter esquecido o próprio canto.',stage:'forest'},
+   {who:'Ayla, Guardiã dos Ecos',line:'Antigamente, os sinos chamavam as pessoas para partilhar as colheitas. Agora uma sentinela guarda apenas o silêncio.',stage:'roots'},
+   {who:'Ayla',line:'Escute a chuva, depois a terra e por fim o vento. Não basta ouvir a melodia: é preciso reconstruí-la no bosque.',stage:'tree'},
+   {who:'Narrador',line:'Três sinos de pedra aguardam seus passos. O círculo central permanece adormecido até que a música retorne.',stage:'forest'}
+  ]
+ },
+ groveEnding:{
+  label:'CAPÍTULO I · AS PRIMEIRAS VOZES',theme:'cinematic',world:'forest',
+  frames:[
+   {who:'Narrador',line:'Com a sentinela vencida, o mural se ilumina. Cada pedra guarda um nome e uma história de quem cuidou do Pomar.',stage:'temple'},
+   {who:'Ayla, em lembrança',line:'Não fomos feitos para cantar sozinhos. Uma aldeia cresce quando escuta também as vozes pequenas e esquecidas.',stage:'tree'},
+   {who:'O Mural',line:'O primeiro juramento era simples: a chuva pertence à terra, o vento leva as sementes, e nenhuma voz precisa desaparecer.',stage:'roots'},
+   {who:'Narrador',line:'Capítulo I concluído. O bosque voltou a cantar, mas as raízes seguem para além das colinas. A aventura ainda não terminou.',stage:'forest'}
+  ]
+ },
  archive:{
   label:'CAPÍTULO I · O JURAMENTO ESQUECIDO',theme:'temple',world:'temple',
   frames:[
