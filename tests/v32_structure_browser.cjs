@@ -35,8 +35,8 @@ const server=http.createServer((req,res)=>{
   for(const id of ['homeBtn','rpgWorldBtn','gameBtn','houseBtn','profBtn'])assert.equal(await page.locator('#areas .v32-tabs>button#'+id).count(),1,'primary '+id+' available');
   assert.equal(await page.locator('#v32MorePanel [data-p]').count(),8,'eight preserved secondary destinations');
   assert.equal(await page.locator('#v32MorePanel').isHidden(),true,'menu closed initially');
-  assert.equal(await page.locator('.v32-featured-grid .portal-card').count(),4,'focused actions');
-  assert.equal(await page.locator('.v32-library .portal-card').count(),6,'remaining options available');
+  for(const id of ['rpgDlg','gameDlg','houseDlg','profDlg'])assert.equal(await page.locator('.v32-featured-grid .portal-card[data-go="'+id+'"]').count(),1,'featured destination '+id);
+  for(const id of ['eventDlg','diary','rankDlg','murDlg','galDlg','secDlg'])assert.ok(await page.locator('.v32-library .portal-card[data-go="'+id+'"]').count()>=1,'available library destination '+id);
   assert.equal(await page.locator('#v32Library').evaluate(el=>el.open),false,'secondary library collapsed');
   const overflow=await page.evaluate(()=>({page:document.documentElement.scrollWidth,viewport:innerWidth}));
   assert.ok(overflow.page<=overflow.viewport+7,name+' home horizontal overflow '+JSON.stringify(overflow));
