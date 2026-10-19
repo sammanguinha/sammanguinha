@@ -24,7 +24,7 @@
    {v:'V29',name:'Crônicas Vivas — A Última Badalada',notes:[
     ['📜 História jogável','Investigue o sino perdido com Íris, Mara e Caio.'],
     ['🧩 Puzzle musical','Colete três pistas e afine o Carrilhão das Três Vozes.'],
-    ['⚔️ Combate tático','Dois novos confrontos, golpes anunciados e ação Analisar.'],
+    ['⚔️ Combate tático','Mariposa do Silêncio e Sentinela da Badalada, golpes anunciados e ação Analisar.'],
     ['🔎 Descobertas','Nove histórias secretas espalhadas pelo Pomar.'],
     ['📚 Diário de Campo','Pesquisas locais rotativas, com recompensa limitada por dia.'],
     ['🌿 Decisões','Escolha o destino da Última Badalada e receba um broche equipável.']
