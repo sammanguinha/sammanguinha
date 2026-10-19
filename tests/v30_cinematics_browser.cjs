@@ -33,7 +33,7 @@ const server=http.createServer((req,res)=>{
     }));
    });
    await page.goto('http://127.0.0.1:4203/index.html',{waitUntil:'domcontentloaded',timeout:50000});
-   await page.waitForFunction(()=>window.SamHybridRPG?.getState&&window.SamCutscenes?.scenes.length===4&&window.SamMusic?.themeNames.length>=9,{timeout:30000});
+   await page.waitForFunction(()=>window.SamHybridRPG?.getState&&window.SamCutscenes?.scenes.length===6&&window.SamMusic?.themeNames.length>=9,{timeout:30000});
    const names=await page.evaluate(()=>window.SamMusic.themeNames);
    assert.ok(['village','forest','mystery','cinematic','temple'].every(s=>names.includes(s)),name+' five music scores loaded');
    assert.ok(await page.locator('#sm30WatchTeaser').isVisible(),name+' homepage has cinematic teaser');

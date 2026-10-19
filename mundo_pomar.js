@@ -337,15 +337,40 @@ rooms.floresta.actors.push(
  {id:'v30StoneLight',x:20.7,y:5.2,type:'altar',v30:'stone',label:'Pedra da Luz'},
  {id:'v30RootGate',x:20.4,y:9.9,type:'door',v30:'gate',label:'Passagem das Raízes · V30'});
 Object.assign(EPIC_ARTIFACTS,{
+ selo_dos_ecos_v303:{name:'Selo dos Ecos',rarity:'Raro',element:'light',desc:'Protege as vozes do bosque. Recupera 3 HP por turno quando equipado.',effect:'regen'},
  pingente_primeira_raiz_v30:{name:'Pingente da Primeira Raiz',rarity:'Raro',element:'nature',
   desc:'O juramento dos cuidadores. Em combate, recupera 3 HP por turno quando equipado.',effect:'regen'}
+});
+/* V30.3 — Chapter 1: the Echo Grove. Unlocks after the V30 prologue. */
+rooms.bosqueEcos={name:'Bosque dos Ecos',subtitle:'Capítulo I · As vozes entre as folhas',
+ floor:'#243f3e',dirt:'#536a55',night:true,
+ blocks:[{x:3,y:2,w:4,h:3,type:'rocks'},{x:18,y:2,w:3,h:3,type:'ruin'},
+ {x:9,y:9,w:5,h:2,type:'rocks'}],
+ props:[{x:4,y:10,type:'tree'},{x:8,y:4,type:'dead'},{x:15,y:10,type:'tree'},
+ {x:19,y:4,type:'dead'},{x:21,y:10,type:'tree'}],
+ actors:[
+ {id:'v303Back',x:1.5,y:7,type:'passage',v30:'backGrove',label:'Voltar ao Átrio'},
+ {id:'v303Ayla',x:6.4,y:6.4,type:'npc',v30:'ayla',label:'Ayla, Guardiã dos Ecos'},
+ {id:'v303Marker',x:12,y:4.4,type:'altar',v30:'marker',label:'Marco das Três Canções'},
+ {id:'v303ChimeRain',x:5.2,y:10.6,type:'altar',v30:'chime',label:'Sino da Chuva'},
+ {id:'v303ChimeWind',x:17.8,y:5.6,type:'altar',v30:'chime',label:'Sino do Vento'},
+ {id:'v303ChimeEarth',x:20.1,y:10.6,type:'altar',v30:'chime',label:'Sino da Terra'},
+ {id:'v303Sentinel',x:12.8,y:7.2,type:'npc',v30:'sentinel',label:'Sentinela do Silêncio'},
+ {id:'v303Mural',x:20.2,y:3.2,type:'altar',v30:'mural',label:'Mural das Primeiras Vozes'},
+ {id:'v303Supply',x:8.2,y:7.8,type:'seed',v30:'supply',label:'Bolsa de Sementes Perdida'}
+ ]};
+rooms.atrioRaizes.actors.push({id:'v303GroveGate',x:22,y:7,type:'door',v30:'groveGate',label:'Passagem para o Bosque dos Ecos'});
+Object.assign(EPIC_ENEMIES,{
+ v303_sentinela:{name:'Sentinela do Silêncio',element:'shadow',hp:150,atk:18,def:7,
+ xp:170,gold:70,weak:'light',sprite:'vulto_eco_v24',
+ intro:'O silêncio se move entre as raízes. A Sentinela prepara pulsos de sombra a cada três turnos.'}
 });
 Object.assign(EPIC_ENEMIES,{
  lobo_vento:{name:'Lobo dos Ventos',element:'nature',hp:44,atk:8,def:2,xp:68,gold:32,weak:'fire',sprite:'lobo_vento_v24',intro:'Um guardião da campina corre em círculos. A marca do vento revela quando ele vai atacar.'},
  vulto_eco:{name:'Vulto de Cristal',element:'storm',hp:90,atk:13,def:4,xp:130,gold:58,weak:'earth',sprite:'vulto_eco_v24',intro:'Os cristais escutam seus passos. O vulto reúne a luz em um único ponto.'}
 });
 
- const storageKey=()=>{const handle=(typeof window.me!=='undefined'&&window.me)||localStorage.getItem('sg_handle')||'visitante';return 'sam_rpg_hibrido_v12_'+String(handle).toLowerCase()};
+ const storageKey=()=>{const live=(typeof window.me==='string'&&window.me&&window.me!=='visitante')?window.me:null;const handle=live||localStorage.getItem('sg_handle')||'visitante';return 'sam_rpg_hibrido_v12_'+String(handle).toLowerCase()};
  const blank=()=>({map:'vila',x:11.7,y:10.8,found:[],unlocked:false,relic:false,bonus:false,altarActive:false,ritualStep:0,seen:[],journal:['O Guardião Bento espera por você na vila.'],visits:0,epic:freshEpic()});
  let accountRpgKey=storageKey();let st=blank();try{let raw=JSON.parse(localStorage.getItem(storageKey())||'null');if(raw&&rooms[raw.map]&&Number.isFinite(raw.x)&&Number.isFinite(raw.y))st={...blank(),...raw,found:Array.isArray(raw.found)?raw.found:[],seen:Array.isArray(raw.seen)?raw.seen:[],journal:Array.isArray(raw.journal)?raw.journal:[]}}catch(e){}
  st.epic={...freshEpic(),...(st.epic||{}),stats:{...freshEpic().stats,...(st.epic?.stats||{})},flags:{...(st.epic?.flags||{})},items:Array.isArray(st.epic?.items)?st.epic.items:['semente_guardia'],equipped:Array.isArray(st.epic?.equipped)?st.epic.equipped:['semente_guardia'],defeated:Array.isArray(st.epic?.defeated)?st.epic.defeated:[]};
@@ -579,6 +604,102 @@ const epicMonsters={
    Salva tudo no mesmo epic.v29; rankings, Supabase e a campanha principal não mudam. */
 /* V30.2 — Root prologue: authored cinematic scenes + interactive three-stone environment.
    All milestones are stored under the existing local save's epic.v30. */
+/* V30.3 — Three environmental chimes, a story NPC, optional recovery and a boss. */
+function v303State(){
+ const q=v30State();
+ if(!q.chapter1||typeof q.chapter1!=='object')q.chapter1={};
+ const c=q.chapter1;
+ if(!Number.isInteger(c.chimes)||c.chimes<0||c.chimes>3)c.chimes=0;
+ if(!Number.isInteger(c.errors)||c.errors<0)c.errors=0;
+ return c;
+}
+function v303Objective(){
+ const c=v303State(),q=v30State();
+ if(!q.completed)return 'Conclua as três inscrições no Átrio das Raízes.';
+ if(!c.metAyla)return 'Atravesse o Átrio e encontre Ayla no Bosque dos Ecos.';
+ if(c.chimes<3)return 'Escute os sinos na ordem Chuva → Terra → Vento ('+c.chimes+'/3).';
+ if(!c.bossWon)return 'Enfrente a Sentinela do Silêncio. Observe o golpe carregado a cada três turnos.';
+ if(!c.mural)return 'Leia o Mural das Primeiras Vozes e descubra a origem do silêncio.';
+ return 'Capítulo I concluído! Explore o Bosque e complete a missão opcional de Ayla.';
+}
+function v303ActorVisible(a){
+ const c=v303State(),q=v30State();
+ if(a.v30==='groveGate')return !!q.completed;
+ if(a.v30==='chime')return !!c.metAyla&&!c.bossWon;
+ if(a.v30==='sentinel')return c.chimes===3&&!c.bossWon;
+ if(a.v30==='mural')return !!c.bossWon;
+ return true;
+}
+function v303Finish(){
+ const c=v303State();if(c.finished)return;
+ c.finished=true;epic().gold+=55;giveXP(115);
+ ownItem('selo_dos_ecos_v303');
+ log('V30.3 · O Mural revelou que os primeiros sinos foram construídos para que nenhuma voz desaparecesse.');
+ notify('Capítulo I concluído! +115 XP, +55 moedas e Selo dos Ecos.');
+ save();update();
+}
+function v303Chime(a){
+ const c=v303State(),order=['v303ChimeRain','v303ChimeEarth','v303ChimeWind'];
+ if(!c.metAyla){say('Sino Antigo','Ayla conhece a melodia que abre o bosque.');return}
+ if(a.id===order[c.chimes]){
+  c.chimes++;
+  window.SamMusic?.effect('magic');
+  log('V30.3 · '+a.label+' tocou a nota correta.');
+  say('Sino Desperto',c.chimes===3?
+   'Três notas atravessam o bosque. A Sentinela do Silêncio acorda no círculo central.':
+   'A floresta respondeu à sua nota. Continue a sequência ('+c.chimes+'/3).');
+ }else{
+  c.chimes=0;c.errors++;
+  say('Melodia Interrompida','As notas se dispersam. Ayla contou a sequência: primeiro a chuva cai, depois a terra recebe e finalmente o vento espalha.');
+ }
+ save();update();
+}
+function v303Interact(a){
+ const c=v303State();
+ if(a.v30==='groveGate'){warp('bosqueEcos',2.8,7);return}
+ if(a.v30==='backGrove'){warp('atrioRaizes',20.5,7);return}
+ if(a.v30==='ayla'){
+  if(!c.metAyla){
+   c.metAyla=true;
+   log('V30.3 · Ayla pediu que eu restaurasse a melodia dos três sinos.');
+   save();update();
+   v30Cutscene('grove',()=>notify('Nova missão: encontre os sinos da Chuva, Terra e Vento.'));
+  }else if(c.bossWon&&!c.supplyReturned){
+   if(c.supply){
+    c.supplyReturned=true;epic().potions+=2;giveXP(45);
+    log('V30.3 · Devolvi a bolsa de sementes a Ayla.');
+    save();update();
+    say('Ayla, Guardiã dos Ecos','Você encontrou minhas sementes! Duas poções e a gratidão do bosque são suas.');
+   }else say('Ayla, Guardiã dos Ecos','O silêncio recuou, mas minha bolsa de sementes ficou perto da passagem de pedra. Você poderia procurá-la?');
+  }else say('Ayla, Guardiã dos Ecos',c.bossWon?
+   'As raízes voltaram a cantar. Leia o mural e leve adiante o que aprendeu.':
+   'Primeiro a chuva cai, depois a terra recebe e por último o vento espalha. A Sentinela tem medo da luz.');
+  return;
+ }
+ if(a.v30==='chime'){v303Chime(a);return}
+ if(a.v30==='marker'){
+  say('Marco das Três Canções','A melodia foi gravada em versos: “Chuva que desperta, Terra que acolhe, Vento que leva.”');return;
+ }
+ if(a.v30==='sentinel'){
+  if(c.chimes!==3){say('Sentinela Adormecida','Os sinos ainda não se alinharam.');return}
+  if(c.bossWon){say('Sentinela Serena','O silêncio já não impede as vozes de atravessar o bosque.');return}
+  startCombat('v303_sentinela','v303Sentinel');return;
+ }
+ if(a.v30==='mural'){
+  if(!c.bossWon){say('Mural Selado','Uma sombra ainda cobre a inscrição.');return}
+  if(!c.mural){
+   c.mural=true;save();update();
+   v30Cutscene('groveEnding',v303Finish);
+  }else if(!c.finished)v30Cutscene('groveEnding',v303Finish);
+  else say('Mural das Primeiras Vozes','O bosque guarda a promessa de nunca silenciar quem precisa ser ouvido.');
+  return;
+ }
+ if(a.v30==='supply'){
+  if(c.supply){say('Bolsa de Ayla','Você já guardou a bolsa para devolver à guardiã.');return}
+  c.supply=true;log('V30.3 · Encontrei a bolsa de sementes de Ayla.');save();update();
+  say('Bolsa de Sementes','Há sementes de três cores e o nome de Ayla bordado na alça.');return;
+ }
+}
 function v30State(){
  const e=epic();
  if(!e.v30||typeof e.v30!=='object'||Array.isArray(e.v30))e.v30={};
@@ -592,7 +713,7 @@ function v30SceneForRoom(where){
  if(where==='vila')return 'village';
  if(where==='floresta'||where==='planicie'||where==='estufa')return 'forest';
  if(where==='atrioRaizes'||where==='ruinas'||where==='mina'||where==='gruta')return 'temple';
- if(where==='bosque'||where==='pantano'||where==='coracao')return 'mystery';
+ if(where==='bosque'||where==='bosqueEcos'||where==='pantano'||where==='coracao')return 'mystery';
  if(where==='observatorio')return 'shadows';
  return 'explore';
 }
@@ -603,7 +724,7 @@ function v30Objective(){
  if(q.sequence<3)return 'Ative as três pedras da Floresta na ordem Semente → Água → Luz ('+q.sequence+'/3).';
  if(!q.opened)return 'Volte à Passagem das Raízes, a sudeste da Floresta, e abra o caminho oculto.';
  if(!q.completed)return 'Explore o Átrio das Raízes e investigue suas três inscrições ('+q.records.length+'/3).';
- return 'Prólogo V30 concluído. Explore livremente enquanto novos capítulos são construídos.';
+ return v303Objective();
 }
 function v30ActorVisible(a){
  const q=v30State();
@@ -682,6 +803,7 @@ function v30Record(a){
  }else say(a.label,texts[a.id]+'\n\nRegistro anotado ('+q.records.length+'/3).');
 }
 function v30Interact(a){
+ if(['groveGate','backGrove','ayla','chime','marker','sentinel','mural','supply'].includes(a.v30)){v303Interact(a);return}
  const q=v30State();
  if(a.id==='v30RootSignal'){
   if(!q.started)v30Cutscene('awakening',v30DoneIntro);
@@ -739,10 +861,11 @@ function v30RenderUI(){
  const card=$('v30PrologueCard');if(!card)return;
  const q=v30State();
  $('v30QuestStatus').textContent=v30Objective();
- const steps=[!!q.started,!!q.discovered,q.sequence>=3,!!q.opened,!!q.completed];
+ const chapter=v303State();
+ const steps=[!!q.started,!!q.discovered,q.sequence>=3,!!q.opened,!!q.completed,!!chapter.metAyla,chapter.chimes===3,!!chapter.bossWon,!!chapter.finished];
  const n=steps.filter(Boolean).length;
- $('v30QuestCount').textContent=n+'/5 marcos · '+q.records.length+'/3 inscrições'+(q.mistakes?' · '+q.mistakes+' tentativas refeitas':'');
- $('v30ProgressFill').style.width=100*n/5+'%';
+ $('v30QuestCount').textContent=n+'/9 marcos · '+q.records.length+'/3 inscrições'+(q.mistakes?' · '+q.mistakes+' tentativas refeitas':'');
+ $('v30ProgressFill').style.width=100*n/9+'%';
  card.querySelector('[role="progressbar"]').setAttribute('aria-valuenow',String(n));
  $('v30ReplayIntro').disabled=!q.started;
  $('v30MusicToggle').textContent=window.SamMusic?.enabled?'♫ Silenciar trilha':'♫ Ligar trilha';
@@ -1077,6 +1200,7 @@ function v29CombatTell(c){
  if(c.key==='v29_sentinela')return c.turn%3===0
   ?'⚠ A Sentinela concentra nuvens nas patas: próximo ataque CARREGADO. DEFENDA ou ANALISE para resistir.'
   :'A Sentinela circula e testa sua defesa. Natureza abre fissuras na armadura.';
+ if(c.key==='v303_sentinela')return c.turn%3===0?'⚠ A Sentinela concentra um eco sombrio. DEFENDER reduz o próximo golpe.':'A luz enfraquece a Sentinela. Observe o ritmo de três turnos.';
  if(c.key==='v29_silencio')return c.turn%4===0
   ?'⚠ A Mariposa recolhe as asas: o próximo eco causará mais dano. Proteja-se.'
   :'A Mariposa perde o brilho diante da Luz. Estude a fraqueza antes de usar magia.';
@@ -1162,7 +1286,7 @@ function enemyTurn(){const c=epicCombat,e=epic(),enemy=EPIC_ENEMIES[c.key];if(!c
  const dodge=Math.min(.19,epic().stats.agi*.009);const miss=(c.enemyStatus==='blind'&&Math.random()<.55)||Math.random()<dodge;
  if(miss){battleMessage(c.enemyStatus==='blind'?'A luz cegou o inimigo! Ele errou o golpe.':'Sua Agilidade permitiu esquivar do ataque!')}else{
   const coeff=c.key==='rei'?(1+c.phase*.16):1;
-  const v29Charged=(c.key==='v29_sentinela'&&c.turn%3===0)||(c.key==='v29_silencio'&&c.turn%4===0);
+  const v29Charged=(c.key==='v29_sentinela'&&c.turn%3===0)||(c.key==='v29_silencio'&&c.turn%4===0)||(c.key==='v303_sentinela'&&c.turn%3===0);
    const raw=(enemy.atk*coeff+Math.floor(c.turn/3)+Math.random()*5)*(v29Charged?1.7:1);
    if(v29Charged)battleMessage('⚠ Golpe carregado! DEFENDER reduz bastante o impacto.');
   let dmg=Math.max(1,Math.floor(raw-epic().stats.vig*.9-(hasEffect('defense')?3:0)-(hasEffect('harvest')?2:0)-(hasEffect('ward')?2:0)));
@@ -1178,6 +1302,7 @@ function advanceBattlePhase(){const c=epicCombat,m=EPIC_ENEMIES[c.key];if(m.phas
  const key=c.key,actor=c.actor;
  endCombat(true,false);const e=epic();if(!e.defeated.includes(actor))e.defeated.push(actor);const enemy=EPIC_ENEMIES[key];e.wins++;v23DailyMark('victory');e.gold+=enemy.gold;e.potions+=1;giveXP(enemy.xp);notify('Vitória! +'+enemy.xp+' XP e '+enemy.gold+' moedas.');
   if(key==='v29_silencio'||key==='v29_sentinela')v29CombatWon(key);
+   if(key==='v303_sentinela'){const c=v303State();c.bossWon=true;log('V30.3 · A Sentinela do Silêncio foi vencida. O mural a leste voltou a brilhar.');}
  if(key==='larva'){log('A Larva da Ferrugem caiu. A fornalha agora pode ser purificada.');}
  if(key==='rainha'){ownItem('espinho_soberano');goStory([['Rainha das Aranhas','As crianças... ainda lembram de nosso juramento?'],['Eldra','A rainha era guardiã daquelas promessas. A maldição prendeu seu amor numa teia de ódio.'],['Narrador','Com a coroa de espinhos desfeita, uma passagem se abre para as Minas do Prisma Partido.']],()=>advanceEpicChapter(3))}
  if(key==='besouro'){ownItem('prisma_eco');goStory([['Dário','Ouço as minas cantando outra vez. O brilho volta a revelar o caminho das antigas águas.'],['Narrador','O Prisma do Eco se uniu ao seu inventário. A trilha do pântano se abriu.']],()=>advanceEpicChapter(4))}
@@ -1185,7 +1310,7 @@ function advanceBattlePhase(){const c=epicCombat,m=EPIC_ENEMIES[c.key];if(m.phas
  if(key==='sentinela'){ownItem('lente_lunar');goStory([['Sentinela do Eclipse','Sua vontade permaneceu mesmo sob o trovão. A Torre aceita seu nome.'],['Selene','O Rei não é apenas um monstro. Ele é a fome que foi deixada fora da mesa. Leve esta lente; ela mostrará o que a névoa esconde.'],['Narrador','A passagem para o Coração do Pomar se acende ao norte.']],()=>advanceEpicChapter(6))}
  if(key==='rei'){ownItem('coroa_semente');goStory([['Rei das Pragas','A coroa... era apenas uma casca. Todas essas vozes, todas essas colheitas...'],['Eldra','Você o venceu, mas a maldição só acaba quando escolhe o que fazer com as memórias.'],['Narrador','O Altar da Última Colheita desperta ao sul. Três destinos aguardam sua decisão.']]);}
  save();update();}
-function endCombat(win,ran){if(!epicCombat)return;window.SamMusic?.scene(['bosque','coracao'].includes(st.map)?'shadows':'explore');if(win)window.SamMusic?.effect('win');epicCombat=null;dialogOpen=false;const el=$('r13Combat');if(el)el.hidden=true;recomputeHealth();save();update();if(ran)notify('Você recuou para preparar uma estratégia melhor.');}
+function endCombat(win,ran){if(!epicCombat)return;window.SamMusic?.scene(v30SceneForRoom(st.map));if(win)window.SamMusic?.effect('win');epicCombat=null;dialogOpen=false;const el=$('r13Combat');if(el)el.hidden=true;recomputeHealth();save();update();if(ran)notify('Você recuou para preparar uma estratégia melhor.');}
 function createCombat(){let modal=$('r13Combat');if(!modal){modal=document.createElement('div');modal.id='r13Combat';modal.className='r13-combat';modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');modal.setAttribute('aria-label','Combate por turno');document.getElementById('rpgDlg').append(modal)}modal.hidden=false}
 function renderCombat(){const c=epicCombat;if(!c)return;const e=epic(),m=EPIC_ENEMIES[c.key],info=EPIC_CHAPTERS[e.chapter];const escape=escapeHtml;const prevAction=document.activeElement?.closest?.('[data-r13action]')?.dataset.r13action||'';const weak=Object.keys(EPIC_ADV).find(key=>EPIC_ADV[key]===c.element)||m.weak;
  const phaseText=m.phases?' · '+m.phases[c.phase].title:'';
@@ -1278,7 +1403,13 @@ function v30DrawActor(a,x,y,bob){
  const col=a.v30==='stone'?'#e5d18f':a.v30==='record'?'#a7e0d5':'#91f2b0';
  ctx.fillStyle='#09171caa';ctx.beginPath();ctx.ellipse(x,y+15,19,6,0,0,Math.PI*2);ctx.fill();
  ctx.shadowColor=col;ctx.shadowBlur=5+15*pulse;
- if(a.v30==='intro'){
+ if(a.v30==='chime'){
+  rect(x-14,y-13,28,28,'#4c6662');rect(x-11,y-22,22,12,'#9f9c7d');drawGlyph(x,y-6,'♫','#f8e4a4');
+ }else if(a.v30==='sentinel'){
+  rect(x-15,y-24,30,44,'#3b3759');rect(x-10,y-39,20,19,'#7d81b0');rect(x-7,y-32,5,4,'#e5d7a1');rect(x+3,y-32,5,4,'#e5d7a1');
+ }else if(a.v30==='ayla'){
+  drawCharacter(x,y-6+bob,'#4f8976','#e8b995',false);drawGlyph(x,y-42,'✦','#f8e4a4');
+ }else if(a.v30==='intro'){
   rect(x-9,y-8,18,28,'#654936');rect(x-7,y-13,14,15,'#8a6747');
   rect(x-3,y-26,6,18,'#d2ad73');
   for(let i=0;i<3;i++){let r=17+i*7,c='#80d899';ctx.strokeStyle=c;ctx.lineWidth=2;
@@ -1320,7 +1451,7 @@ function v30DrawActor(a,x,y,bob){
  ctx.restore();
 }
 function v30Decor(){
- if(st.map!=='floresta'&&st.map!=='atrioRaizes')return;
+ if(st.map!=='floresta'&&st.map!=='atrioRaizes'&&st.map!=='bosqueEcos')return;
  const q=v30State(),still=matchMedia('(prefers-reduced-motion: reduce)').matches;
  ctx.save();ctx.imageSmoothingEnabled=false;
  if(st.map==='floresta'){
@@ -1338,6 +1469,10 @@ function v30Decor(){
     rect(px,py+(still?0:Math.sin(clock+i)*3),3,3);
    }ctx.restore();
   }
+ }
+ if(st.map==='bosqueEcos'){
+  for(let i=0;i<18;i++){const px=((i*103+37)%(COLS*T)),py=((i*59+91)%(ROWS*T));rect(px,py,13,3,i%3?'#6c9b77':'#a5b87a');rect(px+4,py-5,3,8,'#547f67')}
+  ctx.save();ctx.globalAlpha=.18+Math.sin(clock*2)*.09;for(let i=0;i<12;i++)rect((i*71+42)%(COLS*T),(i*41+63)%(ROWS*T),4,4,'#c9e9b2');ctx.restore();
  }
  if(st.map==='atrioRaizes'){
   // A new compact dungeon tile pattern rather than a recolored copy of the Forest.
@@ -1449,7 +1584,7 @@ function drawEpicActor(a,x,y,bob){
  else if(a.epic==='altar'){ctx.save();ctx.fillStyle='#72586d';ctx.fillRect(x-15,y-6,30,20);ctx.fillStyle='#cba88c';ctx.fillRect(x-12,y-13,24,9);ctx.fillStyle='#fde0a9';ctx.font='bold 23px serif';ctx.fillText('✧',x,y-21);ctx.restore()}
 }
 
- function actorVisible(a){if(a.v30)return v30ActorVisible(a);if(a.v29)return v29ActorVisible(a);if(a.epic)return epicActorVisible(a);if(a.type==='seed'&&st.found.includes(a.id))return false;if(a.id==='reliquia'&&!st.unlocked)return false;return true}
+ function actorVisible(a){if(a.v30)return v303ActorVisible(a)&&v30ActorVisible(a);if(a.v29)return v29ActorVisible(a);if(a.epic)return epicActorVisible(a);if(a.type==='seed'&&st.found.includes(a.id))return false;if(a.id==='reliquia'&&!st.unlocked)return false;return true}
  function interact(a){
   if(a?.v30){v30Interact(a);return;}
   if(a?.v29){v29Interact(a);return;}

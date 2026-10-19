@@ -27,7 +27,7 @@ t('Four original animated cutscenes with keyboard, reduced-motion and skip',()=>
  context.window.addEventListener=()=>{};
  vm.runInNewContext(film,context,{timeout:1000});
  const ui=context.window.SamCutscenes;
- a.deepEqual(Array.from(ui.scenes),['awakening','whisper','opening','archive']);
+ a.deepEqual(Array.from(ui.scenes),['awakening','whisper','opening','grove','groveEnding','archive']);
  for(const name of ui.scenes)a.equal(ui.getScene(name).frames,4);
  for(const k of ['createElement(\'div\')','imageSmoothingEnabled=false','requestAnimationFrame',
   'prefers-reduced-motion','ArrowRight','Escape',"'#sm30CutNext'","setAttribute('aria-modal'"])
@@ -47,7 +47,7 @@ t('Physical three-rune path opens new atrium and unique reward once',()=>{
   a.ok(world.includes(k),k);
  a.ok(world.includes('function v30Decor()'));
  a.ok(world.includes('function v30DrawActor('));
- a.ok(world.includes('if(a.v30)return v30ActorVisible(a)'));
+ a.ok(world.includes('if(a.v30)return v303ActorVisible(a)&&v30ActorVisible(a)'));
  a.ok(world.includes('if(a?.v30){v30Interact(a);return;}'));
 });
 t('Cutscenes pause movement, preserve the V29 save, and are available on mobile',()=>{
