@@ -317,6 +317,29 @@ rooms.mina.actors.push({id:'toGrotto',x:20.8,y:10.7,type:'door',epic:'gate',min:
   });
  }
 
+
+/* V30.2 · An explorable atrium and physical puzzle on the V29 world. */
+rooms.atrioRaizes={name:'Átrio das Raízes',subtitle:'O juramento dos primeiros cuidadores',
+ floor:'#253e44',dirt:'#536a5c',night:true,
+ blocks:[{x:3,y:2,w:4,h:2,type:'ruin'},{x:18,y:2,w:3,h:2,type:'ruin'},{x:9,y:2,w:6,h:1,type:'ruin'}],
+ props:[{x:4,y:11,type:'dead'},{x:20,y:10,type:'dead'},{x:11,y:12,type:'tree'}],
+ actors:[
+  {id:'v30AtrioBack',x:1.4,y:7,type:'passage',v30:'return',label:'Voltar à Floresta'},
+  {id:'v30AtrioKeeper',x:12,y:9,type:'npc',v30:'keeper',label:'Guardião dos Registros'},
+  {id:'v30RecordPath',x:7,y:6.4,type:'altar',v30:'record',label:'Inscrição dos Caminhos'},
+  {id:'v30RecordHarvest',x:15.9,y:6.4,type:'altar',v30:'record',label:'Inscrição da Colheita'},
+  {id:'v30RecordMemory',x:11.5,y:4.7,type:'altar',v30:'record',label:'Inscrição da Memória'}]};
+rooms.vila.actors.push({id:'v30RootSignal',x:14.8,y:10.1,type:'altar',v30:'intro',label:'Raiz que Canta · V30'});
+rooms.floresta.actors.push(
+ {id:'v30ForestFissure',x:7.4,y:6.8,type:'altar',v30:'vision',label:'Fissura das Lembranças'},
+ {id:'v30StoneSeed',x:5,y:9.6,type:'altar',v30:'stone',label:'Pedra da Semente'},
+ {id:'v30StoneWater',x:13.2,y:9.2,type:'altar',v30:'stone',label:'Pedra da Água'},
+ {id:'v30StoneLight',x:20.7,y:5.2,type:'altar',v30:'stone',label:'Pedra da Luz'},
+ {id:'v30RootGate',x:20.4,y:9.9,type:'door',v30:'gate',label:'Passagem das Raízes · V30'});
+Object.assign(EPIC_ARTIFACTS,{
+ pingente_primeira_raiz_v30:{name:'Pingente da Primeira Raiz',rarity:'Raro',element:'nature',
+  desc:'O juramento dos cuidadores. Em combate, recupera 3 HP por turno quando equipado.',effect:'regen'}
+});
 Object.assign(EPIC_ENEMIES,{
  lobo_vento:{name:'Lobo dos Ventos',element:'nature',hp:44,atk:8,def:2,xp:68,gold:32,weak:'fire',sprite:'lobo_vento_v24',intro:'Um guardião da campina corre em círculos. A marca do vento revela quando ele vai atacar.'},
  vulto_eco:{name:'Vulto de Cristal',element:'storm',hp:90,atk:13,def:4,xp:130,gold:58,weak:'earth',sprite:'vulto_eco_v24',intro:'Os cristais escutam seus passos. O vulto reúne a luz em um único ponto.'}
@@ -479,7 +502,7 @@ Object.assign(EPIC_ENEMIES,{
   $('r12Quests').innerHTML=lines.map(([x,done])=>'<div class="r12-quest-row '+(done?'done':'')+'">'+(done?'✓ ':'◇ ')+x+'</div>').join('');
   $('r12Inventory').innerHTML='<span class="r12-tag">🌱 '+n+'/3 sementes</span><span class="r12-tag '+(st.relic?'':'dim')+'">✦ Relíquia</span>';
   $('r12Journal').innerHTML=st.journal.map(e=>'<div>'+escapeHtml(e)+'</div>').join('');
-  $('r12Region').textContent=room().subtitle;renderEpicUI();v29RenderUI();
+  $('r12Region').textContent=room().subtitle;renderEpicUI();v29RenderUI();v30RenderUI();
  }
  function escapeHtml(str){return String(str).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
  function say(who,msg,onNext=null,actionText='Continuar'){
@@ -511,7 +534,7 @@ Object.assign(EPIC_ENEMIES,{
    }
    wrap.querySelector('button')?.focus({preventScroll:true});
  }
- function warp(dest,x,y){if(!rooms[dest])return;if(dest==='floresta')v23DailyMark('forest');window.SamMusic?.scene(dest==='bosque'||dest==='coracao'?'shadows':'explore');st.map=dest;player.x=x;player.y=y;touchDest=null;save();update();notify('Você entrou em '+room().name+'.')}
+ function warp(dest,x,y){if(!rooms[dest])return;if(dest==='floresta')v23DailyMark('forest');window.SamMusic?.scene(v30SceneForRoom(dest));st.map=dest;player.x=x;player.y=y;touchDest=null;save();update();notify('Você entrou em '+room().name+'.')}
  function pane(dest){save();window.SamMusic?.scene(dest==='eventDlg'?'shadows':'explore');if(typeof window.showPane==='function')window.showPane(dest)}
  function toShop(){openV24Shop()}
  function toPets(){pane('gameDlg');setTimeout(()=>document.querySelector('#orchardExtras [data-extras-tab="pets"]')?.click(),100);}
@@ -1036,7 +1059,7 @@ function setupEpicUI(){const box=document.createElement('section');box.className
  const hud=document.querySelector('.r12-head small');if(hud)hud.textContent='RPG · A Crônica da Primeira Mangueira';
  const p=document.querySelector('.r12-head p');if(p)p.textContent='Explore, enfrente os chefes e descubra o destino da primeira mangueira.';
  const reset=$('r12Reset');if(reset)reset.textContent='Reiniciar aventura';
-  v29SetupUI();
+  v29SetupUI();v30SetupUI();
  const objective=document.querySelector('.r12-aside>.r12-card:not(.r13-story-card):not(.r13-stat-card):not(.r13-artifacts-card) h3');if(objective)objective.innerHTML='📜 Prólogo das Sementes';
  renderEpicUI();
 }
@@ -1170,8 +1193,9 @@ function drawEpicActor(a,x,y,bob){
  else if(a.epic==='altar'){ctx.save();ctx.fillStyle='#72586d';ctx.fillRect(x-15,y-6,30,20);ctx.fillStyle='#cba88c';ctx.fillRect(x-12,y-13,24,9);ctx.fillStyle='#fde0a9';ctx.font='bold 23px serif';ctx.fillText('✧',x,y-21);ctx.restore()}
 }
 
- function actorVisible(a){if(a.v29)return v29ActorVisible(a);if(a.epic)return epicActorVisible(a);if(a.type==='seed'&&st.found.includes(a.id))return false;if(a.id==='reliquia'&&!st.unlocked)return false;return true}
+ function actorVisible(a){if(a.v30)return v30ActorVisible(a);if(a.v29)return v29ActorVisible(a);if(a.epic)return epicActorVisible(a);if(a.type==='seed'&&st.found.includes(a.id))return false;if(a.id==='reliquia'&&!st.unlocked)return false;return true}
  function interact(a){
+  if(a?.v30){v30Interact(a);return;}
   if(a?.v29){v29Interact(a);return;}
    if(a?.epic){epicInteract(a);return;}
   if(!a){say('Pomar','Não há nada para investigar aqui. Aproxime-se de um brilho, personagem ou construção.');return}
@@ -1196,7 +1220,7 @@ function drawEpicActor(a,x,y,bob){
   if(a.id==='praca'){pane('murDlg');return}
  }
  function nearest(){let best=null,d=Infinity;for(const a of room().actors){if(!actorVisible(a))continue;let dist=Math.hypot(player.x-a.x,player.y-a.y);if(dist<d){d=dist;best=a}}return d<1.9?best:null}
- function action(){if(!visible||dialogOpen)return;interact(nearest())}
+ function action(){if(!visible||dialogOpen||window.SamCutscenes?.isPlaying)return;interact(nearest())}
  function collide(x,y){if(x<.48||y<.48||x>COLS-.48||y>ROWS-.48)return true;
   const r=.35;
   for(const b of room().blocks){if(x+r>b.x&&x-r<b.x+b.w&&y+r>b.y&&y-r<b.y+b.h)return true}
@@ -1248,7 +1272,7 @@ function drawEpicActor(a,x,y,bob){
   ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.fillStyle='#ffdfae';ctx.fillText(b.type==='loja'?'MASCOTES':b.type==='defesa'?'DEFESA':b.type==='portal'?'HALLOWEEN':'CABANA',x+w/2,y+25)
  }
  function actorColor(type){return ({seed:'#ffe27d',npc:'#baceff',shop:'#f9c58a',defense:'#ffa783',halloween:'#dda8ff',profile:'#b3d5ff',social:'#a8f1be',passage:'#a5e6a9',door:'#d8cf9b',altar:'#ffe0a3',relic:'#ffe7af'})[type]||'#ffffff'}
- function drawActor(a){if(!actorVisible(a))return;const x=a.x*T,y=a.y*T,bob=Math.sin(clock*3+a.x)*2;ctx.save();if(a.v29){v29DrawActor(a,x,y,bob);ctx.restore();return}if(a.epic){drawEpicActor(a,x,y,bob);ctx.restore();return;}
+ function drawActor(a){if(!actorVisible(a))return;const x=a.x*T,y=a.y*T,bob=Math.sin(clock*3+a.x)*2;ctx.save();if(a.v30){v30DrawActor(a,x,y,bob);ctx.restore();return}if(a.v29){v29DrawActor(a,x,y,bob);ctx.restore();return}if(a.epic){drawEpicActor(a,x,y,bob);ctx.restore();return;}
   if(['passage','door','halloween','defense','shop','profile','social','board'].includes(a.type)){
    const alpha=.47+Math.sin(clock*3+a.x)*.27;ctx.globalAlpha=alpha;ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(x,y-4,19,10,0,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;
    if(a.type==='passage'){rect(x-8,y-32,16,14,'#a5e6a9');rect(x-5,y-36,10,6,'#f3e3a3')}
@@ -1287,14 +1311,14 @@ function drawEpicActor(a,x,y,bob){
    return {z,cx:Math.max(halfW,Math.min(W-halfW,player.x*T)),cy:Math.max(halfH,Math.min(H-halfH,player.y*T))};
  }
  function render(){const cam=camera();ctx.save();ctx.translate(W/2,H/2);ctx.scale(cam.z,cam.z);ctx.translate(-cam.cx,-cam.cy);
-  baseMap();v24Decor();v29Decor();for(const b of room().blocks)drawBuilding(b);for(const p of room().props)drawTree(p.x,p.y,p.type==='dead');for(const a of room().actors)drawActor(a);guideDraw();drawPlayer();v23Atmosphere();
+  baseMap();v24Decor();v29Decor();v30Decor();for(const b of room().blocks)drawBuilding(b);for(const p of room().props)drawTree(p.x,p.y,p.type==='dead');for(const a of room().actors)drawActor(a);guideDraw();drawPlayer();v23Atmosphere();
   const a=nearest();if(a){ctx.save();ctx.textAlign='center';ctx.font='bold 13px sans-serif';let line='E · '+a.label;let width=Math.min(280,ctx.measureText(line).width+22);let px=Math.min(W-width/2-8,Math.max(width/2+8,a.x*T));let py=Math.max(64,a.y*T-39);rect(px-width/2,py-20,width,25,'#1e1428ee');ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=1;ctx.strokeRect(px-width/2,py-20,width,25);ctx.fillStyle='#ffebce';ctx.fillText(line,px,py-3);ctx.restore()}
   if(st.map==='ruinas'){ctx.fillStyle='#b8a3ff12';ctx.fillRect(0,0,W,H)}ctx.restore();
  }
  function tick(time){let dt=Math.min(.04,Math.max(0,(time-last)/1000||0));last=time;clock+=dt;
   if(visible&&!document.hidden){
    v23NpcRoutine();if(Math.floor(clock)%3===0&&Math.floor((clock-dt))%3!==0)v23DailyRender();
-   if(!dialogOpen){let dx=(keys.right?1:0)-(keys.left?1:0),dy=(keys.down?1:0)-(keys.up?1:0);
+   if(!dialogOpen&&!window.SamCutscenes?.isPlaying){let dx=(keys.right?1:0)-(keys.left?1:0),dy=(keys.down?1:0)-(keys.up?1:0);
     if(touchDest){const a=touchDest;dx=a.x-player.x;dy=a.y-player.y;if(Math.hypot(dx,dy)<.3){touchDest=null;dx=dy=0}}
     const m=Math.hypot(dx,dy);if(m>0){dx/=m;dy/=m;const bag=v24Bag(),boost=Date.now()<bag.hasteUntil,run=keys.run&&bag.stamina>1,step=(run?(boost?6.4:5.4):3.45)*dt;if(run)bag.stamina=Math.max(0,bag.stamina-(boost?8:24)*dt);else bag.stamina=Math.min(hasEffect('swift')?140:100,bag.stamina+18*dt);player.vx=dx;player.vy=dy;
       if(!collide(player.x+dx*step,player.y))player.x+=dx*step;
@@ -1310,7 +1334,7 @@ function drawEpicActor(a,x,y,bob){
  }
  function bind(){
   const controlKeys={ArrowUp:'up',w:'up',W:'up',ArrowDown:'down',s:'down',S:'down',ArrowLeft:'left',a:'left',A:'left',ArrowRight:'right',d:'right',D:'right'};
-  document.addEventListener('keydown',e=>{if(!visible||dialogOpen)return;const t=e.target;if(t&&(/INPUT|TEXTAREA|SELECT/.test(t.tagName)||t.isContentEditable))return;
+  document.addEventListener('keydown',e=>{if(!visible||dialogOpen||window.SamCutscenes?.isPlaying)return;const t=e.target;if(t&&(/INPUT|TEXTAREA|SELECT/.test(t.tagName)||t.isContentEditable))return;
    const k=controlKeys[e.key];if(k){keys[k]=true;e.preventDefault()}
    if(e.key==='Shift'){keys.run=true;e.preventDefault()}
     if(e.key==='e'||e.key==='E'||e.key===' '){e.preventDefault();if(!e.repeat)action()}
@@ -1321,7 +1345,7 @@ function drawEpicActor(a,x,y,bob){
    for(const type of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(type,()=>{keys[name]=false;b.classList.remove('pressed')});
   });
   $('r12Action').addEventListener('click',action);
-  cv.addEventListener('pointerdown',e=>{if(dialogOpen)return;const b=cv.getBoundingClientRect(),cam=camera();const x=(cam.cx+((e.clientX-b.left)/b.width*W-W/2)/cam.z)/T,y=(cam.cy+((e.clientY-b.top)/b.height*H-H/2)/cam.z)/T;
+  cv.addEventListener('pointerdown',e=>{if(dialogOpen||window.SamCutscenes?.isPlaying)return;const b=cv.getBoundingClientRect(),cam=camera();const x=(cam.cx+((e.clientX-b.left)/b.width*W-W/2)/cam.z)/T,y=(cam.cy+((e.clientY-b.top)/b.height*H-H/2)/cam.z)/T;
    const target=room().actors.find(a=>actorVisible(a)&&Math.hypot(x-a.x,y-a.y)<.85);
    if(target&&Math.hypot(player.x-target.x,player.y-target.y)<1.9){interact(target);return}
    touchDest={x:Math.max(.5,Math.min(COLS-.5,x)),y:Math.max(.5,Math.min(ROWS-.5,y))};
@@ -1330,7 +1354,7 @@ function drawEpicActor(a,x,y,bob){
   $('r12Reset').addEventListener('click',()=>{if(!window.confirm('Reiniciar toda a campanha RPG (classes, atributos, artefatos, capítulos e exploração)? Loja, conquistas do site e demais modos serão preservados.'))return;st=blank();player.x=st.x;player.y=st.y;save();update();notify('Sua aventura explorável foi reiniciada.');showEpicClasses()});
  }
  const prevShow=window.showPane;
- if(typeof prevShow==='function')window.showPane=function(id){let result=prevShow.apply(this,arguments);const was=visible;visible=id==='rpgDlg';if(visible){if(storageKey()!==accountRpgKey){accountRpgKey=storageKey();const newData=JSON.parse(localStorage.getItem(accountRpgKey)||'null');st={...blank(),...(newData||{})};st.epic={...freshEpic(),...(st.epic||{}),stats:{...freshEpic().stats,...(st.epic?.stats||{})},flags:{...(st.epic?.flags||{})}};if(!rooms[st.map])st.map='vila';player.x=Number.isFinite(st.x)?st.x:11.7;player.y=Number.isFinite(st.y)?st.y:10.8;epicAvatarSig=''}syncEpicCrossModes();update();if(!epic().class)showEpicClasses();last=performance.now();if(!was){save();requestAnimationFrame(()=>cv.focus({preventScroll:true}))}}
+ if(typeof prevShow==='function')window.showPane=function(id){let result=prevShow.apply(this,arguments);const was=visible;visible=id==='rpgDlg';if(visible){window.SamMusic?.scene(v30SceneForRoom(st.map));if(storageKey()!==accountRpgKey){accountRpgKey=storageKey();const newData=JSON.parse(localStorage.getItem(accountRpgKey)||'null');st={...blank(),...(newData||{})};st.epic={...freshEpic(),...(st.epic||{}),stats:{...freshEpic().stats,...(st.epic?.stats||{})},flags:{...(st.epic?.flags||{})}};if(!rooms[st.map])st.map='vila';player.x=Number.isFinite(st.x)?st.x:11.7;player.y=Number.isFinite(st.y)?st.y:10.8;epicAvatarSig=''}syncEpicCrossModes();update();if(!epic().class)showEpicClasses();last=performance.now();if(!was){save();requestAnimationFrame(()=>cv.focus({preventScroll:true}))}}
    else if(was){if(document.getElementById('v24Shop')?.hidden===false)closeV24Shop();save();Object.keys(keys).forEach(k=>keys[k]=false);touchDest=null}return result};
  const targetVisible=()=>!host.hidden;
  setupEpicUI();initV24Shop();if(st.relic&&epic().chapter===0)advanceEpicChapter(1);bind();visible=targetVisible();update();if(visible&&!epic().class)showEpicClasses();requestAnimationFrame(tick);
