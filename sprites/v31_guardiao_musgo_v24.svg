@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title desc" shape-rendering="crispEdges">
+<title id="title">Guardião de Musgo</title><desc id="desc">Chefe original em pixel art com couraça verde, galhos e coração luminoso.</desc>
+<rect x="28" y="85" width="44" height="5" fill="#172b2b" opacity=".42"/>
+<path fill="#35583f" d="M16 58h12v22H16zM69 58h13v22H69zM29 32h42v48H29z"/>
+<path fill="#5c8555" d="M23 18h8v-8h9v12h16v-12h8v9h10v11h9v28H70V42H26v19H13V35h10z"/>
+<path fill="#87af70" d="M28 22h38v7H28zM22 35h52v7H22zM34 52h28v14H34z"/>
+<path fill="#294c48" d="M34 39h28v14H34zM38 63h20v11H38z"/>
+<path fill="#dcbf78" d="M37 42h7v7h-7zM53 42h7v7h-7z"/>
+<path fill="#fff0b8" d="M40 43h3v3h-3zM56 43h3v3h-3z"/>
+<path fill="#e2b96d" d="M43 58h10v13H43z"/><path fill="#fff3bd" d="M46 59h4v8h-4z"/>
+<path fill="#3a6049" d="M9 31h8v12H9zM4 39h8v12H4zM79 27h8v17h-8zM85 36h8v13h-8z"/>
+<path fill="#8da55a" d="M8 28h8v7H8zM84 25h7v11h-7zM33 8h8v9h-8zM55 6h7v12h-7z"/>
+<path fill="#a5cc87" d="M17 37h7v6h-7zM70 36h6v7h-6zM36 16h7v4h-7zM59 15h5v4h-5z"/>
+<path fill="#6f8a4d" d="M27 74h15v14H27zM54 74h15v14H54z"/>
+<path fill="#c3d09c" d="M29 82h11v5H29zM56 82h11v5H56z"/>
+</svg>
