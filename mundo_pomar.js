@@ -370,6 +370,60 @@ Object.assign(EPIC_ENEMIES,{
  vulto_eco:{name:'Vulto de Cristal',element:'storm',hp:90,atk:13,def:4,xp:130,gold:58,weak:'earth',sprite:'vulto_eco_v24',intro:'Os cristais escutam seus passos. O vulto reúne a luz em um único ponto.'}
 });
 
+
+/* V31 · Jardim das Entrelinhas. A escala muda os caminhos e as colisões, não só o desenho. */
+Object.assign(V24_BIOMES,{
+ jardimBruma:['#234b43','#315e4b','#1a3a36','#e5c986'],
+ galeriasInsetos:['#534431','#675138','#3c322c','#dec579'],
+ relicarioMusgo:['#293c48','#3d5360','#23333e','#b6daab']
+});
+rooms.jardimBruma={name:'Jardim da Bruma',subtitle:'Capítulo II · O mundo entre as raízes',floor:'#234b43',dirt:'#54765c',night:false,
+ blocks:[{x:3,y:2,w:3,h:2,type:'rocks'},{x:18,y:2,w:3,h:2,type:'rocks'},{x:9,y:10,w:5,h:2,type:'rocks'}],
+ props:[{x:4,y:5,type:'tree'},{x:8,y:3,type:'tree'},{x:16,y:11,type:'tree'},{x:20,y:4,type:'tree'}],
+ actors:[
+  {id:'v31Back',x:1.5,y:7,type:'passage',v31:'back',label:'Voltar ao Bosque dos Ecos'},
+  {id:'v31Ema',x:6.8,y:6.4,type:'npc',v31:'ema',label:'Ema, Tecelã das Raízes'},
+  {id:'v31Dew',x:6,y:10.4,type:'seed',v31:'ingredient',label:'Gota de Orvalho'},
+  {id:'v31Bark',x:20,y:10.4,type:'seed',v31:'ingredient',label:'Casca de Memória'},
+  {id:'v31Pollen',x:15.8,y:4.8,type:'seed',v31:'ingredient',label:'Pólen de Vidro'},
+  {id:'v31Lens',x:12,y:5.1,type:'altar',v31:'lens',label:'Tear da Lente de Broto'},
+  {id:'v31Heavy',x:18.5,y:7.7,type:'altar',v31:'heavy',label:'Placa de Contrapeso'},
+  {id:'v31TinyGate',x:22,y:7,type:'door',v31:'smallGate',label:'Fenda nas Raízes'},
+  {id:'v31Beetle',x:13.3,y:8.6,type:'seed',v31:'beetle',label:'Besouro de Ema'}
+]};
+rooms.galeriasInsetos={name:'Galerias dos Pequenos',subtitle:'Passagens impossíveis para passos grandes',floor:'#534431',dirt:'#78654c',night:true,
+ blocks:[{x:.5,y:6.3,w:11.2,h:1.4,type:'rocks'},{x:12.3,y:6.3,w:11.2,h:1.4,type:'rocks'},
+ {x:4,y:2,w:3,h:2,type:'rocks'},{x:17,y:2,w:2,h:2,type:'rocks'}],
+ props:[{x:3,y:11,type:'dead'},{x:20,y:11,type:'dead'}],
+ actors:[
+  {id:'v31GalleryBack',x:1.6,y:10.5,type:'passage',v31:'galleryBack',label:'Voltar ao Jardim'},
+  {id:'v31Bottleneck',x:11.98,y:5.55,type:'altar',v31:'hintGap',label:'Fresta das Formigas'},
+  {id:'v31Sap',x:19.9,y:5,type:'altar',v31:'sap',label:'Pino da Seiva'},
+  {id:'v31GalleryGate',x:22,y:3.1,type:'door',v31:'galleryGate',label:'Porta do Relicário'}
+]};
+rooms.relicarioMusgo={name:'Relicário do Musgo',subtitle:'As lembranças não cabem num único tamanho',floor:'#293c48',dirt:'#587166',night:true,
+ blocks:[{x:3,y:2,w:3,h:2,type:'ruin'},{x:18,y:2,w:3,h:2,type:'ruin'},{x:10,y:11,w:4,h:2,type:'ruin'}],
+ props:[{x:5,y:11,type:'dead'},{x:18,y:11,type:'tree'}],
+ actors:[
+  {id:'v31RelicBack',x:1.4,y:7,type:'passage',v31:'relicBack',label:'Voltar às Galerias'},
+  {id:'v31Chronicle',x:7,y:5.3,type:'altar',v31:'chronicle',label:'Crônica das Três Formas'},
+  {id:'v31RuneRoot',x:5.6,y:9.6,type:'altar',v31:'rune',label:'Marca da Raiz'},
+  {id:'v31RuneDew',x:18.2,y:9.6,type:'altar',v31:'rune',label:'Marca da Gota'},
+  {id:'v31RuneMoon',x:12,y:4.2,type:'altar',v31:'rune',label:'Marca da Estrela'},
+  {id:'v31Warden',x:12,y:7.5,type:'npc',v31:'boss',label:'Guardião de Musgo'},
+  {id:'v31Heart',x:20.7,y:5.5,type:'altar',v31:'heart',label:'Coração da Entrelinha'}
+]};
+rooms.bosqueEcos.actors.push({id:'v31Entrance',x:22,y:7,type:'door',v31:'entrance',label:'Jardim da Bruma · Capítulo II'});
+Object.assign(EPIC_ENEMIES,{
+ v31_guardiao:{name:'Guardião de Musgo',element:'earth',hp:110,atk:15,def:5,xp:175,gold:70,weak:'nature',
+  sprite:'v31_guardiao_musgo_v24',intro:'O Guardião alterna entre a couraça de raiz e uma flor espectral. Leia suas intenções.',
+  phases:[{title:'Couraça de Raízes',hp:110,element:'earth'},{title:'Flor da Memória',hp:85,element:'shadow'}]}
+});
+Object.assign(EPIC_ARTIFACTS,{
+ broche_entrelinhas_v31:{name:'Broche das Entrelinhas',rarity:'Épico',element:'nature',
+  desc:'Prova de quem aprendeu a observar as pequenas coisas. Reduz em 2 o dano recebido.',effect:'ward'}
+});
+
  const storageKey=()=>{const live=(typeof window.me==='string'&&window.me&&window.me!=='visitante')?window.me:null;const handle=live||localStorage.getItem('sg_handle')||'visitante';return 'sam_rpg_hibrido_v12_'+String(handle).toLowerCase()};
  const blank=()=>({map:'vila',x:11.7,y:10.8,found:[],unlocked:false,relic:false,bonus:false,altarActive:false,ritualStep:0,seen:[],journal:['O Guardião Bento espera por você na vila.'],visits:0,epic:freshEpic()});
  let accountRpgKey=storageKey();let st=blank();try{let raw=JSON.parse(localStorage.getItem(storageKey())||'null');if(raw&&rooms[raw.map]&&Number.isFinite(raw.x)&&Number.isFinite(raw.y))st={...blank(),...raw,found:Array.isArray(raw.found)?raw.found:[],seen:Array.isArray(raw.seen)?raw.seen:[],journal:Array.isArray(raw.journal)?raw.journal:[]}}catch(e){}
@@ -527,7 +581,7 @@ Object.assign(EPIC_ENEMIES,{
   $('r12Quests').innerHTML=lines.map(([x,done])=>'<div class="r12-quest-row '+(done?'done':'')+'">'+(done?'✓ ':'◇ ')+x+'</div>').join('');
   $('r12Inventory').innerHTML='<span class="r12-tag">🌱 '+n+'/3 sementes</span><span class="r12-tag '+(st.relic?'':'dim')+'">✦ Relíquia</span>';
   $('r12Journal').innerHTML=st.journal.map(e=>'<div>'+escapeHtml(e)+'</div>').join('');
-  $('r12Region').textContent=room().subtitle;renderEpicUI();v29RenderUI();v30RenderUI();
+  $('r12Region').textContent=room().subtitle;renderEpicUI();v29RenderUI();v30RenderUI();v31RenderUI();
  }
  function escapeHtml(str){return String(str).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
  function say(who,msg,onNext=null,actionText='Continuar'){
@@ -559,7 +613,7 @@ Object.assign(EPIC_ENEMIES,{
    }
    wrap.querySelector('button')?.focus({preventScroll:true});
  }
- function warp(dest,x,y){if(!rooms[dest])return;if(dest==='floresta')v23DailyMark('forest');window.SamMusic?.scene(v30SceneForRoom(dest));st.map=dest;player.x=x;player.y=y;touchDest=null;save();update();notify('Você entrou em '+room().name+'.')}
+ function warp(dest,x,y){if(!rooms[dest])return;if(!v31Rooms.has(dest))v31State().small=false;if(dest==='floresta')v23DailyMark('forest');window.SamMusic?.scene(v30SceneForRoom(dest));st.map=dest;player.x=x;player.y=y;touchDest=null;save();update();notify('Você entrou em '+room().name+'.')}
  function pane(dest){save();window.SamMusic?.scene(dest==='eventDlg'?'shadows':'explore');if(typeof window.showPane==='function')window.showPane(dest)}
  function toShop(){openV24Shop()}
  function toPets(){pane('gameDlg');setTimeout(()=>document.querySelector('#orchardExtras [data-extras-tab="pets"]')?.click(),100);}
@@ -605,6 +659,228 @@ const epicMonsters={
 /* V30.2 — Root prologue: authored cinematic scenes + interactive three-stone environment.
    All milestones are stored under the existing local save's epic.v30. */
 /* V30.3 — Three environmental chimes, a story NPC, optional recovery and a boss. */
+
+/* V31 · Passagens em escala, enigmas que alternam tamanho, chefe em duas fases e diário salvo. */
+const v31Rooms=new Set(['jardimBruma','galeriasInsetos','relicarioMusgo']);
+const v31Ingredients=['v31Dew','v31Bark','v31Pollen'];
+const v31RuneOrder=['v31RuneRoot','v31RuneDew','v31RuneMoon'];
+function v31State(){
+ const e=epic();if(!e.v31||typeof e.v31!=='object'||Array.isArray(e.v31))e.v31={};
+ const c=e.v31;
+ if(!Array.isArray(c.ingredients))c.ingredients=[];
+ c.ingredients=c.ingredients.filter(id=>v31Ingredients.includes(id));
+ if(!Number.isInteger(c.runes)||c.runes<0||c.runes>3)c.runes=0;
+ if(!Number.isInteger(c.errors)||c.errors<0)c.errors=0;
+ return c;
+}
+function v31Objective(){
+ const c=v31State();
+ if(!v303State().finished)return 'Restaure o Mural do Bosque dos Ecos para alcançar o Jardim.';
+ if(!c.metEma)return 'Encontre Ema no Jardim da Bruma e ouça sua proposta.';
+ if(!c.lens)return 'Reúna Orvalho, Casca e Pólen ('+c.ingredients.length+'/3) e teça uma Lente de Broto.';
+ if(!c.heavy)return 'Em tamanho normal, pressione a placa a leste do Jardim.';
+ if(!c.sap)return 'Encolha com Q ou o botão BROTO. Atravesse a fresta estreita nas Galerias e gire o Pino da Seiva.';
+ if(c.runes<3)return 'Relicário: Raiz (grande) → Gota (pequeno) → Estrela (grande) · '+c.runes+'/3.';
+ if(!c.bossWon)return 'Enfrente o Guardião de Musgo. Observe as duas fases e DEFENDA-se de golpes carregados.';
+ if(!c.finished)return 'Leia o Coração da Entrelinha para receber seu broche.';
+ return 'Capítulo II concluído! Explore o mundo e encontre o besouro perdido de Ema.';
+}
+function v31ActorVisible(a){
+ const c=v31State();
+ if(a.v31==='entrance')return !!v303State().finished;
+ if(a.v31==='ingredient')return !c.ingredients.includes(a.id);
+ if(a.v31==='beetle')return !c.bugFound;
+ if(a.v31==='boss')return c.runes===3&&!c.bossWon;
+ if(a.v31==='heart')return !!c.bossWon;
+ return true;
+}
+function v31TinyCanGrow(){
+ return !room().blocks.some(b=>player.x+.35>b.x&&player.x-.35<b.x+b.w&&player.y+.35>b.y&&player.y-.35<b.y+b.h);
+}
+function v31Toggle(){
+ const c=v31State();
+ if(!v31Rooms.has(st.map)){notify('A Lente de Broto só responde nos jardins das entrelinhas.');return false}
+ if(!c.lens){notify('Construa a Lente de Broto com Ema primeiro.');return false}
+ if(c.small&&!v31TinyCanGrow()){notify('A passagem é estreita demais para crescer aqui. Procure um espaço livre.');return false}
+ c.small=!c.small;
+ window.SamMusic?.effect('magic');
+ notify(c.small?'Modo Broto: você ficou pequeno e atravessa frestas.':'Tamanho normal: você pode acionar placas pesadas.');
+ save();update();return true;
+}
+function v31Finish(){
+ const c=v31State();if(c.finished)return;
+ c.finished=true;c.small=false;
+ epic().gold+=90;giveXP(180);ownItem('broche_entrelinhas_v31');
+ log('Capítulo II · O Guardião finalmente compartilhou sua lembrança: o Pomar também pertence às vozes pequenas.');
+ notify('Capítulo II concluído: +180 XP, +90 moedas RPG e Broche das Entrelinhas.');
+ save();update();
+}
+function v31Rune(a){
+ const c=v31State();if(c.runes===3){say('Relicário','As três inscrições estão em harmonia.');return}
+ if(!c.chronicle){say('Inscrição Oculta','Leia a Crônica das Três Formas para descobrir a sequência.');return}
+ const wanted=v31RuneOrder[c.runes];
+ const smallNeeded=c.runes===1;
+ if(a.id!==wanted){
+  c.runes=0;c.errors++;save();update();
+  say('Ressonância Quebrada','A ordem é Raiz, Gota, Estrela. A Raiz e a Estrela precisam de peso; o orvalho de delicadeza.');return;
+ }
+ if(!!c.small!==smallNeeded){
+  say('Marca Silenciosa',smallNeeded?'Você precisa ficar pequeno para tocar a gota sem derramá-la.':'O símbolo é pesado: volte ao tamanho normal para ativá-lo.');return;
+ }
+ c.runes++;
+ window.SamMusic?.effect('magic');
+ log('Entrelinhas · '+a.label+' respondeu à sua escolha de tamanho.');
+ save();update();
+ say(a.label,c.runes===3?'O Guardião de Musgo desperta no salão central.':'A marca ressoou. Próxima etapa: '+(c.runes===1?'Gota, em tamanho pequeno.':'Estrela, em tamanho normal.'));
+}
+function v31Interact(a){
+ const c=v31State();
+ if(a.v31==='entrance'){if(!v303State().finished){say('Passagem Lacrada','Conclua o Mural dos Ecos antes de prosseguir.');return}warp('jardimBruma',2.8,7);return}
+ if(a.v31==='back'){c.small=false;warp('bosqueEcos',20,7);return}
+ if(a.v31==='galleryBack'){warp('jardimBruma',20.4,7);return}
+ if(a.v31==='relicBack'){warp('galeriasInsetos',20.3,4.5);return}
+ if(a.v31==='ema'){
+  if(!c.metEma){c.metEma=true;log('Ema contou que caminhos antigos são visíveis apenas a quem muda a perspectiva.');save();update();
+   say('Ema, Tecelã das Raízes','O Pomar não acaba onde seus passos cabem. Traga Orvalho, Casca e Pólen ao tear; farei uma lente que altera seu tamanho.');return}
+  if(c.bugFound&&!c.bugReturned){c.bugReturned=true;epic().potions+=2;giveXP(40);log('Devolvi o besouro a Ema.');save();update();say('Ema','Você o trouxe de volta! Guarde estas duas poções.');return}
+  say('Ema',c.lens?'Pressione Q ou BROTO para alternar o tamanho. Cresça para erguer pedras, encolha para cruzar frestas.':'Orvalho, Casca e Pólen — os três fios do Tear.');return;
+ }
+ if(a.v31==='ingredient'){
+  if(c.ingredients.includes(a.id))return;
+  c.ingredients.push(a.id);log('Ingrediente encontrado: '+a.label+'.');save();update();
+  say(a.label,'Você guardou '+c.ingredients.length+'/3 ingredientes da Lente de Broto.');return;
+ }
+ if(a.v31==='beetle'){if(c.bugFound)return;c.bugFound=true;log('Encontrei o besouro de Ema perto do tear.');save();update();say('Besouro Dourado','Ele repousa em sua mão. Ema deve estar procurando por ele.');return}
+ if(a.v31==='lens'){
+  if(c.lens){say('Tear de Broto','A lente vibra ao perceber a diferença entre seus passos. Use Q ou BROTO para alternar.');return}
+  if(!c.metEma){say('Tear de Broto','Converse com Ema antes de usar o tear.');return}
+  if(c.ingredients.length!==3){say('Tear de Broto','Faltam '+(3-c.ingredients.length)+' ingredientes para tecer a lente.');return}
+  c.lens=true;log('Tecemos a Lente de Broto! Agora posso alternar a escala com Q.');save();update();
+  say('Lente de Broto','A lente está pronta. Em tamanho pequeno você passa por fendas estreitas; grande, consegue ativar placas pesadas.');return;
+ }
+ if(a.v31==='heavy'){
+  if(!c.lens){say('Placa de Contrapeso','Sem a lente, é difícil entender o mecanismo.');return}
+  if(c.small){say('Placa de Contrapeso','Seu peso é pequeno demais. Cresça e tente novamente.');return}
+  if(!c.heavy){c.heavy=true;log('Acionei a placa: a fenda a leste brilhou.');save();update()}
+  say('Placa Ativada','Um portão sob a folhagem se abriu para alguém do tamanho de um broto.');return;
+ }
+ if(a.v31==='smallGate'){
+  if(!c.lens||!c.heavy){say('Fenda das Raízes','A placa do Jardim ainda não abriu a passagem.');return}
+  if(!c.small){say('Fenda das Raízes','O túnel é estreito demais. Use Q ou BROTO para diminuir.');return}
+  warp('galeriasInsetos',2.8,10.5);return;
+ }
+ if(a.v31==='hintGap'){say('Fresta das Formigas','Há apenas meia telha entre as duas rochas. Um corpo grande não passa; uma Lente de Broto pode ajudar.');return}
+ if(a.v31==='sap'){
+  if(!c.small){say('Pino da Seiva','O pino é delicado demais para mãos grandes. Encolha.');return}
+  if(!c.sap){c.sap=true;log('O Pino da Seiva mudou o curso das raízes e abriu o Relicário.');save();update()}
+  say('Pino da Seiva','A seiva percorre os relevos da pedra. Uma porta se abriu no alto do corredor.');return;
+ }
+ if(a.v31==='galleryGate'){
+  if(!c.sap){say('Porta do Relicário','A seiva precisa atravessar o pino além da fresta.');return}
+  warp('relicarioMusgo',2.8,7);return;
+ }
+ if(a.v31==='chronicle'){
+  c.chronicle=true;save();update();
+  say('Crônica das Três Formas','“Primeiro a RAIZ sustenta o caminho com seu peso. Depois a GOTA o alimenta sem fazer ruído. Por fim a ESTRELA revela seu nome.” Use o tamanho certo para cada marca.');return;
+ }
+ if(a.v31==='rune'){v31Rune(a);return}
+ if(a.v31==='boss'){
+  if(c.runes!==3){say('Guardião de Musgo','O selo ainda guarda seus dois nomes.');return}
+  if(c.bossWon){say('Guardião de Musgo','O velho guardião finalmente repousa.');return}
+  startCombat('v31_guardiao','v31Warden');return;
+ }
+ if(a.v31==='heart'){
+  if(!c.bossWon){say('Coração Velado','O Guardião ainda protege a pedra.');return}
+  if(!c.finished){v31Finish();say('Coração da Entrelinha','O reino dos pequenos não era invisível. O resto do Pomar é que desaprendeu a olhar. Sua próxima viagem começa além das raízes.');}
+  else say('Coração da Entrelinha','As raízes menores sustentam até a maior das árvores.');return;
+ }
+}
+function v31Decor(){
+ if(!v31Rooms.has(st.map))return;
+ const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ ctx.save();ctx.imageSmoothingEnabled=false;
+ for(let i=0;i<34;i++){
+  const x=((i*79+23)%(COLS*T)),y=((i*53+41)%(ROWS*T));
+  const wobble=still?0:Math.sin(clock*1.8+i)*3;
+  const petals=i%3===0?'#f3ce87':i%3===1?'#c49dc1':'#9acdb8';
+  rect(x-2,y+8,3,12,'#4f886b');
+  rect(x-7,y+wobble,14,7,petals);rect(x-3,y-4+wobble,6,15,petals);
+  rect(x-2,y+2+wobble,4,4,'#f8e9b3');
+ }
+ if(st.map==='galeriasInsetos'){
+  for(let i=0;i<13;i++){const x=i*59+7,y=10+i%3*140;
+   rect(x,y,5,24,'#9b8052');rect(x-3,y-6,10,8,'#d2b878');}
+  // Narrow bottleneck: actual solid blocks use a 0.6-tile opening.
+  rect(11.7*T,6.3*T,0.6*T,1.4*T,'#a98d4d25');
+ }
+ if(st.map==='relicarioMusgo'){
+  for(let i=0;i<8;i++){
+   const x=32+i*97,y=48+(i%4)*91;rect(x,y,28,3,'#b7aa86');rect(x+6,y-8,3,22,'#779c87');
+  }
+ }
+ ctx.restore();
+}
+function v31DrawActor(a,x,y,bob){
+ const c=v31State(),still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const float=still?0:bob;
+ ctx.save();ctx.imageSmoothingEnabled=false;
+ ctx.fillStyle='#071d25a0';ctx.fillRect(x-16,y+16,32,5);
+ const kind=a.v31;
+ if(kind==='ema'){
+  drawCharacter(x,y-4+float,'#6a9484','#e8c7a6',false);
+  rect(x-8,y-33+float,16,7,'#cdb47a');rect(x-15,y-37+float,30,5,'#6a946a');
+  rect(x+15,y-22+float,4,27,'#bbd99a');
+ }else if(kind==='ingredient'||kind==='beetle'){
+  const color=kind==='beetle'?'#ffe08a':a.id==='v31Dew'?'#9ae9dd':a.id==='v31Bark'?'#bf9573':'#f7c9e2';
+  ctx.shadowColor=color;ctx.shadowBlur=7;
+  rect(x-9,y-13+float,18,18,color);rect(x-3,y-18+float,6,6,'#fff2bb');ctx.shadowBlur=0;
+ }else if(kind==='boss'){
+  rect(x-16,y-26,32,45,'#435d4b');rect(x-13,y-38,26,20,'#628a62');
+  rect(x-10,y-30,5,5,'#f3d79a');rect(x+5,y-30,5,5,'#f3d79a');
+  rect(x-22,y-8,9,20,'#4f7750');rect(x+13,y-8,9,20,'#4f7750');
+ }else if(kind==='smallGate'||kind==='galleryGate'||kind==='entrance'){
+  rect(x-16,y-28,32,45,'#47645a');rect(x-12,y-24,24,38,'#1e3938');
+  rect(x-9,y-18,18,7,c.small?'#f7e1a5':'#abd8b0');rect(x-4,y-9,8,17,'#d2b67b');
+ }else if(kind==='rune'||kind==='heavy'||kind==='sap'||kind==='heart'||kind==='lens'||kind==='chronicle'||kind==='hintGap'){
+  rect(x-19,y-10,38,24,'#5b6e6b');rect(x-16,y-19,32,13,'#99a395');
+  const symbol=kind==='rune'?(a.id==='v31RuneRoot'?'♣':a.id==='v31RuneDew'?'≈':'✦'):
+   kind==='heavy'?'⬟':kind==='lens'?'◇':kind==='heart'?'✹':'✧';
+  drawGlyph(x,y-26+float,symbol,'#ffe7aa');
+ }else{
+  ctx.strokeStyle='#bcdfb4';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(x,y-4,18,12,0,0,Math.PI*2);ctx.stroke();
+  drawGlyph(x,y-23,'↩','#d8eeba');
+ }
+ ctx.restore();
+}
+function v31Setup(){
+ const aside=document.querySelector('#rpgDlg .r12-aside'),controls=document.querySelector('#rpgDlg .r12-controls');
+ if(!aside||!controls||document.getElementById('v31Card'))return;
+ const card=document.createElement('section');card.id='v31Card';card.className='r12-card sm31-quest-card';
+ card.innerHTML='<span class="sm31-eyebrow">NOVA AVENTURA · CAPÍTULO II</span><h3>🌿 O Jardim das Entrelinhas</h3>'+
+  '<p id="v31Task" aria-live="polite"></p><div class="sm31-track"><span id="v31Track"></span></div>'+
+  '<p id="v31Status"></p><button type="button" id="v31SizeButton">◇ Ativar Modo Broto · Q</button>';
+ aside.prepend(card);
+ const mobile=document.createElement('button');mobile.type='button';mobile.id='v31MobileBroto';mobile.className='r12-interact sm31-mobile-toggle';
+ mobile.textContent='◇ BROTO (Q)';mobile.setAttribute('aria-label','Alternar entre tamanho normal e tamanho pequeno');
+ controls.append(mobile);
+ for(const id of ['v31SizeButton','v31MobileBroto'])document.getElementById(id).addEventListener('click',v31Toggle);
+}
+function v31RenderUI(){
+ const card=document.getElementById('v31Card');if(!card)return;
+ const c=v31State(),active=v31Rooms.has(st.map),unlocked=v303State().finished;
+ const steps=[!!c.metEma,c.ingredients.length===3,!!c.lens,!!c.heavy,!!c.sap,c.runes===3,!!c.bossWon,!!c.finished];
+ document.getElementById('v31Task').textContent=v31Objective();
+ document.getElementById('v31Status').textContent=steps.filter(Boolean).length+'/8 marcos · '+(c.small?'TAMANHO PEQUENO':'tamanho normal')+' · '+(c.errors||0)+' tentativas refeitas';
+ document.getElementById('v31Track').style.width=(steps.filter(Boolean).length/8*100)+'%';
+ card.classList.toggle('sm31-unlocked',unlocked);
+ for(const id of ['v31SizeButton','v31MobileBroto']){
+  const button=document.getElementById(id);if(!button)continue;
+  button.disabled=!c.lens||!active;
+  button.setAttribute('aria-pressed',String(!!c.small));
+  button.textContent=c.small?'↟ CRESCER · Q':'◇ MODO BROTO · Q';
+ }
+}
+
 function v303State(){
  const q=v30State();
  if(!q.chapter1||typeof q.chapter1!=='object')q.chapter1={};
@@ -714,6 +990,7 @@ function v30SceneForRoom(where){
  if(where==='floresta'||where==='planicie'||where==='estufa')return 'forest';
  if(where==='atrioRaizes'||where==='ruinas'||where==='mina'||where==='gruta')return 'temple';
  if(where==='bosque'||where==='bosqueEcos'||where==='pantano'||where==='coracao')return 'mystery';
+ if(v31Rooms.has(where))return 'mystery';
  if(where==='observatorio')return 'shadows';
  return 'explore';
 }
@@ -724,7 +1001,7 @@ function v30Objective(){
  if(q.sequence<3)return 'Ative as três pedras da Floresta na ordem Semente → Água → Luz ('+q.sequence+'/3).';
  if(!q.opened)return 'Volte à Passagem das Raízes, a sudeste da Floresta, e abra o caminho oculto.';
  if(!q.completed)return 'Explore o Átrio das Raízes e investigue suas três inscrições ('+q.records.length+'/3).';
- return v303Objective();
+ return v31Objective();
 }
 function v30ActorVisible(a){
  const q=v30State();
@@ -1200,6 +1477,7 @@ function v29CombatTell(c){
  if(c.key==='v29_sentinela')return c.turn%3===0
   ?'⚠ A Sentinela concentra nuvens nas patas: próximo ataque CARREGADO. DEFENDA ou ANALISE para resistir.'
   :'A Sentinela circula e testa sua defesa. Natureza abre fissuras na armadura.';
+ if(c.key==='v31_guardiao')return c.turn%4===0?'⚠ O Guardião ergue uma tempestade de raízes. DEFENDER reduz o ataque.':'O Guardião protege seu núcleo. Natureza vence a couraça, luz enfraquece sua flor.';
  if(c.key==='v303_sentinela')return c.turn%3===0?'⚠ A Sentinela concentra um eco sombrio. DEFENDER reduz o próximo golpe.':'A luz enfraquece a Sentinela. Observe o ritmo de três turnos.';
  if(c.key==='v29_silencio')return c.turn%4===0
   ?'⚠ A Mariposa recolhe as asas: o próximo eco causará mais dano. Proteja-se.'
@@ -1286,7 +1564,7 @@ function enemyTurn(){const c=epicCombat,e=epic(),enemy=EPIC_ENEMIES[c.key];if(!c
  const dodge=Math.min(.19,epic().stats.agi*.009);const miss=(c.enemyStatus==='blind'&&Math.random()<.55)||Math.random()<dodge;
  if(miss){battleMessage(c.enemyStatus==='blind'?'A luz cegou o inimigo! Ele errou o golpe.':'Sua Agilidade permitiu esquivar do ataque!')}else{
   const coeff=c.key==='rei'?(1+c.phase*.16):1;
-  const v29Charged=(c.key==='v29_sentinela'&&c.turn%3===0)||(c.key==='v29_silencio'&&c.turn%4===0)||(c.key==='v303_sentinela'&&c.turn%3===0);
+  const v29Charged=(c.key==='v29_sentinela'&&c.turn%3===0)||(c.key==='v29_silencio'&&c.turn%4===0)||(c.key==='v303_sentinela'&&c.turn%3===0)||(c.key==='v31_guardiao'&&c.turn%4===0);
    const raw=(enemy.atk*coeff+Math.floor(c.turn/3)+Math.random()*5)*(v29Charged?1.7:1);
    if(v29Charged)battleMessage('⚠ Golpe carregado! DEFENDER reduz bastante o impacto.');
   let dmg=Math.max(1,Math.floor(raw-epic().stats.vig*.9-(hasEffect('defense')?3:0)-(hasEffect('harvest')?2:0)-(hasEffect('ward')?2:0)));
@@ -1303,6 +1581,7 @@ function advanceBattlePhase(){const c=epicCombat,m=EPIC_ENEMIES[c.key];if(m.phas
  endCombat(true,false);const e=epic();if(!e.defeated.includes(actor))e.defeated.push(actor);const enemy=EPIC_ENEMIES[key];e.wins++;v23DailyMark('victory');e.gold+=enemy.gold;e.potions+=1;giveXP(enemy.xp);notify('Vitória! +'+enemy.xp+' XP e '+enemy.gold+' moedas.');
   if(key==='v29_silencio'||key==='v29_sentinela')v29CombatWon(key);
    if(key==='v303_sentinela'){const c=v303State();c.bossWon=true;log('V30.3 · A Sentinela do Silêncio foi vencida. O mural a leste voltou a brilhar.');}
+ if(key==='v31_guardiao'){const c=v31State();c.bossWon=true;log('Capítulo II · O Guardião de Musgo se libertou do juramento antigo.');}
  if(key==='larva'){log('A Larva da Ferrugem caiu. A fornalha agora pode ser purificada.');}
  if(key==='rainha'){ownItem('espinho_soberano');goStory([['Rainha das Aranhas','As crianças... ainda lembram de nosso juramento?'],['Eldra','A rainha era guardiã daquelas promessas. A maldição prendeu seu amor numa teia de ódio.'],['Narrador','Com a coroa de espinhos desfeita, uma passagem se abre para as Minas do Prisma Partido.']],()=>advanceEpicChapter(3))}
  if(key==='besouro'){ownItem('prisma_eco');goStory([['Dário','Ouço as minas cantando outra vez. O brilho volta a revelar o caminho das antigas águas.'],['Narrador','O Prisma do Eco se uniu ao seu inventário. A trilha do pântano se abriu.']],()=>advanceEpicChapter(4))}
@@ -1385,7 +1664,7 @@ function refreshEpicAvatar(){const v=visualData(),sig=JSON.stringify([v,epic().e
 function renderAvatarToCanvas(target,w,h,inBattle=false){if(!target)return;refreshEpicAvatar();const g=target.getContext('2d');g.clearRect(0,0,w,h);g.imageSmoothingEnabled=false;if(!epicAvatarCanvas)return;
  const ratio=Math.min(w/24,h/34)*.91,szW=24*ratio,szH=34*ratio;g.drawImage(epicAvatarCanvas,(w-szW)/2,(h-szH)/2,szW,szH)}
 function drawEpicAvatar(x,y){refreshEpicAvatar();const moving=Math.abs(player.vx)+Math.abs(player.vy)>.1,cadence=keys.run?21:14,bob=moving?Math.sin(clock*cadence)*(keys.run?2.6:1.6):Math.sin(clock*2.5)*.55;
- ctx.save();ctx.fillStyle='#121925aa';ctx.beginPath();ctx.ellipse(x,y+10,12,4,0,0,Math.PI*2);ctx.fill();ctx.translate(x,y-14+bob);
+ ctx.save();ctx.fillStyle='#121925aa';ctx.beginPath();ctx.ellipse(x,y+10,12,4,0,0,Math.PI*2);ctx.fill();ctx.translate(x,y-14+bob);if(v31Rooms.has(st.map)&&v31State().small)ctx.scale(.50,.50);
  if(player.vx<-.1)ctx.scale(-1,1);
  const sway=moving?Math.sin(clock*cadence)*(keys.run?.065:.036):Math.sin(clock*2)*.012;ctx.rotate(sway);
  ctx.imageSmoothingEnabled=false;
@@ -1584,8 +1863,9 @@ function drawEpicActor(a,x,y,bob){
  else if(a.epic==='altar'){ctx.save();ctx.fillStyle='#72586d';ctx.fillRect(x-15,y-6,30,20);ctx.fillStyle='#cba88c';ctx.fillRect(x-12,y-13,24,9);ctx.fillStyle='#fde0a9';ctx.font='bold 23px serif';ctx.fillText('✧',x,y-21);ctx.restore()}
 }
 
- function actorVisible(a){if(a.v30)return v303ActorVisible(a)&&v30ActorVisible(a);if(a.v29)return v29ActorVisible(a);if(a.epic)return epicActorVisible(a);if(a.type==='seed'&&st.found.includes(a.id))return false;if(a.id==='reliquia'&&!st.unlocked)return false;return true}
+ function actorVisible(a){if(a.v31)return v31ActorVisible(a);if(a.v30)return v303ActorVisible(a)&&v30ActorVisible(a);if(a.v29)return v29ActorVisible(a);if(a.epic)return epicActorVisible(a);if(a.type==='seed'&&st.found.includes(a.id))return false;if(a.id==='reliquia'&&!st.unlocked)return false;return true}
  function interact(a){
+  if(a?.v31){v31Interact(a);return;}
   if(a?.v30){v30Interact(a);return;}
   if(a?.v29){v29Interact(a);return;}
    if(a?.epic){epicInteract(a);return;}
@@ -1613,7 +1893,7 @@ function drawEpicActor(a,x,y,bob){
  function nearest(){let best=null,d=Infinity;for(const a of room().actors){if(!actorVisible(a))continue;let dist=Math.hypot(player.x-a.x,player.y-a.y);if(dist<d){d=dist;best=a}}return d<1.9?best:null}
  function action(){if(!visible||dialogOpen||window.SamCutscenes?.isPlaying)return;interact(nearest())}
  function collide(x,y){if(x<.48||y<.48||x>COLS-.48||y>ROWS-.48)return true;
-  const r=.35;
+  const r=v31Rooms.has(st.map)&&v31State().small?.16:.35;
   for(const b of room().blocks){if(x+r>b.x&&x-r<b.x+b.w&&y+r>b.y&&y-r<b.y+b.h)return true}
   for(const t of room().props){if(Math.hypot(x-t.x,y-t.y)<(t.type==='tree'?.72:.5))return true}
   return false}
@@ -1663,7 +1943,7 @@ function drawEpicActor(a,x,y,bob){
   ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.fillStyle='#ffdfae';ctx.fillText(b.type==='loja'?'MASCOTES':b.type==='defesa'?'DEFESA':b.type==='portal'?'HALLOWEEN':'CABANA',x+w/2,y+25)
  }
  function actorColor(type){return ({seed:'#ffe27d',npc:'#baceff',shop:'#f9c58a',defense:'#ffa783',halloween:'#dda8ff',profile:'#b3d5ff',social:'#a8f1be',passage:'#a5e6a9',door:'#d8cf9b',altar:'#ffe0a3',relic:'#ffe7af'})[type]||'#ffffff'}
- function drawActor(a){if(!actorVisible(a))return;const x=a.x*T,y=a.y*T,bob=Math.sin(clock*3+a.x)*2;ctx.save();if(a.v30){v30DrawActor(a,x,y,bob);ctx.restore();return}if(a.v29){v29DrawActor(a,x,y,bob);ctx.restore();return}if(a.epic){drawEpicActor(a,x,y,bob);ctx.restore();return;}
+ function drawActor(a){if(!actorVisible(a))return;const x=a.x*T,y=a.y*T,bob=Math.sin(clock*3+a.x)*2;ctx.save();if(a.v31){v31DrawActor(a,x,y,bob);ctx.restore();return}if(a.v30){v30DrawActor(a,x,y,bob);ctx.restore();return}if(a.v29){v29DrawActor(a,x,y,bob);ctx.restore();return}if(a.epic){drawEpicActor(a,x,y,bob);ctx.restore();return;}
   if(['passage','door','halloween','defense','shop','profile','social','board'].includes(a.type)){
    const alpha=.47+Math.sin(clock*3+a.x)*.27;ctx.globalAlpha=alpha;ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(x,y-4,19,10,0,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;
    if(a.type==='passage'){rect(x-8,y-32,16,14,'#a5e6a9');rect(x-5,y-36,10,6,'#f3e3a3')}
@@ -1702,7 +1982,7 @@ function drawEpicActor(a,x,y,bob){
    return {z,cx:Math.max(halfW,Math.min(W-halfW,player.x*T)),cy:Math.max(halfH,Math.min(H-halfH,player.y*T))};
  }
  function render(){const cam=camera();ctx.save();ctx.translate(W/2,H/2);ctx.scale(cam.z,cam.z);ctx.translate(-cam.cx,-cam.cy);
-  baseMap();v24Decor();v29Decor();v30Decor();for(const b of room().blocks)drawBuilding(b);for(const p of room().props)drawTree(p.x,p.y,p.type==='dead');for(const a of room().actors)drawActor(a);guideDraw();drawPlayer();v23Atmosphere();
+  baseMap();v24Decor();v29Decor();v30Decor();v31Decor();for(const b of room().blocks)drawBuilding(b);for(const p of room().props)drawTree(p.x,p.y,p.type==='dead');for(const a of room().actors)drawActor(a);guideDraw();drawPlayer();v23Atmosphere();
   const a=nearest();if(a){ctx.save();ctx.textAlign='center';ctx.font='bold 13px sans-serif';let line='E · '+a.label;let width=Math.min(280,ctx.measureText(line).width+22);let px=Math.min(W-width/2-8,Math.max(width/2+8,a.x*T));let py=Math.max(64,a.y*T-39);rect(px-width/2,py-20,width,25,'#1e1428ee');ctx.strokeStyle=actorColor(a.type);ctx.lineWidth=1;ctx.strokeRect(px-width/2,py-20,width,25);ctx.fillStyle='#ffebce';ctx.fillText(line,px,py-3);ctx.restore()}
   if(st.map==='ruinas'){ctx.fillStyle='#b8a3ff12';ctx.fillRect(0,0,W,H)}ctx.restore();
  }
@@ -1727,6 +2007,7 @@ function drawEpicActor(a,x,y,bob){
   const controlKeys={ArrowUp:'up',w:'up',W:'up',ArrowDown:'down',s:'down',S:'down',ArrowLeft:'left',a:'left',A:'left',ArrowRight:'right',d:'right',D:'right'};
   document.addEventListener('keydown',e=>{if(!visible||dialogOpen||window.SamCutscenes?.isPlaying)return;const t=e.target;if(t&&(/INPUT|TEXTAREA|SELECT/.test(t.tagName)||t.isContentEditable))return;
    const k=controlKeys[e.key];if(k){keys[k]=true;e.preventDefault()}
+   if(e.key==='q'||e.key==='Q'){e.preventDefault();if(!e.repeat)v31Toggle();return}
    if(e.key==='Shift'){keys.run=true;e.preventDefault()}
     if(e.key==='e'||e.key==='E'||e.key===' '){e.preventDefault();if(!e.repeat)action()}
   });
@@ -1748,7 +2029,7 @@ function drawEpicActor(a,x,y,bob){
  if(typeof prevShow==='function')window.showPane=function(id){let result=prevShow.apply(this,arguments);const was=visible;visible=id==='rpgDlg';if(visible){window.SamMusic?.scene(v30SceneForRoom(st.map));if(storageKey()!==accountRpgKey){accountRpgKey=storageKey();const newData=JSON.parse(localStorage.getItem(accountRpgKey)||'null');st={...blank(),...(newData||{})};st.epic={...freshEpic(),...(st.epic||{}),stats:{...freshEpic().stats,...(st.epic?.stats||{})},flags:{...(st.epic?.flags||{})}};if(!rooms[st.map])st.map='vila';player.x=Number.isFinite(st.x)?st.x:11.7;player.y=Number.isFinite(st.y)?st.y:10.8;epicAvatarSig=''}syncEpicCrossModes();update();if(!epic().class)showEpicClasses();last=performance.now();if(!was){save();requestAnimationFrame(()=>cv.focus({preventScroll:true}))}}
    else if(was){if(document.getElementById('v24Shop')?.hidden===false)closeV24Shop();save();Object.keys(keys).forEach(k=>keys[k]=false);touchDest=null}return result};
  const targetVisible=()=>!host.hidden;
- setupEpicUI();initV24Shop();if(st.relic&&epic().chapter===0)advanceEpicChapter(1);bind();visible=targetVisible();update();if(visible&&!epic().class)showEpicClasses();requestAnimationFrame(tick);
+ setupEpicUI();v31Setup();initV24Shop();if(st.relic&&epic().chapter===0)advanceEpicChapter(1);bind();visible=targetVisible();update();if(visible&&!epic().class)showEpicClasses();requestAnimationFrame(tick);
  if(!st.seen.includes('welcome')){st.seen.push('welcome');save();}
- window.SamHybridRPG={openShop:openV24Shop,getShopCatalog:()=>V24_SHOP.map(x=>({...x})),interactById:(id)=>{const a=room().actors.find(a=>a.id===id);if(a)interact(a)},startBattle:(key)=>startCombat(key,Object.entries(epicMonsters).find(([a,b])=>b===key)?.[0]||key),chooseClass:(id)=>{document.querySelector('[data-r13class="'+id+'"]')?.click()},getState:()=>JSON.parse(JSON.stringify(st)),getVitals:()=>({hp:epic().hp,maxHp:maxHealth(),mp:epic().mp,maxMp:maxMana(),stamina:v24Bag().stamina,maxStamina:hasEffect('swift')?140:100}),gotoRoom:(name)=>{if(rooms[name]){st.map=name;player.x=11;player.y=8;update();save()}},onDefenseResult:(won)=>epicDefenseReward(won),open:()=>window.showPane?.('rpgDlg')};
+ window.SamHybridRPG={openShop:openV24Shop,getShopCatalog:()=>V24_SHOP.map(x=>({...x})),interactById:(id)=>{const a=room().actors.find(a=>a.id===id);if(a)interact(a)},startBattle:(key)=>startCombat(key,Object.entries(epicMonsters).find(([a,b])=>b===key)?.[0]||key),chooseClass:(id)=>{document.querySelector('[data-r13class="'+id+'"]')?.click()},getState:()=>JSON.parse(JSON.stringify(st)),toggleBroto:v31Toggle,getV31Objective:v31Objective,getVitals:()=>({hp:epic().hp,maxHp:maxHealth(),mp:epic().mp,maxMp:maxMana(),stamina:v24Bag().stamina,maxStamina:hasEffect('swift')?140:100}),gotoRoom:(name)=>{if(rooms[name]){st.map=name;player.x=11;player.y=8;update();save()}},onDefenseResult:(won)=>epicDefenseReward(won),open:()=>window.showPane?.('rpgDlg')};
 })();
