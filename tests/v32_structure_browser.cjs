@@ -45,6 +45,8 @@ const server=http.createServer((req,res)=>{
   await page.locator('#v32DestinationSearch').fill('Diário');
   assert.equal(await page.locator('#v32MorePanel button[data-p]:visible').count(),1,'filter searches actual links');
   await page.locator('#diaryBtn').click();
+  const diaryInfo=await page.evaluate(()=>({onclick:typeof document.getElementById('diaryBtn').onclick,hidden:document.getElementById('diary').hidden,display:getComputedStyle(document.getElementById('diary')).display,homeHidden:document.getElementById('home').hidden,current:document.getElementById('diaryBtn').getAttribute('aria-current'),moreHidden:document.getElementById('v32MorePanel').hidden}));
+  console.log(name+' secondary navigation diagnostics: '+JSON.stringify(diaryInfo));
   assert.equal(await page.locator('#diary').isVisible(),true,'secondary destination opens');
   assert.equal(await page.locator('#v32MorePanel').isHidden(),true,'menu closes after selection');
   await page.locator('#homeBtn').click();
