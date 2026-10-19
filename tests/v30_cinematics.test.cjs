@@ -4,8 +4,8 @@ const dir=p.resolve(__dirname,'..'),rd=f=>fs.readFileSync(p.join(dir,f),'utf8');
 const world=rd('mundo_pomar.js'),music=rd('musica_rpg_v14.js'),film=rd('js/games/v30-cutscenes.js'),css=rd('css/v30-cinematics.css'),html=rd('index.html');
 t('V30.2 scripts compile and load film only after the existing world',()=>{
  for(const [f,s] of [['RPG',world],['audio',music],['cinematic',film]])a.doesNotThrow(()=>new vm.Script(s,{filename:f}));
- a.ok(html.indexOf('musica_rpg_v14.js?v=30.2')<html.indexOf('mundo_pomar.js?v=33.0'));
- a.ok(html.indexOf('mundo_pomar.js?v=33.0')<html.indexOf('js/games/v30-cutscenes.js?v=30.2'));
+ a.ok(html.indexOf('musica_rpg_v14.js?v=30.2')<html.indexOf('mundo_pomar.js?v=33.3'));
+ a.ok(html.indexOf('mundo_pomar.js?v=33.3')<html.indexOf('js/games/v30-cutscenes.js?v=30.2'));
  a.ok(html.includes('css/v30-cinematics.css?v=30.2'));
  a.ok(html.includes('id="sm30WatchTeaser"'));
 });

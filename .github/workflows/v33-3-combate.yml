@@ -1,0 +1,65 @@
+name: V33.3 · Combate e Defesa
+on:
+  push:
+    branches:
+      - dev/v33-3-combate-e-defesa
+  workflow_dispatch:
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Sintaxe e pacote original intacto
+        run: |
+          set -euo pipefail
+          node --check mundo_pomar.js
+          node --check defesa_tatica_v33_3.js
+          node --check tests/v33_3_combat_browser.cjs
+          node scripts/build-v26.cjs
+      - name: Regressões do código e da arquitetura
+        run: |
+          node --test tests/v25_architecture.test.cjs tests/v26_bundle.test.cjs tests/v27_bridge_ui.test.cjs tests/v28_visual.test.cjs tests/v29_cronicas.test.cjs tests/v30_cinematics.test.cjs tests/v30_news.test.cjs
+      - name: Instalar Chromium
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Testar Defesa tática e Riposta em desktop e celular
+        run: node tests/v33_3_combat_browser.cjs
+      - name: Regressão narrativa e combate V33
+        run: node tests/v33_world_browser.cjs
+      - name: Regressões V31/V32
+        run: |
+          node tests/v31_jardim_browser.cjs
+          node tests/v32_structure_browser.cjs
+      - name: Verificar distribuição Cloudflare Pages
+        run: |
+          SM_GAME_ROOT=dist node tests/v33_3_combat_browser.cjs
+          find dist -type f \( -name '*.exe' -o -name '*.dll' -o -name '*.bat' -o -name '*.ps1' \) | tee /tmp/unexpected-files.txt
+          test ! -s /tmp/unexpected-files.txt
+  pacote:
+    needs: validar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Gerar distribuição
+        run: |
+          set -euo pipefail
+          node scripts/build-v26.cjs
+          cd dist
+          zip -qr ../Sam-Manguinha-V33-3-Combate-e-Defesa-Cloudflare-Pages.zip .
+          cd ..
+          unzip -t Sam-Manguinha-V33-3-Combate-e-Defesa-Cloudflare-Pages.zip | tail -1
+          sha256sum Sam-Manguinha-V33-3-Combate-e-Defesa-Cloudflare-Pages.zip > SHA256-V33-3.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V33-3-Combate-e-Defesa-Cloudflare-Pages
+          path: |
+            Sam-Manguinha-V33-3-Combate-e-Defesa-Cloudflare-Pages.zip
+            SHA256-V33-3.txt
