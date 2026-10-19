@@ -1,0 +1,68 @@
+name: V30.2 · Cutscenes animadas, músicas originais e Prólogo
+on:
+  push:
+    branches: [dev/v30-2-cutscenes-trilhas-prologo]
+  pull_request:
+    branches: [dev/v30-01-novidades-home]
+  workflow_dispatch:
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar scripts musicais, cutscenes, mundo e regressão anterior
+        run: |
+          node --test tests/v30_cinematics.test.cjs tests/v30_news.test.cjs tests/v29_cronicas.test.cjs tests/v28_fullscreen_game.test.cjs tests/v28_visual.test.cjs tests/v27_bridge_ui.test.cjs tests/v26_modules.test.cjs tests/v25_architecture.test.cjs
+      - name: Instalar navegador real para desktop e celular
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Jogar todo prólogo V30.2, renderizar quadros e testar cinco músicas
+        run: SM_V30_SHOTS=visual-review/v30 node tests/v30_cinematics_browser.cjs
+      - name: Testar novidades da home, progressão V29 e tela cheia
+        run: |
+          node tests/v30_news_browser.cjs
+          node tests/v29_story_browser.cjs
+          node tests/v28_fullscreen_browser.cjs
+      - name: Compilar projeto para Cloudflare Pages
+        run: |
+          node scripts/build-v26.cjs
+          node --test tests/v26_bundle.test.cjs
+          for f in dist/index.html dist/js/games/v30-cutscenes.js dist/css/v30-cinematics.css dist/musica_rpg_v14.js dist/mundo_pomar.js; do test -s "$f"; done
+          SM_GAME_ROOT=dist node tests/v30_cinematics_browser.cjs
+      - name: Anexar capturas desktop e celular
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: V30-2-Previa-Pixel-Art-Cutscenes
+          path: visual-review/v30
+          if-no-files-found: ignore
+          retention-days: 30
+  pacote:
+    needs: [validar]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Criar ZIP Cloudflare Pages sem deploy automático
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/build-v26.cjs
+          for f in dist/index.html dist/js/games/v30-cutscenes.js dist/css/v30-cinematics.css dist/musica_rpg_v14.js dist/mundo_pomar.js; do test -s "$f"; done
+          grep -q 'v30-cutscenes.js?v=30.2' dist/index.html
+          cd dist
+          zip -qr ../Sam-Manguinha-V30-2-Cutscenes-Musicas-Cloudflare-Pages.zip .
+          unzip -t ../Sam-Manguinha-V30-2-Cutscenes-Musicas-Cloudflare-Pages.zip | tail -1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V30-2-Cutscenes-Musicas-Cloudflare-Pages
+          path: Sam-Manguinha-V30-2-Cutscenes-Musicas-Cloudflare-Pages.zip
+          retention-days: 30
