@@ -23,6 +23,7 @@ const server=http.createServer((req,res)=>{
     localStorage.setItem('sg_handle','v29tester');
     localStorage.setItem('sg_tok','abcdefghijklmnopqrstuvxyz123456789');
     localStorage.setItem('sm_last_seen_update_version','24.0.0');
+    localStorage.setItem('sm_last_seen_release_v29','29.0.0');
     if(!localStorage.getItem('sam_rpg_hibrido_v12_v29tester'))localStorage.setItem('sam_rpg_hibrido_v12_v29tester',JSON.stringify({
       map:'vila',x:11.7,y:10.8,seen:['welcome'],found:[],journal:[],
       epic:{class:'guardiao',level:12,xp:0,points:0,stats:{vig:17,for:45,int:22,agi:12},
