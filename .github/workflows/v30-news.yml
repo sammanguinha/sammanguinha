@@ -1,0 +1,55 @@
+name: V30.1 · Novidades visíveis na home e regressões
+on:
+  push:
+    branches: [dev/v30-01-novidades-home]
+  pull_request:
+    branches: [dev/v29-cronicas-vivas]
+  workflow_dispatch:
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regressões estrutural e notícias V30.1
+        run: |
+          node --test tests/v30_news.test.cjs tests/v29_cronicas.test.cjs tests/v28_fullscreen_game.test.cjs tests/v28_visual.test.cjs tests/v27_bridge_ui.test.cjs tests/v26_modules.test.cjs tests/v25_architecture.test.cjs
+      - name: Instalar Chromium
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Comprovar novidades visíveis, versionadas e reabertas no computador e celular
+        run: node tests/v30_news_browser.cjs
+      - name: Regressão completa do RPG V29 e tela cheia
+        run: |
+          node tests/v29_story_browser.cjs
+          node tests/v28_fullscreen_browser.cjs
+      - name: Compilar e testar pacote de produção
+        run: |
+          node scripts/build-v26.cjs
+          node --test tests/v26_bundle.test.cjs
+          SM_GAME_ROOT=dist node tests/v30_news_browser.cjs
+  pacote:
+    needs: [verificar]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Gerar ZIP Cloudflare Pages da V30.1
+        run: |
+          set -euo pipefail
+          node scripts/build-v26.cjs
+          for f in dist/index.html dist/css/v30-news.css dist/js/ui/v30-news.js dist/mundo_pomar.js; do test -s "$f"; done
+          cd dist
+          zip -qr ../Sam-Manguinha-V30-1-Novidades-Home-Cloudflare-Pages.zip .
+          unzip -t ../Sam-Manguinha-V30-1-Novidades-Home-Cloudflare-Pages.zip | tail -1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V30-1-Novidades-Home-Cloudflare-Pages
+          path: Sam-Manguinha-V30-1-Novidades-Home-Cloudflare-Pages.zip
+          retention-days: 30
