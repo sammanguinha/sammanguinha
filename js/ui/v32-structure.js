@@ -41,7 +41,14 @@
  toggle.addEventListener('click',()=>showMenu(panel.hidden,true));
  search.addEventListener('input',()=>filter(search.value));
  panel.addEventListener('click',event=>{
-  if(event.target.closest('button[data-p]'))showMenu(false);
+  const destination=event.target.closest('button[data-p]');
+  if(!destination)return;
+  // Some legacy navigation handlers are initialized before secondary controls move.
+  // Preserve their first chance to navigate; recover synchronously only if no route was selected.
+  if(destination.dataset.p!=='sm18Expedition'&&destination.getAttribute('aria-current')!=='page'&&typeof window.showPane==='function'){
+   window.showPane(destination.dataset.p);
+  }
+  showMenu(false);
  });
  document.addEventListener('click',event=>{
   const target=event.target;
