@@ -1727,6 +1727,9 @@ function finishEpilogue(){const e=epic();e.chapter=7;ownItem('coroa_semente');co
  addStory('ending:'+e.ending,'Final conquistado: '+({libertar:'O Pomar Compartilhado',selar:'O Guardião Silencioso',reconciliar:'A Mesa para Todos'}[e.ending])+'!');giveXP(550);goStory(endings[e.ending],()=>{update();notify('Campanha concluída! Explore as histórias e missões secundárias.')});save()}
 let epicCombat=null;let epicCombatBusy=false;let epicSoundLast=0;
 function v29CombatTell(c){
+ if(c.key==='v33_sentinela')return c.turn%3===0
+  ?'⚠ MARÉ ALTA: a Sentinela reúne água e trovão. DEFENDER ou RIPOSTAR reduz o próximo impacto.'
+  :'A Sentinela muda de corrente. Use ANALISAR, suas fraquezas e a RIPOSTA no momento certo.';
  if(c.key==='v29_sentinela')return c.turn%3===0
   ?'⚠ A Sentinela concentra nuvens nas patas: próximo ataque CARREGADO. DEFENDA ou ANALISE para resistir.'
   :'A Sentinela circula e testa sua defesa. Natureza abre fissuras na armadura.';
@@ -1751,6 +1754,11 @@ function resolveCombatAction(type){const c=epicCombat;if(!c||c.lock)return;const
   else if(type==='bomba_esporos'){if(!v24Count(type)){battleMessage('Sem bombas!');renderCombat();return}v24Take(type);c.hp-=20;c.enemyStatus='blind';c.enemyStatusDuration=2;battleMessage('Bomba de Esporos: 20 de dano e cegueira!')}
   else if(type==='escudo_folha'){if(!v24Count(type)){battleMessage('Sem escudo de folha!');renderCombat();return}v24Take(type);c.playerGuard=true;e.mp=Math.min(maxMana(),e.mp+1);battleMessage('O Escudo de Folha protege este turno.')}
   else if(type==='guard'){c.playerGuard=true;e.mp=Math.min(maxMana(),e.mp+2);battleMessage('Você ergue a guarda e recupera 2 de energia.')}
+  else if(type==='riposte'){
+   if(e.mp<2){battleMessage('RIPOSTA requer 2 MP. Defenda para recuperar energia.');renderCombat();return}
+   e.mp-=2;c.riposte=true;c.playerGuard=true;
+   battleMessage('RIPOSTA preparada! Você bloqueará parte do golpe e responderá apenas se o inimigo acertar.');
+  }
   else if(type==='study'){if(c.focus){battleMessage('Você já analisou este inimigo. Use um golpe para aproveitar a abertura.');renderCombat();return}c.focus=1;c.playerGuard=true;e.mp=Math.min(maxMana(),e.mp+1);battleMessage('Observação: +1 MP, guarda ativa e +35% no seu próximo ataque.');}
  else if(type==='skill'){
   const cost=3-(hasEffect('mana')?1:0);if(e.mp<cost){battleMessage('Energia insuficiente. Use DEFENDER para recuperar MP.');renderCombat();return}
@@ -1788,6 +1796,7 @@ function battleVisualEffect(target,kind,element){
 async function doCombatAction(type){
  const c=epicCombat;if(!c||c.lock)return;
  const e=epic(),valid=type==='run'?(c.key!=='rei'&&!['rainha','besouro','espectro','sentinela'].includes(c.key))
+  :type==='riposte'?e.mp>=2
   :type==='study'?!c.focus
    :type==='skill'?e.mp>=(3-(hasEffect('mana')?1:0))
   :type==='artifact'?!c.artUsed&&e.equipped.some(id=>EPIC_ARTIFACTS[id])
@@ -1795,7 +1804,7 @@ async function doCombatAction(type){
  if(!valid){resolveCombatAction(type);return}
  c.lock=true;for(const b of $('r13Combat').querySelectorAll('[data-r13action]'))b.disabled=true;
  const attack=type==='attack'||type==='skill'||type==='artifact'||type==='bomba_esporos';
- const scene=type==='skill'?'magic':type==='artifact'?'artifact':['potion','tonico_mana','antidoto'].includes(type)?'heal':['guard','study','escudo_folha'].includes(type)?'guard':type==='bomba_esporos'?'magic':type==='attack'?'attack':'';
+ const scene=type==='skill'?'magic':type==='artifact'?'artifact':['potion','tonico_mana','antidoto'].includes(type)?'heal':['guard','study','escudo_folha','riposte'].includes(type)?'guard':type==='bomba_esporos'?'magic':type==='attack'?'attack':'';
  try {
   if(scene){battleVisualEffect('hero',scene,classInfo().element);window.SamMusic?.effect(type==='skill'||type==='artifact'?'magic':type==='guard'?'guard':type==='potion'?'heal':'hit')}
   if(attack){await delayBattle(type==='skill'||type==='artifact'?310:230);if(epicCombat!==c)return;battleVisualEffect('enemy','receive',classInfo().element);window.SamMusic?.effect('hit')}
@@ -1817,13 +1826,22 @@ function enemyTurn(){const c=epicCombat,e=epic(),enemy=EPIC_ENEMIES[c.key];if(!c
  const dodge=Math.min(.19,epic().stats.agi*.009);const miss=(c.enemyStatus==='blind'&&Math.random()<.55)||Math.random()<dodge;
  if(miss){battleMessage(c.enemyStatus==='blind'?'A luz cegou o inimigo! Ele errou o golpe.':'Sua Agilidade permitiu esquivar do ataque!')}else{
   const coeff=c.key==='rei'?(1+c.phase*.16):1;
-  const v29Charged=(c.key==='v29_sentinela'&&c.turn%3===0)||(c.key==='v29_silencio'&&c.turn%4===0)||(c.key==='v303_sentinela'&&c.turn%3===0)||(c.key==='v31_guardiao'&&c.turn%4===0);
+  const v29Charged=(c.key==='v29_sentinela'&&c.turn%3===0)||(c.key==='v29_silencio'&&c.turn%4===0)||(c.key==='v303_sentinela'&&c.turn%3===0)||(c.key==='v31_guardiao'&&c.turn%4===0)||(c.key==='v33_sentinela'&&c.turn%3===0);
    const raw=(enemy.atk*coeff+Math.floor(c.turn/3)+Math.random()*5)*(v29Charged?1.7:1);
    if(v29Charged)battleMessage('⚠ Golpe carregado! DEFENDER reduz bastante o impacto.');
   let dmg=Math.max(1,Math.floor(raw-epic().stats.vig*.9-(hasEffect('defense')?3:0)-(hasEffect('harvest')?2:0)-(hasEffect('ward')?2:0)));
   const incoming=damageMult(c.element,classInfo().element);dmg=Math.max(1,Math.floor(dmg*(incoming>1.3?1.13:incoming<.9?.86:1)));if(c.playerGuard)dmg=Math.max(1,Math.floor(dmg*.38));if(c.key==='rei'&&c.phase===1&&epic().class==='guardiao')dmg=Math.floor(dmg*.88);
   e.hp=Math.max(0,e.hp-dmg);battleMessage(enemy.name+' causou '+dmg+' de dano'+(c.playerGuard?' (bloqueado parcialmente)':'')+'.');
   if(!c.playerGuard&&Math.random()<.16&&c.key!=='sentinela'){c.status='poison';battleMessage('Você foi envenenado!')}
+ }
+ // Riposte: player commits two MP and guards, then counters only a landed hit.
+ if(c.riposte){
+  c.riposte=false;
+  if(!miss){
+   const counter=Math.max(5,Math.round(enemy.atk*.8+epic().stats.agi*.30));
+   c.hp-=counter;battleMessage('↩ RIPOSTA: '+counter+' de dano de volta à '+enemy.name+'!');
+   if(c.hp<=0){advanceBattlePhase();return}
+  }else battleMessage('A Riposta não encontrou alvo: o ataque foi desviado.');
  }
  if(c.status==='poison'){e.hp=Math.max(0,e.hp-4);battleMessage('Veneno: -4 HP. Poções e antídotos removem esse estado.')}else if(hasEffect('regen'))e.hp=Math.min(maxHealth(),e.hp+3);
  if(c.enemyStatusDuration>0){c.enemyStatusDuration--;if(c.enemyStatusDuration===0)c.enemyStatus='';}c.turn++;c.playerGuard=false;c.enemyIntent=v29CombatTell(c)||(c.turn%3===0?'O inimigo prepara um ataque mais feroz.':'O inimigo observa seus movimentos.');
@@ -1847,7 +1865,7 @@ function endCombat(win,ran){if(!epicCombat)return;window.SamMusic?.scene(v30Scen
 function createCombat(){let modal=$('r13Combat');if(!modal){modal=document.createElement('div');modal.id='r13Combat';modal.className='r13-combat';modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');modal.setAttribute('aria-label','Combate por turno');document.getElementById('rpgDlg').append(modal)}modal.hidden=false}
 function renderCombat(){const c=epicCombat;if(!c)return;const e=epic(),m=EPIC_ENEMIES[c.key],info=EPIC_CHAPTERS[e.chapter];const escape=escapeHtml;const prevAction=document.activeElement?.closest?.('[data-r13action]')?.dataset.r13action||'';const weak=Object.keys(EPIC_ADV).find(key=>EPIC_ADV[key]===c.element)||m.weak;
  const phaseText=m.phases?' · '+m.phases[c.phase].title:'';
- $('r13Combat').innerHTML='<div class="r13-battle-card"><header><small>⚔️ COMBATE RPG '+phaseText+'</small><h2>'+escape(m.name)+'</h2><p>Elemento: '+EPIC_ELEMENTS[c.element]+' · Fraqueza atual: '+EPIC_ELEMENTS[weak]+'</p></header><div class="r13-battle-field"><div class="r13-enemy-figure"><img src="sprites/'+m.sprite+((m.sprite==='aranha_rainha_v14'||m.sprite.endsWith('_v24'))?'.svg':'.png')+'" alt="'+escape(m.name)+'"><span>Inimigo · '+Math.max(0,c.hp)+' / '+c.maxHp+' HP</span><div class="r13-bar enemy"><i style="width:'+Math.min(100,Math.max(0,100*c.hp/c.maxHp))+'%"></i></div></div><div class="r13-battle-vs">⚔</div><div class="r13-player-figure"><canvas id="r13Fighter" width="72" height="90"></canvas><span>'+escape(classInfo().name)+' · Nv. '+e.level+'</span><div class="r13-bar"><i style="width:'+Math.round(e.hp/maxHealth()*100)+'%"></i></div><span>❤ '+e.hp+'/'+maxHealth()+' · ✦ '+e.mp+'/'+maxMana()+' MP</span></div></div><p class="r13-weak">'+escape(c.enemyIntent)+(c.focus?' · ✨ Bônus de observação (+35%)':'')+' · '+(c.status==='poison'?'☠ Envenenado · ':'')+(c.enemyStatus==='burn'?'🔥 Inimigo queimando · ':'')+(c.enemyStatus==='blind'?'✨ Inimigo cego':'')+'</p><div class="r13-combat-controls"><button data-r13action="attack">⚔ ATACAR</button><button data-r13action="skill">✦ '+escape(classInfo().skill)+' ('+(3-(hasEffect('mana')?1:0))+' MP)</button><button data-r13action="guard">🛡 DEFENDER (+2 MP)</button><button data-r13action="study">🔎 ANALISAR (+35% dano)</button><button data-r13action="artifact">◆ ARTEFATO '+(c.artUsed?'(usado)':'')+'</button><button data-r13action="potion">🧪 POÇÃO ('+e.potions+')</button><button data-r13action="tonico_mana">🌙 MP ('+v24Count('tonico_mana')+')</button><button data-r13action="antidoto">🌿 ANTÍDOTO ('+v24Count('antidoto')+')</button><button data-r13action="bomba_esporos">🍄 BOMBA ('+v24Count('bomba_esporos')+')</button><button data-r13action="escudo_folha">🍃 ESCUDO ('+v24Count('escudo_folha')+')</button><button data-r13action="run">↩ RECUAR</button></div><div class="r13-combat-log" role="log" aria-live="polite" aria-label="Histórico do combate">'+c.logs.slice(0,5).map(x=>'<p>'+escape(x)+'</p>').join('')+'</div></div>';
+ $('r13Combat').innerHTML='<div class="r13-battle-card"><header><small>⚔️ COMBATE RPG '+phaseText+'</small><h2>'+escape(m.name)+'</h2><p>Elemento: '+EPIC_ELEMENTS[c.element]+' · Fraqueza atual: '+EPIC_ELEMENTS[weak]+'</p></header><div class="r13-battle-field"><div class="r13-enemy-figure"><img src="sprites/'+m.sprite+((m.sprite==='aranha_rainha_v14'||m.sprite.endsWith('_v24'))?'.svg':'.png')+'" alt="'+escape(m.name)+'"><span>Inimigo · '+Math.max(0,c.hp)+' / '+c.maxHp+' HP</span><div class="r13-bar enemy"><i style="width:'+Math.min(100,Math.max(0,100*c.hp/c.maxHp))+'%"></i></div></div><div class="r13-battle-vs">⚔</div><div class="r13-player-figure"><canvas id="r13Fighter" width="72" height="90"></canvas><span>'+escape(classInfo().name)+' · Nv. '+e.level+'</span><div class="r13-bar"><i style="width:'+Math.round(e.hp/maxHealth()*100)+'%"></i></div><span>❤ '+e.hp+'/'+maxHealth()+' · ✦ '+e.mp+'/'+maxMana()+' MP</span></div></div><p class="r13-weak">'+escape(c.enemyIntent)+(c.focus?' · ✨ Bônus de observação (+35%)':'')+' · '+(c.status==='poison'?'☠ Envenenado · ':'')+(c.enemyStatus==='burn'?'🔥 Inimigo queimando · ':'')+(c.enemyStatus==='blind'?'✨ Inimigo cego':'')+'</p><div class="sm33-riposte-note">✦ '+(c.riposte?'Riposta armada: aguardando o golpe inimigo.':'Dica: analise fraquezas, defenda golpes carregados e use RIPOSTA para contra-atacar com proteção.')+'</div><div class="r13-combat-controls"><button data-r13action="attack">⚔ ATACAR</button><button data-r13action="skill">✦ '+escape(classInfo().skill)+' ('+(3-(hasEffect('mana')?1:0))+' MP)</button><button data-r13action="guard">🛡 DEFENDER (+2 MP)</button><button data-r13action="riposte">↩ RIPOSTA (2 MP)</button><button data-r13action="study">🔎 ANALISAR (+35% dano)</button><button data-r13action="artifact">◆ ARTEFATO '+(c.artUsed?'(usado)':'')+'</button><button data-r13action="potion">🧪 POÇÃO ('+e.potions+')</button><button data-r13action="tonico_mana">🌙 MP ('+v24Count('tonico_mana')+')</button><button data-r13action="antidoto">🌿 ANTÍDOTO ('+v24Count('antidoto')+')</button><button data-r13action="bomba_esporos">🍄 BOMBA ('+v24Count('bomba_esporos')+')</button><button data-r13action="escudo_folha">🍃 ESCUDO ('+v24Count('escudo_folha')+')</button><button data-r13action="run">↩ RECUAR</button></div><div class="r13-combat-log" role="log" aria-live="polite" aria-label="Histórico do combate">'+c.logs.slice(0,5).map(x=>'<p>'+escape(x)+'</p>').join('')+'</div></div>';
  $('r13Combat').querySelectorAll('[data-r13action]').forEach(b=>b.addEventListener('click',()=>doCombatAction(b.dataset.r13action)));
  renderAvatarToCanvas($('r13Fighter'),72,90,true);if(c.lock)$('r13Combat').querySelectorAll('[data-r13action]').forEach(b=>b.disabled=true);if(prevAction&&!c.lock)$('r13Combat').querySelector('[data-r13action="'+prevAction+'"]')?.focus({preventScroll:true})
 }
