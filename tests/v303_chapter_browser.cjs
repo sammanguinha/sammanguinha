@@ -9,6 +9,8 @@ const server=http.createServer((req,res)=>{let f=path.resolve(root,'.'+decodeURI
   page.on('pageerror',e=>errors.push(e.message));
   await page.addInitScript(()=>{
    localStorage.setItem('sg_handle','v303test');
+   localStorage.setItem('sm_last_seen_update_version','24.0.0');
+   localStorage.setItem('sm_last_seen_release_v29','29.0.0');
    localStorage.setItem('sg_tok','abcdefghijklmnopqrstuvxyz123456789');
    localStorage.setItem('sam_rpg_hibrido_v12_v303test',JSON.stringify({
     map:'atrioRaizes',x:20,y:7,seen:['welcome'],found:[],journal:[],
