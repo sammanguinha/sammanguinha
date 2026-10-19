@@ -12,7 +12,7 @@ const server=http.createServer((req,res)=>{let f=path.resolve(root,'.'+decodeURI
    localStorage.setItem('sm_last_seen_update_version','24.0.0');
    localStorage.setItem('sm_last_seen_release_v29','29.0.0');
    localStorage.setItem('sg_tok','abcdefghijklmnopqrstuvxyz123456789');
-   localStorage.setItem('sam_rpg_hibrido_v12_v303test',JSON.stringify({
+   if(!localStorage.getItem('sam_rpg_hibrido_v12_v303test'))localStorage.setItem('sam_rpg_hibrido_v12_v303test',JSON.stringify({
     map:'atrioRaizes',x:20,y:7,seen:['welcome'],found:[],journal:[],
     epic:{class:'guardiao',level:12,points:0,stats:{vig:24,for:40,int:30,agi:24},
      gold:200,hp:300,mp:40,chapter:0,seenIntro:true,items:['semente_guardia'],equipped:['semente_guardia'],
