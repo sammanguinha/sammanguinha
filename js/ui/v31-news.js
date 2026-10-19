@@ -44,5 +44,6 @@
  for(const id of ['smUpdatesClose','smUpdatesLater'])document.getElementById(id)?.addEventListener('click',acknowledge);
  layer?.addEventListener('click',e=>{if(e.target===layer)acknowledge()});
  let seen='';try{seen=localStorage.getItem(key)||''}catch(_){}
- if(seen!==current)requestAnimationFrame(()=>{if(!document.querySelector('#rpgDlg.sm-immersive,#gameDlg.sm-immersive'))show()});
+ // Novidades ficam sempre visíveis no banner inicial; não interrompem jogadores com modal automático.
+ if(seen!==current)home.dataset.sm31Unread='true';
 })();
