@@ -424,6 +424,56 @@ Object.assign(EPIC_ARTIFACTS,{
   desc:'Prova de quem aprendeu a observar as pequenas coisas. Reduz em 2 o dano recebido.',effect:'ward'}
 });
 
+
+/* V33.1/33.2 — Vale da Primeira Aurora: três mapas ligados por uma campanha real.
+   Integra-se ao motor existente e mantém saves v12, moedas oficiais e RNG intactos. */
+Object.assign(V24_BIOMES,{
+ valeAurora:['#284c45','#456b53','#1e3631','#f7d390'],
+ bibliotecaSubmersa:['#233c4d','#34556a','#1e2d41','#a9dbe9'],
+ mirantePrimeiraLuz:['#454355','#71664c','#282e3c','#ffe7a3']
+});
+rooms.valeAurora={name:'Vale da Primeira Aurora',subtitle:'Crônica III · A Canção da Água',floor:'#284c45',dirt:'#5a795d',night:false,
+ blocks:[{x:3,y:2,w:3,h:2,type:'rocks'},{x:18,y:2,w:3,h:2,type:'rocks'},{x:9,y:11,w:5,h:1,type:'ruin'}],
+ props:[{x:4,y:10,type:'tree'},{x:8,y:3,type:'tree'},{x:16,y:10,type:'tree'},{x:20,y:4,type:'tree'}],
+ actors:[
+ {id:'v33Back',x:1.4,y:7,type:'passage',v33:'back',label:'Voltar à Vila'},
+ {id:'v33Iara',x:7.2,y:6,type:'npc',v33:'iara',label:'Iara, Cartógrafa das Chuvas'},
+ {id:'v33Nilo',x:15.4,y:9,type:'npc',v33:'nilo',label:'Nilo, Aprendiz do Rio'},
+ {id:'v33EchoWind',x:4.7,y:5,type:'seed',v33:'echo',label:'Eco do Vento'},
+ {id:'v33EchoRain',x:15,y:4.7,type:'seed',v33:'echo',label:'Eco da Chuva'},
+ {id:'v33EchoRoot',x:20,y:9.5,type:'seed',v33:'echo',label:'Eco da Raiz'},
+ {id:'v33RuneWind',x:6,y:10.5,type:'altar',v33:'rune',label:'Pedra do Vento'},
+ {id:'v33RuneRain',x:12.2,y:6,type:'altar',v33:'rune',label:'Pedra da Chuva'},
+ {id:'v33RuneRoot',x:19,y:6.5,type:'altar',v33:'rune',label:'Pedra da Raiz'},
+ {id:'v33RiverGate',x:22.1,y:7,type:'door',v33:'riverGate',label:'Passagem da Biblioteca Submersa'},
+ {id:'v33NiloSatchel',x:10.2,y:9.1,type:'seed',v33:'satchel',label:'Bolsa perdida de Nilo'}]};
+rooms.bibliotecaSubmersa={name:'Biblioteca Submersa',subtitle:'Palavras escritas na correnteza',floor:'#233c4d',dirt:'#556b73',night:true,
+ blocks:[{x:3,y:2,w:4,h:2,type:'ruin'},{x:17,y:2,w:4,h:2,type:'ruin'},{x:10,y:10,w:4,h:2,type:'rocks'}],
+ props:[{x:6,y:10,type:'dead'},{x:19,y:10,type:'dead'}],
+ actors:[
+ {id:'v33LibraryBack',x:1.4,y:7,type:'passage',v33:'libraryBack',label:'Voltar ao Vale'},
+ {id:'v33MemoryOne',x:7,y:5.4,type:'altar',v33:'memory',label:'Memória da Primeira Chuva'},
+ {id:'v33MemoryTwo',x:17,y:6.2,type:'altar',v33:'memory',label:'Memória da Última Seca'},
+ {id:'v33Librarian',x:10.8,y:8.7,type:'npc',v33:'librarian',label:'A Custódia das Páginas'},
+ {id:'v33SummitGate',x:22,y:7,type:'door',v33:'summitGate',label:'Subida ao Mirante'}]};
+rooms.mirantePrimeiraLuz={name:'Mirante da Primeira Luz',subtitle:'A origem de cada novo amanhecer',floor:'#454355',dirt:'#7b745b',night:true,
+ blocks:[{x:3,y:2,w:4,h:2,type:'ruin'},{x:17,y:2,w:4,h:2,type:'ruin'}],
+ props:[{x:5,y:10,type:'tree'},{x:18,y:11,type:'tree'}],
+ actors:[
+ {id:'v33SummitBack',x:1.4,y:7,type:'passage',v33:'summitBack',label:'Voltar à Biblioteca'},
+ {id:'v33Warden',x:12,y:7,type:'npc',v33:'warden',label:'Sentinela do Primeiro Orvalho'},
+ {id:'v33Choice',x:20,y:5.5,type:'altar',v33:'choice',label:'Fonte das Duas Promessas'}]};
+rooms.vila.actors.push({id:'v33Entrance',x:22.2,y:6.4,type:'door',v33:'entrance',label:'Vale da Primeira Aurora · V33'});
+Object.assign(EPIC_ENEMIES,{
+ v33_sentinela:{name:'Sentinela do Primeiro Orvalho',element:'water',hp:98,atk:12,def:4,xp:160,gold:65,weak:'storm',
+  sprite:'vulto_eco_v24',intro:'Duas correntes cercam a sentinela. Leia sua intenção e use a vantagem elemental.',
+  phases:[{title:'Água em Torvelinho',hp:98,element:'water'},{title:'Memória Tempestuosa',hp:88,element:'storm'}]}
+});
+Object.assign(EPIC_ARTIFACTS,{
+ medalhao_raiz_v33:{name:'Medalhão da Floresta Viva',rarity:'Épico',element:'nature',effect:'ward',desc:'Escolha do Vale: reduz em 2 o dano recebido quando equipado.'},
+ medalhao_rio_v33:{name:'Medalhão do Rio Livre',rarity:'Épico',element:'water',effect:'regen',desc:'Escolha do Vale: recupera vida a cada turno quando equipado.'}
+});
+
  const storageKey=()=>{const live=(typeof window.me==='string'&&window.me&&window.me!=='visitante')?window.me:null;const handle=live||localStorage.getItem('sg_handle')||'visitante';return 'sam_rpg_hibrido_v12_'+String(handle).toLowerCase()};
  const blank=()=>({map:'vila',x:11.7,y:10.8,found:[],unlocked:false,relic:false,bonus:false,altarActive:false,ritualStep:0,seen:[],journal:['O Guardião Bento espera por você na vila.'],visits:0,epic:freshEpic()});
  let accountRpgKey=storageKey();let st=blank();try{let raw=JSON.parse(localStorage.getItem(storageKey())||'null');if(raw&&rooms[raw.map]&&Number.isFinite(raw.x)&&Number.isFinite(raw.y))st={...blank(),...raw,found:Array.isArray(raw.found)?raw.found:[],seen:Array.isArray(raw.seen)?raw.seen:[],journal:Array.isArray(raw.journal)?raw.journal:[]}}catch(e){}
