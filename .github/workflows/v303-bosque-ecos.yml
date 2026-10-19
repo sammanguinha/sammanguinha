@@ -1,0 +1,52 @@
+name: V30.3 · Bosque dos Ecos e Capítulo I
+on:
+  push:
+    branches: [dev/v30-3-bosque-ecos-capitulo-1]
+  pull_request:
+    branches: [dev/v30-2-cutscenes-trilhas-prologo]
+  workflow_dispatch:
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Testar código e regressões V30.2
+        run: node --test tests/v30_cinematics.test.cjs tests/v30_news.test.cjs tests/v29_cronicas.test.cjs tests/v28_fullscreen_game.test.cjs
+      - name: Instalar Chromium
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Jogar capítulo completo no desktop e celular
+        run: node tests/v303_chapter_browser.cjs
+      - name: Garantir compatibilidade com o prólogo e o layout anterior
+        run: |
+          node tests/v30_cinematics_browser.cjs
+          node tests/v30_news_browser.cjs
+          node tests/v29_story_browser.cjs
+          node tests/v28_fullscreen_browser.cjs
+      - name: Compilar e validar a versão distribuída
+        run: |
+          node scripts/build-v26.cjs
+          SM_GAME_ROOT=dist node tests/v303_chapter_browser.cjs
+  pacote:
+    needs: validar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: |
+          set -euo pipefail
+          node scripts/build-v26.cjs
+          cd dist
+          zip -qr ../Sam-Manguinha-V30-3-Bosque-dos-Ecos-Cloudflare-Pages.zip .
+          unzip -t ../Sam-Manguinha-V30-3-Bosque-dos-Ecos-Cloudflare-Pages.zip | tail -1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V30-3-Bosque-dos-Ecos-Cloudflare-Pages
+          path: Sam-Manguinha-V30-3-Bosque-dos-Ecos-Cloudflare-Pages.zip
