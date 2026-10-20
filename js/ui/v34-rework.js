@@ -8,6 +8,17 @@
  const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n};
  document.documentElement.classList.add('v34-ui');
  home.classList.add('v34-home');
+ // A antiga árvore de mangas era interativa: preserva a colheita em um controle
+ // compacto acessível em vez de apagar a mecânica por causa do rework.
+ const siteHeader=$('hero'),originalHarvest=siteHeader?.querySelector('.hang .hm');
+ if(siteHeader&&originalHarvest&&!$('v34Harvest')){
+  const harvest=el('button','v34-harvest','🥭 Colher');
+  harvest.type='button';harvest.id='v34Harvest';
+  harvest.title='Colher uma manga no Pomar';
+  harvest.setAttribute('aria-label','Colher uma manga');
+  harvest.addEventListener('click',()=>originalHarvest.click());
+  siteHeader.querySelector('.stats')?.before(harvest);
+ }
  // Remover as duplicações da experiência principal, mantendo os destinos
  // no menu Explorar e os listeners antigos disponíveis para outros módulos.
  const hero=home.querySelector('.v32-adventure-home');
