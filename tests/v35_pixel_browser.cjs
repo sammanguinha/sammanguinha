@@ -123,6 +123,9 @@ const server=http.createServer((req,res)=>{
   assert.equal(await page.locator('#v34Accessibility #sm165LargeText').count(),1,'accessibility intact');
   await page.locator('#v32DestinationSearch').fill('Galeria');
   assert.ok(await page.locator('#v32MorePanel button[data-p="galDlg"]').isVisible(),'pixel menu filter still works');
+  await page.locator('#v32MorePanel button[data-p="galDlg"]').click();
+  assert.ok(await page.locator('#galDlg').isVisible(),'filtered desktop/mobile pixel menu routes to gallery');
+  await page.locator('#v32MoreToggle').click();
   await page.keyboard.press('Escape');
   assert.ok(await page.locator('#v32MorePanel').isHidden(),'pixel menu Escape still closes');
   assert.deepEqual(notFound,[],device+' all CSS, sprites, sounds and scripts present');
