@@ -57,7 +57,7 @@ const server=http.createServer((req,res)=>{
   const advance=async ms=>page.evaluate(x=>window.__advanceGardenClock(x),ms);
   assert.ok(await page.locator('#sm35Dashboard').isVisible(),'new live dashboard on home');
   assert.equal(await page.locator('#sm35Dashboard [data-sm35-go]').count(),3,'three real quick entry points');
-  assert.ok((await page.locator('#sm30NewsVersion').textContent()).includes('33.5'),'new release news');
+  assert.ok((await page.locator('#sm30NewsVersion').textContent()).includes('V34'),'new release news');
   assert.ok(await page.locator('#sm35MoreCommunity').count()===1,'old link banner consolidated');
   assert.equal(await page.locator('#sm17GoSocial').count(),1,'community button was preserved');
   assert.equal(await page.locator('#sm17GoGrimoire').count(),1,'legacy codes still available');
