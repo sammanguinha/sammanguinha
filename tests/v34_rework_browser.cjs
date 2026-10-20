@@ -52,6 +52,12 @@ const server=http.createServer((req,res)=>{
   assert.ok(await page.locator('html.v34-ui').count(),'rework initialized');
   assert.ok(await page.locator('#v32Resume').isVisible(),'one main continue action');
   assert.ok(await page.locator('#v34Harvest').isVisible(),'original mango collecting stays available');
+  const headerBox=await page.locator('#hero').boundingBox();
+  assert.ok(headerBox&&headerBox.height<=90,device+' true compact status header '+JSON.stringify(headerBox));
+  assert.equal(await page.locator('#sm165Contrast').count(),1,'original accessibility control preserved');
+  assert.equal(await page.locator('#sm165LargeText').count(),1,'original larger text setting preserved');
+  assert.equal(await page.locator('#smUpdatesReopen').isVisible(),false,'redundant floating news action removed');
+  assert.ok(!/undefined|NaN/i.test(await page.locator('#evBar:visible').allTextContents().then(x=>x.join(' '))),'invalid event countdown never visible');
   assert.equal(await countVisible('#home .r23-hero-buttons button'),1,'no triple hero buttons');
   assert.equal(await countVisible('#home .sm35-live-card'),2,'exactly two auxiliary modes');
   assert.equal(await page.locator('#sm36AllDestinations').isVisible(),false,'four redundant portal cards removed');
@@ -92,6 +98,10 @@ const server=http.createServer((req,res)=>{
   assert.equal(await page.locator('#v32MorePanel').isHidden(),true);
   await page.evaluate(()=>window.showPane('rpgDlg'));
   assert.ok(await page.locator('#r12Canvas').isVisible(),'RPG canvas exposed');
+  if(mobile){
+   const sprint=await page.locator('#rpgDlg .v24-sprint-bar').boundingBox();
+   assert.ok(sprint&&sprint.height<=100,device+' sprint/shop toolbar stays compact '+JSON.stringify(sprint));
+  }
   assert.ok(await page.locator('#v34WorldTools #sm171Hud').count(),'how-to controls moved into optional world settings');
   assert.equal(await page.locator('#rpgDlg .sm-rpg-head-enter').isVisible(),false,'no duplicate fullscreen header button');
   assert.ok(await page.locator('#rpgDlg .sm-rpg-map-enter').isVisible(),'one compact fullscreen button remains');
