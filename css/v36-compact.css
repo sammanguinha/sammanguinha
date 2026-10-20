@@ -105,6 +105,16 @@
  #profDlg .map-header p{display:none!important}
  #profDlg #sm34Wardrobe{margin:8px 0!important;padding:10px!important}
 }
+/* The V23 floating accessibility control must not sit over the V32 destination menu.
+   It remains available outside the menu; opening Explore gives the menu touch priority. */
+@media(max-width:720px){
+ body:has(#v32MorePanel:not([hidden])) #r23SettingsToggle{
+  pointer-events:none!important;visibility:hidden!important;
+ }
+ body:has(#v32MorePanel:not([hidden])) #v32MorePanel{
+  z-index:2147483000!important;
+ }
+}
 @media(max-width:380px){#areas .v32-tabs>button svg{width:16px!important;height:16px!important}#areas .v32-tabs>button span{font-size:.57rem!important}#home .sm35-live-text strong{font-size:.63rem!important}}
 @media(max-height:640px) and (max-width:720px){#hero.hero{display:none!important}#gameDlg #gCv{max-height:calc(100dvh - 182px)}}
 @media(prefers-reduced-motion:reduce){#home .sm35-live-card{transition:none!important}}
