@@ -13,7 +13,7 @@
  body{padding-bottom:calc(71px + env(safe-area-inset-bottom))!important}
  nav#areas.areas{position:fixed!important;inset:auto 0 0!important;z-index:1550!important;display:flex!important;justify-content:center!important;align-items:center!important;gap:2px!important;min-height:calc(61px + env(safe-area-inset-bottom))!important;padding:4px max(5px,env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) max(5px,env(safe-area-inset-left))!important;background:#122b35f5!important;border:0!important;border-top:1px solid #aecda277!important;box-shadow:0 -10px 26px #06171b85;backdrop-filter:blur(14px)}
  #areas .logo,#areas .logo-wrap,#areas>.brand{display:none!important}
- #areas .tabs2.v32-tabs{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px!important;flex:1 1 auto;padding:0!important;max-width:520px}
+ #areas .tabs2.v32-tabs{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px!important;flex:1 1 auto;padding:0!important;max-width:520px}
  #areas .v32-tabs>button{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;min-width:0!important;min-height:49px!important;padding:3px 1px!important;border-radius:8px!important;font:800 .61rem/1.1 Inter,system-ui,sans-serif!important;white-space:nowrap!important}
  #areas .v32-tabs>button svg{width:19px!important;height:19px!important;flex:none}
  #areas .v32-tabs>button span{font-size:.61rem!important;text-overflow:ellipsis;overflow:hidden;max-width:100%}
@@ -21,6 +21,8 @@
  #areas .v32-more-icon{font-size:1.4rem}
  #areas .v32-more-panel{position:fixed!important;left:7px!important;right:7px!important;top:auto!important;bottom:calc(62px + env(safe-area-inset-bottom))!important;width:auto!important;max-height:65dvh!important;overflow-y:auto;padding:12px!important;border-radius:14px!important;z-index:1551!important}
  #areas .v32-more-destinations button{min-height:44px!important;padding:8px!important;font-size:.73rem!important}
+ #areas .nav-actions.sm36-nav-options{display:flex!important;position:static!important;gap:8px;justify-content:space-between;align-items:center;padding-top:7px;border-top:1px solid #ffffff28}
+ #areas .sm36-nav-options>button{display:inline-flex!important;align-items:center;justify-content:center;min-height:44px!important;flex:1 1 0;max-width:none!important}
  #hero.hero{padding:7px 10px 5px!important;min-height:0!important}
  #hero .hero-gate-art,#hero .mascot,#hero .tag,#hero .hero-badge,#hero .hero-actions{display:none!important}
  #hero h1{margin:0!important;line-height:1!important}
