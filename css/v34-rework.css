@@ -489,3 +489,128 @@ html.v34-ui #rpgDlg:not(.sm-immersive) #v27RpgHud .v27-hud-currency{
  html.v34-ui #rpgDlg #v34WorldTools #sm171Hud{flex-wrap:wrap}
  html.v34-ui #v32MorePanel #v34Accessibility .sm165-settings label{min-height:44px!important}
 }
+
+/* V34 visual QA round 3 — header old 270px tall -> a true 50px status strip. */
+html.v34-ui #hero.hero{
+ display:grid!important;grid-template-columns:minmax(0,1fr) auto auto!important;
+ grid-auto-rows:auto!important;align-items:center!important;justify-items:stretch!important;
+ justify-content:space-between!important;flex-flow:initial!important;gap:8px!important;
+ min-height:50px!important;height:auto!important;max-height:72px!important;
+ width:min(100%,1400px)!important;max-width:1400px!important;
+ margin:0 auto!important;padding:6px 14px!important;
+ background:#13272b!important;border:0!important;border-bottom:1px solid #a7cfac2c!important;
+ box-shadow:none!important;overflow:hidden!important;text-align:left!important;
+}
+html.v34-ui #hero.hero:before{display:none!important}
+html.v34-ui #hero .titleblock{
+ display:block;grid-column:1;justify-self:start;align-self:center;
+ width:auto!important;max-width:100%!important;min-width:0!important;
+ margin:0!important;padding:0!important;line-height:1!important;
+}
+html.v34-ui #hero .titleblock h1,
+html.v34-ui #hero .titleblock h1 button{
+ padding:0!important;margin:0!important;line-height:1.05!important;
+ font:900 1.05rem/1.05 'Cinzel',Georgia,serif!important;letter-spacing:-.035em!important;
+ white-space:nowrap!important;
+}
+html.v34-ui #hero #v34Harvest{
+ grid-column:2;justify-self:end;align-self:center;position:static!important;
+ margin:0!important;min-height:38px!important;padding:7px 10px!important;
+}
+html.v34-ui #hero .stats{
+ grid-column:3;justify-self:end;align-self:center;display:flex!important;
+ flex-flow:row nowrap!important;gap:5px!important;
+ width:auto!important;max-width:min(100%,480px)!important;min-width:0!important;
+ margin:0!important;padding:0!important;
+ background:none!important;border:0!important;border-radius:0!important;
+ box-shadow:none!important;
+}
+html.v34-ui #hero .stats .cell{
+ display:flex!important;flex-direction:row!important;justify-content:center!important;
+ align-items:center!important;text-align:left!important;gap:5px!important;
+ min-width:0!important;min-height:36px!important;padding:4px 7px!important;
+ border:1px solid #9fc3a447!important;border-radius:8px!important;
+ background:#213a3d!important;box-shadow:none!important;
+}
+html.v34-ui #hero .stats .cell .ic.xl{height:17px!important;width:17px!important}
+html.v34-ui #hero .stats .cell.mid .av{width:19px!important;height:23px!important}
+html.v34-ui #hero .stats .cell small{font-size:.59rem!important}
+html.v34-ui #hero .stats .cell .num,html.v34-ui #hero .stats .cell .lnk{font-size:.77rem!important}
+html.v34-ui #hero .stats .cell .lnk.sub{display:none!important}
+html.v34-ui #hero #evBar{margin:0!important}
+html.v34-ui #v32MorePanel #evBar[hidden],
+html.v34-ui #v32MorePanel #evBar.v34-event-invalid{display:none!important}
+html.v34-ui #v32MorePanel #evBar{position:static!important;margin:8px 0!important;padding:8px!important;max-width:100%!important}
+/* The old V14 summary merely repeated the RPG status and chapter name. */
+html.v34-ui #rpgDlg:not(.sm-immersive) .r14-rpg-summary{display:none!important}
+/* Sprint and shop actions remain fully playable instead of breaking into
+   tall narrow columns on phones. */
+html.v34-ui #rpgDlg:not(.sm-immersive) .v24-sprint-bar{
+ display:grid!important;grid-template-columns:minmax(76px,1fr) auto auto!important;
+ grid-template-rows:auto auto!important;align-items:center!important;
+ gap:4px 7px!important;min-height:0!important;min-width:0!important;
+ padding:8px!important;margin:8px 0 0!important;border-radius:10px!important;
+}
+html.v34-ui #rpgDlg:not(.sm-immersive) .v24-sprint-bar label{
+ grid-column:1;grid-row:1;white-space:nowrap!important;min-width:0;
+ font:700 .76rem Inter,system-ui,sans-serif!important;
+}
+html.v34-ui #rpgDlg:not(.sm-immersive) .v24-sprint-bar progress{
+ grid-column:1;grid-row:2;width:100%!important;min-width:0!important;height:9px!important;
+}
+html.v34-ui #rpgDlg:not(.sm-immersive) .v24-sprint-bar button{
+ min-height:41px!important;max-height:46px!important;width:auto!important;
+ min-width:0!important;max-width:none!important;
+ margin:0!important;padding:6px 10px!important;border-radius:9px!important;
+ font:800 .76rem/1.15 Inter,system-ui,sans-serif!important;white-space:nowrap!important;
+ align-self:center!important;
+}
+html.v34-ui #rpgDlg:not(.sm-immersive) .v24-sprint-bar #v24RunTouch{grid-column:2;grid-row:1/span 2}
+html.v34-ui #rpgDlg:not(.sm-immersive) .v24-sprint-bar #v24ShopShortcut{grid-column:3;grid-row:1/span 2}
+html.v34-ui #rpgDlg:not(.sm-immersive) .v24-sprint-bar small{display:none!important}
+@media(min-width:721px){
+ html.v34-ui #hero .titleblock{display:none!important}
+ html.v34-ui #hero.hero{grid-template-columns:minmax(0,1fr) auto auto!important}
+}
+@media(max-width:720px){
+ html.v34-ui #hero.hero{
+  display:grid!important;grid-template-columns:minmax(0,1fr) auto auto!important;
+  height:auto!important;min-height:49px!important;max-height:62px!important;
+  padding:6px 9px!important;gap:4px!important;
+ }
+ html.v34-ui #hero .titleblock h1 button{font-size:.91rem!important}
+ html.v34-ui #hero #v34Harvest{
+  min-height:34px!important;padding:5px 7px!important;font-size:.68rem!important;
+ }
+ html.v34-ui #hero .stats{
+  grid-column:3;justify-self:end;max-width:120px!important;width:auto!important;
+  padding:0!important;gap:0!important;
+ }
+ html.v34-ui #hero .stats .cell:not(:last-child){display:none!important}
+ html.v34-ui #hero .stats .cell:last-child{
+  min-height:35px!important;padding:5px 6px!important;max-width:120px!important;
+  flex-direction:row!important;align-items:center!important;
+ }
+ html.v34-ui #hero .stats .cell:last-child .ic{display:none!important}
+ html.v34-ui #hero #meChip{
+  display:block;max-width:108px!important;overflow:hidden!important;
+  text-overflow:ellipsis!important;white-space:nowrap!important;
+  font-size:.69rem!important;line-height:1.1!important;
+ }
+ html.v34-ui #rpgDlg:not(.sm-immersive) .r12-head{display:none!important}
+ html.v34-ui #rpgDlg:not(.sm-immersive) .v24-sprint-bar{
+  grid-template-columns:minmax(62px,1fr) auto auto!important;gap:4px!important;
+  padding:7px!important;
+ }
+ html.v34-ui #rpgDlg:not(.sm-immersive) .v24-sprint-bar #v24SprintText{display:none!important}
+ html.v34-ui #rpgDlg:not(.sm-immersive) .v24-sprint-bar button{
+  font-size:.67rem!important;padding:6px 7px!important;min-height:40px!important;
+ }
+}
+@media(max-width:350px){
+ html.v34-ui #hero .titleblock h1 button{font-size:.79rem!important}
+ html.v34-ui #hero #v34Harvest{font-size:.63rem!important;padding:4px 5px!important}
+ html.v34-ui #hero .stats{max-width:97px!important}
+ html.v34-ui #hero #meChip{max-width:86px!important;font-size:.65rem!important}
+ html.v34-ui #rpgDlg:not(.sm-immersive) .v24-sprint-bar button{padding:6px 4px!important;font-size:.62rem!important}
+}
