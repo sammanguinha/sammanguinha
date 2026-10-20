@@ -138,3 +138,10 @@
 @media(max-width:380px){#areas .v32-tabs>button svg{width:16px!important;height:16px!important}#areas .v32-tabs>button span{font-size:.57rem!important}#home .sm35-live-text strong{font-size:.63rem!important}}
 @media(max-height:640px) and (max-width:720px){#hero.hero{display:none!important}#gameDlg #gCv{max-height:calc(100dvh - 182px)}}
 @media(prefers-reduced-motion:reduce){#home .sm35-live-card{transition:none!important}}
+
+/* A antiga alça flutuante de acessibilidade da V23 pode sobrepor o menu
+   compacto. Ocultá-la SOMENTE enquanto Explorar está aberto impede
+   interceptação de toques; configurações continuam acessíveis no menu. */
+@media(max-width:720px){
+ body:has(#v32MorePanel:not([hidden])) #r23SettingsToggle{visibility:hidden!important;pointer-events:none!important}
+}
