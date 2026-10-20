@@ -99,6 +99,6 @@
  window.SamCompactV36=Object.freeze({
   getVisibleHouseArea:()=>houseEditor?.classList.contains('sm36-pane-hidden')?'garden':'decor',
   openRpgPanels:()=>{$('sm36RpgSideToggle')?.click()},
-  showGarden:()=>{if(typeof window.showPane==='function')window.showPane('houseDlg');tabs?.querySelector('[data-sm36-house="garden"]')?.click()}
+  showGarden:()=>{if(typeof window.showPane==='function')window.showPane('houseDlg');$('sm36HouseSwitch')?.querySelector('[data-sm36-house="garden"]')?.click()}
  });
 })();
