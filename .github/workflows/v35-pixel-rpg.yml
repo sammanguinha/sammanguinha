@@ -1,0 +1,92 @@
+name: V35 - Cronicas em Pixels
+on:
+  push:
+    branches:
+      - dev/v35-pixel-rpg-ui
+  workflow_dispatch:
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar scripts, SVG originais e compilar
+        run: |
+          set -euo pipefail
+          node --check js/ui/v35-pixel-ui.js
+          node --check tests/v35_pixel_browser.cjs
+          node - <<'NODE'
+          const fs=require('fs');
+          for(const name of ['sprites/ui-pixel-icons.svg','sprites/ui-pixel-orchard.svg']){
+            const s=fs.readFileSync(name,'utf8');
+            if(!s.includes('shape-rendering="crispEdges"')||!s.includes('</svg>'))throw Error('Sprite incomplete '+name);
+          }
+          const html=fs.readFileSync('index.html','utf8');
+          if(!html.includes('css/v35-pixel-rpg.css?v=35.0')||!html.includes('js/ui/v35-pixel-ui.js?v=35.0'))throw Error('V35 missing from HTML');
+          NODE
+          node scripts/build-v26.cjs
+      - name: Regressões de arquitetura
+        run: |
+          node --test tests/v25_architecture.test.cjs tests/v26_bundle.test.cjs tests/v27_bridge_ui.test.cjs tests/v28_visual.test.cjs tests/v29_cronicas.test.cjs tests/v30_cinematics.test.cjs tests/v30_news.test.cjs
+      - name: Instalar Chromium para testes de toque
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Pixel RPG V35 - desktop, tablet, telefone e 320px
+        run: node tests/v35_pixel_browser.cjs
+      - name: Rework visual V34
+        run: node tests/v34_rework_browser.cjs
+      - name: Navegação compacta V33.6
+        run: node tests/v36_compact_browser.cjs
+      - name: Horta, perfil e contratos V33.5
+        run: node tests/v34_35_life_browser.cjs
+      - name: Combate e Defesa V33.3
+        run: node tests/v33_3_combat_browser.cjs
+      - name: Campanha e mundo V33
+        run: node tests/v33_world_browser.cjs
+      - name: Regressões do Jardim e menu V32
+        run: |
+          node tests/v31_jardim_browser.cjs
+          node tests/v32_structure_browser.cjs
+      - name: Testar o ZIP de produção antes de entregar
+        run: |
+          SM_GAME_ROOT=dist node tests/v35_pixel_browser.cjs
+          test -f dist/sprites/ui-pixel-icons.svg
+          test -f dist/sprites/ui-pixel-orchard.svg
+          test -f dist/css/v35-pixel-rpg.css
+          test -f dist/js/ui/v35-pixel-ui.js
+          find dist -type f \( -name '*.exe' -o -name '*.dll' -o -name '*.bat' -o -name '*.ps1' \) | tee /tmp/unexpected-files.txt
+          test ! -s /tmp/unexpected-files.txt
+      - name: Screenshots para inspeção visual
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: V35-Pixel-RPG-Screenshots
+          path: v35-screenshots/*.png
+          if-no-files-found: ignore
+  pacote:
+    needs: validar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Gerar ZIP direto para Cloudflare
+        run: |
+          set -euo pipefail
+          node scripts/build-v26.cjs
+          cd dist
+          zip -qr ../Sam-Manguinha-V35-Cronicas-em-Pixels-Cloudflare.zip .
+          cd ..
+          unzip -t Sam-Manguinha-V35-Cronicas-em-Pixels-Cloudflare.zip | tail -1
+          sha256sum Sam-Manguinha-V35-Cronicas-em-Pixels-Cloudflare.zip > SHA256-V35.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V35-Cronicas-em-Pixels-Cloudflare
+          path: |
+            Sam-Manguinha-V35-Cronicas-em-Pixels-Cloudflare.zip
+            SHA256-V35.txt
