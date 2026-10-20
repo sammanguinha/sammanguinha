@@ -105,6 +105,26 @@
  #profDlg .map-header p{display:none!important}
  #profDlg #sm34Wardrobe{margin:8px 0!important;padding:10px!important}
 }
+/* Body-level mobile menu: no nested stacking context can intercept taps. */
+@media(max-width:720px){
+ #v32MorePanel:not([hidden]){
+  position:fixed!important;inset:auto 7px calc(62px + env(safe-area-inset-bottom)) 7px!important;
+  width:auto!important;max-height:65dvh!important;display:grid!important;gap:9px!important;
+  overflow-y:auto!important;padding:13px!important;border-radius:14px!important;
+  color:#f6eeda!important;background:linear-gradient(145deg,#263d46,#142933)!important;
+  border:1px solid #caaf85a9!important;box-shadow:0 -14px 54px #000d!important;
+  z-index:2147483600!important;box-sizing:border-box!important;
+ }
+ #v32MorePanel[hidden],#v32MorePanel button[hidden],#v32SearchEmpty[hidden]{display:none!important}
+ #v32MorePanel label{font:800 .8rem Inter,system-ui,sans-serif;color:#f2d9a6}
+ #v32MorePanel input{width:100%;min-height:44px;padding:10px 13px;color:#fff3db;background:#0b2028;border:1px solid #779e94;border-radius:9px;font:500 .83rem Inter,system-ui,sans-serif}
+ #v32MoreDestinations{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px}
+ #v32MoreDestinations button{min-width:0;min-height:44px!important;display:flex!important;justify-content:flex-start!important;align-items:center;gap:6px;white-space:normal;text-align:left;padding:9px!important;border:1px solid #ffffff2d!important;background:#ffffff0a!important;color:#f3e5c9!important;font:.73rem/1.3 Inter,system-ui,sans-serif}
+ #v32MoreDestinations button svg{flex:none;width:17px;height:17px}
+ #v32MorePanel .nav-actions.sm36-nav-options{display:flex!important;position:static!important;gap:8px;align-items:center;padding-top:8px;border-top:1px solid #ffffff24}
+ #v32MorePanel .sm36-nav-options button{display:inline-flex!important;align-items:center;justify-content:center;min-height:44px!important;flex:1 1 0;max-width:none!important;padding:8px!important}
+ #v32SearchEmpty{margin:0;padding:7px;font:.8rem Inter,system-ui,sans-serif;color:#e0d7bf}
+}
 /* The V23 floating accessibility control must not sit over the V32 destination menu.
    It remains available outside the menu; opening Explore gives the menu touch priority. */
 @media(max-width:720px){
