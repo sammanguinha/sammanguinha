@@ -15,7 +15,12 @@ const server=http.createServer((req,res)=>{let file=path.resolve(root,'.'+decode
    const data=p.endsWith('/rpc/quest_state')?{goals:[],title:''}:p.endsWith('/rpc/game_bonus')?{mangoes:0,xp:0}:p.endsWith('/rpc/claim_profile')?{mangoes:0,xp:0,found:[],avatar:{c:0,h:'none'}}:[];
    r.fulfill({status:200,contentType:'application/json',body:JSON.stringify(data)});
   });
-  await page.addInitScript(()=>{localStorage.setItem('sg_handle','v36test');localStorage.setItem('sg_tok','abcdefghijklmnopqrstuvwxyz123456789');localStorage.setItem('sm_last_seen_update_version','24.0.0');localStorage.setItem('sm_last_seen_release_v29','29.0.0');localStorage.setItem('sm_last_seen_v31_preview','31.0.0-preview');});
+  await page.addInitScript(()=>{localStorage.setItem('sg_handle','v36test');localStorage.setItem('sg_tok','abcdefghijklmnopqrstuvwxyz123456789');localStorage.setItem('sm_last_seen_update_version','24.0.0');localStorage.setItem('sm_last_seen_release_v29','29.0.0');localStorage.setItem('sm_last_seen_v31_preview','31.0.0-preview');
+   if(!localStorage.getItem('sam_rpg_hibrido_v12_v36test'))localStorage.setItem('sam_rpg_hibrido_v12_v36test',JSON.stringify({
+    map:'vila',x:11.7,y:10.8,seen:['welcome'],found:[],journal:[],
+    epic:{class:'guardiao',level:4,xp:20,points:0,stats:{vig:5,for:7,int:5,agi:4},gold:50,hp:60,mp:12,potions:4,
+    chapter:0,seenIntro:true,items:['semente_guardia'],equipped:['semente_guardia'],defeated:[],flags:{},story:[],v33:{},v34:{}}
+   }));});
   await page.goto('http://127.0.0.1:4296/',{waitUntil:'domcontentloaded',timeout:45000});
   await page.waitForFunction(()=>!!window.SamCompactV36&&!!window.SamGardenV34&&!!window.SamSiteV35,{timeout:23000});
   const overflow=async()=>page.evaluate(()=>({width:document.documentElement.scrollWidth,viewport:innerWidth}));
