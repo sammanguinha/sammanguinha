@@ -139,6 +139,25 @@
  if(heading&&heading.textContent.length>30)heading.classList.add('v34-condensed-title');
  const houseHeading=house.querySelector('.sm21-house-top h2');
  if(houseHeading)houseHeading.textContent='Meu Refúgio';
+ // V17 mantinha um guia grande acima do jogo e V16.5 mantinha um painel de
+ // acessibilidade de página inteira. Os dois continuam funcionando, agora
+ // recolhidos e sem competir com o canvas.
+ const legacyGuide=$('sm171Hud'),guideText=$('sm171Guide'),worldTools=$('v34WorldTools');
+ if(worldTools){
+  if(legacyGuide)worldTools.append(legacyGuide);
+  if(guideText)worldTools.append(guideText);
+ }
+ const accessibility=document.querySelector('.sm165-settings'),explore=$('v32MorePanel');
+ if(accessibility&&explore&&!$('v34Accessibility')){
+  const details=el('details','v34-accessibility');details.id='v34Accessibility';
+  details.append(el('summary',null,'♿ Acessibilidade e conforto'));
+  explore.append(details);details.append(accessibility);
+ }
+ // Preferências duplicadas da V23 continuam carregadas para compatibilidade,
+ // mas o usuário encontra alto contraste, fonte maior e efeitos leves num
+ // único local, no menu Explorar.
+ const fullBtn=rpg.querySelector('.r12-frame>.sm-rpg-map-enter');
+ if(fullBtn){fullBtn.textContent='⛶ Tela cheia';fullBtn.setAttribute('aria-label','Jogar RPG em tela cheia');}
  // Estatísticas legíveis sem cards repetidos e sem loop ativo fora da Home.
  function refresh(){
   if(home.hidden)return;
