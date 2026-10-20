@@ -5,7 +5,7 @@ html.sm35-booting {
  background:#0c1e2a;
 }
 html.sm35-booting body {
- visibility:hidden!important;
+ visibility:hidden;
  animation:sm35-rescue-page 0s linear 7s forwards;
 }
 html.sm35-booting::before{
