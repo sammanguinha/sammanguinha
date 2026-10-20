@@ -89,8 +89,20 @@
  // rather than creating a second set with duplicate IDs and dead handlers.
  const areas=$('areas'),tabs=areas?.querySelector('.v32-tabs'),more=$('v32MoreWrap');
  if(areas&&tabs&&more){
-  const toggle=more.querySelector('#v32MoreToggle');
-  if(toggle){toggle.title='Abrir outras áreas';}
+  const toggle=more.querySelector('#v32MoreToggle'),actions=areas.querySelector('.nav-actions'),panel=$('v32MorePanel');
+  if(toggle)toggle.title='Abrir outras áreas';
+  if(actions&&panel){
+   const marker=document.createComment('V33.6: original settings/admin position');
+   actions.before(marker);
+   function placeActions(){
+    if(mobile.matches){
+     if(actions.parentElement!==panel){panel.append(actions);actions.classList.add('sm36-nav-options')}
+    }else{
+     if(actions.parentElement===panel){marker.after(actions);actions.classList.remove('sm36-nav-options')}
+    }
+   }
+   placeActions();mobile.addEventListener('change',placeActions);
+  }
  }
  const current=()=>home.hidden?'game': 'home';
  document.documentElement.dataset.sm36View=current();
