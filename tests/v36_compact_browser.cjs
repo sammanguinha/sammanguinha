@@ -35,6 +35,10 @@ const server=http.createServer((req,res)=>{let file=path.resolve(root,'.'+decode
   await page.locator('#v32MoreToggle').click();assert.ok(await page.locator('#v32MorePanel').isVisible(),'all secondary navigation reachable');
   await page.locator('#v32DestinationSearch').fill('Galeria');
   assert.ok(await page.locator('#v32MorePanel button[data-p="galDlg"]').isVisible(),'search existing gallery');
+  if(compact)assert.equal(await page.locator('#v32MorePanel #setBtn').count(),1,'original settings preserved in mobile menu');
+  await page.locator('#v32MorePanel button[data-p="galDlg"]').click();
+  assert.equal(await page.locator('#galDlg').isVisible(),true,'actual secondary destination responds to touch');
+  await page.locator('#v32MoreToggle').click();
   await page.keyboard.press('Escape');assert.ok(await page.locator('#v32MorePanel').isHidden(),'menu closes with escape');
   await page.evaluate(()=>{window.SamHybridRPG.chooseClass('guardiao');window.showPane('rpgDlg');});
   assert.equal(await page.locator('#r12Canvas').isVisible(),true,'RPG canvas visible');
