@@ -141,6 +141,7 @@ async function run(){
   assert.equal((await player()).map,'vila','fast travel changes real room');
   assert.equal(await page.evaluate(()=>window.SamHybridRPG.travelV33('mirantePrimeiraLuz')),true,'visited summit accessible');
   assert.equal((await player()).map,'mirantePrimeiraLuz','fast travel respects discovered routes');
+  if(await page.locator('#sm36RpgSideToggle').isVisible()&&await page.locator('#sm36RpgSideToggle').getAttribute('aria-expanded')==='false')await page.locator('#sm36RpgSideToggle').click();
   await page.locator('#v33AtlasOpen').click();
   assert.ok(await page.locator('#v33Atlas').isVisible(),'in-game atlas works');
   await page.locator('#v33Atlas button[data-atlas-tab="quests"]').click();
