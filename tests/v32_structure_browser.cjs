@@ -32,7 +32,7 @@ const server=http.createServer((req,res)=>{
   });
   await page.goto('http://127.0.0.1:4292/',{waitUntil:'domcontentloaded',timeout:45000});
   await page.waitForFunction(()=>!!window.SamSiteV32&&typeof window.showPane==='function',{timeout:25000});
-  await page.waitForFunction(()=>/V3[234]/.test(document.getElementById('sm30NewsVersion')?.textContent||''));
+  await page.waitForFunction(()=>/V3[2345]/.test(document.getElementById('sm30NewsVersion')?.textContent||''));
   if(await page.locator('#sm36NewsDetails').count())await page.locator('#sm36NewsDetails').evaluate(el=>{el.open=true});
   assert.ok((await page.locator('#sm30NewsHeading').innerText()).length>10,'release news visible');
   assert.ok((await page.locator('#smUpdatePanel .sm-update-history').innerText()).includes('Reestruturação Geral'),'V32 details available');

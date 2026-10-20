@@ -35,7 +35,7 @@ test('Classic scripts retain execution order, do not use async/defer, and compil
  assert.ok(html.indexOf('src="js/games/halloween-wardrobe.js?v=25"')<html.indexOf('src="rpg_epico_expansao.js"'));
  assert.ok(html.indexOf('src="js/ui/update-notice.js?v=25"')>html.indexOf('src="mundo_pomar.js"'));
  for(const m of html.matchAll(/<script\b([^>]*)src="(js\/[^"]+)"([^>]*)>/gi)){
-  if(['js/ui/game-shell-v27.js?v=27','js/ui/v32-structure.js?v=32.0','js/ui/v32-news.js?v=32.0','js/ui/v33-atlas.js?v=33.0','js/ui/v33-news.js?v=33.5','js/ui/v34-garden.js?v=33.4','js/ui/v35-site.js?v=33.5','js/ui/v36-compact.js?v=33.6','js/ui/v34-rework.js?v=34.0'].includes(m[2]))continue; // Visual components initialize after DOM parsing; V25 core remains classic.
+  if(['js/ui/game-shell-v27.js?v=27','js/ui/v32-structure.js?v=32.0','js/ui/v32-news.js?v=32.0','js/ui/v33-atlas.js?v=33.0','js/ui/v33-news.js?v=33.5','js/ui/v34-garden.js?v=33.4','js/ui/v35-site.js?v=33.5','js/ui/v36-compact.js?v=33.6','js/ui/v34-rework.js?v=34.0','js/ui/v35-pixel-ui.js?v=35.0'].includes(m[2]))continue; // Visual components initialize after DOM parsing; V25 core remains classic.
   assert.doesNotMatch(m[1]+m[3],/\b(?:defer|async|type="module")\b/i);
  }
 });

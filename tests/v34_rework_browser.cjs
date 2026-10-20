@@ -82,7 +82,7 @@ const server=http.createServer((req,res)=>{
   await page.locator('#homeBtn').click();
   await page.locator('#sm36NewsDetails summary').click();
   assert.ok(await page.locator('#sm30NewsHeading').isVisible(),'news available on demand');
-  assert.match(await page.locator('#sm30NewsVersion').innerText(),/V34/);
+  assert.match(await page.locator('#sm30NewsVersion').innerText(),/V35/);
   await page.locator('#sm36NewsDetails summary').click();
   await checkNoOverflow('home');
   fs.mkdirSync(shots,{recursive:true});
