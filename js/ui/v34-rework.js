@@ -165,7 +165,7 @@
  if(eventBar&&explore){
   explore.append(eventBar);
   const check=()=>{
-   if(/\\b(?:undefined|NaN)\\b/i.test(eventBar.textContent||'')){
+   if(/\b(?:undefined|NaN)\b/i.test(eventBar.textContent||'')){
     eventBar.hidden=true;eventBar.classList.add('v34-event-invalid');
    }else eventBar.classList.remove('v34-event-invalid');
   };
