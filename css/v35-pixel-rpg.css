@@ -189,7 +189,7 @@ html.v35-pixel #areas :is(.nav-actions button,.v32-more-panel button):hover{
  background:#38654e!important;color:#f9e5a8!important;
 }
 html.v35-pixel #v32MorePanel{
- position:fixed;border:3px solid #83bb9e!important;
+ position:absolute;border:3px solid #83bb9e!important;
  border-radius:0!important;background:#152c36!important;
  box-shadow:inset 0 0 0 3px #2e5050,6px 6px 0 #050d17!important;
  backdrop-filter:none!important;color:#f5e5b4!important;
@@ -882,6 +882,7 @@ html.v35-pixel #rpgDlg.sm-immersive .r12-bubble{
   width:24px;height:24px;background-size:144px 24px;
  }
  html.v35-pixel #v32MorePanel{
+  position:fixed!important;
   border:3px solid #84ae95!important;
   left:6px!important;right:6px!important;
   bottom:calc(70px + env(safe-area-inset-bottom))!important;
