@@ -1,0 +1,337 @@
+/* ===============================================================
+   SAM MANGUINHA V35 — CRÔNICAS EM PIXELS
+   Um único sistema visual de RPG 16-bit, sem imagens ou fontes de
+   jogos existentes. Construído sobre V34 sem trocar handlers/saves.
+   =============================================================== */
+html.v35-pixel {
+ --px-bg:#0d1926;
+ --px-night:#101e2e;
+ --px-wall:#192e38;
+ --px-panel:#19372f;
+ --px-panel2:#243e39;
+ --px-ink:#f9edc8;
+ --px-muted:#bfceb2;
+ --px-light:#c9f1b4;
+ --px-green:#74bc88;
+ --px-sun:#f6cf85;
+ --px-edge:#7bb899;
+ --px-edge-dark:#0a1724;
+ --px-danger:#e67e78;
+ --px-shadow:4px 4px 0 #070f1b;
+ --px-text:'Pixelify Sans','VT323',monospace;
+ --px-hud:'VT323','Pixelify Sans',monospace;
+ --font-gothic:var(--px-text);
+ --font-title:var(--px-text);
+ --font-pixel:var(--px-text);
+ --font-body:var(--px-text);
+ --font-ui:var(--px-text);
+ color-scheme:dark;
+}
+html.v35-pixel body{
+ font-family:var(--px-text)!important;
+ font-size:17px!important;
+ line-height:1.4!important;
+ color:var(--px-ink)!important;
+ background-color:var(--px-bg)!important;
+ background-image:
+  repeating-linear-gradient(0deg,transparent 0,transparent 31px,#a5d7b006 31px,#a5d7b006 32px),
+  repeating-linear-gradient(90deg,transparent 0,transparent 31px,#a5d7b006 31px,#a5d7b006 32px),
+  linear-gradient(180deg,#0d1b29 0%,#112832 55%,#0d1926 100%)!important;
+}
+html.v35-pixel body :is(button,input,textarea,select,summary,label,option,span,b,strong,p,a,li,dt,dd,th,td,small,div,h1,h2,h3,h4,h5){
+ font-family:var(--px-text)!important;
+}
+html.v35-pixel :is(#areas,#home,#panes,#diary) :is(h1,h2,h3,h4,.ptitle,.who){
+ font-family:var(--px-text)!important;
+ font-weight:700!important;
+ letter-spacing:.012em!important;
+ text-transform:none!important;
+}
+html.v35-pixel :is(#home,#panes,#diary) :is(p,li,label,small){
+ font-size:clamp(14px,1vw + 6px,17px);
+ line-height:1.45!important;
+}
+html.v35-pixel :is(#home,#panes,#diary) :is(.eyebrow,.r23-hero-eyebrow,.sm35-eyebrow,.sm30-news-kicker,.v32-eyebrow){
+ font-size:12px!important;letter-spacing:.06em!important;
+}
+html.v35-pixel :is(#home,#panes,#diary) :is(button,summary,input,select,textarea){
+ border-radius:0!important;
+}
+html.v35-pixel :is(button,a,input,select,textarea,summary):focus-visible{
+ outline:3px dashed var(--px-sun)!important;
+ outline-offset:4px!important;
+}
+html.v35-pixel :is(#home,#panes,#diary,dialog) button{
+ transition:transform .12s steps(2,end),background-color .12s steps(2,end),color .12s steps(2,end)!important;
+}
+html.v35-pixel :is(#home,#panes,#diary) button:active:not(:disabled){
+ transform:translate(2px,2px)!important;
+ box-shadow:1px 1px 0 #050e17!important;
+}
+html.v35-pixel :is(#home,#panes,#diary) input:not([type=checkbox]):not([type=radio]),
+html.v35-pixel :is(#home,#panes,#diary) textarea,
+html.v35-pixel :is(#home,#panes,#diary) select{
+ background:#0c202c!important;
+ border:2px solid #638b7f!important;
+ box-shadow:inset 3px 3px 0 #07131d!important;
+ color:#fbefce!important;
+ border-radius:0!important;
+ min-height:42px;
+ padding:8px 10px!important;
+ font:500 16px var(--px-text)!important;
+}
+html.v35-pixel :is(#home,#panes,#diary) input::placeholder,
+html.v35-pixel :is(#home,#panes,#diary) textarea::placeholder{
+ color:#93b4b6!important;opacity:1!important;
+}
+html.v35-pixel :is(#home,#panes,#diary) input[type=checkbox],
+html.v35-pixel :is(#home,#panes,#diary) input[type=radio]{
+ accent-color:#88d5a4;width:18px;height:18px;
+}
+/* Decorative paper cards become inventory windows, without blurring game art. */
+html.v35-pixel :is(#home,#panes,#diary) :is(
+ .panel,.r12-card,.wardrobe-panel,.sm21-house-stage,.sm21-house-sidebar,
+ .sm17-social,.sm20-live,.orchard-map-container,.scene-investigation-card,
+ .sm33-defense-council,.sm34-garden,.sm35-dashboard,.v32-resume-panel,
+ .v32-library,.rpg-portal-section,.sm36-defense-tactics
+ ){
+ border-radius:0!important;
+ border:3px solid #749f8d!important;
+ outline:1px solid #071722;
+ background-color:#193439!important;
+ box-shadow:inset 0 0 0 2px #304f4c,inset 0 2px 0 #bfe9c142,4px 4px 0 #08131d!important;
+ backdrop-filter:none!important;
+}
+html.v35-pixel :is(#home,#panes,#diary) :is(.panel,.r12-card,.wardrobe-panel,.sm35-dashboard,.sm34-garden){
+ background-image:repeating-linear-gradient(0deg,transparent 0 18px,#bde0bb09 18px 19px)!important;
+}
+html.v35-pixel :is(#home,#panes,#diary) :is(.panel,.r12-card,.wardrobe-panel,.sm35-dashboard,.sm34-garden) h3{
+ color:var(--px-sun)!important;
+}
+html.v35-pixel :is(#home,#panes,#diary) :is(.btn-gothic,.btn,.portal-card,.sm35-live-card,[type=submit]){
+ border:2px solid #b2daae!important;
+ border-radius:0!important;
+ background:#29564b!important;
+ color:var(--px-ink)!important;
+ box-shadow:inset 2px 2px 0 #d5f3bb24,3px 3px 0 #07131b!important;
+ font-weight:700!important;
+ text-shadow:none!important;
+}
+html.v35-pixel :is(#home,#panes,#diary) :is(.btn-gothic,.btn,.portal-card,.sm35-live-card,[type=submit]):hover{
+ background:#38775d!important;
+ border-color:#f7d799!important;
+ filter:none!important;
+}
+html.v35-pixel :is(#home,#panes,#diary) :is(.btn-gothic,.btn,.portal-card,.sm35-live-card,[type=submit]):disabled{
+ opacity:.54;filter:saturate(.6)!important;
+}
+/* ███████ NAVIGATION ███████ */
+html.v35-pixel #areas{
+ min-height:65px!important;
+ border:0!important;border-bottom:4px solid #0a111e!important;
+ padding:6px clamp(8px,1.8vw,22px)!important;
+ background:#142a35!important;
+ background-image:repeating-linear-gradient(90deg,transparent 0 12px,#adf1bb08 12px 14px)!important;
+ box-shadow:0 4px 0 #07131d!important;
+ backdrop-filter:none!important;
+}
+html.v35-pixel #areas .logo-title{
+ color:#fce4a8!important;
+ font:700 21px var(--px-text)!important;white-space:nowrap;
+ letter-spacing:.015em!important;text-shadow:2px 2px 0 #0a151d!important;
+}
+html.v35-pixel #areas .v32-tabs{gap:5px!important}
+html.v35-pixel #areas .v32-tabs>button,
+html.v35-pixel #areas #v32MoreToggle{
+ position:relative;
+ border:2px solid transparent!important;
+ border-radius:0!important;
+ background:transparent!important;
+ box-shadow:none!important;
+ color:#dcebc6!important;
+ font:700 15px/1.1 var(--px-text)!important;
+ text-shadow:none!important;
+ padding:7px 9px!important;min-height:47px!important;
+}
+html.v35-pixel #areas .v32-tabs>button:hover,
+html.v35-pixel #areas #v32MoreToggle:hover{
+ background:#2d514b!important;border-color:#6dab89!important;
+}
+html.v35-pixel #areas .v32-tabs>button[aria-current=page],
+html.v35-pixel #areas .v32-tabs>button.active,
+html.v35-pixel #areas .v32-tabs>button.on,
+html.v35-pixel #areas .v32-tabs>button[aria-pressed=true]{
+ background:#35634c!important;color:#fff0c0!important;
+ border-color:#f3d18f!important;
+ box-shadow:inset 2px 2px 0 #e8f2ba38,3px 3px 0 #07141d!important;
+}
+html.v35-pixel #areas .v32-tabs>button svg,
+html.v35-pixel #areas #v32MoreToggle .v32-more-icon{display:none!important}
+html.v35-pixel #areas .v32-tabs>button:before,
+html.v35-pixel #areas #v32MoreToggle:before{
+ content:"";width:24px;height:24px;flex:none;display:block;
+ background-image:url("../sprites/ui-pixel-icons.svg");
+ background-repeat:no-repeat;background-size:144px 24px;
+ background-position:0 0;image-rendering:pixelated;
+}
+html.v35-pixel #areas #rpgWorldBtn:before{background-position:-24px 0}
+html.v35-pixel #areas #gameBtn:before{background-position:-48px 0}
+html.v35-pixel #areas #houseBtn:before{background-position:-72px 0}
+html.v35-pixel #areas #profBtn:before{background-position:-96px 0}
+html.v35-pixel #areas #v32MoreToggle:before{background-position:-120px 0}
+html.v35-pixel #areas .nav-actions>button,
+html.v35-pixel #areas .nav-actions button{
+ background:#253f44!important;color:#f0e6cb!important;
+ border:2px solid #6a9c8b!important;border-radius:0!important;
+ min-height:43px!important;box-shadow:2px 2px 0 #08131e!important;
+}
+html.v35-pixel #areas :is(.nav-actions button,.v32-more-panel button):hover{
+ background:#38654e!important;color:#f9e5a8!important;
+}
+html.v35-pixel #v32MorePanel{
+ position:fixed;border:3px solid #83bb9e!important;
+ border-radius:0!important;background:#152c36!important;
+ box-shadow:inset 0 0 0 3px #2e5050,6px 6px 0 #050d17!important;
+ backdrop-filter:none!important;color:#f5e5b4!important;
+}
+html.v35-pixel #v32MorePanel input{
+ background:#0b1d29!important;border:2px solid #83ae8d!important;
+ color:#f8ebc8!important;border-radius:0!important;
+ font:500 17px var(--px-text)!important;
+}
+html.v35-pixel #v32MorePanel .v32-more-destinations button,
+html.v35-pixel #v32MorePanel #v34Accessibility,
+html.v35-pixel #v32MorePanel .nav-actions button{
+ border-radius:0!important;border:2px solid #547e77!important;
+ color:#f0e6c9!important;background:#244541!important;
+ font:650 15px/1.2 var(--px-text)!important;
+ box-shadow:2px 2px 0 #0a1821!important;
+}
+html.v35-pixel #v32MorePanel #v34Accessibility>summary{
+ color:#f1d8a4!important;font:700 16px var(--px-text)!important;
+}
+/* ███████ TOP STATUS STRIP ███████ */
+html.v35-pixel #hero.hero{
+ min-height:53px!important;max-height:74px!important;
+ border:0!important;border-bottom:3px solid #294342!important;
+ background:#132b31!important;
+ background-image:repeating-linear-gradient(90deg,transparent 0 30px,#91bfa509 30px 32px)!important;
+ box-shadow:0 3px 0 #0a161e!important;
+}
+html.v35-pixel #hero :is(.hero-gate-art,.hang,.hero-badge,.tag,.subtitle,.chips){display:none!important}
+html.v35-pixel #hero #cheat,
+html.v35-pixel #hero .titleblock h1{
+ color:#f9df9e!important;
+ font:700 clamp(15px,1.5vw,21px)/1.15 var(--px-text)!important;
+ text-shadow:2px 2px 0 #07101a!important;white-space:nowrap;
+}
+html.v35-pixel #hero #v34Harvest{
+ min-height:39px!important;padding:8px 11px!important;border-radius:0!important;
+ background:#305b47!important;border:2px solid #a4d6a4!important;
+ box-shadow:3px 3px 0 #0b1520!important;
+ color:#fff0c8!important;font:700 15px var(--px-text)!important;
+}
+html.v35-pixel #hero .stats .cell{
+ min-height:38px!important;background:#1e4140!important;
+ border:2px solid #638f7f!important;border-radius:0!important;
+ box-shadow:2px 2px 0 #0b1720!important;color:#f4e9c5!important;
+}
+html.v35-pixel #hero .stats .cell .num,
+html.v35-pixel #hero .stats .cell .lnk{
+ color:#ffe2a4!important;font:700 16px var(--px-text)!important;
+}
+html.v35-pixel #hero .stats .cell small{font:600 11px var(--px-text)!important}
+html.v35-pixel #hero .stats .xp{
+ height:7px!important;border:1px solid #08171e;
+ background:repeating-linear-gradient(90deg,#2c4241 0 8px,#172c32 8px 10px)!important;
+}
+html.v35-pixel #hero .stats .xp i{
+ background:repeating-linear-gradient(90deg,#9be4a0 0 8px,#6bba88 8px 10px)!important;
+}
+/* ███████ HERO: ORIGINAL PIXEL ORCHARD SCENE ███████ */
+html.v35-pixel #home{gap:12px!important}
+html.v35-pixel #home .v32-adventure-home{
+ position:relative!important;overflow:hidden!important;
+ min-height:240px!important;padding:clamp(16px,3vw,38px)!important;
+ background-color:#172d36!important;
+ background-image:
+  linear-gradient(90deg,#0d2431 0%,#102635f5 27%,#102b32bb 58%,#102b324c 100%),
+  url("../sprites/ui-pixel-orchard.svg")!important;
+ background-size:100% 100%,min(100%,800px) 100%!important;
+ background-position:center,right center!important;
+ background-repeat:no-repeat!important;
+ image-rendering:pixelated;
+ border:4px solid #83b89a!important;border-radius:0!important;
+ outline:3px solid #07131c!important;
+ box-shadow:inset 0 0 0 3px #142b34,6px 6px 0 #070f19!important;
+}
+html.v35-pixel #home .v32-adventure-home:before,
+html.v35-pixel #home .v32-adventure-home:after{display:none!important}
+html.v35-pixel #home .r23-hero-copy{gap:12px!important}
+html.v35-pixel #home .r23-hero-eyebrow{
+ display:inline-flex!important;width:max-content;max-width:100%;
+ background:#1d403a!important;color:#b2ecb6!important;
+ border:2px solid #679d75!important;border-radius:0!important;
+ padding:4px 9px!important;
+ font:700 13px/1.2 var(--px-text)!important;
+ box-shadow:3px 3px 0 #0c1a23!important;
+}
+html.v35-pixel #home .v32-adventure-home h2{
+ font:700 clamp(26px,4vw,49px)/1.04 var(--px-text)!important;
+ max-width:750px!important;color:#ffe6a4!important;
+ text-shadow:3px 3px 0 #0b1b29,5px 5px 0 #0b1b29!important;
+ letter-spacing:0!important;
+}
+html.v35-pixel #home .r23-hero-copy>p{
+ font:500 clamp(15px,1.2vw,18px)/1.35 var(--px-text)!important;
+ color:#e3efd1!important;text-shadow:2px 2px 0 #081822!important;
+}
+html.v35-pixel #home .v34-progress-pill{
+ display:inline-flex!important;gap:8px;padding:6px 11px!important;
+ background:#122a31f0!important;border:2px solid #648e7c!important;
+ border-radius:0!important;box-shadow:3px 3px 0 #081822!important;
+ color:#e1f6c6!important;font:600 15px var(--px-text)!important;
+}
+html.v35-pixel #home .v34-progress-dot{
+ height:9px!important;width:9px!important;border-radius:0!important;
+ background:#a4f0a2!important;box-shadow:2px 2px 0 #0a1b29!important;
+}
+html.v35-pixel #home #v32Resume{
+ width:max-content;max-width:100%;min-width:230px;min-height:56px!important;
+ padding:12px 20px!important;margin:0!important;
+ background:#f1cc85!important;color:#20383a!important;
+ border:3px solid #ffe8ad!important;border-radius:0!important;
+ box-shadow:inset 0 4px 0 #fff6ce80,0 5px 0 #8d6946,4px 8px 0 #08131a!important;
+ font:700 clamp(17px,1.5vw,21px)/1.1 var(--px-text)!important;
+ text-shadow:none!important;
+}
+html.v35-pixel #home #v32Resume:hover{
+ background:#ffe09a!important;border-color:#fff2c1!important;
+ transform:translate(-1px,-2px)!important;filter:none!important;
+}
+html.v35-pixel #home #v32Resume:active{
+ transform:translate(2px,3px)!important;
+ box-shadow:0 2px 0 #8d6946!important;
+}
+html.v35-pixel #home .v32-resume-panel{
+ border:3px solid #6fada0!important;border-radius:0!important;
+ background:#102731eb!important;backdrop-filter:none!important;
+ padding:17px!important;gap:9px!important;
+ box-shadow:inset 0 0 0 3px #264c49,4px 4px 0 #08141e!important;
+}
+html.v35-pixel #home .v32-resume-panel:before{
+ content:"◆ REGISTRO DA JORNADA";display:block;color:#9fe2b0;
+ font:700 13px var(--px-text)!important;letter-spacing:.04em;
+}
+html.v35-pixel #home #v32ResumeTitle{
+ font:700 clamp(17px,2vw,22px)/1.2 var(--px-text)!important;color:#ffe4a0!important;
+}
+html.v35-pixel #home #v32ResumeDescription{
+ font:500 15px/1.25 var(--px-text)!important;color:#e0e8ce!important;
+}
+html.v35-pixel #home #v32ResumeSecondary{
+ background:#2c5c4c!important;border:2px solid #8bd29d!important;
+ color:#fff1c6!important;border-radius:0!important;
+ font:700 15px var(--px-text)!important;
+ box-shadow:3px 3px 0 #0b1720!important;
+}
