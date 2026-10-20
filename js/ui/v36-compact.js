@@ -40,7 +40,7 @@
   aside.id='sm36RpgExtras';
   button.setAttribute('aria-expanded',String(!mobile.matches));
   const main=rpg.querySelector('.r12-main');
-  if(main)main.after(button);
+  if(main)main.before(button);
   function set(open){aside.classList.toggle('sm36-aside-open',open);button.setAttribute('aria-expanded',String(open));button.textContent=open?'✕ Recolher painéis':'📜 Missões e mochila'}
   set(!mobile.matches);
   button.addEventListener('click',()=>set(button.getAttribute('aria-expanded')!=='true'));
