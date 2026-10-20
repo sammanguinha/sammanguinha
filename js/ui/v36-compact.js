@@ -91,6 +91,18 @@
  if(areas&&tabs&&more){
   const toggle=more.querySelector('#v32MoreToggle'),actions=areas.querySelector('.nav-actions'),panel=$('v32MorePanel');
   if(toggle)toggle.title='Abrir outras áreas';
+  if(panel){
+   // The legacy V23/V17 floating HUD can create a higher stacking context than
+   // the nested nav menu on narrow screens. Portal the menu to BODY only on
+   // mobile so every destination remains tappable; restore on desktop.
+   const menuMarker=document.createComment('V33.6 menu original position');
+   panel.before(menuMarker);
+   function placeMenu(){
+    if(mobile.matches&&panel.parentElement!==document.body)document.body.append(panel);
+    else if(!mobile.matches&&panel.parentElement===document.body)menuMarker.after(panel);
+   }
+   placeMenu();mobile.addEventListener('change',placeMenu);
+  }
   if(actions&&panel){
    const marker=document.createComment('V33.6: original settings/admin position');
    actions.before(marker);
