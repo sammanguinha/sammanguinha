@@ -101,4 +101,8 @@
   getNavLabels:()=>navButtons.map(x=>({id:x.btn.id,text:x.text.textContent})),
   refreshDock:syncDock
  });
+ // All older modules and the final V35 pixel skin now agree on one layout.
+ // Reveal exactly once, rather than showing V25 → V34 → V35 transitions.
+ document.documentElement.dataset.sm35Ready='true';
+ document.documentElement.classList.remove('sm35-booting');
 })();
