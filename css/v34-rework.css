@@ -399,3 +399,93 @@ html.v34-ui{scroll-padding-top:80px;color-scheme:dark}
 .v34-ui #hero #v34Harvest:hover{background:#376850!important}
 .v34-ui #home .sm35-live-card.v34-duplicate-route{display:none!important}
 @media(max-width:720px){.v34-ui #hero #v34Harvest{min-height:35px!important;padding:5px 8px!important;font-size:.7rem!important}.v34-ui #hero .stats .cell:nth-child(1){display:none!important}}
+
+/* V34 visual QA round 2 — retire duplicate floating widgets, not functionality. */
+html.v34-ui #r23SettingsToggle,
+html.v34-ui #r23SettingsPanel,
+html.v34-ui #smUpdatesReopen{display:none!important}
+html.v34-ui[data-sm36-view=game] #mascot{display:none!important}
+html.v34-ui #mascot{transform:scale(.68)!important;transform-origin:bottom left!important;opacity:.85}
+html.v34-ui #v32MorePanel #v34Accessibility{
+ display:block;margin-top:9px;padding:0;border:1px solid #9fc6ac63;border-radius:10px;
+ background:#172f35;overflow:hidden;min-width:0;
+}
+html.v34-ui #v32MorePanel #v34Accessibility>summary{
+ display:flex;align-items:center;justify-content:space-between;min-height:45px;padding:10px 13px;
+ list-style:none;cursor:pointer;color:#f6e3ba;font:800 .82rem Inter,system-ui,sans-serif;
+}
+html.v34-ui #v32MorePanel #v34Accessibility>summary::-webkit-details-marker{display:none}
+html.v34-ui #v32MorePanel #v34Accessibility>summary:after{content:'⌄';font-size:1.1rem}
+html.v34-ui #v32MorePanel #v34Accessibility[open]>summary:after{transform:rotate(180deg)}
+html.v34-ui #v32MorePanel #v34Accessibility .sm165-settings{
+ margin:0!important;padding:12px!important;border:0!important;box-shadow:none!important;
+ background:#0f2831!important;border-radius:0!important;color:#e8e9d7!important;
+}
+html.v34-ui #v32MorePanel #v34Accessibility .sm165-settings h3{font-size:.86rem!important;color:#f3dfb7!important;margin:0 0 8px!important}
+html.v34-ui #v32MorePanel #v34Accessibility .sm165-settings label{
+ display:flex;align-items:center;gap:10px;min-height:42px!important;
+ font:.8rem Inter,system-ui,sans-serif!important;
+}
+html.v34-ui #v32MorePanel #v34Accessibility .sm165-settings input{width:19px!important;height:19px!important}
+html.v34-ui #v32MorePanel #v34Accessibility .sm165-settings p{margin:7px 0 0!important;font:.72rem/1.5 Inter,system-ui,sans-serif!important}
+/* Legacy full-width guide relocated inside the secondary World Tools disclosure. */
+html.v34-ui #rpgDlg #v34WorldTools #sm171Hud{margin:7px 12px!important;display:flex;gap:8px;justify-content:flex-start!important}
+html.v34-ui #rpgDlg #v34WorldTools #sm171Hud button{min-height:41px;font-size:.78rem}
+html.v34-ui #rpgDlg #v34WorldTools #sm171Guide{margin:7px 12px 14px!important;font-size:.79rem}
+/* One fullscreen entry only, anchored to top right of the playable map.
+   Keep the map button (and its existing handler) in the DOM. */
+html.v34-ui #rpgDlg:not(.sm-immersive) .r12-head>.sm-rpg-head-enter{display:none!important}
+html.v34-ui #rpgDlg:not(.sm-immersive) .r12-frame>.sm-rpg-map-enter{
+ display:inline-flex!important;position:absolute!important;
+ top:8px!important;right:8px!important;bottom:auto!important;left:auto!important;
+ transform:none!important;min-height:36px!important;min-width:0!important;
+ max-width:123px!important;padding:7px 9px!important;
+ font:850 .69rem/1.15 Inter,system-ui,sans-serif!important;
+ white-space:nowrap!important;letter-spacing:0!important;
+ box-shadow:0 3px 15px #0009!important;border-radius:9px!important;
+ background:linear-gradient(120deg,#f0d9ad,#d7b979)!important;z-index:55!important;
+}
+html.v34-ui #rpgDlg:not(.sm-immersive) .r12-frame>.sm-rpg-map-enter:hover,
+html.v34-ui #rpgDlg:not(.sm-immersive) .r12-frame>.sm-rpg-map-enter:active{transform:none!important}
+/* Two legacy HUDs used to obscure the world. Region stays in the compact V27
+   HUD, so the other banner is redundant. Always keep values & status readable. */
+html.v34-ui #rpgDlg:not(.sm-immersive) .r12-frame>.r12-hud{display:none!important}
+html.v34-ui #rpgDlg:not(.sm-immersive) #v27RpgHud{
+ position:absolute!important;top:7px!important;left:7px!important;right:auto!important;bottom:auto!important;
+ width:min(54%,220px)!important;max-width:220px!important;height:auto!important;max-height:87px!important;
+ margin:0!important;padding:7px 8px!important;overflow:hidden!important;
+ background:#0f2533e8!important;border:1px solid #a5d7b76e!important;
+ border-radius:9px!important;box-shadow:0 4px 14px #0008!important;z-index:30!important;
+ pointer-events:none!important;opacity:.97;
+}
+html.v34-ui #rpgDlg:not(.sm-immersive) #v27RpgHud .v27-hud-heading{
+ display:flex!important;align-items:center;justify-content:space-between;
+ margin:0 0 3px!important;padding:0!important;gap:5px;
+}
+html.v34-ui #rpgDlg:not(.sm-immersive) #v27RpgHud .v27-hud-mark{font-size:.58rem!important;letter-spacing:0!important}
+html.v34-ui #rpgDlg:not(.sm-immersive) #v27RpgHud .v27-hud-region{font-size:.6rem!important;max-width:95px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html.v34-ui #rpgDlg:not(.sm-immersive) #v27RpgHud .v27-stats{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:4px!important}
+html.v34-ui #rpgDlg:not(.sm-immersive) #v27RpgHud .v27-stat{
+ display:grid!important;gap:2px!important;min-width:0!important;padding:0!important;
+ border:none!important;background:none!important;box-shadow:none!important;
+}
+html.v34-ui #rpgDlg:not(.sm-immersive) #v27RpgHud .v27-stat-label{
+ font-size:.54rem!important;line-height:1.05!important;white-space:nowrap;
+}
+html.v34-ui #rpgDlg:not(.sm-immersive) #v27RpgHud .v27-stat-value{font-size:.69rem!important;line-height:1!important}
+html.v34-ui #rpgDlg:not(.sm-immersive) #v27RpgHud .v27-stat-rail{height:3px!important;margin:2px 0 0!important}
+html.v34-ui #rpgDlg:not(.sm-immersive) #v27RpgHud .v27-hud-currency{
+ display:block!important;margin-top:3px!important;font-size:.58rem!important;line-height:1.05!important;
+}
+@media(max-width:720px){
+ html.v34-ui #rpgDlg:not(.sm-immersive) #v27RpgHud{
+  top:6px!important;left:6px!important;width:min(53%,174px)!important;
+  max-height:72px!important;padding:5px 6px!important;border-radius:8px!important;
+ }
+ html.v34-ui #rpgDlg:not(.sm-immersive) .r12-frame>.sm-rpg-map-enter{
+  top:7px!important;right:6px!important;min-height:32px!important;
+  max-width:100px!important;padding:6px 7px!important;font-size:.64rem!important;
+ }
+ html.v34-ui #rpgDlg #v34WorldTools #sm171Hud{flex-wrap:wrap}
+ html.v34-ui #v32MorePanel #v34Accessibility .sm165-settings label{min-height:44px!important}
+}
