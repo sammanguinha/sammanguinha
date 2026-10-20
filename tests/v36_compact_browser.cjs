@@ -31,7 +31,7 @@ const server=http.createServer((req,res)=>{let file=path.resolve(root,'.'+decode
   await page.locator('#v32DestinationSearch').fill('Galeria');
   assert.ok(await page.locator('#v32MorePanel button[data-p="galDlg"]').isVisible(),'search existing gallery');
   await page.keyboard.press('Escape');assert.ok(await page.locator('#v32MorePanel').isHidden(),'menu closes with escape');
-  await page.evaluate(()=>window.showPane('rpgDlg'));
+  await page.evaluate(()=>{window.SamHybridRPG.chooseClass('guardiao');window.showPane('rpgDlg');});
   assert.equal(await page.locator('#r12Canvas').isVisible(),true,'RPG canvas visible');
   assert.equal(await page.locator('#sm36RpgSideToggle').isVisible(),compact,'mobile-only journal toggle');
   if(compact){
