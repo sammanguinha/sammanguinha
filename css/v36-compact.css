@@ -1,0 +1,147 @@
+/* V33.6 — interface mobile compacta: sem remover jogos, IDs nem salvamentos. */
+#sm36NewsDetails,#sm36AllDestinations,#sm36DefenseTactics{margin:8px 0;border:1px solid #a3cbaa65;border-radius:12px;background:#192f39;overflow:hidden}
+#sm36NewsDetails>summary,#sm36AllDestinations>summary,#sm36DefenseTactics>summary{display:flex;justify-content:space-between;align-items:center;gap:8px;list-style:none;cursor:pointer;padding:12px 14px;min-height:45px;font:800 .83rem Inter,system-ui,sans-serif;color:#f4dfae}
+#sm36NewsDetails>summary::-webkit-details-marker,#sm36AllDestinations>summary::-webkit-details-marker,#sm36DefenseTactics>summary::-webkit-details-marker{display:none}
+#sm36NewsDetails>summary:after,#sm36AllDestinations>summary:after,#sm36DefenseTactics>summary:after{content:'⌄';font-size:1.25rem}
+#sm36NewsDetails[open]>summary:after,#sm36AllDestinations[open]>summary:after,#sm36DefenseTactics[open]>summary:after{transform:rotate(180deg)}
+#sm36NewsDetails #sm30News,#sm36AllDestinations .v32-featured-grid{margin:0!important}
+#sm36AllDestinations>summary small{font:.66rem Inter,system-ui,sans-serif;color:#bfd5c4}
+#sm36RpgSideToggle,#sm36HouseSwitch{display:none}
+#sm36DefenseTactics>.sm21-tactics{margin:0}
+#sm36NewsDetails summary:focus-visible,#sm36AllDestinations summary:focus-visible,#sm36DefenseTactics summary:focus-visible{outline:3px solid #eccf99;outline-offset:-4px}
+@media(max-width:720px){
+ body{padding-bottom:calc(71px + env(safe-area-inset-bottom))!important}
+ nav#areas.areas{position:fixed!important;inset:auto 0 0!important;z-index:1550!important;display:flex!important;justify-content:center!important;align-items:center!important;gap:2px!important;min-height:calc(61px + env(safe-area-inset-bottom))!important;padding:4px max(5px,env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) max(5px,env(safe-area-inset-left))!important;background:#122b35f5!important;border:0!important;border-top:1px solid #aecda277!important;box-shadow:0 -10px 26px #06171b85;backdrop-filter:blur(14px)}
+ #areas .logo,#areas .logo-wrap,#areas>.brand{display:none!important}
+ #areas .tabs2.v32-tabs{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px!important;flex:1 1 auto;padding:0!important;max-width:520px}
+ #areas .v32-tabs>button{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;min-width:0!important;min-height:49px!important;padding:3px 1px!important;border-radius:8px!important;font:800 .61rem/1.1 Inter,system-ui,sans-serif!important;white-space:nowrap!important}
+ #areas .v32-tabs>button svg{width:19px!important;height:19px!important;flex:none}
+ #areas .v32-tabs>button span{font-size:.61rem!important;text-overflow:ellipsis;overflow:hidden;max-width:100%}
+ #areas .v32-more>button{min-width:52px!important;min-height:49px!important;padding:3px 2px!important;display:flex!important;flex-direction:column;gap:1px!important;font:800 .61rem Inter,system-ui,sans-serif!important;border-radius:8px}
+ #areas .v32-more-icon{font-size:1.4rem}
+ #areas .v32-more-panel{position:fixed!important;left:7px!important;right:7px!important;top:auto!important;bottom:calc(62px + env(safe-area-inset-bottom))!important;width:auto!important;max-height:65dvh!important;overflow-y:auto;padding:12px!important;border-radius:14px!important;z-index:1551!important}
+ #areas .v32-more-destinations button{min-height:44px!important;padding:8px!important;font-size:.73rem!important}
+ #areas .nav-actions.sm36-nav-options{display:flex!important;position:static!important;gap:8px;justify-content:space-between;align-items:center;padding-top:7px;border-top:1px solid #ffffff28}
+ #areas .sm36-nav-options>button{display:inline-flex!important;align-items:center;justify-content:center;min-height:44px!important;flex:1 1 0;max-width:none!important}
+ #hero.hero{padding:7px 10px 5px!important;min-height:0!important}
+ #hero .hero-gate-art,#hero .mascot,#hero .tag,#hero .hero-badge,#hero .hero-actions{display:none!important}
+ #hero h1{margin:0!important;line-height:1!important}
+ #hero h1 button{font-size:1.08rem!important;line-height:1.1!important;padding:2px!important}
+ #hero .stats{margin:6px 0 0!important;gap:3px!important}
+ #hero .stats .cell{min-height:30px!important;padding:3px!important;gap:4px!important}
+ #hero .stats .cell svg{width:16px!important;height:16px!important}
+ #hero .stats .cell small,#hero .stats .xpt,#hero .stats .xp,#hero .stats .lnk.sub{display:none!important}
+ #hero .stats .num,#hero .stats .lnk{font-size:.75rem!important}
+ html[data-sm36-view=game] #hero{display:none!important}
+ #home{padding:8px 9px!important}
+ #home .v32-adventure-home{grid-template-columns:1fr!important;gap:7px!important;margin:0 0 8px!important;padding:12px!important;min-height:0!important}
+ #home .v32-adventure-home h2{font-size:1.2rem!important;margin:3px 0!important}
+ #home .v32-adventure-home .r23-hero-copy p{display:none!important}
+ #home .v32-adventure-home .r23-hero-buttons{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px!important;margin:8px 0 0!important}
+ #home .v32-adventure-home .r23-hero-buttons button{min-height:40px!important;padding:7px 3px!important;font-size:.66rem!important}
+ #home .v32-resume-panel{padding:8px!important;min-height:0!important;gap:4px!important;display:flex!important;flex-flow:row wrap!important;justify-content:space-between!important;align-items:center!important}
+ #home .v32-resume-panel .v32-status-dot,#home .v32-resume-panel .v32-eyebrow,#home #v32ResumeDescription,#home .v32-resume-panel .sm33-journey-label,#home .v32-resume-panel #v33HomeStatus{display:none!important}
+ #home #v32ResumeTitle{font-size:.76rem!important}
+ #home #v32ResumeSecondary,#home .sm33-hero-actions button{font-size:.67rem!important;padding:5px!important;min-height:34px!important;margin:0!important}
+ #home #v33HomeQuest{display:none!important}
+ #home .sm35-dashboard{padding:9px!important;margin:0 0 8px!important}
+ #home .sm35-dashboard-heading{margin:0 0 8px!important}
+ #home .sm35-eyebrow{display:none!important}
+ #home .sm35-dashboard-heading h2{font-size:.89rem!important}
+ #home .sm35-live-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important}
+ #home .sm35-live-grid .sm35-live-card{grid-column:auto!important;display:flex!important;flex-direction:column!important;text-align:center!important;align-items:center!important;justify-content:center!important;gap:2px!important;min-width:0!important;min-height:77px!important;padding:7px 3px!important}
+ #home .sm35-live-icon{width:auto!important;height:auto!important;font-size:1.12rem!important;background:none!important}
+ #home .sm35-live-text{gap:2px!important}
+ #home .sm35-live-text b{font-size:.62rem!important}
+ #home .sm35-live-text strong{font-size:.69rem!important;line-height:1.15!important}
+ #home .sm35-live-text small,#home .sm35-live-card>span:last-child{display:none!important}
+ #home .rpg-portal-section{margin:6px 0!important}
+ #home .portal-heading{display:none!important}
+ #home .v32-featured-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}
+ #home .v32-featured-grid .portal-card{min-height:86px!important;padding:10px!important}
+ #home .v32-featured-grid .portal-card p{display:none!important}
+ #home .v32-featured-grid .portal-card h3{font-size:.8rem!important}
+ #home .cols{display:none!important}
+ #home #sm35MoreCommunity summary{padding:11px!important;min-height:42px!important;font-size:.76rem!important}
+ #rpgDlg:not(.sm-immersive){padding:6px 7px!important}
+ #rpgDlg:not(.sm-immersive) .r12-head{padding:6px!important;margin:0 0 6px!important}
+ #rpgDlg:not(.sm-immersive) .r12-head h2{font-size:1.07rem!important}
+ #rpgDlg:not(.sm-immersive) .r12-head p,#rpgDlg:not(.sm-immersive) .r12-head small,#rpgDlg:not(.sm-immersive) .r23-travel-guide{display:none!important}
+ #rpgDlg:not(.sm-immersive) .sm35-rpg-jumps{padding:5px!important;gap:4px!important;flex-wrap:nowrap!important;overflow-x:auto;margin:0 0 7px!important}
+ #rpgDlg:not(.sm-immersive) .sm35-rpg-jumps button{flex:0 0 auto!important;min-height:38px!important;padding:7px!important;font-size:.67rem!important}
+ #rpgDlg:not(.sm-immersive) .r12-columns{display:block!important}
+ #rpgDlg:not(.sm-immersive) .r12-frame{max-width:100%!important;margin:0!important;border-radius:9px!important;overflow:hidden}
+ #rpgDlg:not(.sm-immersive) #r12Canvas{width:100%!important;height:auto!important}
+ #rpgDlg:not(.sm-immersive) .r12-tip{display:none!important}
+ #rpgDlg:not(.sm-immersive) .r12-controls{margin:5px 0!important;gap:6px!important}
+ #rpgDlg:not(.sm-immersive) .r12-controls button{min-width:43px!important;min-height:43px!important;touch-action:manipulation}
+ #rpgDlg:not(.sm-immersive) .r12-aside{display:none!important}
+ #rpgDlg:not(.sm-immersive) .r12-aside.sm36-aside-open{display:grid!important;grid-template-columns:1fr!important;gap:8px!important;margin:8px 0}
+ #rpgDlg:not(.sm-immersive) #sm36RpgSideToggle{display:block!important;width:100%;min-height:43px;margin:8px 0;border:1px solid #afcba479;border-radius:9px;background:#274a45;color:#f2dfb5;font:800 .78rem Inter,system-ui,sans-serif}
+ #rpgDlg.sm-immersive #sm36RpgSideToggle{display:none!important}
+ #gameDlg{padding:7px!important}
+ #gameDlg>.ptitle{font-size:1rem!important;margin:0 0 7px!important}
+ #gameDlg .sm17-defense-actions{margin:6px 0!important;gap:6px!important}
+ #gameDlg #sm17DefenseStatus{font-size:.7rem!important}
+ #gameDlg #gCv{max-width:100%!important;max-height:calc(100dvh - 218px);height:auto;object-fit:contain}
+ #gameDlg .sm33-defense-council{padding:9px!important}
+ #gameDlg .sm33-legend,#gameDlg #sm33Intro{font-size:.72rem!important}
+ #houseDlg{padding:7px!important}
+ #houseDlg .sm21-house-top{padding:10px!important;margin:0 0 7px!important}
+ #houseDlg .sm21-house-top h2{font-size:1.14rem!important;margin:3px 0!important}
+ #houseDlg .sm21-house-top>p:not(#sm21HouseIdentity){display:none!important}
+ #houseDlg #sm36HouseSwitch{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:5px 0 8px}
+ #houseDlg #sm36HouseSwitch button{min-height:44px;border:1px solid #a3c8ab;border-radius:8px;background:#284d42;color:#f8e9ca;font:800 .78rem Inter,system-ui,sans-serif}
+ #houseDlg #sm36HouseSwitch button[aria-pressed=true]{background:#4e775e;border-color:#f2d5a0}
+ #houseDlg .sm36-pane-hidden{display:none!important}
+ #houseDlg .sm34-garden{padding:10px!important;margin:7px 0!important}
+ #houseDlg .sm34-garden-heading p{display:none!important}
+ #houseDlg .sm34-plot{min-height:100px!important;padding:8px 4px!important}
+ #houseDlg .sm34-plot-icon{font-size:1.35rem!important}
+ #houseDlg .sm34-plot b{font-size:.7rem!important}
+ #profDlg{padding:8px!important}
+ #profDlg .map-header{padding:10px!important}
+ #profDlg .map-header h2{font-size:1.15rem!important}
+ #profDlg .map-header p{display:none!important}
+ #profDlg #sm34Wardrobe{margin:8px 0!important;padding:10px!important}
+}
+/* Body-level mobile menu: no nested stacking context can intercept taps. */
+@media(max-width:720px){
+ #v32MorePanel:not([hidden]){
+  position:fixed!important;inset:auto 7px calc(62px + env(safe-area-inset-bottom)) 7px!important;
+  width:auto!important;max-height:65dvh!important;display:grid!important;gap:9px!important;
+  overflow-y:auto!important;padding:13px!important;border-radius:14px!important;
+  color:#f6eeda!important;background:linear-gradient(145deg,#263d46,#142933)!important;
+  border:1px solid #caaf85a9!important;box-shadow:0 -14px 54px #000d!important;
+  z-index:2147483600!important;box-sizing:border-box!important;
+ }
+ #v32MorePanel[hidden],#v32MorePanel button[hidden],#v32SearchEmpty[hidden]{display:none!important}
+ #v32MorePanel label{font:800 .8rem Inter,system-ui,sans-serif;color:#f2d9a6}
+ #v32MorePanel input{width:100%;min-height:44px;padding:10px 13px;color:#fff3db;background:#0b2028;border:1px solid #779e94;border-radius:9px;font:500 .83rem Inter,system-ui,sans-serif}
+ #v32MoreDestinations{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px}
+ #v32MoreDestinations button{min-width:0;min-height:44px!important;display:flex!important;justify-content:flex-start!important;align-items:center;gap:6px;white-space:normal;text-align:left;padding:9px!important;border:1px solid #ffffff2d!important;background:#ffffff0a!important;color:#f3e5c9!important;font:.73rem/1.3 Inter,system-ui,sans-serif}
+ #v32MoreDestinations button svg{flex:none;width:17px;height:17px}
+ #v32MorePanel .nav-actions.sm36-nav-options{display:flex!important;position:static!important;gap:8px;align-items:center;padding-top:8px;border-top:1px solid #ffffff24}
+ #v32MorePanel .sm36-nav-options button{display:inline-flex!important;align-items:center;justify-content:center;min-height:44px!important;flex:1 1 0;max-width:none!important;padding:8px!important}
+ #v32SearchEmpty{margin:0;padding:7px;font:.8rem Inter,system-ui,sans-serif;color:#e0d7bf}
+}
+/* The V23 floating accessibility control must not sit over the V32 destination menu.
+   It remains available outside the menu; opening Explore gives the menu touch priority. */
+@media(max-width:720px){
+ body:has(#v32MorePanel:not([hidden])) #r23SettingsToggle{
+  pointer-events:none!important;visibility:hidden!important;
+ }
+ body:has(#v32MorePanel:not([hidden])) #v32MorePanel{
+  z-index:2147483000!important;
+ }
+}
+@media(max-width:380px){#areas .v32-tabs>button svg{width:16px!important;height:16px!important}#areas .v32-tabs>button span{font-size:.57rem!important}#home .sm35-live-text strong{font-size:.63rem!important}}
+@media(max-height:640px) and (max-width:720px){#hero.hero{display:none!important}#gameDlg #gCv{max-height:calc(100dvh - 182px)}}
+@media(prefers-reduced-motion:reduce){#home .sm35-live-card{transition:none!important}}
+
+/* A antiga alça flutuante de acessibilidade da V23 pode sobrepor o menu
+   compacto. Ocultá-la SOMENTE enquanto Explorar está aberto impede
+   interceptação de toques; configurações continuam acessíveis no menu. */
+@media(max-width:720px){
+ body:has(#v32MorePanel:not([hidden])) #r23SettingsToggle{visibility:hidden!important;pointer-events:none!important}
+}

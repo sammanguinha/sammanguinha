@@ -38,7 +38,8 @@ async function run(){
   },{data:fresh});
   await page.goto('http://127.0.0.1:4293/',{waitUntil:'domcontentloaded',timeout:45000});
   await page.waitForFunction(()=>!!window.SamAtlasV33&&!!window.SamHybridRPG?.getV33State&&!!window.Sam21House?.getLayout,{timeout:25000});
-  assert.ok((await page.locator('#sm30NewsVersion').innerText()).includes('V33'),'V33 notes visible');
+  if(await page.locator('#sm36NewsDetails').count())await page.locator('#sm36NewsDetails').evaluate(el=>{el.open=true});
+  assert.ok((await page.locator('#sm30NewsVersion').innerText()).includes('V33'),'V33 notes remain accessible');
   assert.match(await page.locator('#sm30NewsHeading').innerText(),/Aurora|estratégia/i,'V33 campaign or V33.3 defense announcement');
   assert.ok(await page.locator('#v33HomeAtlas').isVisible(),'direct atlas entry on home');
   const start=await page.evaluate(()=>window.SamHybridRPG.getWorldAtlas());
@@ -140,6 +141,7 @@ async function run(){
   assert.equal((await player()).map,'vila','fast travel changes real room');
   assert.equal(await page.evaluate(()=>window.SamHybridRPG.travelV33('mirantePrimeiraLuz')),true,'visited summit accessible');
   assert.equal((await player()).map,'mirantePrimeiraLuz','fast travel respects discovered routes');
+  if(await page.locator('#sm36RpgSideToggle').isVisible()&&await page.locator('#sm36RpgSideToggle').getAttribute('aria-expanded')==='false')await page.locator('#sm36RpgSideToggle').click();
   await page.locator('#v33AtlasOpen').click();
   assert.ok(await page.locator('#v33Atlas').isVisible(),'in-game atlas works');
   await page.locator('#v33Atlas button[data-atlas-tab="quests"]').click();

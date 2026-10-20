@@ -52,7 +52,7 @@
  });
  document.addEventListener('click',event=>{
   const target=event.target;
-  if(!target.closest('#v32MoreWrap')&&!panel.hidden)showMenu(false);
+  if(!target.closest('#v32MoreWrap')&&!target.closest('#v32MorePanel')&&!panel.hidden)showMenu(false);
   const action=target.closest('button[data-go],button[data-p]');
   if(action&&descriptions[action.dataset.go||action.dataset.p]){
    const mode=action.dataset.go||action.dataset.p;safeSet(mode);setResume(mode);
