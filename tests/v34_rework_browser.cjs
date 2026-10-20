@@ -78,8 +78,12 @@ const server=http.createServer((req,res)=>{
   await page.locator('#sm36NewsDetails summary').click();
   await checkNoOverflow('home');
   fs.mkdirSync(shots,{recursive:true});
+  await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
+  await page.waitForTimeout(160);
   await page.screenshot({path:path.join(shots,device+'-home.png'),fullPage:false});
   await page.locator('#v32MoreToggle').click();
+  assert.equal(await page.locator('#v34Accessibility').count(),1,'all accessibility controls consolidated in destination menu');
+  assert.ok(await page.locator('#v34Accessibility #sm165LargeText').count(),'larger text not removed');
   assert.ok(await page.locator('#v32MorePanel').isVisible(),'more menu accessible');
   await page.locator('#v32DestinationSearch').fill('Diário');
   assert.ok(await page.locator('#diaryBtn').isVisible(),'diary found');
@@ -88,6 +92,11 @@ const server=http.createServer((req,res)=>{
   assert.equal(await page.locator('#v32MorePanel').isHidden(),true);
   await page.evaluate(()=>window.showPane('rpgDlg'));
   assert.ok(await page.locator('#r12Canvas').isVisible(),'RPG canvas exposed');
+  assert.ok(await page.locator('#v34WorldTools #sm171Hud').count(),'how-to controls moved into optional world settings');
+  assert.equal(await page.locator('#rpgDlg .sm-rpg-head-enter').isVisible(),false,'no duplicate fullscreen header button');
+  assert.ok(await page.locator('#rpgDlg .sm-rpg-map-enter').isVisible(),'one compact fullscreen button remains');
+  const hudBox=await page.locator('#v27RpgHud').boundingBox();
+  assert.ok(hudBox&&hudBox.height<100&&hudBox.width<=220,device+' compact nonblocking HUD '+JSON.stringify(hudBox));
   const tools=page.locator('#v34WorldTools');
   assert.equal(await tools.count(),1,'world settings consolidated');
   assert.equal(await tools.evaluate(x=>x.open),false,'world setup folded by default');
@@ -102,6 +111,8 @@ const server=http.createServer((req,res)=>{
    assert.ok(await page.locator('#sm36RpgExtras').isVisible(),'quest and bag accessible on tap');
   }else assert.ok(await page.locator('#sm36RpgExtras').isVisible(),'desktop quest tools present');
   await checkNoOverflow('rpg');
+  await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
+  await page.waitForTimeout(160);
   await page.screenshot({path:path.join(shots,device+'-rpg.png'),fullPage:false});
   await page.evaluate(()=>{me='v34ui';prof={xp:100,mangoes:0,avatar:{c:0,h:'none'}};window.showPane('gameDlg')});
   assert.ok(await page.locator('#gCv').isVisible(),'defense canvas remains visible');
