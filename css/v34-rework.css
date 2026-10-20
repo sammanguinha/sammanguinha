@@ -392,3 +392,10 @@ html.v34-ui{scroll-padding-top:80px;color-scheme:dark}
  .v34-ui #areas .v32-tabs>button{transition:none!important}
  .v34-ui #home #v32Resume:hover,.v34-ui #home .sm35-live-card:hover{transform:none!important}
 }
+
+/* Final cleanup: original daily chips and portal CTA duplicate the main button. */
+.v34-ui #hero :is(.chips,.tag,.daily,#eventLaunch){display:none!important}
+.v34-ui #hero #v34Harvest{display:inline-flex;align-items:center;justify-content:center;gap:5px;flex:none;min-height:40px!important;padding:8px 12px!important;border:1px solid #d7c18b65!important;border-radius:10px!important;background:#264e42!important;color:#f3dfab!important;font:800 .75rem Inter,system-ui,sans-serif!important;white-space:nowrap;cursor:pointer}
+.v34-ui #hero #v34Harvest:hover{background:#376850!important}
+.v34-ui #home .sm35-live-card.v34-duplicate-route{display:none!important}
+@media(max-width:720px){.v34-ui #hero #v34Harvest{min-height:35px!important;padding:5px 8px!important;font-size:.7rem!important}.v34-ui #hero .stats .cell:nth-child(1){display:none!important}}
