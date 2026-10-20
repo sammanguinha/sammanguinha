@@ -643,3 +643,10 @@ html.v34-ui #panes>.pane .btn-gothic{border-radius:9px!important}
  html.v34-ui #panes>.pane :is(.map-header,.sm17-social-head,.sm20-live-heading){padding:10px!important;margin-bottom:9px!important}
  html.v34-ui #panes>.pane :is(.map-header,.sm17-social-head,.sm20-live-heading) h2{font-size:1.13rem!important}
 }
+
+/* Final audit: V18 injected a large extra expedition advertisement after the
+   modern hub. Expedition remains playable from Explorar and Biblioteca. */
+html.v34-ui #home #sm18Hub{display:none!important}
+/* Theme action already exists in Profile/RPG, so don't overlay the home hero. */
+html.v34-ui #home .v27-theme-button{display:none!important}
+html.v34-ui #leaves{opacity:.28!important;pointer-events:none!important}
