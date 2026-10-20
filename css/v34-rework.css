@@ -1,0 +1,394 @@
+/* ================================================================
+ V34 — SAM MANGUINHA / REWORK TOTAL
+ Um único hub, menos ruído, telas coesas e prioridade real ao gameplay.
+ CSS aditivo: preserva scripts legados e modo tela cheia.
+ ================================================================ */
+:root{
+ --v34-bg:#0b151b;--v34-surface:#14262c;--v34-raised:#1a3033;
+ --v34-ink:#f3eddc;--v34-muted:#b6c9bf;--v34-accent:#a6e2bf;
+ --v34-gold:#f3cc8b;--v34-stroke:#accbbb36;--v34-glow:#9cdcba30;
+ --v34-radius:16px;--v34-shadow:0 14px 40px #050d1266;
+}
+html.v34-ui{scroll-padding-top:80px;color-scheme:dark}
+.v34-ui body{background:radial-gradient(ellipse 760px 480px at 75% -100px,#32504839,transparent 70%),linear-gradient(180deg,#101e27 0,#0d171d 65%,#101c21 100%)!important}
+.v34-ui :is(button,input,select,textarea){accent-color:#8abfa0}
+.v34-ui :is(button,a,summary):focus-visible{outline:3px solid #f5d29a!important;outline-offset:3px!important}
+.v34-ui :is(button,summary){touch-action:manipulation}
+.v34-ui :is(#home,#panes>.pane,#diary){scroll-margin-top:78px}
+.v34-ui #stage{max-height:30px;overflow:hidden}
+.v34-ui .wrap{max-width:1400px}
+.v34-ui :is(#home,#rpgDlg,#houseDlg,#gameDlg,#profDlg,#diary) :is(.panel,.r12-card,.sm21-house-sidebar,.wardrobe-panel){
+ border-color:var(--v34-stroke)!important;box-shadow:0 7px 22px #01080c36;
+}
+.v34-ui :is(#home,#rpgDlg,#houseDlg,#gameDlg,#profDlg) :is(h2,h3){text-wrap:balance}
+.v34-ui :is(#home,#rpgDlg,#houseDlg,#gameDlg,#profDlg) p{line-height:1.5}
+
+/* Navigation: a focused brand + one row of real destinations. */
+.v34-ui #areas{
+ background:linear-gradient(105deg,#10262bfa,#122b32fa)!important;
+ border-color:#8fb9a94b!important;box-shadow:0 4px 22px #03090f5e!important;
+}
+.v34-ui #areas .logo{filter:saturate(.86)}
+.v34-ui #areas .v32-tabs{gap:5px!important}
+.v34-ui #areas .v32-tabs>button,.v34-ui #areas #v32MoreToggle{
+ min-height:44px;border-radius:10px!important;transition:background .15s,border-color .15s,color .15s;
+}
+.v34-ui #areas .v32-tabs>button:hover,.v34-ui #areas #v32MoreToggle:hover{background:#24483f!important;color:#fff4d8!important}
+.v34-ui #areas .v32-tabs>button[aria-current=page],
+.v34-ui #areas .v32-tabs>button[aria-pressed=true],
+.v34-ui #areas .v32-tabs>button.active,
+.v34-ui #areas .v32-tabs>button.on{border-color:#d4c48d8c!important;background:#2b594b!important;color:#fff0cc!important}
+.v34-ui #v32MorePanel{background:#132c34!important;border:1px solid #b5c2a667!important;box-shadow:var(--v34-shadow)!important}
+.v34-ui #v32MorePanel button{min-height:42px}
+.v34-ui #v32MorePanel input{min-height:45px;background:#0b202a;border-color:#91b6a95b;color:#f0eedc}
+.v34-ui #v32MorePanel .v32-more-destinations{gap:6px!important}
+
+/* Brand compacta e informação essencial. */
+.v34-ui #hero{
+ min-height:0!important;max-width:1400px;margin:0 auto!important;
+ padding:10px 20px!important;display:flex;align-items:center;justify-content:space-between;gap:14px;
+ border:0!important;background:transparent!important;box-shadow:none!important;
+}
+.v34-ui #hero .hero-gate-art,.v34-ui #hero .leaves,.v34-ui #hero .hero-badge,
+.v34-ui #hero .subtitle,.v34-ui #hero .hero-actions,
+.v34-ui #hero .hero-descr,.v34-ui #hero .hang{display:none!important}
+.v34-ui #hero .titleblock{padding:0!important;margin:0!important;min-height:0!important;flex:0 1 auto!important}
+.v34-ui #hero h1{font:900 clamp(1.15rem,2vw,1.55rem)/1.1 'Cinzel',Georgia,serif!important;margin:0!important;letter-spacing:-.025em!important}
+.v34-ui #hero h1 :is(button,a,span){font:inherit!important;letter-spacing:inherit!important}
+.v34-ui #hero .stats{
+ display:flex!important;align-items:center!important;justify-content:flex-end!important;
+ gap:8px!important;min-width:0;flex:0 1 auto!important;margin:0!important;
+}
+.v34-ui #hero .stats .cell{min-height:39px!important;min-width:0;padding:6px 10px!important;gap:7px!important;background:#1b3136a6!important;border:1px solid #a4c3ac28!important;border-radius:10px!important}
+.v34-ui #hero .stats .cell .num,.v34-ui #hero .stats .cell .lnk{font-size:.82rem!important}
+.v34-ui #hero .stats .cell small{font-size:.63rem!important;color:#c6d2c6!important}
+.v34-ui #hero .stats .cell.mid .grow{min-width:52px!important}
+
+/* HOME — single clear entry, two supporting modes; no duplicated portals. */
+.v34-ui #home{
+ width:min(100%,1400px);padding:clamp(9px,2.1vw,22px)!important;
+ display:flex;flex-direction:column;gap:12px!important;
+}
+.v34-ui #home .v32-adventure-home{
+ position:relative;isolation:isolate;overflow:hidden;
+ display:grid!important;grid-template-columns:minmax(0,1.4fr) minmax(215px,.65fr)!important;
+ align-items:center;gap:clamp(15px,3.2vw,48px)!important;
+ padding:clamp(23px,4vw,48px)!important;min-height:210px!important;
+ margin:0!important;border:1px solid #9bc8a77c!important;border-radius:22px!important;
+ background:radial-gradient(circle at 78% 18%,#8ace9940,transparent 22%),
+ radial-gradient(ellipse at 100% 96%,#44637c56,transparent 55%),
+ linear-gradient(120deg,#21493e 0%,#172f32 52%,#142936 100%)!important;
+ box-shadow:var(--v34-shadow),inset 0 1px #ffffff23!important;
+}
+.v34-ui #home .v32-adventure-home::before{
+ content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;opacity:.35;
+ background-image:linear-gradient(115deg,transparent 64%,#93c9a014 64.3%,transparent 64.8%),
+ linear-gradient(0deg,transparent 92%,#c9e1ba0e 93%);
+ background-size:100% 100%,26px 26px;
+}
+.v34-ui #home .v32-adventure-home::after{
+ content:"✦";position:absolute;z-index:-1;right:6%;top:-26px;
+ font:900 clamp(9rem,18vw,19rem)/1 Georgia,serif;color:#d6eab30e;
+ transform:rotate(16deg);pointer-events:none;
+}
+.v34-ui #home .r23-hero-copy{position:relative;z-index:1;display:flex!important;flex-direction:column;align-items:flex-start;gap:10px!important;min-width:0}
+.v34-ui #home .r23-hero-eyebrow{
+ font:800 .68rem/1.4 Inter,system-ui,sans-serif!important;letter-spacing:.17em!important;
+ color:#b9e5c7!important;border:1px solid #c1edbe43;border-radius:99px;
+ padding:6px 11px;background:#0d2f2a70;
+}
+.v34-ui #home .v32-adventure-home h2{
+ font:800 clamp(1.55rem,3.6vw,2.85rem)/1.13 'Cinzel',Georgia,serif!important;
+ letter-spacing:-.035em!important;margin:0!important;color:#ffe5b1!important;
+ text-shadow:0 2px 20px #010c0c65;
+}
+.v34-ui #home .r23-hero-copy>p{font:.93rem/1.48 Inter,system-ui,sans-serif!important;color:#dbeddd!important;margin:0!important;max-width:510px}
+.v34-ui #home .v34-progress-pill{
+ display:inline-flex;align-items:center;gap:9px;min-height:30px;padding:4px 10px;
+ background:#102c30a9;border:1px solid #9bc9b75e;border-radius:99px;
+ font:650 .77rem/1.4 Inter,system-ui,sans-serif;color:#d6f0d9;
+}
+.v34-ui #home .v34-progress-dot{
+ width:8px;height:8px;border-radius:50%;background:#a8e4ad;
+ box-shadow:0 0 0 3px #a8e4ad23,0 0 13px #a8e4ad77;
+}
+.v34-ui #home .r23-hero-buttons{width:100%;display:flex!important;gap:9px!important;margin:4px 0 0!important}
+.v34-ui #home #v32Resume{
+ min-height:50px!important;min-width:235px;max-width:360px;
+ border-radius:11px!important;border:1px solid #ffe7baad!important;
+ background:linear-gradient(120deg,#f1d49f,#f8e1b2)!important;
+ color:#1d3835!important;box-shadow:0 6px 23px #010c1288!important;
+ font:850 .91rem/1.2 Inter,system-ui,sans-serif!important;padding:13px 19px!important;
+ transition:transform .15s,filter .15s;
+}
+.v34-ui #home #v32Resume:hover{transform:translateY(-2px);filter:brightness(1.05)}
+.v34-ui #home .v34-duplicate-route{display:none!important}
+.v34-ui #home .v32-resume-panel{
+ display:flex!important;flex-direction:column;justify-content:center;align-items:flex-start;gap:9px!important;
+ min-height:146px!important;margin:0!important;padding:20px!important;
+ border:1px solid #cfebba56!important;border-radius:15px!important;
+ background:#0d232c99!important;box-shadow:inset 0 1px #ffffff16!important;
+}
+.v34-ui #home .v32-resume-panel .v32-status-dot,
+.v34-ui #home .v32-resume-panel .v32-eyebrow{display:none!important}
+.v34-ui #home #v32ResumeTitle{
+ font:800 1.04rem/1.3 'Cinzel',Georgia,serif!important;color:#f2dbac!important;
+}
+.v34-ui #home #v32ResumeDescription{
+ display:block!important;font:.78rem/1.48 Inter,system-ui,sans-serif!important;
+ color:#c2d7ca!important;max-height:3.3em;overflow:hidden;
+}
+.v34-ui #home #v32ResumeSecondary{
+ display:inline-flex!important;justify-content:center;align-items:center;min-height:39px!important;
+ padding:8px 12px!important;margin:0!important;font:800 .75rem Inter,system-ui,sans-serif!important;
+ background:#315b4c!important;border:1px solid #9ebfa372!important;border-radius:9px!important;
+ color:#f8e9c9!important;
+}
+/* One compact quick access area instead of four extra portal cards. */
+.v34-ui #home .sm35-dashboard{
+ order:0;padding:14px 17px!important;margin:0!important;border-radius:16px!important;
+ background:linear-gradient(160deg,#172d33,#13242d)!important;border:1px solid var(--v34-stroke)!important;
+ box-shadow:none!important;
+}
+.v34-ui #home .sm35-dashboard-heading{display:flex!important;align-items:baseline;justify-content:space-between;gap:8px;margin:0 0 11px!important}
+.v34-ui #home .sm35-dashboard-heading h2{font:800 1.08rem 'Cinzel',Georgia,serif!important;color:#f1d7a7!important;margin:0!important}
+.v34-ui #home .sm35-eyebrow{display:block!important;font:750 .63rem Inter,system-ui,sans-serif!important;color:#92cdaa!important;letter-spacing:.12em}
+.v34-ui #home .sm35-live-grid{
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;
+}
+.v34-ui #home .sm35-live-card{
+ display:flex!important;flex-direction:row!important;align-items:center!important;
+ text-align:left!important;gap:12px!important;min-height:89px!important;min-width:0;
+ padding:12px 15px!important;border-radius:13px!important;border:1px solid #a4caaf43!important;
+ background:linear-gradient(130deg,#25423e,#1a3438)!important;color:var(--v34-ink)!important;
+ box-shadow:none!important;transition:background .15s,border-color .15s,transform .15s;
+}
+.v34-ui #home .sm35-live-card:hover{background:#315b4f!important;border-color:#bfd6a17c!important;transform:translateY(-1px)}
+.v34-ui #home .sm35-live-card[data-sm35-go="houseDlg"]{background:linear-gradient(120deg,#304437,#253a41)!important}
+.v34-ui #home .sm35-live-icon{
+ flex:none;display:grid!important;place-items:center;width:43px!important;height:43px!important;
+ border-radius:12px!important;background:#b8d9ad18!important;font-size:1.4rem!important;
+}
+.v34-ui #home .sm35-live-text{display:flex!important;flex-direction:column;gap:4px!important;min-width:0}
+.v34-ui #home .sm35-live-text b{font:800 .77rem Inter,system-ui,sans-serif!important;color:#f4ddb0!important;letter-spacing:0!important}
+.v34-ui #home .sm35-live-text strong{
+ font:700 .81rem/1.3 Inter,system-ui,sans-serif!important;color:#d9e4d8!important;
+ display:block!important;white-space:normal!important;
+}
+.v34-ui #home .sm35-live-text small{display:none!important}
+.v34-ui #home .sm35-live-card>span:last-child{display:none!important}
+/* True duplicates are no longer displayed. Routes remain reachable from nav. */
+.v34-ui #home .rpg-portal-section,
+.v34-ui #home #sm36AllDestinations,
+.v34-ui #home .v34-archive-stats,
+.v34-ui #home .v34-archive-community{display:none!important}
+.v34-ui #home #v32Library,.v34-ui #home #sm36NewsDetails{order:1;margin:0!important;min-width:0}
+.v34-ui #home #v32Library{
+ border:1px solid var(--v34-stroke)!important;border-radius:12px!important;
+ background:#172c32!important;box-shadow:none!important;
+}
+.v34-ui #home #v32Library>summary{
+ display:flex;align-items:center;justify-content:space-between;
+ min-height:47px!important;padding:11px 15px!important;border:0!important;
+ color:#e9dfc8!important;font:750 .82rem Inter,system-ui,sans-serif!important;
+}
+.v34-ui #home #v32Library>summary span{gap:4px!important}
+.v34-ui #home #v32Library>summary b{font:850 .82rem Inter,system-ui,sans-serif!important}
+.v34-ui #home #v32Library>summary small{font:.71rem Inter,system-ui,sans-serif!important;color:#a9caba!important}
+.v34-ui #home .v32-library-grid{
+ display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ gap:8px!important;padding:11px!important;margin:0!important;
+}
+.v34-ui #home .v32-library-grid .portal-card{
+ min-height:73px!important;padding:11px 12px!important;border-radius:10px!important;
+ border:1px solid #accab34b!important;background:#234040!important;
+}
+.v34-ui #home .v32-library-grid .portal-card:hover{background:#355c4a!important}
+.v34-ui #home .v32-library-grid .portal-card h3{font:.8rem/1.3 Inter,system-ui,sans-serif!important;font-weight:750!important}
+.v34-ui #home .v32-library-grid .portal-card p{display:none!important}
+.v34-ui #home .v32-library-grid .portal-card .portal-ic{width:21px!important;height:21px!important}
+.v34-ui #home #sm36NewsDetails{
+ background:#11252c!important;border:1px solid #a1c5a53b!important;border-radius:12px!important;
+ box-shadow:none!important;
+}
+.v34-ui #home #sm36NewsDetails>summary{min-height:45px!important;padding:10px 15px!important;font:.78rem Inter,system-ui,sans-serif!important;font-weight:700!important;color:#b5d4be!important}
+.v34-ui #home #sm36NewsDetails #sm30News{border:0!important;box-shadow:none!important}
+.v34-ui #home #sm36NewsDetails #sm30News .sm30-news-links{gap:7px!important}
+.v34-ui #home #sm36NewsDetails #sm30News .sm30-news-footnote{display:none!important}
+
+/* RPG: gameplay starts immediately; old contract displays live in one details. */
+.v34-ui #rpgDlg{max-width:1450px;margin:0 auto;padding:clamp(10px,1.5vw,17px)!important}
+.v34-ui #rpgDlg .r12-shell{max-width:1400px;margin:auto}
+.v34-ui #rpgDlg .r12-head{padding:7px 2px!important;margin:0 0 8px!important;background:none!important}
+.v34-ui #rpgDlg .r12-head h2{font:800 clamp(1.2rem,2vw,1.65rem)/1.2 'Cinzel',Georgia,serif!important;color:#f2d6a2!important;margin:0!important}
+.v34-ui #rpgDlg .r12-head :is(p,small){display:none!important}
+.v34-ui #rpgDlg #sm35RpgJumps{
+ display:flex;align-items:center;gap:6px!important;margin:0 0 10px!important;
+ padding:7px!important;border-radius:12px!important;
+ border:1px solid #a3bfa855!important;background:#162d32!important;overflow-x:auto;
+}
+.v34-ui #rpgDlg #sm35RpgJumps button{
+ flex:0 0 auto!important;min-height:40px!important;min-width:0!important;
+ font:800 .76rem Inter,system-ui,sans-serif!important;padding:8px 12px!important;
+ border-radius:9px!important;border:1px solid transparent!important;background:#23453f!important;
+ color:#f4e6ca!important;
+}
+.v34-ui #rpgDlg #sm35RpgJumps button:hover{background:#326456!important}
+.v34-ui #rpgDlg #sm35RpgJumps button:last-child{background:#37644c!important;color:#ffe8b7!important}
+.v34-ui #rpgDlg .r12-columns{gap:12px!important;align-items:start}
+.v34-ui #rpgDlg .r12-main{min-width:0!important}
+.v34-ui #rpgDlg .r12-frame{
+ border:1px solid #97b9a978!important;border-radius:14px!important;
+ overflow:hidden!important;box-shadow:0 12px 42px #040c1288!important;
+ background:#112630!important;
+}
+.v34-ui #rpgDlg #r12Canvas{max-width:100%;height:auto;display:block;image-rendering:pixelated}
+.v34-ui #rpgDlg .r12-tip{font-size:.76rem!important;padding:6px!important}
+.v34-ui #rpgDlg .r12-aside{max-height:min(77dvh,760px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:#3a7163 #182e34;gap:10px!important}
+.v34-ui #rpgDlg .r12-aside .r12-card{padding:13px!important;margin:0!important;background:#182f34!important;border-radius:12px!important}
+.v34-ui #rpgDlg .r12-aside .r12-card h3{font:.91rem 'Cinzel',Georgia,serif!important;font-weight:750!important;color:#f1d9aa!important;margin:0 0 8px!important}
+.v34-ui #rpgDlg .r12-aside .r12-card p{font:.78rem/1.45 Inter,system-ui,sans-serif!important}
+.v34-ui #rpgDlg .r12-aside .r12-card button{min-height:38px!important}
+.v34-ui #rpgDlg #v34WorldTools{
+ margin:12px 0 0;padding:0;border:1px solid #91b99e59;border-radius:12px;background:#152c31;overflow:hidden;
+}
+.v34-ui #rpgDlg #v34WorldTools>summary{
+ display:flex;justify-content:space-between;align-items:center;gap:12px;
+ min-height:48px;padding:12px 16px;cursor:pointer;list-style:none;color:#f4dbaa;
+}
+.v34-ui #rpgDlg #v34WorldTools>summary::-webkit-details-marker{display:none}
+.v34-ui #rpgDlg #v34WorldTools>summary:after{content:'⌄';font-size:1.3rem}
+.v34-ui #rpgDlg #v34WorldTools[open]>summary:after{transform:rotate(180deg)}
+.v34-ui #rpgDlg .v34-tools-heading{font:800 .82rem Inter,system-ui,sans-serif}
+.v34-ui #rpgDlg .v34-tools-hint{font:.7rem Inter,system-ui,sans-serif;color:#a9c4b8}
+.v34-ui #rpgDlg #v34WorldTools>.r23-travel-guide,
+.v34-ui #rpgDlg #v34WorldTools>.r23-village-systems{display:flex!important;margin:10px!important}
+.v34-ui #rpgDlg #v34WorldTools .r23-village-systems{flex-wrap:wrap;gap:10px}
+
+/* Defense / House / Profile: short heading, canvas-first and common surfaces. */
+.v34-ui #gameDlg,.v34-ui #houseDlg,.v34-ui #profDlg{width:min(100%,1360px);margin:0 auto!important;padding:clamp(10px,2vw,20px)!important}
+.v34-ui #gameDlg>.ptitle{font:800 clamp(1.2rem,2vw,1.55rem) 'Cinzel',Georgia,serif!important;color:#f5d9a7!important;margin:0 0 11px!important}
+.v34-ui #gameDlg #gCv{max-width:100%;image-rendering:pixelated;border-radius:11px}
+.v34-ui #gameDlg #sm36DefenseTactics{margin:10px 0!important;border-color:#a6cbb058!important;background:#152c34!important}
+.v34-ui #gameDlg #sm36DefenseTactics>summary{min-height:44px!important;padding:10px 13px!important;background:#213d3f!important;border-radius:10px;font-size:.8rem!important}
+.v34-ui #gameDlg .sm33-defense-council{margin:8px 0!important;padding:12px!important;border-radius:12px!important}
+.v34-ui #gameDlg .sm33-defense-council h3{font-size:1rem!important}
+.v34-ui #houseDlg .sm21-house-top{margin:0 0 11px!important;padding:14px 18px!important;background:linear-gradient(130deg,#223f3d,#20353a)!important;border-radius:14px!important}
+.v34-ui #houseDlg .sm21-house-top h2{font:800 1.4rem 'Cinzel',Georgia,serif!important;color:#f3d9a6!important}
+.v34-ui #houseDlg .sm21-house-top :is(p,.sm35-house-intro){font-size:.78rem!important}
+.v34-ui #houseDlg .sm21-house-layout{gap:12px!important}
+.v34-ui #houseDlg .sm34-garden{border-radius:15px!important;background:linear-gradient(135deg,#203b3b,#172d34)!important;box-shadow:none!important}
+.v34-ui #houseDlg .sm34-garden-heading h3{font:800 1.18rem 'Cinzel',Georgia,serif!important}
+.v34-ui #profDlg .map-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 14px!important;padding:12px 17px!important;border-radius:13px!important;background:#203b3c!important}
+.v34-ui #profDlg .map-header h2{font:800 1.35rem 'Cinzel',Georgia,serif!important;color:#f2d8a7!important}
+.v34-ui #profDlg .sanctuary-grid{gap:13px!important}
+.v34-ui #profDlg .wardrobe-panel{padding:14px!important;background:#1b3237!important;border-radius:14px!important}
+.v34-ui #profDlg .wardrobe-panel .wardrobe-section-title{margin:11px 0 6px!important}
+.v34-ui #profDlg .wardrobe-tabs{gap:5px!important;padding-bottom:7px!important}
+.v34-ui #profDlg .wardrobe-tabs button{border-radius:8px!important}
+.v34-ui #profDlg .sm34-wardrobe{margin:13px 0!important;border-radius:13px!important}
+.v34-ui #diary .fmts{display:none!important}
+.v34-ui #diary .bar{display:flex;flex-wrap:wrap;gap:7px;padding:10px!important;background:#162d33;border:1px solid #9fbaa64b;border-radius:12px}
+.v34-ui #diary .bar input{min-width:185px;flex:1 1 220px;min-height:45px}
+.v34-ui #diary .bar button{min-height:45px}
+.v34-ui #diary .months{margin:10px 0!important;gap:5px!important}
+
+/* MOBILE: 390px or 320px should be comfortable, never 0.6rem microtext. */
+@media(max-width:720px){
+ .v34-ui #stage{height:0;max-height:0}
+ .v34-ui #areas{z-index:1550!important}
+ .v34-ui #areas .v32-tabs>button{min-height:50px!important;font-size:.68rem!important;padding:5px 2px!important}
+ .v34-ui #areas .v32-tabs>button span{font-size:.65rem!important}
+ .v34-ui #areas .v32-more>button{min-height:50px!important;font-size:.66rem!important}
+ .v34-ui #hero{display:flex!important;padding:7px 11px!important;gap:8px}
+ .v34-ui #hero h1{font-size:1.02rem!important}
+ .v34-ui #hero .stats{gap:4px!important}
+ .v34-ui #hero .stats .cell{min-height:30px!important;padding:4px 6px!important;border-radius:7px!important}
+ .v34-ui #hero .stats .cell small,.v34-ui #hero .stats .cell.mid{display:none!important}
+ .v34-ui html[data-sm36-view=game] #hero,html.v34-ui[data-sm36-view=game] #hero{display:none!important}
+ .v34-ui #home{padding:10px!important;gap:8px!important}
+ .v34-ui #home .v32-adventure-home{
+  grid-template-columns:1fr!important;min-height:0!important;gap:12px!important;
+  padding:20px!important;border-radius:16px!important;
+ }
+ .v34-ui #home .r23-hero-copy{gap:8px!important}
+ .v34-ui #home .r23-hero-eyebrow{font-size:.62rem!important;padding:4px 9px}
+ .v34-ui #home .v32-adventure-home h2{font-size:clamp(1.45rem,6vw,1.85rem)!important;max-width:320px}
+ .v34-ui #home .r23-hero-copy>p{display:block!important;font-size:.79rem!important;max-width:285px}
+ .v34-ui #home .v34-progress-pill{min-height:27px;font-size:.73rem!important}
+ .v34-ui #home #v32Resume{
+  width:100%;max-width:none;min-width:0!important;min-height:49px!important;
+  font-size:.87rem!important;padding:11px 13px!important;
+ }
+ .v34-ui #home .r23-hero-buttons{width:100%!important;margin-top:3px!important}
+ .v34-ui #home .v32-resume-panel{
+  min-height:0!important;padding:11px 12px!important;
+  display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:center;gap:5px!important;
+  border-radius:10px!important;
+ }
+ .v34-ui #home #v32ResumeTitle{font-size:.84rem!important}
+ .v34-ui #home #v32ResumeDescription{display:none!important}
+ .v34-ui #home #v32ResumeSecondary{min-height:39px!important;font-size:.7rem!important;padding:6px 8px!important}
+ .v34-ui #home .sm35-dashboard{padding:11px!important;border-radius:13px!important}
+ .v34-ui #home .sm35-dashboard-heading{display:flex!important;margin-bottom:9px!important}
+ .v34-ui #home .sm35-dashboard-heading h2{font-size:.99rem!important}
+ .v34-ui #home .sm35-eyebrow{font-size:.6rem!important}
+ .v34-ui #home .sm35-live-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}
+ .v34-ui #home .sm35-live-grid .sm35-live-card{
+  display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;
+  text-align:center!important;gap:4px!important;min-height:100px!important;
+  padding:9px 7px!important;border-radius:10px!important;
+ }
+ .v34-ui #home .sm35-live-icon{width:33px!important;height:33px!important;font-size:1.15rem!important;border-radius:8px!important}
+ .v34-ui #home .sm35-live-text{gap:3px!important;align-items:center}
+ .v34-ui #home .sm35-live-text b{font-size:.78rem!important}
+ .v34-ui #home .sm35-live-text strong{font-size:.73rem!important}
+ .v34-ui #home #v32Library>summary,
+ .v34-ui #home #sm36NewsDetails>summary{min-height:44px!important;padding:11px 13px!important}
+ .v34-ui #home #v32Library>summary small{display:none!important}
+ .v34-ui #home .v32-library-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important;padding:8px!important}
+ .v34-ui #home .v32-library-grid .portal-card{min-height:62px!important;padding:9px!important}
+ .v34-ui #rpgDlg{padding:6px 7px 10px!important}
+ .v34-ui #rpgDlg .r12-head{margin:0 0 6px!important}
+ .v34-ui #rpgDlg .r12-head h2{font-size:1.05rem!important}
+ .v34-ui #rpgDlg #sm35RpgJumps{padding:5px!important;gap:4px!important;margin:0 0 6px!important}
+ .v34-ui #rpgDlg #sm35RpgJumps button{min-height:40px!important;padding:7px 10px!important;font-size:.73rem!important}
+ .v34-ui #rpgDlg .r12-frame{border-radius:10px!important;box-shadow:none!important}
+ .v34-ui #rpgDlg .r12-controls button{min-height:45px!important;min-width:45px!important}
+ .v34-ui #rpgDlg .r12-aside.sm36-aside-open{max-height:none;overflow:visible;gap:8px!important}
+ .v34-ui #rpgDlg #sm36RpgSideToggle{min-height:44px;font-size:.8rem!important}
+ .v34-ui #rpgDlg #v34WorldTools{margin:8px 0}
+ .v34-ui #rpgDlg #v34WorldTools>summary{min-height:44px;padding:10px 12px}
+ .v34-ui #rpgDlg .v34-tools-hint{display:none}
+ .v34-ui #rpgDlg #v34WorldTools>.r23-travel-guide,
+ .v34-ui #rpgDlg #v34WorldTools>.r23-village-systems{display:block!important}
+ .v34-ui #houseDlg,#gameDlg,#profDlg{padding:8px!important}
+ .v34-ui #houseDlg .sm21-house-top{padding:11px!important}
+ .v34-ui #houseDlg .sm21-house-top h2{font-size:1.17rem!important}
+ .v34-ui #houseDlg #sm36HouseSwitch button{min-height:46px!important;font-size:.82rem!important}
+ .v34-ui #houseDlg .sm34-plot{min-height:104px!important;padding:8px 5px!important}
+ .v34-ui #houseDlg .sm34-plot b{font-size:.75rem!important}
+ .v34-ui #houseDlg .sm34-seed-choice{min-height:57px!important;font-size:.78rem!important}
+ .v34-ui #gameDlg #gCv{max-height:calc(100dvh - 190px)}
+ .v34-ui #profDlg .map-header{padding:10px!important}
+ .v34-ui #profDlg .map-header h2{font-size:1.14rem!important}
+}
+@media(max-width:360px){
+ .v34-ui #hero .stats .cell:last-child{max-width:100px;overflow:hidden}
+ .v34-ui #home .v32-adventure-home{padding:16px!important}
+ .v34-ui #home .v32-adventure-home h2{font-size:1.43rem!important}
+ .v34-ui #home .sm35-live-grid{gap:5px!important}
+ .v34-ui #home .sm35-live-card{min-height:102px!important}
+ .v34-ui #home .sm35-live-text b{font-size:.73rem!important}
+ .v34-ui #areas .v32-tabs>button span{font-size:.6rem!important}
+}
+@media(min-width:721px) and (max-width:980px){
+ .v34-ui #home .v32-adventure-home{grid-template-columns:minmax(0,1fr) 220px!important;padding:23px!important}
+ .v34-ui #hero{padding:10px 16px!important}
+ .v34-ui #rpgDlg .r12-aside{max-width:310px}
+}
+@media(prefers-reduced-motion:reduce){
+ .v34-ui #home #v32Resume,.v34-ui #home .sm35-live-card,
+ .v34-ui #areas .v32-tabs>button{transition:none!important}
+ .v34-ui #home #v32Resume:hover,.v34-ui #home .sm35-live-card:hover{transform:none!important}
+}
