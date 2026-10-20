@@ -69,6 +69,7 @@ const server=http.createServer((req,res)=>{
   assert.equal(await page.locator('#sm36AllDestinations').isVisible(),false,'no duplicated big menu');
   assert.equal(await page.locator('#home .sm35-live-card:visible').count(),2,'two compact activities');
   assert.ok(await page.locator('#v32Resume').isVisible(),'continue adventure CTA');
+  if(mobile)assert.match(await page.locator('#v32ResumeSecondary').innerText(),/Mapa/,'mobile Atlas CTA stays readable');
   assert.match(await page.locator('#sm30NewsVersion').textContent(),/V35/);
   const actualLabels=await page.evaluate(()=>window.SamPixelV35.getNavLabels());
   const expected=mobile?['Início','RPG','Defesa','Casa','Herói','Mais']:['Início','Mundo RPG','Defesa','Minha Casa','Personagem','Explorar'];
@@ -104,6 +105,12 @@ const server=http.createServer((req,res)=>{
   }
   await page.evaluate(()=>{me='v35pixel';prof={xp:100,mangoes:0,avatar:{c:0,h:'none'}};window.showPane('gameDlg')});
   assert.ok(await page.locator('#gCv').isVisible(),'defense pixel-art canvas still working');
+  assert.equal(await page.locator('#sm21Jobs [data-sm21-job]').count(),3,'real three-class choice remains present');
+  if(mobile){
+   assert.match(await page.locator('#sm21Jobs [data-sm21-job="guardian"] b').innerText(),/Guardião/);
+   await page.locator('#sm21Jobs [data-sm21-job="ranger"]').click();
+   assert.equal(await page.locator('#sm21Jobs [data-sm21-job="ranger"]').getAttribute('aria-pressed'),'true','pixel defense job button still changes real class');
+  }
   await overflow('defense');
   if(mobile)await page.screenshot({path:path.join(shots,device+'-defense.png'),fullPage:false});
   await page.evaluate(()=>window.showPane('houseDlg'));
@@ -121,6 +128,7 @@ const server=http.createServer((req,res)=>{
   await page.locator('#v32MoreToggle').click();
   assert.ok(await page.locator('#v32MorePanel').isVisible(),'more destinations still work');
   assert.equal(await page.locator('#v34Accessibility #sm165LargeText').count(),1,'accessibility intact');
+  assert.equal(await page.locator('#v32MorePanel .v35-global-theme').count(),1,'theme has one original accessible control inside More');
   await page.locator('#v32DestinationSearch').fill('Galeria');
   assert.ok(await page.locator('#v32MorePanel button[data-p="galDlg"]').isVisible(),'pixel menu filter still works');
   await page.locator('#v32MorePanel button[data-p="galDlg"]').click();
