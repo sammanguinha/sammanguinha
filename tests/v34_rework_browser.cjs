@@ -65,6 +65,8 @@ const server=http.createServer((req,res)=>{
   assert.equal(await page.locator('#v32Library').evaluate(x=>x.open),false,'optional destinations folded');
   assert.equal(await page.locator('#sm36NewsDetails').evaluate(x=>x.open),false,'release news folded');
   assert.equal(await page.locator('#sm35MoreCommunity').isVisible(),false,'duplicate social CTA hidden');
+  assert.equal(await page.locator('#sm18Hub').isVisible(),false,'obsolete extra expedition billboard hidden but expedition remains in library');
+  assert.equal(await page.locator('#home .v27-theme-button').isVisible(),false,'duplicate home theme floating action hidden');
   const hero=await page.locator('#home .v32-adventure-home').boundingBox();
   const shortcuts=await page.locator('#sm35Dashboard').boundingBox();
   assert.ok(hero&&shortcuts&&hero.y<shortcuts.y,'primary action before optional routes');
