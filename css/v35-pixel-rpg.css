@@ -335,3 +335,367 @@ html.v35-pixel #home #v32ResumeSecondary{
  font:700 15px var(--px-text)!important;
  box-shadow:3px 3px 0 #0b1720!important;
 }
+
+/* ███████ TWO SECONDARY ADVENTURE CARTRIDGES ███████ */
+html.v35-pixel #home .sm35-dashboard{
+ padding:15px!important;border:3px solid #648e83!important;border-radius:0!important;
+ background:#152e38!important;background-image:none!important;
+ box-shadow:inset 0 0 0 3px #243e43,4px 4px 0 #07141d!important;
+}
+html.v35-pixel #home .sm35-dashboard-heading{
+ display:flex!important;align-items:center!important;
+ justify-content:space-between!important;gap:8px!important;margin:0 0 12px!important;
+}
+html.v35-pixel #home .sm35-dashboard-heading h2{
+ font:700 clamp(18px,2.4vw,25px)/1.1 var(--px-text)!important;
+ color:#f8d898!important;text-shadow:2px 2px 0 #0a1b23!important;
+}
+html.v35-pixel #home .sm35-eyebrow{
+ font:700 12px var(--px-text)!important;color:#9bd7ad!important;
+ letter-spacing:.04em!important;
+}
+html.v35-pixel #home .sm35-live-grid{gap:11px!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+html.v35-pixel #home .sm35-live-grid .sm35-live-card{
+ min-height:92px!important;gap:13px!important;padding:14px!important;
+ display:flex!important;flex-direction:row!important;align-items:center!important;
+ justify-content:flex-start!important;text-align:left!important;
+ border:3px solid #557f76!important;border-radius:0!important;
+ background:#1b3b3a!important;background-image:none!important;
+ box-shadow:inset 0 3px 0 #a8d5ae24,4px 4px 0 #0a1620!important;
+}
+html.v35-pixel #home .sm35-live-grid .sm35-live-card[data-sm35-go=houseDlg]{
+ background:#253e32!important;border-color:#8bb884!important;
+}
+html.v35-pixel #home .sm35-live-grid .sm35-live-card:hover{
+ background:#28594c!important;border-color:#f7d898!important;
+ transform:translate(-1px,-1px)!important;
+}
+html.v35-pixel #home .sm35-live-icon{
+ display:flex!important;flex:0 0 37px!important;justify-content:center!important;
+ align-items:center!important;width:37px!important;height:37px!important;
+ background:#142c31!important;border:2px solid #6da088!important;
+ border-radius:0!important;box-shadow:2px 2px 0 #091721!important;
+ font-size:0!important;line-height:0!important;
+}
+html.v35-pixel #home .sm35-live-icon:before{
+ content:"";width:28px;height:28px;flex:none;
+ background:url("../sprites/ui-pixel-icons.svg") -84px 0/168px 28px no-repeat;
+ image-rendering:pixelated;
+}
+html.v35-pixel #home [data-sm35-go=gameDlg] .sm35-live-icon:before{background-position:-56px 0}
+html.v35-pixel #home [data-sm35-go=houseDlg] .sm35-live-icon:before{background-position:-84px 0}
+html.v35-pixel #home .sm35-live-text b{
+ font:700 clamp(16px,1.6vw,19px)/1.15 var(--px-text)!important;
+ color:#f5dda1!important;
+}
+html.v35-pixel #home .sm35-live-text strong{
+ font:500 clamp(14px,1.3vw,16px)/1.2 var(--px-text)!important;
+ color:#d2e4cb!important;
+}
+/* Optional pages use compact quest-log rows rather than gigantic portal cards */
+html.v35-pixel #home #v32Library,
+html.v35-pixel #home #sm36NewsDetails{
+ border:2px solid #506f76!important;border-radius:0!important;
+ background:#172c37!important;box-shadow:3px 3px 0 #07151f!important;
+}
+html.v35-pixel #home #v32Library>summary,
+html.v35-pixel #home #sm36NewsDetails>summary{
+ padding:10px 14px!important;min-height:47px!important;
+ font:700 16px/1.2 var(--px-text)!important;color:#f1d99d!important;
+ border-radius:0!important;
+}
+html.v35-pixel #home #v32Library>summary:before,
+html.v35-pixel #home #sm36NewsDetails>summary:before{
+ content:"▸";padding-right:8px;color:#a4dda4;
+}
+html.v35-pixel #home #v32Library[open]>summary:before,
+html.v35-pixel #home #sm36NewsDetails[open]>summary:before{content:"▾"}
+html.v35-pixel #home #v32Library>summary b{font:700 16px var(--px-text)!important}
+html.v35-pixel #home #v32Library>summary small{font:500 13px var(--px-text)!important;color:#bdd3be!important}
+html.v35-pixel #home .v32-library-grid{
+ display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ gap:8px!important;padding:12px!important;
+ background:#0e202e!important;border-top:2px solid #537c76!important;
+}
+html.v35-pixel #home .v32-library-grid .portal-card{
+ min-height:64px!important;padding:8px 10px!important;border:2px solid #638678!important;
+ background:#1e3d3c!important;border-radius:0!important;
+ box-shadow:2px 2px 0 #07121d!important;
+}
+html.v35-pixel #home .v32-library-grid .portal-card:hover{background:#30584a!important;border-color:#e5cd96!important}
+html.v35-pixel #home .v32-library-grid .portal-card h3{
+ font:700 15px var(--px-text)!important;color:#e5e9ca!important;
+}
+html.v35-pixel #home #sm36NewsDetails #sm30News{
+ border:0!important;padding:12px!important;background:#0e202e!important;
+}
+html.v35-pixel #home #sm30NewsHeading{
+ color:#f0d69e!important;font:700 23px/1.15 var(--px-text)!important;
+}
+html.v35-pixel #home .sm30-news-links{gap:7px!important}
+html.v35-pixel #home .sm30-news-links button{
+ min-height:42px!important;background:#264a43!important;
+ border:2px solid #618b7d!important;color:#f5e5c3!important;
+ font:700 14px var(--px-text)!important;
+}
+/* ███████ RPG CANVAS + 16-BIT INVENTORY ███████ */
+html.v35-pixel #rpgDlg{
+ background-color:transparent!important;
+ padding:10px!important;max-width:1450px;
+}
+html.v35-pixel #rpgDlg .r12-head h2{
+ font:700 clamp(20px,2.7vw,29px)/1.12 var(--px-text)!important;
+ color:var(--px-sun)!important;
+}
+html.v35-pixel #rpgDlg #sm35RpgJumps{
+ background:#142d36!important;border:3px solid #658f82!important;
+ border-radius:0!important;box-shadow:3px 3px 0 #08151f!important;
+ padding:7px!important;gap:7px!important;
+}
+html.v35-pixel #rpgDlg #sm35RpgJumps button{
+ min-height:43px!important;padding:8px 12px!important;
+ border:2px solid #567f72!important;border-radius:0!important;
+ color:#f0dfae!important;background:#254e46!important;
+ box-shadow:2px 2px 0 #0b1a22!important;
+ font:700 16px/1.1 var(--px-text)!important;
+}
+html.v35-pixel #rpgDlg #sm35RpgJumps button:hover{
+ background:#346f56!important;border-color:#f3cb87!important;
+}
+html.v35-pixel #rpgDlg .r12-frame{
+ border:4px solid #78b49b!important;border-radius:0!important;
+ outline:2px solid #091a23!important;
+ background:#081b28!important;box-shadow:inset 0 0 0 3px #23443e,5px 5px 0 #060e1b!important;
+}
+html.v35-pixel #rpgDlg canvas#r12Canvas{
+ image-rendering:pixelated!important;image-rendering:crisp-edges;
+}
+html.v35-pixel #rpgDlg .r12-frame>.sm-rpg-map-enter{
+ min-height:38px!important;border:2px solid #fbe2a0!important;
+ border-radius:0!important;background:#e7c178!important;color:#1b3437!important;
+ box-shadow:3px 3px 0 #0c161e!important;
+ font:700 14px var(--px-text)!important;
+}
+html.v35-pixel #rpgDlg #v27RpgHud{
+ background:#102b34ee!important;border:3px solid #8fbc9d!important;
+ border-radius:0!important;outline:1px solid #06121e;
+ box-shadow:inset 0 0 0 2px #234845,3px 3px 0 #07141d!important;
+ font-family:var(--px-hud)!important;image-rendering:pixelated;
+}
+html.v35-pixel #rpgDlg #v27RpgHud *{
+ font-family:var(--px-hud)!important;letter-spacing:0!important;
+}
+html.v35-pixel #rpgDlg #v27RpgHud .v27-hud-mark,
+html.v35-pixel #rpgDlg #v27RpgHud .v27-hud-region{
+ font-size:16px!important;line-height:.95!important;
+}
+html.v35-pixel #rpgDlg #v27RpgHud .v27-stat-label{
+ color:#d5ebce!important;font-size:12px!important;
+}
+html.v35-pixel #rpgDlg #v27RpgHud .v27-stat-value{
+ color:#fff1c9!important;font-size:18px!important;line-height:.9!important;
+}
+html.v35-pixel #rpgDlg #v27RpgHud .v27-stat-rail{
+ height:4px!important;border:1px solid #102936;
+ background:#2c4850!important;border-radius:0!important;
+}
+html.v35-pixel #rpgDlg #v27RpgHud .v27-stat-fill{
+ border-radius:0!important;background:repeating-linear-gradient(90deg,#b0d993 0 5px,#82c79b 5px 6px)!important;
+}
+html.v35-pixel #rpgDlg #v27RpgHud .v27-hud-currency{
+ font-size:16px!important;color:#f8dc9b!important;
+}
+html.v35-pixel #rpgDlg .v27-rpg-actionbar{
+ background:#12323aee!important;border:2px solid #537c79!important;
+ border-radius:0!important;box-shadow:3px 3px 0 #091824!important;
+}
+html.v35-pixel #rpgDlg .v27-rpg-actionbar button{
+ min-height:41px!important;border-radius:0!important;
+ background:#28564b!important;border:2px solid #679781!important;
+ color:#fbebc6!important;font:700 14px var(--px-text)!important;
+}
+html.v35-pixel #rpgDlg .r12-aside{gap:12px!important}
+html.v35-pixel #rpgDlg .r12-aside .r12-card{
+ border:3px solid #779c8b!important;background:#19343c!important;
+ border-radius:0!important;outline:1px solid #091b24;
+ box-shadow:inset 0 0 0 2px #244d4a,4px 4px 0 #07161d!important;
+}
+html.v35-pixel #rpgDlg .r12-aside .r12-card h3{
+ font:700 20px/1.12 var(--px-text)!important;color:#f6d797!important;
+}
+html.v35-pixel #rpgDlg .r12-aside .r12-card p,
+html.v35-pixel #rpgDlg .r12-aside .r12-card li{
+ font:500 15px/1.35 var(--px-text)!important;color:#e6edce!important;
+}
+html.v35-pixel #rpgDlg .r12-aside .r12-card button{
+ border-radius:0!important;border:2px solid #658d7f!important;
+ background:#2a5148!important;color:#ffe8b5!important;
+ font:600 14px var(--px-text)!important;min-height:40px!important;
+}
+html.v35-pixel #rpgDlg .r12-bubble{
+ border:4px solid #f3d693!important;outline:3px solid #081824;
+ border-radius:0!important;background:#1b3440!important;
+ color:#fdf0c8!important;box-shadow:6px 6px 0 #07101e!important;
+}
+html.v35-pixel #rpgDlg .r12-bubble p,
+html.v35-pixel #rpgDlg .r12-bubble strong{
+ font:600 clamp(16px,1.6vw,20px)/1.34 var(--px-text)!important;
+ color:#f2e9c7!important;
+}
+html.v35-pixel #rpgDlg .r12-bubble #r12TalkWho{
+ color:#f8d596!important;font-size:19px!important;
+}
+html.v35-pixel #rpgDlg #v34WorldTools{
+ background:#142c35!important;border:3px solid #658d7e!important;
+ border-radius:0!important;box-shadow:3px 3px 0 #07131c!important;
+}
+html.v35-pixel #rpgDlg #v34WorldTools>summary{
+ min-height:45px!important;color:#f3dc9a!important;
+ font:700 17px var(--px-text)!important;
+}
+html.v35-pixel #rpgDlg #v34WorldTools>summary .v34-tools-hint{
+ font:500 14px var(--px-text)!important;color:#abcab1!important;
+}
+html.v35-pixel #rpgDlg #v34WorldTools :is(.r23-contract-board,.r23-mood-board,.r23-travel-guide){
+ background:#203c40!important;border:2px solid #527e73!important;
+ border-radius:0!important;
+}
+html.v35-pixel #rpgDlg .v24-sprint-bar{
+ border:2px solid #618b7a!important;background:#162e38!important;
+ border-radius:0!important;box-shadow:3px 3px 0 #06141d!important;
+}
+html.v35-pixel #rpgDlg .v24-sprint-bar button{
+ font:700 15px var(--px-text)!important;
+ border-radius:0!important;border:2px solid #739584!important;
+ background:#2c5d4c!important;color:#f8e1b3!important;
+}
+html.v35-pixel #rpgDlg .v24-sprint-bar progress{
+ border-radius:0!important;accent-color:#88cd9b;
+}
+/* ███████ DEFESA: REAL GAME HUD, NOT WEB FORM ███████ */
+html.v35-pixel #gameDlg>.ptitle,
+html.v35-pixel #houseDlg .sm21-house-top h2,
+html.v35-pixel #profDlg .map-header h2{
+ font:700 clamp(22px,2.8vw,30px)/1.1 var(--px-text)!important;
+ color:#ffde9b!important;text-shadow:2px 2px 0 #0d1821!important;
+}
+html.v35-pixel #gameDlg #gCv{
+ border:4px solid #86ad95!important;border-radius:0!important;
+ box-shadow:4px 4px 0 #091721!important;image-rendering:pixelated!important;
+}
+html.v35-pixel #gameDlg :is(.sm33-defense-council,.sm21-tactics,.sm21-jobs){
+ border:3px solid #6f9e82!important;border-radius:0!important;
+ background:#18363a!important;box-shadow:3px 3px 0 #081722!important;
+}
+html.v35-pixel #gameDlg .sm33-defense-council h3{
+ font:700 21px var(--px-text)!important;color:#ffdda1!important;
+}
+html.v35-pixel #gameDlg #sm36DefenseTactics>summary{
+ border-radius:0!important;background:#2c5548!important;
+ color:#ffe2a6!important;font:700 17px var(--px-text)!important;
+}
+html.v35-pixel #gameDlg .v27-live-hud{
+ border:3px solid #7cad93!important;border-radius:0!important;
+ background:#132e37e8!important;box-shadow:3px 3px 0 #071620!important;
+}
+html.v35-pixel #gameDlg .v27-live-hud *{
+ font-family:var(--px-hud)!important;
+}
+html.v35-pixel #gameDlg .v27-live-hud .v27-hud-mark{font-size:20px!important;color:#f4d594!important}
+html.v35-pixel #gameDlg .v27-defense-actionbar button{
+ border:2px solid #80aa93!important;border-radius:0!important;
+ background:#2a584a!important;color:#f8e5c3!important;
+ font:700 14px var(--px-text)!important;
+}
+html.v35-pixel #gameDlg :is(.btn-gothic,.sm33-plan-button,.sm33-plan){
+ border-radius:0!important;box-shadow:3px 3px 0 #081721!important;
+}
+/* ███████ REFÚGIO / HORTA ███████ */
+html.v35-pixel #houseDlg .sm21-house-top{
+ border:3px solid #78aa8a!important;border-radius:0!important;
+ background:#1a3d39!important;box-shadow:4px 4px 0 #09171f!important;
+}
+html.v35-pixel #houseDlg .sm21-house-top p{
+ font:500 15px/1.35 var(--px-text)!important;color:#cce3c4!important;
+}
+html.v35-pixel #houseDlg :is(.sm21-house-stage,.sm21-house-sidebar,.sm34-garden){
+ border:3px solid #7b9f89!important;border-radius:0!important;
+ background:#183737!important;box-shadow:4px 4px 0 #061822!important;
+}
+html.v35-pixel #houseDlg #sm36HouseSwitch button{
+ min-height:46px!important;border:2px solid #648c79!important;
+ border-radius:0!important;background:#25493e!important;
+ color:#f4e3b8!important;box-shadow:2px 2px 0 #07151c!important;
+ font:700 17px var(--px-text)!important;
+}
+html.v35-pixel #houseDlg #sm36HouseSwitch button[aria-pressed=true]{
+ background:#498053!important;color:#fff5c9!important;
+ border-color:#f3d797!important;
+}
+html.v35-pixel #houseDlg .sm34-garden-heading h3{
+ font:700 25px var(--px-text)!important;color:#f5da9e!important;
+}
+html.v35-pixel #houseDlg .sm34-plot{
+ border:3px solid #6d9479!important;border-radius:0!important;
+ background:#233e35!important;box-shadow:3px 3px 0 #07161d!important;
+}
+html.v35-pixel #houseDlg .sm34-plot:hover{border-color:#efce8e!important;background:#2c5941!important}
+html.v35-pixel #houseDlg .sm34-plot b{font:700 17px var(--px-text)!important;color:#f0e3b8!important}
+html.v35-pixel #houseDlg .sm34-plot small{
+ font:500 14px var(--px-text)!important;color:#d4e5c5!important;
+}
+html.v35-pixel #houseDlg .sm34-plot-icon{
+ font-size:26px!important;filter:none!important;
+}
+html.v35-pixel #houseDlg .sm34-garden button,
+html.v35-pixel #houseDlg .sm21-house-sidebar button{
+ border:2px solid #7da88c!important;border-radius:0!important;
+ background:#2c5b49!important;color:#ffe9b5!important;
+ box-shadow:2px 2px 0 #091821!important;
+ font:700 14px var(--px-text)!important;
+}
+html.v35-pixel #houseDlg .sm34-garden-budget{
+ border-radius:0!important;border:2px dashed #9fc5a6!important;
+ background:#102b30!important;
+}
+/* ███████ PERSONAGEM + EQUIPMENT ███████ */
+html.v35-pixel #profDlg .map-header{
+ border:3px solid #76aa8d!important;border-radius:0!important;
+ background:#19373a!important;box-shadow:4px 4px 0 #07151e!important;
+}
+html.v35-pixel #profDlg .paperdoll-stage{
+ border:3px solid #7f9b91!important;border-radius:0!important;
+ background:#132d39!important;box-shadow:4px 4px 0 #091621!important;
+}
+html.v35-pixel #profDlg .paperdoll-stage :is(canvas,img),
+html.v35-pixel #houseDlg canvas,
+html.v35-pixel #rpgDlg .npc-avatar{
+ image-rendering:pixelated!important;
+}
+html.v35-pixel #profDlg .wardrobe-panel{
+ border:3px solid #7ba68d!important;border-radius:0!important;
+ background:#1b3841!important;box-shadow:4px 4px 0 #07151e!important;
+}
+html.v35-pixel #profDlg .wardrobe-tabs button,
+html.v35-pixel #profDlg .wardrobe-save-bar button{
+ min-height:43px!important;border-radius:0!important;
+ border:2px solid #618a81!important;background:#224b48!important;
+ color:#efdfb4!important;font:700 15px var(--px-text)!important;
+ box-shadow:2px 2px 0 #0b1b24!important;
+}
+html.v35-pixel #profDlg .wardrobe-tabs button.active,
+html.v35-pixel #profDlg .wardrobe-tabs button[aria-selected=true]{
+ border-color:#eacb87!important;background:#366c53!important;color:#ffefc2!important;
+}
+html.v35-pixel #profDlg .wardrobe-section-title{
+ font:700 18px var(--px-text)!important;color:#e7d39a!important;
+ border-bottom:2px dashed #638b7c!important;
+}
+html.v35-pixel #profDlg :is(.swatch-row button,.expression-row button,.opts button){
+ border-radius:0!important;border:2px solid #6e9989!important;
+ background:#263f45!important;box-shadow:2px 2px 0 #0b1c24!important;
+}
+html.v35-pixel #profDlg .sm34-wardrobe{
+ border:3px solid #76a68a!important;border-radius:0!important;
+ background:#163440!important;
+}
