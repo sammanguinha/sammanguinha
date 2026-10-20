@@ -158,6 +158,25 @@
  // único local, no menu Explorar.
  const fullBtn=rpg.querySelector('.r12-frame>.sm-rpg-map-enter');
  if(fullBtn){fullBtn.textContent='⛶ Tela cheia';fullBtn.setAttribute('aria-label','Jogar RPG em tela cheia');}
+ // O contador promocional antigo era montado no cabeçalho e, sem dados,
+ // podia mostrar "undefined mangas" e "NaN:NaN". A campanha permanece no
+ // menu Explorar, mas qualquer oferta inválida não é mostrada.
+ const eventBar=$('evBar');
+ if(eventBar&&explore){
+  explore.append(eventBar);
+  const check=()=>{
+   if(/\\b(?:undefined|NaN)\\b/i.test(eventBar.textContent||'')){
+    eventBar.hidden=true;eventBar.classList.add('v34-event-invalid');
+   }else eventBar.classList.remove('v34-event-invalid');
+  };
+  check();
+  new MutationObserver(check).observe(eventBar,{childList:true,characterData:true,subtree:true});
+ }
+ // Controles de corrida e loja com rótulos curtos para não quebrar palavra a
+ // palavra num telefone de 320 px. Os eventos nativos permanecem intactos.
+ const run=$('v24RunTouch'),shop=$('v24ShopShortcut');
+ if(run)run.textContent='💨 Correr';
+ if(shop)shop.textContent='🛍 Loja';
  // Estatísticas legíveis sem cards repetidos e sem loop ativo fora da Home.
  function refresh(){
   if(home.hidden)return;
