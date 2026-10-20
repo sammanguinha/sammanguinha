@@ -1,0 +1,72 @@
+name: V35.1 - Inicializacao sem troca de telas
+on:
+  push:
+    branches:
+      - dev/v35-1-startup-sem-flicker
+  workflow_dispatch:
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build e scripts
+        run: |
+          set -euo pipefail
+          node --check js/ui/v35-pixel-ui.js
+          node --check tests/v35_1_startup_browser.cjs
+          node scripts/build-v26.cjs
+      - name: Testes de arquitetura
+        run: |
+          node --test tests/v25_architecture.test.cjs tests/v26_bundle.test.cjs tests/v27_bridge_ui.test.cjs tests/v28_visual.test.cjs tests/v29_cronicas.test.cjs tests/v30_cinematics.test.cjs tests/v30_news.test.cjs
+      - name: Instalar Chromium
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Inicio V35.1 sem piscar ou renderizar versoes intermediarias
+        run: node tests/v35_1_startup_browser.cjs
+      - name: Interface V35 em desktop/tablet/mobile
+        run: node tests/v35_pixel_browser.cjs
+      - name: Regressao V34, V33.6 e recursos
+        run: |
+          node tests/v34_rework_browser.cjs
+          node tests/v36_compact_browser.cjs
+          node tests/v34_35_life_browser.cjs
+      - name: Regressao Defesa e Campanha
+        run: |
+          node tests/v33_3_combat_browser.cjs
+          node tests/v33_world_browser.cjs
+          node tests/v31_jardim_browser.cjs
+          node tests/v32_structure_browser.cjs
+      - name: Testar distribuicao pronta para Cloudflare
+        run: |
+          SM_GAME_ROOT=dist node tests/v35_1_startup_browser.cjs
+          SM_GAME_ROOT=dist node tests/v35_pixel_browser.cjs
+          find dist -type f \( -name '*.exe' -o -name '*.dll' -o -name '*.bat' -o -name '*.ps1' \) | tee /tmp/unexpected-files.txt
+          test ! -s /tmp/unexpected-files.txt
+  pacote:
+    needs: validar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Gerar ZIP para upload no Cloudflare
+        run: |
+          set -euo pipefail
+          node scripts/build-v26.cjs
+          cd dist
+          zip -qr ../Sam-Manguinha-V35-1-Abertura-Corrigida-Cloudflare.zip .
+          cd ..
+          unzip -t Sam-Manguinha-V35-1-Abertura-Corrigida-Cloudflare.zip | tail -1
+          sha256sum Sam-Manguinha-V35-1-Abertura-Corrigida-Cloudflare.zip > SHA256-V35-1.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V35-1-Abertura-Corrigida-Cloudflare
+          path: |
+            Sam-Manguinha-V35-1-Abertura-Corrigida-Cloudflare.zip
+            SHA256-V35-1.txt
