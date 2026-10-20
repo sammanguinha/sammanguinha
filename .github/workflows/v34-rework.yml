@@ -1,0 +1,81 @@
+name: V34 · Rework total compacto
+on:
+  push:
+    branches:
+      - dev/v34-rework-total-compacto
+  workflow_dispatch:
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Sintaxe do rework e build protegido
+        run: |
+          set -euo pipefail
+          node --check js/ui/v34-rework.js
+          node --check js/ui/v33-news.js
+          node --check tests/v34_rework_browser.cjs
+          node scripts/build-v26.cjs
+      - name: Integridade dos sistemas anteriores
+        run: |
+          node --test tests/v25_architecture.test.cjs tests/v26_bundle.test.cjs tests/v27_bridge_ui.test.cjs tests/v28_visual.test.cjs tests/v29_cronicas.test.cjs tests/v30_cinematics.test.cjs tests/v30_news.test.cjs
+      - name: Instalar Chromium
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Rework visual V34 — desktop, tablet, 390 e 320 px
+        run: node tests/v34_rework_browser.cjs
+      - name: Navegação compacta V33.6
+        run: node tests/v36_compact_browser.cjs
+      - name: Horta e perfil V33.5
+        run: node tests/v34_35_life_browser.cjs
+      - name: Combate e Defesa V33.3
+        run: node tests/v33_3_combat_browser.cjs
+      - name: Campanha V33
+        run: node tests/v33_world_browser.cjs
+      - name: Campanha V31 e navegação V32
+        run: |
+          node tests/v31_jardim_browser.cjs
+          node tests/v32_structure_browser.cjs
+      - name: Rework testado no conteúdo final Cloudflare
+        run: |
+          SM_GAME_ROOT=dist node tests/v34_rework_browser.cjs
+          find dist -type f \( -name '*.exe' -o -name '*.dll' -o -name '*.bat' -o -name '*.ps1' \) | tee /tmp/unexpected-files.txt
+          test ! -s /tmp/unexpected-files.txt
+      - name: Screenshots de auditoria visual
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: V34-Screenshots-Desktop-Celular
+          path: v34-screenshots/*.png
+          if-no-files-found: ignore
+  pacote:
+    needs: validar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build de produção e ZIP para upload direto
+        run: |
+          set -euo pipefail
+          node scripts/build-v26.cjs
+          test -f dist/index.html
+          test -f dist/css/v34-rework.css
+          test -f dist/js/ui/v34-rework.js
+          cd dist
+          zip -qr ../Sam-Manguinha-V34-Rework-Total-Compacto-Cloudflare.zip .
+          cd ..
+          unzip -t Sam-Manguinha-V34-Rework-Total-Compacto-Cloudflare.zip | tail -1
+          sha256sum Sam-Manguinha-V34-Rework-Total-Compacto-Cloudflare.zip > SHA256-V34.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Sam-Manguinha-V34-Rework-Total-Compacto-Cloudflare
+          path: |
+            Sam-Manguinha-V34-Rework-Total-Compacto-Cloudflare.zip
+            SHA256-V34.txt

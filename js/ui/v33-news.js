@@ -5,17 +5,21 @@
  home.classList.add('sm33-featured');
  const change=(selector,value)=>{const el=document.querySelector(selector);if(el)el.textContent=value};
  change('#sm30News .sm30-news-kicker','🌿 CRÔNICA III · JORNADA INTEGRADA');
- change('#sm30NewsVersion','V33.5 · O Pomar Vivo');
- change('#sm30NewsHeading','O Pomar cresce com você: horta e estratégia');
- change('#sm30News h2 + p','Cultive seis canteiros no Refúgio, prepare poções para o RPG, desbloqueie acessórios e conclua contratos diários. A Defesa tática e os três mapas da campanha continuam disponíveis.');
+ change('#sm30NewsVersion','V34 · O Novo Pomar');
+ change('#sm30NewsHeading','Seu jogo, sem excessos.');
+ change('#sm30News h2 + p','A página inteira ganhou um novo visual, com uma navegação principal, menos cartões repetidos e mais espaço para o RPG no telefone. Casa, Defesa e campanhas continuam disponíveis.');
  const chips=home.querySelector('.sm31-preview-features');
- if(chips){chips.replaceChildren();for(const txt of ['Horta cultivável','Receitas na mochila RPG','Acessórios na exploração','Painel do Pomar reformulado']){const chip=document.createElement('span');chip.textContent=txt;chips.append(chip)}}
+ if(chips){chips.replaceChildren();for(const txt of ['Página inicial renovada','Atalhos sem repetição','RPG em primeiro plano','Interface mais limpa no telefone']){const chip=document.createElement('span');chip.textContent=txt;chips.append(chip)}}
  change('#sm30NewsPlay','🎮 Começar o Vale pelo RPG');
  change('#sm30News .sm30-news-footnote','Prévia V33 de homologação: encontre o portal do Vale a leste da Vila. Todas as campanhas anteriores continuam disponíveis. Recompensas desta crônica são locais, sem pontos no ranking oficial.');
- change('#smUpdatePanel .sm-tag','🌿 VIDA NO POMAR · V33.5');
- change('#smUpdateTitle','V33.5 — O Pomar Vivo');
+ change('#smUpdatePanel .sm-tag','🌿 REWORK TOTAL · V34');
+ change('#smUpdateTitle','V34 — O Novo Pomar');
  change('#smUpdatePanel > p','A aventura volta a ser o centro do projeto: mapas, NPCs, escolhas e modos conectados numa única jornada.');
  const notes=[
+  ['V34 · Tela inicial unificada','Um botão para continuar, dois modos de apoio e um menu secundário. Portais, informações e cartões duplicados deixam de ocupar a tela principal.'],
+  ['V34 · Visual renovado','Novo acabamento para navegação, hub de jogo, RPG, Defesa, Refúgio, Perfil e Diário; tamanhos de toque preservados no celular.'],
+  ['V34 · RPG em destaque','O mapa aparece antes das informações secundárias; contratos, rotas e atmosfera ficam num painel recolhível após o mundo jogável.'],
+  ['V34 · Conteúdo preservado','Salvamentos, crônicas, conquistas, chat, códigos, Atlas e todos os destinos continuam acessíveis pelos menus.'],
   ['V33.4 · Horta Viva','Seis canteiros, três cultivos, crescimento persistente no relógio real, rega que acelera 30 segundos e colheita com ingredientes.'],
   ['V33.4 · Receitas úteis','Use ingredientes cultivados para fabricar poções RPG, restaurar magia ou forjar um Amuleto dos Jardineiros equipável.'],
   ['V33.4 · Aparências no mundo','Coroa de folhas, cachecol e aura especiais desbloqueados por colheitas e artesanato, desenhados no personagem durante a aventura.'],
@@ -38,7 +42,7 @@
  ];
  const details=document.createElement('details');details.className='sm-update-version';details.open=true;
  const summary=document.createElement('summary'),span=document.createElement('span'),b=document.createElement('b');
- b.textContent='V33.5 · PRÉVIA';span.append(b,document.createTextNode(' O Renascimento do Pomar'));
+ b.textContent='V34 · REWORK';span.append(b,document.createTextNode(' O Renascimento do Pomar'));
  const count=document.createElement('span');count.className='sm-update-count';count.textContent=notes.length+' melhorias';summary.append(span,count);
  const ul=document.createElement('ul');for(const [title,text]of notes){const li=document.createElement('li'),bold=document.createElement('strong');bold.textContent=title+' — ';li.append(bold,document.createTextNode(text));ul.append(li)}
  details.append(summary,ul);history.prepend(details);

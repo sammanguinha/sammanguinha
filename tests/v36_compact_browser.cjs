@@ -30,8 +30,8 @@ const server=http.createServer((req,res)=>{let file=path.resolve(root,'.'+decode
   assert.ok(primary,'navigation exists');
   if(compact)assert.ok(primary.y>h-85,label+' bottom nav stays near viewport bottom: '+JSON.stringify(primary));
   assert.equal(await page.locator('#sm35Dashboard').isVisible(),true,'fast real-game dashboard visible');
-  assert.equal(await page.locator('#sm36AllDestinations').evaluate(el=>el.open),!compact,'feature cards progressive on mobile');
-  if(compact){await page.locator('#sm36AllDestinations summary').click();assert.ok(await page.locator('.v32-featured-grid [data-go="profDlg"]').isVisible(),'all old destinations reachable');}
+  assert.equal(await page.locator('#sm36AllDestinations').isVisible(),false,'redundant destination cards removed from visible home');
+  assert.ok(await page.locator('#v32Library summary').isVisible(),'secondary destinations remain discoverable');
   await page.locator('#v32MoreToggle').click();assert.ok(await page.locator('#v32MorePanel').isVisible(),'all secondary navigation reachable');
   await page.locator('#v32DestinationSearch').fill('Galeria');
   assert.ok(await page.locator('#v32MorePanel button[data-p="galDlg"]').isVisible(),'search existing gallery');
