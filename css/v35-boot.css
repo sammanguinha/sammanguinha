@@ -1,0 +1,43 @@
+/* V35.1 — Apenas UMA cena de inicialização, antes de qualquer layout.
+   De propósito não esconde o progresso: mostra o pomar e um aviso legível.
+   CSS-only fail-safe após 7s se algum script travar. */
+html.sm35-booting {
+ background:#0c1e2a;
+}
+html.sm35-booting body {
+ visibility:hidden!important;
+ animation:sm35-rescue-page 0s linear 7s forwards;
+}
+html.sm35-booting::before{
+ content:"";
+ position:fixed;inset:0;
+ z-index:2147483645;
+ display:block;
+ background:#0e2330 url("../sprites/ui-pixel-orchard.svg") center/cover no-repeat;
+ image-rendering:pixelated;
+ pointer-events:none;
+ animation:sm35-rescue-overlay 0s linear 7s forwards;
+}
+html.sm35-booting::after{
+ content:"🌿 SAM MANGUINHA\\A Preparando o Pomar...";
+ white-space:pre;
+ position:fixed;left:50%;top:52%;transform:translate(-50%,-50%);
+ z-index:2147483646;
+ box-sizing:border-box;
+ width:min(86vw,380px);
+ padding:20px 15px;
+ background:#142f3bed;
+ color:#ffdf9f;
+ border:4px solid #90cba0;
+ box-shadow:5px 5px 0 #09141e;
+ font:700 clamp(18px,4vw,26px)/1.5 'Pixelify Sans',monospace;
+ text-align:center;
+ image-rendering:pixelated;
+ pointer-events:none;
+ animation:sm35-rescue-overlay 0s linear 7s forwards;
+}
+@keyframes sm35-rescue-page {to {visibility:visible}}
+@keyframes sm35-rescue-overlay {to {visibility:hidden}}
+@media(prefers-reduced-motion:reduce){
+ html.sm35-booting body{animation-name:sm35-rescue-page!important;animation-duration:0s!important;animation-delay:7s!important;}
+}
