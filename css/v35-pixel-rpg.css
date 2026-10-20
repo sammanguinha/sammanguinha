@@ -1059,3 +1059,8 @@ html.v35-pixel #rpgDlg.sm-immersive .r12-bubble{
   transition-duration:.01ms!important;
  }
 }
+
+/* V34 retired a duplicated RPG shortcut. Never let V35 card skins restore it. */
+html.v35-pixel #home .sm35-live-grid .sm35-live-card.v34-duplicate-route{
+ display:none!important;visibility:hidden!important;pointer-events:none!important;
+}
