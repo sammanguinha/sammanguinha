@@ -614,3 +614,32 @@ html.v34-ui #rpgDlg:not(.sm-immersive) .v24-sprint-bar small{display:none!import
  html.v34-ui #hero #meChip{max-width:86px!important;font-size:.65rem!important}
  html.v34-ui #rpgDlg:not(.sm-immersive) .v24-sprint-bar button{padding:6px 4px!important;font-size:.62rem!important}
 }
+
+/* Shared treatment for every secondary pane, without rewriting game rules. */
+html.v34-ui #panes>.pane:not(#rpgDlg):not(#gameDlg):not(#houseDlg):not(#profDlg){
+ width:min(100%,1360px);max-width:1360px;margin:0 auto!important;
+ padding:clamp(10px,2vw,20px)!important;
+}
+html.v34-ui #panes>.pane :is(.map-header,.sm17-social-head,.sm20-live-heading){
+ border:1px solid #a3c8a04b!important;background:linear-gradient(135deg,#1d3a3a,#1a303b)!important;
+ border-radius:14px!important;padding:clamp(12px,1.8vw,19px)!important;margin-bottom:13px!important;
+}
+html.v34-ui #panes>.pane :is(.map-header,.sm17-social-head,.sm20-live-heading) h2,
+html.v34-ui #panes>.pane>.ptitle{
+ color:#f5dcb1!important;font-family:'Cinzel',Georgia,serif!important;
+ font-size:clamp(1.2rem,2vw,1.58rem)!important;line-height:1.22!important;
+}
+html.v34-ui #panes>.pane :is(.panel,.orchard-map-container,.sm17-social,.sm20-live,.scene-investigation-card){
+ border-color:#a4c5ad54!important;border-radius:14px!important;
+ box-shadow:0 10px 26px #04101740!important;
+}
+html.v34-ui #panes>.pane :is(input:not([type=checkbox]):not([type=radio]),textarea,select){
+ max-width:100%;min-height:42px;border-radius:9px;border-color:#a5c3a16e!important;
+}
+html.v34-ui #panes>.pane :is(.btn-gothic,.alt,button).sm17-tab,
+html.v34-ui #panes>.pane .btn-gothic{border-radius:9px!important}
+@media(max-width:720px){
+ html.v34-ui #panes>.pane:not(#rpgDlg):not(#gameDlg):not(#houseDlg):not(#profDlg){padding:8px!important}
+ html.v34-ui #panes>.pane :is(.map-header,.sm17-social-head,.sm20-live-heading){padding:10px!important;margin-bottom:9px!important}
+ html.v34-ui #panes>.pane :is(.map-header,.sm17-social-head,.sm20-live-heading) h2{font-size:1.13rem!important}
+}
